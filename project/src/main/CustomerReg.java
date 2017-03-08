@@ -1,3 +1,4 @@
+package main;
 // s3563242 Richard Kuoch Contribution
 public class CustomerReg {
 	
