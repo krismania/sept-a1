@@ -1,16 +1,22 @@
 import java.util.Scanner;
-//s3563242 Richard Kuoch Contribution
-public class Main {
+
+public class ABS
+{
+	public static void main(String[] args)
+	{
+		menu();
+	}
 	
-	public static void main(String[] args){
-		// Scanner for user input
+	private static void menu()
+	{
 		Scanner sc = new Scanner(System.in);
 		
 		//declare variables
 		String userInput;
 		String selection = "0";
 		
-		do{
+		do
+		{
 			// main menu for booking system
 			System.out.println("Business Booking System");
 			System.out.println("-----------------------");
@@ -42,11 +48,11 @@ public class Main {
             	   // new customer details
             	   System.out.println("Enter your first name: ");
            		   String firstName = sc.nextLine();
-           	 	   System.out.println("Enter your last name: ");
-           		   String lastName = sc.nextLine();
+           		   System.out.println("Enter your last name: ");
+           	 	   String lastName = sc.nextLine();
            		   System.out.println("Enter an email address: ");
            		   String emailAddress = sc.nextLine();
-           		   System.out.println("Enter a contact number: ");
+           			System.out.println("Enter a contact number: ");
            		   int contactNumber = sc.nextInt();
            		   
            		   //consume trailing line
@@ -68,6 +74,5 @@ public class Main {
             System.out.println();
             
 	   }while(!selection.equals(0));
-
 	}
 }
