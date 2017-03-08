@@ -12,7 +12,7 @@ while (x == y)
 
 3) No deletions ... NONE EVER!!! If you want to deactivate a section of code comment it out.
 
-4) TN - Comments should be initialled and "converational".
+4) TN - Comments should be initialled.
 
 5) Use camelCase for variables. Capitalize FINALS or CONSTANTS. Start Class names with a capital.
 
