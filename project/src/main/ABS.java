@@ -5,7 +5,8 @@ public class ABS
 {
 	public static void main(String[] args)
 	{
-		menu();
+		Scanner sc = new Scanner(System.in);
+		mainMenu(sc);
 	}
 	
 	
@@ -82,6 +83,8 @@ public class ABS
 			}
 		}
 	}
+	
+	// I'm depreciating the old menu. -kg
 	
 	private static void menu()
 	{
