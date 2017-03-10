@@ -1,12 +1,18 @@
 package main;
-
-public class Business {
+//TN Made Business an extension of Bookings
+public class Business extends Bookings {
 	
+
+	//TN Can you initial your work please
+	//TN We should put all this code into Booking class
+	//and make Business extend Booking
 	//Variables
 	private String businessName;
 	private String businessAddr;
 	private String businessPhn;
 	
+	//TN added boolean for checking correct access set to default of false
+	private boolean isEmployee = false;
 	//Constructor
 	public Business() { }
 	
