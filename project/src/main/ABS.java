@@ -8,6 +8,34 @@ public class ABS
 		menu();
 	}
 	
+	
+	/*
+	 * Main menu loop. -kg
+	 */
+	
+	private static void mainMenu(Scanner sc) {
+		String[] options = {"Business Owner", "Customer", "Register", "Exit"};
+		Menu menu = new Menu(sc, options, "Appointment Booking System");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			case "Business Owner":
+				businessOwnerMenu(sc);
+				break;
+			case "Customer":
+				customerMenu(sc);
+				break;
+			case "Exit":
+				exit = true;
+				break;
+			}
+		}
+	}
+	
 	private static void menu()
 	{
 		Scanner sc = new Scanner(System.in);
