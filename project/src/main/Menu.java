@@ -42,14 +42,28 @@ public class Menu
 		
 		while (true)
 		{
-			System.out.print("Enter your selection: ");
-			userSelection = Integer.parseInt(sc.nextLine())-1;
-			// subtract 1 so that selection alligns with array index. -kg
-			if (userSelection >= 0 && userSelection < options.length)
+			try
 			{
-				System.out.println();
-				return options[userSelection];
+				System.out.print("Enter your selection: ");
+				userSelection = Integer.parseInt(sc.nextLine())-1;
+				// subtract 1 so that selection alligns with array index. -kg
+				if (userSelection >= 0 && userSelection < options.length)
+				{
+					System.out.println();
+					return options[userSelection];
+				}
+				else
+				{
+					// if selection isn't a valid option, throw an exception
+					throw new Exception();
+				}
 			}
+			catch (Exception e)
+			{
+				System.out.println("Error: Invalid Selection!");
+				System.out.println();
+			}
+			
 		}
 	}
 	
