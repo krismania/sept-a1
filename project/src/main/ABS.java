@@ -31,7 +31,12 @@ public class ABS
            
             userInput = sc.nextLine();
             selection = userInput;
-            
+            //TN - checks input length to ensure correct menue selection
+            if (userInput.length() != 1) 
+            {
+                System.out.println("Error - invalid selection!");
+            } 
+            else
             // process the user's selection
             switch (selection)
             {
