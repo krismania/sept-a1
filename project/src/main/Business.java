@@ -45,10 +45,9 @@ public class Business extends Bookings {
 	*/
 	public void displayBusinessBookings(String businessName) 
 	{
-		System.out.println("Welcome back " + businessName);
-		System.out.println("Please wait while we pull up your bookings...");
+		System.out.printf("%-18s%s\n", "Welcome back " + businessName);
+		System.out.printf("%-18s%s\n", "Please wait while we pull up your bookings...");
 		
 		//Fetch bookings from bookings database/file
 	}
-	
 }
