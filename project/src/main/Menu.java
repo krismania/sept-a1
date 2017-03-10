@@ -11,12 +11,12 @@ public class Menu
 {
 	private String header;
 	private String[] options;
+	private Scanner sc;
 	
-	private Scanner sc = new Scanner(System.in);
 	
-	
-	public Menu(String header, String[] options)
+	public Menu(Scanner scanner, String[] options, String header)
 	{
+		this.sc = scanner;
 		this.header = header;
 		this.options = options;
 	}
