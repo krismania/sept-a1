@@ -34,9 +34,9 @@ public class Menu
 		System.out.println(header);
 		System.out.println(line(header.length()));
 		System.out.println();
-		for (int i = 0; i <= options.length; i++)
+		for (int i = 0; i < options.length; i++)
 		{
-			System.out.printf("  {0}. {1}", i+1, options[i]);
+			System.out.printf("  %s. %s\n", i+1, options[i]);
 		}
 		System.out.println();
 		
