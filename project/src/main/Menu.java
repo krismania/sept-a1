@@ -43,8 +43,9 @@ public class Menu
 		while (true)
 		{
 			System.out.print("Enter your selection: ");
-			userSelection = Integer.parseInt(sc.nextLine());
-			if (userSelection > 0 && userSelection < options.length)
+			userSelection = Integer.parseInt(sc.nextLine())-1;
+			// subtract 1 so that selection alligns with array index
+			if (userSelection >= 0 && userSelection < options.length)
 			{
 				return options[userSelection];
 			}
