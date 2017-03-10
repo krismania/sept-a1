@@ -36,6 +36,53 @@ public class ABS
 		}
 	}
 	
+	
+	/*
+	 * Business owner submenu. -kg
+	 */
+	
+	private static void businessOwnerMenu(Scanner sc)
+	{
+		String[] options = {"Add a new employee", "Add working times/dates for next month",
+				"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+		Menu menu = new Menu (sc, options, "Business Owner Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			case "Log out":
+				exit = true;
+				break;
+			}
+		}
+	}
+	
+	
+	/*
+	 * Customer submenu. -kg
+	 */
+	
+	private static void customerMenu(Scanner sc)
+	{
+		String[] options = {"View available days/times", "Log out"};
+		Menu menu = new Menu (sc, options, "Business Owner Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			case "Log out":
+				exit = true;
+				break;
+			}
+		}
+	}
+	
 	private static void menu()
 	{
 		Scanner sc = new Scanner(System.in);
