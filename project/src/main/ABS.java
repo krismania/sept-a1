@@ -176,5 +176,6 @@ public class ABS
             System.out.println();
             
 	   }while(!selection.equals(0));
+	   sc.close();
 	}
 }
