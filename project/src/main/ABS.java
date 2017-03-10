@@ -176,6 +176,7 @@ public class ABS
             System.out.println();
             
 	   }while(!selection.equals(0));
-	   sc.close();
+	   //TN Close any instances of open scanner to avoid buffer overflow.
+           sc.close();
 	}
 }
