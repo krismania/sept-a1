@@ -37,12 +37,30 @@ public class ABS
             {
                case "1":
             	   // need to check business owner against db
-            	   System.out.println("Business owner successfully logged in");
+            	   System.out.println("Business owner successfully logged in\n");
+            	   // Business Owner Menu
+       			   System.out.println("Business Owner Menu");
+       			   System.out.println("-------------------");
+       			   System.out.println("1. Add a new employee");
+       			   System.out.println("2. Add working times/dates for the next month");
+       			   System.out.println("3. View summary of bookings");
+       			   System.out.println("4. View employee availability for next 7 days ");
+       			   System.out.println("5. Log out ");
+       			   System.out.println("-------------------");
+       			   System.out.print("Enter in an option >> ");
+       			   String businessChoice = sc.nextLine();
                   break;
                   
                case "2":
-            	// need to check customer against db
+            	   // need to check customer against db
             	   System.out.println("Customer successfully logged in");
+            	   System.out.println("Customer Menu");
+            	   System.out.println("-------------");
+            	   System.out.println("1. View available days/time");
+            	   System.out.println("2. Log out ");
+            	   System.out.println("-------------");
+            	   System.out.print("Enter in an option >> ");
+       			   String customerChoice = sc.nextLine();
                   break;
                   
                case "3":
@@ -53,7 +71,7 @@ public class ABS
            	 	   String lastName = sc.nextLine();
            		   System.out.println("Enter an email address: ");
            		   String emailAddress = sc.nextLine();
-           			System.out.println("Enter a contact number: ");
+           		   System.out.println("Enter a contact number: ");
            		   int contactNumber = sc.nextInt();
            		   
            		   //consume trailing line
