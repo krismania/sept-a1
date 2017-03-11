@@ -4,10 +4,11 @@ import java.sql.*;
 //JM User Database implementation. Currently just CREATES a DB File.
 
 public class UserDatabase {
-	public static void main(String args[]) 
+	public void CreateDatabase()
 	{
 		//JM Initialize a connection
 		Connection c = null;
+		System.out.println("Attempting to connect to the database");
 		try
 		{
 			Class.forName("org.sqlite.JDBC");

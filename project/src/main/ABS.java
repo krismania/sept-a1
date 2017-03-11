@@ -6,6 +6,8 @@ public class ABS
 	public static void main(String[] args)
 	{
 		Scanner sc = new Scanner(System.in);
+		UserDatabase db = new UserDatabase();
+		db.CreateDatabase();
 		mainMenu(sc);
 	}
 	
