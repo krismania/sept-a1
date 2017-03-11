@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 //TN - Class to build basic GUI elements for login - such as text fields
 // and field position. Includes login button
+// To call from another class use the following -
+// Application.launch(Login_Popup.class, args) 
 public class Login_Popup extends Application {
     @Override
     //TN Call this method to invoke a popup box to accept free
