@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 // and field position. Includes login button
 // To call from another class use the following -
 // Application.launch(Login_Popup.class, args) 
-public class Login_Popup extends Application {
+public class LoginPopup extends Application {
     @Override
     //TN Call this method to invoke a popup box to accept free
     //text for username and password
@@ -36,13 +36,13 @@ public class Login_Popup extends Application {
         pane.add(new TextField(), 1, 1);
         
         //TN Creates a button to enter login information
-        Button bt_login_button = new Button("Login");
-        pane.add(bt_login_button, 1, 2);
-        GridPane.setHalignment(bt_login_button, HPos.RIGHT);
+        Button btLoginButton = new Button("Login");
+        pane.add(btLoginButton, 1, 2);
+        GridPane.setHalignment(btLoginButton, HPos.RIGHT);
         
         //TN - Call method to process login information - this method is
         //not currently functional
-        //bt_login_button.setOnAction(e -> process_login());
+        //btLoginButton.setOnAction(e -> processLogin());
 
         //TN sets scene for popup box and names tile "login" Instantiates
         //the popup box.
