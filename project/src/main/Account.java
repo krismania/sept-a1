@@ -42,4 +42,14 @@ public abstract class Account
 		//TODO: Implement account creation -kg
 		return false;
 	}
+	
+	
+	/*
+	 * Password rule validation. -kg
+	 */
+	
+	public static boolean passwordAccepted(String password)
+	{
+		return false;
+	}
 }
