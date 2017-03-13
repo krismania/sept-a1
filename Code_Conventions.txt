@@ -1,0 +1,20 @@
+TN -
+It was decided by the team that we would follow the following coding conventions:
+
+1) Spacing will follow the Allman style to assist readability of methods - example:
+while (x == y)
+{
+    something();
+    somethingelse();
+}
+
+2) We will endeavour to keep line length to 80 characters but this will not be strictly enforced.
+
+3) No deletions ... NONE EVER!!! If you want to deactivate a section of code comment it out.
+
+4) TN - Comments should be initialled.
+
+5) Use camelCase for variables. Capitalize FINALS or CONSTANTS. Start Class names with a capital.
+
+6) Provide a short comment on class purpose for a new class, and provide comments on the purpose of each method.
+If anything appears unclear from the code and important err on the side of caution and comment its purpose.

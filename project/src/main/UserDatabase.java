@@ -1,0 +1,152 @@
+package main;
+import java.sql.*;
+
+/* JM User Database implementation. 
+ * Loads database connection to that specified in line 19. Will then invoke 
+ * scripts to create users automatically
+*/
+public class UserDatabase {
+	Connection c = null;
+	Statement stmt = null;
+	
+	public void CreateDatabase()
+	{
+		//JM Initialize a connection
+		System.out.println("Attempting to connect to the database...");
+		try
+		{
+			Class.forName("org.sqlite.JDBC");
+			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
+			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
+		}
+		catch (Exception e)
+		{
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		//JM Success message means DB is found, or created.
+		System.out.println("Opened database successfully");
+		CreateDatabaseTable();
+		CreateDataEntries();
+		getDataEntries();
+		
+		System.out.println();
+	}
+	
+	//JM CreateDatabaseTable() will create a table within the database.
+	public void CreateDatabaseTable()
+	{
+		System.out.println("Creating table in Database...");
+		try {
+			/*JM Create a table for Customers with
+			 * Firstname, Lastname, Email, Phone, Username
+			 * and Password. Primary Key being Username.
+			 * Primary Key = Unique ID 
+			 */
+			stmt = c.createStatement();
+			String sql = "CREATE TABLE Customers " +
+						 "(Firstname varchar(255),"
+						 + "Lastname varchar(255),"
+						 + "Email varchar(255),"
+						 + "Phone varchar(10),"
+						 + "Username varchar(15),"
+						 + "Password varchar(15),"
+						 + "PRIMARY KEY (Username))";
+			
+			stmt.executeUpdate(sql);
+			System.out.println("Created Customers table in Database!");
+			
+			/*JM Create a table for Business Owners with
+			 * Firstname, Lastname, Email, Phone, Username
+			 * and Password. Primary Key being Username.
+			 * Primary Key = Unique ID 
+			 */
+			sql = "CREATE TABLE BUSINESSOWNER " +
+					 "(Firstname varchar(255),"
+					 + "Lastname varchar(255),"
+					 + "Email varchar(255),"
+					 + "Phone varchar(10),"
+					 + "Username varchar(15),"
+					 + "Password varchar(15),"
+					 + "PRIMARY KEY (Username))";
+		
+			stmt.executeUpdate(sql);
+			System.out.println("Created Business Owners table in Database!");
+		
+		} catch (SQLException e) {
+			//JM Handles errors for JDBC
+			e.printStackTrace();
+		} catch (Exception e) {
+			//JM Handles errors for Class.forName
+			e.printStackTrace();
+		}
+		
+	}
+	
+	//JM Automatically generate customers into database.
+	public void CreateDataEntries() 
+	{
+		System.out.println("Inserting Data...");
+		
+		try
+		{
+			stmt = c.createStatement();
+			//JM Insert a customer with generic values and details.
+			String sql = "INSERT INTO Customers " +
+						 "VALUES ('James', 'McLennan', 'testing'"
+						 + ", '0400000000', 'JamesRulez', 'james')";
+			stmt.executeUpdate(sql);
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		System.out.println("Data Inserted!");
+		   
+	}
+	
+	//JM Obtain Data values from tables
+	public void getDataEntries() 
+	{
+		System.out.println("Fetching Data Entires...");
+		
+		try{
+			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT Firstname, Lastname, Email, Phone,"
+					+ "Username, Password FROM Customers";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+		         String Username = rs.getString("Username");
+		         String Password = rs.getString("Password");
+
+		         //Display values
+		         System.out.println("First: " + first);
+		         System.out.println("Last: " + last);
+		         System.out.println("Email: " + email);
+		         System.out.println("Phone: " + phone);
+		         System.out.println("Username: " + Username);
+		         System.out.println("Password: " + Password);
+		      }
+		      rs.close();
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		System.out.println("All data presented.");
+	}
+	
+}
