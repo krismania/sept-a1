@@ -22,6 +22,13 @@ public abstract class Account
 	}
 	
 	
+	@Override
+	public String toString()
+	{
+		return username;
+	}
+	
+	
 	/*
 	 * Test the given username/password combination against stored accounts. -kg
 	 */
