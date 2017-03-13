@@ -7,7 +7,7 @@ public class Customer extends Account
 	private String email;
 	private String phoneNumber;
 	
-	public Customer(String firstName, String lastName, String email, String phoneNumber, String username)
+	public Customer(String username, String firstName, String lastName, String email, String phoneNumber)
 	{
 		super(username);
 
