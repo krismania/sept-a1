@@ -30,6 +30,8 @@ public class ABS
 			case "Customer":
 				customerMenu(sc);
 				break;
+			case "Register":
+				customerRegister(sc);
 			case "Exit":
 				exit = true;
 				break;
@@ -83,6 +85,12 @@ public class ABS
 			}
 		}
 	}
+	
+	
+	private static void customerRegister(Scanner sc)
+	{
+	}
+	
 	
 	// I'm depreciating the old menu. -kg
 	
