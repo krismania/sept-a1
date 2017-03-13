@@ -1,23 +1,5 @@
 # Software Engineering: Process &amp; Techniques Assignment
 
-## Folder Structure
-```
-│
-└─┬ project
-  │ Eclipse project folder
-  │
-  └─┬ src
-    │
-    ├── data
-    │   Json data files
-    │
-    ├── main
-    │   Java source code
-    │
-    └── tests
-        jUnit tests
-```
-
 ## Project Description
 You are required to design, develop and test an application named "Appointment Booking
 System". This is basically a booking system that can be used by any business, allowing a
