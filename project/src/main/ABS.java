@@ -88,8 +88,51 @@ public class ABS
 	}
 	
 	
+	/*
+	 * Register a new customer, adapts code from Richard's menu. -kg
+	 */
+	
 	private static void customerRegister(Scanner sc)
 	{
+		String username;
+		String password;
+		String firstName;
+		String lastName;
+		String email;
+		String phoneNumber;
+		
+		// get username/password -kg
+		System.out.print("username: "); username = sc.nextLine();
+		System.out.print("password: "); password = sc.nextLine();
+		
+		// test password -kg
+		if (Account.passwordAccepted(password))
+		{
+			System.out.println("Password OK!");
+			System.out.println();
+		}
+		else
+		{
+			// if password is unacceptable, end account creation here. -kg
+			System.out.println("Invalid password.");
+			System.out.println();
+			return;
+		}
+		
+		// collect customer info -kg
+		System.out.print("Enter your first name: "); firstName = sc.nextLine();
+		System.out.print("Enter your last name: "); lastName = sc.nextLine();
+		System.out.print("Enter an email address: "); email = sc.nextLine();
+		System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+		
+		// create the Customer instance -kg
+		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
+		
+		// store customer in db -kg
+		// db.create(customer); // TODO: awaiting db implementation
+		// db.setPassword(username, password);
+		
+		System.out.println("\nNot implemented\n");
 	}
 	
 	
