@@ -32,6 +32,7 @@ public class ABS
 				break;
 			case "Register":
 				customerRegister(sc);
+				break;
 			case "Exit":
 				exit = true;
 				break;
