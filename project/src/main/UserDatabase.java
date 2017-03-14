@@ -11,6 +11,7 @@ public class UserDatabase {
 	
 	public void CreateDatabase()
 	{
+		
 		//JM Initialize a connection
 		System.out.println("Attempting to connect to the database...");
 		try
@@ -28,7 +29,8 @@ public class UserDatabase {
 		System.out.println("Opened database successfully");
 		CreateDatabaseTable();
 		CreateDataEntries();
-		getDataEntries();
+		getCustomerDataEntries();
+		getBusinessOwnerDataEntries();
 		
 		System.out.println();
 	}
@@ -61,7 +63,7 @@ public class UserDatabase {
 			 * and Password. Primary Key being Username.
 			 * Primary Key = Unique ID 
 			 */
-			sql = "CREATE TABLE BUSINESSOWNER " +
+			/*sql = "CREATE TABLE BusinessOwner " +
 					 "(Firstname varchar(255),"
 					 + "Lastname varchar(255),"
 					 + "Email varchar(255),"
@@ -73,9 +75,19 @@ public class UserDatabase {
 			stmt.executeUpdate(sql);
 			System.out.println("Created Business Owners table in Database!");
 		
+		*/
 		} catch (SQLException e) {
 			//JM Handles errors for JDBC
-			e.printStackTrace();
+			System.out.println("Table already exists!");
+			String sql = "DROP TABLE Customers";
+			try {
+				stmt = c.createStatement();
+				stmt.executeUpdate(sql);
+				CreateDatabaseTable();
+			} catch (SQLException e1) {
+				System.out.println("Table already exists! Still!");
+			}
+			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
@@ -92,13 +104,20 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			//JM Insert a customer with generic values and details.
-			String sql = "INSERT INTO Customers " +
-						 "VALUES ('James', 'McLennan', 'testing'"
-						 + ", '0400000000', 'JamesRulez', 'james')";
+			//String sql = "INSERT INTO Customers " +
+			//			 "VALUES ('James', 'McLennan', 'testing'"
+			//			 + ", '0400000000', 'JamesRulez', 'james')";
+			//stmt.executeUpdate(sql);
+			
+			String sql = "INSERT INTO BusinessOwner " +
+			      "VALUES ('John', 'Doe', 'thegreat@jdo.com'"
+			      + ", '0400000000', 'JohnRox', 'Password')";
+			
 			stmt.executeUpdate(sql);
+					
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-		    e.printStackTrace();
+			System.out.println("Customer already exists!");
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
@@ -108,9 +127,9 @@ public class UserDatabase {
 	}
 	
 	//JM Obtain Data values from tables
-	public void getDataEntries() 
+	public void getCustomerDataEntries() 
 	{
-		System.out.println("Fetching Data Entires...");
+		System.out.println("Fetching Customer Data Entires...");
 		
 		try{
 			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
@@ -146,7 +165,66 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("All data presented.");
+		System.out.println("All data presented.");		
 	}
 	
+	public void getBusinessOwnerDataEntries() 
+	{
+		System.out.println("Fetching Business Owner Data Entires...");
+		
+		try{
+			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT Firstname, Lastname, Email, Phone,"
+					+ "Username, Password FROM BusinessOwner";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+		         String Username = rs.getString("Username");
+		         String Password = rs.getString("Password");
+
+		         //Display values
+		         System.out.println("First: " + first);
+		         System.out.println("Last: " + last);
+		         System.out.println("Email: " + email);
+		         System.out.println("Phone: " + phone);
+		         System.out.println("Username: " + Username);
+		         System.out.println("Password: " + Password);
+		      }
+		      rs.close();
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		System.out.println("All data presented.");		
+	}
+
+	public void refreshDatabase() 
+	{
+		try 
+		{
+			try 
+			{
+				stmt = c.createStatement();
+				String query = "DROP TABLE Customer";
+				stmt.executeUpdate(query);
+			} 
+			catch (SQLException s){
+				System.out.println("Error Dropping Table.");
+				s.printStackTrace();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+	}
 }
