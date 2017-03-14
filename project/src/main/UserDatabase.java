@@ -11,7 +11,6 @@ public class UserDatabase {
 	
 	public void CreateDatabase()
 	{
-		
 		//JM Initialize a connection
 		System.out.println("Attempting to connect to the database...");
 		try
@@ -207,24 +206,5 @@ public class UserDatabase {
 		    e.printStackTrace();
 		}
 		System.out.println("All data presented.");		
-	}
-
-	public void refreshDatabase() 
-	{
-		try 
-		{
-			try 
-			{
-				stmt = c.createStatement();
-				String query = "DROP TABLE Customer";
-				stmt.executeUpdate(query);
-			} 
-			catch (SQLException s){
-				System.out.println("Error Dropping Table.");
-				s.printStackTrace();
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}	
 	}
 }
