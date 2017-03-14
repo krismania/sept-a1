@@ -125,6 +125,23 @@ public class UserDatabase {
 		   
 	}
 	
+	// Insert customer into db. -kg
+	public void insert(Customer customer)
+	{
+		String sql = String.format("INSERT INTO Customers VALUES('%s', '%s', '%s', '%s', '%s', '')",
+						customer.getFirstName(), customer.getLastName(), customer.getEmail(),
+						customer.getPhoneNumber(), customer.getUsername());
+		try
+		{
+			stmt = c.createStatement();
+			System.out.println(stmt.executeUpdate(sql));
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
 	{
