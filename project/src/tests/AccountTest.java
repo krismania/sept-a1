@@ -21,6 +21,17 @@ public class AccountTest
 	}
 	
 	@Test
+	public void testInvalidLengthPassword()
+	{
+		String[] InvalidPasswords = {"2Shrt", "aA1", "1XYab", "!@6Xg", "b7*U"};
+		
+		for (String password : InvalidPasswords)
+		{
+			assertFalse(Account.passwordAccepted(password));
+		}
+	}
+	
+	@Test
 	public void testInvalidPassword()
 	{
 		String[] InvalidPasswords = {"2Shrt", "NoNumbersHere", "alllowercasepassword", "CAPSLOCKISSTUCK", "123456"};
