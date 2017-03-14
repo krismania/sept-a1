@@ -30,28 +30,6 @@ public abstract class Account
 	
 	
 	/*
-	 * Test the given username/password combination against stored accounts. -kg
-	 */
-	
-	public static boolean attemptLogin(String username, String password)
-	{
-		//TODO: Implement login -kg
-		return false;
-	}
-	
-	
-	/*
-	 * Add an account with the provided username/password to storage. -kg
-	 */
-	
-	public static boolean createAccount(String username, String password)
-	{
-		//TODO: Implement account creation -kg
-		return false;
-	}
-	
-	
-	/*
 	 * Password rule validation. -kg
 	 */
 	
