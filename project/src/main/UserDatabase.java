@@ -25,7 +25,7 @@ public class UserDatabase {
 			System.exit(0);
 		}
 		//JM Success message means DB is found, or created.
-		System.out.println("Opened database successfully");
+		System.out.println("Opened database successfully\n");
 		
 		//Customer Table
 		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
@@ -35,7 +35,13 @@ public class UserDatabase {
 		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
 				"Password varchar(15)", "Username");
-		CreateDataEntries();
+		
+		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
+				"0400000000", "JamesRulez", "james");
+		
+		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
+				"0400000000", "JohnRulez", "john");
+		
 		getCustomerDataEntries();
 		getBusinessOwnerDataEntries();
 		
@@ -78,11 +84,11 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			System.out.println("Created " + strings[0] +" table in Database!");
+			System.out.println("Created " + strings[0] +" table in Database!\n");
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			System.out.println("Table " + strings[0] +" already exists!");
+			System.out.println("Table " + strings[0] +" already exists!\n");
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -92,33 +98,48 @@ public class UserDatabase {
 	}
 	
 	//JM Automatically generate customers into database.
-	public void CreateDataEntries() 
+	public void CreateDataEntry(String...strings) 
 	{
 		System.out.println("Inserting Data...");
+		StringBuilder strBuilder = new StringBuilder();
 		
+		for(int i = 0; i < strings.length; i++)
+		{
+			//JM If first element of array
+			if(i==0) 
+			{
+				//JM Insert into statement, with values and open bracket.
+				strBuilder.append("INSERT INTO " + strings[i] + " VALUES (");			
+			}
+			//JM If last element of array
+			else if(i+1 == strings.length)
+			{
+				//JM Add close bracket.
+				strBuilder.append("'" + strings[i] + "')");			
+			}
+			//JM If any element in between first and last
+			else
+			{
+				//JM Split with a comma
+				strBuilder.append("'"+ strings[i] + "', ");
+			}
+		}
+		
+		//JM Convert string array, into a string.
+		String sql = strBuilder.toString();
 		try
 		{
 			stmt = c.createStatement();
 			//JM Insert a customer with generic values and details.
-			String sql = "INSERT INTO Customers " +
-						 "VALUES ('James', 'McLennan', 'testing'"
-						 + ", '0400000000', 'JamesRulez', 'james')";
 			stmt.executeUpdate(sql);
-			
-			sql = "INSERT INTO BusinessOwner " +
-			      "VALUES ('John', 'Doe', 'thegreat@jdo.com'"
-			      + ", '0400000000', 'JohnRox', 'Password')";
-			
-			stmt.executeUpdate(sql);
-					
+			System.out.println("Data Inserted: New " + strings[0] + "! Welcome, " + strings[5]+"\n");
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			System.out.println("Customer already exists!");
+			System.out.println("Data failed to insert: " +strings[0] + " " + strings[5] + " already exists!\n");
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("Data Inserted!");
 		   
 	}
 	
