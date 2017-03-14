@@ -134,10 +134,10 @@ public class ABS
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		db.insert(customer); // TODO: awaiting db implementation
-		// db.setPassword(username, password);
+		db.insert(customer);
+		db.setPassword(username, password);
 		
-		System.out.println("\nNot implemented\n");
+		System.out.println("\nAccount Created!\n");
 	}
 	
 	
