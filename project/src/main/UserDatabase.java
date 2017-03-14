@@ -134,7 +134,22 @@ public class UserDatabase {
 		try
 		{
 			stmt = c.createStatement();
-			System.out.println(stmt.executeUpdate(sql));
+			stmt.executeUpdate(sql);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	// Set customer password in db. -kg
+	public void setPassword(String username, String password)
+	{
+		String sql = String.format("UPDATE Customers SET password='%s' WHERE username='%s'", password, username);
+		try
+		{
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
 		}
 		catch (SQLException e)
 		{
