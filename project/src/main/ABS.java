@@ -17,7 +17,7 @@ public class ABS
 	 */
 	
 	private static void mainMenu(Scanner sc, UserDatabase db) {
-		String[] options = {"Business Owner", "Customer", "Register", "Exit"};
+		String[] options = {"Business Owner", "Customer", "Register", "[debug] print customer db", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
 		// main loop
@@ -33,7 +33,10 @@ public class ABS
 				customerMenu(sc);
 				break;
 			case "Register":
-				customerRegister(sc);
+				customerRegister(sc, db);
+				break;
+			case "[debug] print customer db":
+				db.getCustomerDataEntries();
 				break;
 			case "Exit":
 				exit = true;
