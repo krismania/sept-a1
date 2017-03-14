@@ -26,7 +26,15 @@ public class UserDatabase {
 		}
 		//JM Success message means DB is found, or created.
 		System.out.println("Opened database successfully");
-		CreateDatabaseTable();
+		
+		//Customer Table
+		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)", "Username");
+		//BusinessOwner Table
+		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)", "Username");
 		CreateDataEntries();
 		getCustomerDataEntries();
 		getBusinessOwnerDataEntries();
@@ -35,57 +43,46 @@ public class UserDatabase {
 	}
 	
 	//JM CreateDatabaseTable() will create a table within the database.
-	public void CreateDatabaseTable()
+	//JM Param = Variable number of Strings (Array)
+	public void CreateDatabaseTable(String... strings)
 	{
 		System.out.println("Creating table in Database...");
-		try {
-			/*JM Create a table for Customers with
-			 * Firstname, Lastname, Email, Phone, Username
-			 * and Password. Primary Key being Username.
-			 * Primary Key = Unique ID 
-			 */
-			stmt = c.createStatement();
-			String sql = "CREATE TABLE Customers " +
-						 "(Firstname varchar(255),"
-						 + "Lastname varchar(255),"
-						 + "Email varchar(255),"
-						 + "Phone varchar(10),"
-						 + "Username varchar(15),"
-						 + "Password varchar(15),"
-						 + "PRIMARY KEY (Username))";
-			
-			stmt.executeUpdate(sql);
-			System.out.println("Created Customers table in Database!");
-			
-			/*JM Create a table for Business Owners with
-			 * Firstname, Lastname, Email, Phone, Username
-			 * and Password. Primary Key being Username.
-			 * Primary Key = Unique ID 
-			 */
-			/*sql = "CREATE TABLE BusinessOwner " +
-					 "(Firstname varchar(255),"
-					 + "Lastname varchar(255),"
-					 + "Email varchar(255),"
-					 + "Phone varchar(10),"
-					 + "Username varchar(15),"
-					 + "Password varchar(15),"
-					 + "PRIMARY KEY (Username))";
+		StringBuilder strBuilder = new StringBuilder();
 		
-			stmt.executeUpdate(sql);
-			System.out.println("Created Business Owners table in Database!");
-		
-		*/
-		} catch (SQLException e) {
-			//JM Handles errors for JDBC
-			System.out.println("Table already exists!");
-			String sql = "DROP TABLE Customers";
-			try {
-				stmt = c.createStatement();
-				stmt.executeUpdate(sql);
-				CreateDatabaseTable();
-			} catch (SQLException e1) {
-				System.out.println("SQL Errors! Please contact admin.");
+		for(int i = 0; i < strings.length; i++)
+		{
+			//JM If first element of array
+			if(i==0) 
+			{
+				//JM Insert create table statement, and open bracket.
+				strBuilder.append("CREATE TABLE " + strings[i] + "(");			
 			}
+			//JM If last element of array
+			else if(i+1 == strings.length)
+			{
+				//JM Insert Primary Key element and close bracket [!].
+				strBuilder.append("PRIMARY KEY (" + strings[i] + "))");			
+			}
+			//JM If any element in between first and last
+			else
+			{
+				//JM Split with a comma
+				strBuilder.append(strings[i] + ", ");
+			}
+		}
+		
+		//JM Convert string array, into a string.
+		String sql = strBuilder.toString();
+		
+		try 
+		{
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+			System.out.println("Created " + strings[0] +" table in Database!");
+		
+		} catch (SQLException e) {
+			//JM Catch if table already exists
+			System.out.println("Table " + strings[0] +" already exists!");
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
