@@ -84,7 +84,7 @@ public class UserDatabase {
 				stmt.executeUpdate(sql);
 				CreateDatabaseTable();
 			} catch (SQLException e1) {
-				System.out.println("Table already exists! Still!");
+				System.out.println("SQL Errors! Please contact admin.");
 			}
 			
 		} catch (Exception e) {
@@ -103,12 +103,12 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			//JM Insert a customer with generic values and details.
-			//String sql = "INSERT INTO Customers " +
-			//			 "VALUES ('James', 'McLennan', 'testing'"
-			//			 + ", '0400000000', 'JamesRulez', 'james')";
-			//stmt.executeUpdate(sql);
+			String sql = "INSERT INTO Customers " +
+						 "VALUES ('James', 'McLennan', 'testing'"
+						 + ", '0400000000', 'JamesRulez', 'james')";
+			stmt.executeUpdate(sql);
 			
-			String sql = "INSERT INTO BusinessOwner " +
+			sql = "INSERT INTO BusinessOwner " +
 			      "VALUES ('John', 'Doe', 'thegreat@jdo.com'"
 			      + ", '0400000000', 'JohnRox', 'Password')";
 			
