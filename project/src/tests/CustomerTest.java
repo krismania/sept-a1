@@ -15,8 +15,8 @@ public class CustomerTest
 	@Before
 	public void setUp() throws Exception
 	{
-		customer = new Customer("John", "Doe", "johndoe@gmail.com",
-				"0418 123 456", "johndoe");
+		customer = new Customer("johndoe", "John", "Doe", "johndoe@gmail.com",
+				"0418 123 456");
 	}
 	
 	/*
