@@ -8,7 +8,7 @@ public class ABS
 		Scanner sc = new Scanner(System.in);
 		UserDatabase db = new UserDatabase();
 		db.CreateDatabase();
-		mainMenu(sc);
+		mainMenu(sc, db);
 	}
 	
 	
@@ -16,7 +16,7 @@ public class ABS
 	 * Main menu loop. -kg
 	 */
 	
-	private static void mainMenu(Scanner sc) {
+	private static void mainMenu(Scanner sc, UserDatabase db) {
 		String[] options = {"Business Owner", "Customer", "Register", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
@@ -94,7 +94,7 @@ public class ABS
 	 * Register a new customer, adapts code from Richard's menu. -kg
 	 */
 	
-	private static void customerRegister(Scanner sc)
+	private static void customerRegister(Scanner sc, UserDatabase db)
 	{
 		String username;
 		String password;
