@@ -211,6 +211,7 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
+			stmt.close();
 		}
 		catch (SQLException e)
 		{
