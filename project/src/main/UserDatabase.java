@@ -97,7 +97,7 @@ public class UserDatabase {
 		
 	}
 	
-	//JM Automatically generate customers into database.
+	//JM Insert data into database.
 	public void CreateDataEntry(String...strings) 
 	{
 		System.out.println("Inserting Data...");
@@ -185,28 +185,18 @@ public class UserDatabase {
 		
 		return false;
 	}
+
 	
-	// Insert customer into db. -kg
-	public void insert(Customer customer)
+	/*JM Enabled generic update to specific data, depending on Username.
+	* Params = table, the table you wish to update data in
+	* userName = Username of specific user
+	* dataToInput = the actual string you wish to insert as the update
+	* valueToUpdate = the value you wish to update. ie. Name, Password, Username etc.
+	*/
+	public void updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
 	{
-		String sql = String.format("INSERT INTO Customers VALUES('%s', '%s', '%s', '%s', '%s', '')",
-						customer.getFirstName(), customer.getLastName(), customer.getEmail(),
-						customer.getPhoneNumber(), customer.getUsername());
-		try
-		{
-			stmt = c.createStatement();
-			stmt.executeUpdate(sql);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	// Set customer password in db. -kg
-	public void setPassword(String username, String password)
-	{
-		String sql = String.format("UPDATE Customers SET password='%s' WHERE username='%s'", password, username);
+		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
+				+ "='%s' WHERE username='%s'", dataToInput, userName);
 		try
 		{
 			stmt = c.createStatement();
