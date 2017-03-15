@@ -76,18 +76,22 @@ public class ABS
 	
 	private void customerMenu()
 	{
-		String[] options = {"View available days/times", "Log out"};
-		Menu menu = new Menu (sc, options, "Business Owner Menu");
-		
-		// main loop
-		boolean exit = false;
-		while (!exit)
+		// Log in
+		if (customerLogin())
 		{
-			switch (menu.prompt())
+			String[] options = {"View available days/times", "Log out"};
+			Menu menu = new Menu (sc, options, "Customer Menu");
+			
+			// main loop
+			boolean exit = false;
+			while (!exit)
 			{
-			case "Log out":
-				exit = true;
-				break;
+				switch (menu.prompt())
+				{
+				case "Log out":
+					exit = true;
+					break;
+				}
 			}
 		}
 	}
@@ -138,6 +142,31 @@ public class ABS
 		db.setPassword(username, password);
 		
 		System.out.println("\nAccount Created!\n");
+	}
+	
+	private boolean customerLogin()
+	{
+		String username;
+		String password;
+		
+		System.out.print("Username: "); username = sc.nextLine();
+		System.out.print("Password: "); password = sc.nextLine();
+		
+		// check if username exists
+		if (db.checkUsername(username))
+		{
+			if (db.checkPassword(username, password))
+			{
+				return true;
+			}
+			else {
+				System.out.println("Invalid password.\n");
+			}
+		}
+		else {
+			System.out.println("Invalid username.\n");
+		}
+		return false;
 	}
 	
 	
