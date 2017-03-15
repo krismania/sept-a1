@@ -143,6 +143,49 @@ public class UserDatabase {
 		   
 	}
 	
+	// These two methods are for login -kg
+	public boolean checkUsername(String username)
+	{
+		String sql = String.format("SELECT COUNT(username) FROM Customers WHERE username='%s'", username);
+		
+		try
+		{
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			if (rs.getInt(1) == 1) {
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public boolean checkPassword(String username, String password)
+	{
+		String sql = String.format("SELECT password FROM Customers WHERE username='%s'", username);
+		
+		try
+		{
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			if (rs.getString(1).equals(password)) {
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	// Insert customer into db. -kg
 	public void insert(Customer customer)
 	{
