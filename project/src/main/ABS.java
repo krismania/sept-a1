@@ -3,12 +3,12 @@ import java.util.Scanner;
 
 public class ABS
 {
-	public static void main(String[] args)
+	Scanner sc = new Scanner(System.in);
+	UserDatabase db = new UserDatabase();
+	
+	public ABS()
 	{
-		Scanner sc = new Scanner(System.in);
-		UserDatabase db = new UserDatabase();
 		db.CreateDatabase();
-		mainMenu(sc, db);
 	}
 	
 	
@@ -16,7 +16,7 @@ public class ABS
 	 * Main menu loop. -kg
 	 */
 	
-	private static void mainMenu(Scanner sc, UserDatabase db) {
+	public void mainMenu() {
 		String[] options = {"Business Owner", "Customer", "Register", "[debug] print customer db", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
@@ -27,13 +27,13 @@ public class ABS
 			switch (menu.prompt())
 			{
 			case "Business Owner":
-				businessOwnerMenu(sc);
+				businessOwnerMenu();
 				break;
 			case "Customer":
-				customerMenu(sc);
+				customerMenu();
 				break;
 			case "Register":
-				customerRegister(sc, db);
+				customerRegister();
 				break;
 			case "[debug] print customer db":
 				db.getCustomerDataEntries();
@@ -50,7 +50,7 @@ public class ABS
 	 * Business owner submenu. -kg
 	 */
 	
-	private static void businessOwnerMenu(Scanner sc)
+	private void businessOwnerMenu()
 	{
 		String[] options = {"Add a new employee", "Add working times/dates for next month",
 				"View summary of bookings", "View employee availability for next 7 days", "Log out"};
@@ -74,7 +74,7 @@ public class ABS
 	 * Customer submenu. -kg
 	 */
 	
-	private static void customerMenu(Scanner sc)
+	private void customerMenu()
 	{
 		String[] options = {"View available days/times", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
@@ -97,7 +97,7 @@ public class ABS
 	 * Register a new customer, adapts code from Richard's menu. -kg
 	 */
 	
-	private static void customerRegister(Scanner sc, UserDatabase db)
+	private void customerRegister()
 	{
 		String username;
 		String password;
