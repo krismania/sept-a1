@@ -8,6 +8,12 @@ import java.sql.*;
 public class UserDatabase {
 	Connection c = null;
 	Statement stmt = null;
+	String dbName;
+	
+	//JM Constructor
+	public UserDatabase(String nameOfDatabase) {
+		dbName = nameOfDatabase;
+	}
 	
 	public void CreateDatabase()
 	{
@@ -17,7 +23,7 @@ public class UserDatabase {
 		{
 			Class.forName("org.sqlite.JDBC");
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
-			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
+			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		}
 		catch (Exception e)
 		{
@@ -98,7 +104,7 @@ public class UserDatabase {
 	}
 	
 	//JM Insert data into database.
-	public void CreateDataEntry(String...strings) 
+	public boolean CreateDataEntry(String...strings) 
 	{
 		System.out.println("[!] Inserting Data...");
 		StringBuilder strBuilder = new StringBuilder();
@@ -133,17 +139,20 @@ public class UserDatabase {
 			//JM Insert a customer with generic values and details.
 			stmt.executeUpdate(sql);
 			System.out.println("[!] Data Inserted: New " + strings[0] + "! Welcome, " + strings[5]+"\n");
+			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 			System.out.println("[!] Data failed to insert: " +strings[0] + " " + strings[5] + " already exists!\n");
+			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
+		return false;
 		   
 	}
 	
-	// These two methods are for login -kg
+	// These two methods are for login -kg //JM for customers
 	public boolean checkUsername(String username)
 	{
 		String sql = String.format("SELECT COUNT(username) FROM Customers WHERE username='%s'", username);
@@ -193,7 +202,7 @@ public class UserDatabase {
 	* dataToInput = the actual string you wish to insert as the update
 	* valueToUpdate = the value you wish to update. ie. Name, Password, Username etc.
 	*/
-	public void updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
+	public boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
 				+ "='%s' WHERE username='%s'", dataToInput, userName);
@@ -202,10 +211,12 @@ public class UserDatabase {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -233,12 +244,12 @@ public class UserDatabase {
 		         String Password = rs.getString("Password");
 
 		         //Display values
-		         System.out.println("First: " + first);
+		         System.out.println("\nFirst: " + first);
 		         System.out.println("Last: " + last);
 		         System.out.println("Email: " + email);
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password);
+		         System.out.println("Password: " + Password + "\n");
 		      }
 		      rs.close();
 		} catch(SQLException e) {
