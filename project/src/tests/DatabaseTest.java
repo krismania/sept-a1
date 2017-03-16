@@ -13,7 +13,7 @@ public class DatabaseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		//db = new UserDatabase();
+		//db = new UserDatabase("JUnitDataBase");
 		//db.CreateDatabase();
 	}
 

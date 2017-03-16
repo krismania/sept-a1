@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class ABS
 {
 	Scanner sc = new Scanner(System.in);
-	UserDatabase db = new UserDatabase();
+	UserDatabase db = new UserDatabase("awesomeSauce");
 	
 	public ABS()
 	{

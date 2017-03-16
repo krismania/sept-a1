@@ -8,6 +8,12 @@ import java.sql.*;
 public class UserDatabase {
 	Connection c = null;
 	Statement stmt = null;
+	String dbName;
+	
+	//JM Constructor
+	public UserDatabase(String nameOfDatabase) {
+		dbName = nameOfDatabase;
+	}
 	
 	public void CreateDatabase()
 	{
@@ -17,7 +23,7 @@ public class UserDatabase {
 		{
 			Class.forName("org.sqlite.JDBC");
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
-			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
+			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		}
 		catch (Exception e)
 		{
@@ -196,7 +202,7 @@ public class UserDatabase {
 	* dataToInput = the actual string you wish to insert as the update
 	* valueToUpdate = the value you wish to update. ie. Name, Password, Username etc.
 	*/
-	public void updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
+	public boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
 				+ "='%s' WHERE username='%s'", dataToInput, userName);
@@ -205,10 +211,12 @@ public class UserDatabase {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
