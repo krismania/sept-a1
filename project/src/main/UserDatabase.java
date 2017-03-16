@@ -195,7 +195,6 @@ public class UserDatabase {
 		return false;
 	}
 
-	
 	/*JM Enabled generic update to specific data, depending on Username.
 	* Params = table, the table you wish to update data in
 	* userName = Username of specific user
