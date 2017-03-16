@@ -166,9 +166,9 @@ public class ABS
 		System.out.print("Password: "); password = sc.nextLine();
 		
 		// check if username exists
-		if (db.checkUsername(username, "Customer"))
+		if (db.checkUsername(username, "Customers"))
 		{
-			if (db.checkPassword(username, password, "Customer"))
+			if (db.checkPassword(username, password, "Customers"))
 			{
 				return true;
 			}
