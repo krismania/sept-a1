@@ -137,7 +137,7 @@ public class ABS
 		System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
 		
 		// create the Customer instance -kg
-		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
+		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
 		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
