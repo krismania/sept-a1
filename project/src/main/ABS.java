@@ -159,14 +159,15 @@ public class ABS
 	{
 		String username;
 		String password;
+		String tableName = "Customers";
 		
 		System.out.print("Username: "); username = sc.nextLine();
 		System.out.print("Password: "); password = sc.nextLine();
 		
 		// check if username exists
-		if (db.checkUsername(username))
+		if (db.checkUsername(username, tableName))
 		{
-			if (db.checkPassword(username, password))
+			if (db.checkPassword(username, password, tableName))
 			{
 				return true;
 			}
