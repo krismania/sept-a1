@@ -115,7 +115,8 @@ public class ABS
 		System.out.print("password: "); password = sc.nextLine();
 		
 		// test password -kg
-		if (Account.passwordAccepted(password))
+		// TN Added username null check in password length validation
+		if ((Account.passwordAccepted(password)) && (username != null))
 		{
 			System.out.println("Password OK!");
 			System.out.println();
