@@ -152,7 +152,7 @@ public class UserDatabase {
 		   
 	}
 	
-	// These two methods are for login -kg
+	// These two methods are for login -kg //JM for customers
 	public boolean checkUsername(String username)
 	{
 		String sql = String.format("SELECT COUNT(username) FROM Customers WHERE username='%s'", username);
@@ -244,12 +244,12 @@ public class UserDatabase {
 		         String Password = rs.getString("Password");
 
 		         //Display values
-		         System.out.println("First: " + first);
+		         System.out.println("\nFirst: " + first);
 		         System.out.println("Last: " + last);
 		         System.out.println("Email: " + email);
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password);
+		         System.out.println("Password: " + Password + "\n");
 		      }
 		      rs.close();
 		} catch(SQLException e) {
