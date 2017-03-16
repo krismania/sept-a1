@@ -98,7 +98,7 @@ public class UserDatabase {
 	}
 	
 	//JM Insert data into database.
-	public void CreateDataEntry(String...strings) 
+	public boolean CreateDataEntry(String...strings) 
 	{
 		System.out.println("[!] Inserting Data...");
 		StringBuilder strBuilder = new StringBuilder();
@@ -133,13 +133,16 @@ public class UserDatabase {
 			//JM Insert a customer with generic values and details.
 			stmt.executeUpdate(sql);
 			System.out.println("[!] Data Inserted: New " + strings[0] + "! Welcome, " + strings[5]+"\n");
+			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 			System.out.println("[!] Data failed to insert: " +strings[0] + " " + strings[5] + " already exists!\n");
+			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
+		return false;
 		   
 	}
 	

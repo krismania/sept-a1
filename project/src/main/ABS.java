@@ -109,6 +109,7 @@ public class ABS
 		String lastName;
 		String email;
 		String phoneNumber;
+		boolean created;
 		
 		// get username/password -kg
 		System.out.print("username: "); username = sc.nextLine();
@@ -139,11 +140,19 @@ public class ABS
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		
+		//JM Check if customer was created successfully
+		if(created) 
+		{
+			System.out.println("\nAccount Created!\n");
+		}
+		else 
+		{
+			System.out.println("\nUsername already exists. Please try again.\n");
+		}
 //		db.insert(customer);
 //		db.setPassword(username, password);
-		
-		System.out.println("\nAccount Created!\n");
 	}
 	
 	private boolean customerLogin()
