@@ -18,7 +18,6 @@ public class UserDatabase {
 	public void CreateDatabase()
 	{
 		//JM Initialize a connection
-		System.out.println("[!] Attempting to connect to the database...");
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
@@ -31,7 +30,6 @@ public class UserDatabase {
 			System.exit(0);
 		}
 		//JM Success message means DB is found, or created.
-		System.out.println("[!] Opened database successfully\n");
 		
 		//Customer Table
 		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
@@ -58,7 +56,6 @@ public class UserDatabase {
 	//JM Param = Variable number of Strings (Array)
 	public void CreateDatabaseTable(String... strings)
 	{
-		System.out.println("[!] Creating table in Database...");
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -106,7 +103,6 @@ public class UserDatabase {
 	//JM Insert data into database.
 	public boolean CreateDataEntry(String...strings) 
 	{
-		System.out.println("[!] Inserting Data...");
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -222,9 +218,7 @@ public class UserDatabase {
 	
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
-	{
-		System.out.println("Fetching Customer Data Entires...");
-		
+	{		
 		try{
 			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
@@ -259,13 +253,10 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("All data presented.");		
 	}
 	
 	public void getBusinessOwnerDataEntries() 
-	{
-		System.out.println("Fetching Business Owner Data Entires...");
-		
+	{		
 		try{
 			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
@@ -300,6 +291,5 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("All data presented.");		
 	}
 }
