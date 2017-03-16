@@ -153,9 +153,9 @@ public class UserDatabase {
 	}
 	
 	// These two methods are for login -kg //JM for customers
-	public boolean checkUsername(String username)
+	public boolean checkUsername(String username, String tableName)
 	{
-		String sql = String.format("SELECT COUNT(username) FROM Customers WHERE username='%s'", username);
+		String sql = String.format("SELECT COUNT(username) FROM %s WHERE username='%s'", tableName, username);
 		
 		try
 		{
@@ -174,9 +174,9 @@ public class UserDatabase {
 		return false;
 	}
 	
-	public boolean checkPassword(String username, String password)
+	public boolean checkPassword(String username, String password, String tableName)
 	{
-		String sql = String.format("SELECT password FROM Customers WHERE username='%s'", username);
+		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
 		
 		try
 		{
