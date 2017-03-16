@@ -87,11 +87,9 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			System.out.println("[!] Created " + strings[0] +" table in Database!\n");
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			System.out.println("[!] Table " + strings[0] +" already exists!\n");
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -134,11 +132,9 @@ public class UserDatabase {
 			stmt = c.createStatement();
 			//JM Insert a customer with generic values and details.
 			stmt.executeUpdate(sql);
-			System.out.println("[!] Data Inserted: New " + strings[0] + "! Welcome, " + strings[5]+"\n");
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			System.out.println("[!] Data failed to insert: " +strings[0] + " " + strings[5] + " already exists!\n");
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
