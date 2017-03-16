@@ -52,19 +52,23 @@ public class ABS
 	
 	private void businessOwnerMenu()
 	{
-		String[] options = {"Add a new employee", "Add working times/dates for next month",
-				"View summary of bookings", "View employee availability for next 7 days", "Log out"};
-		Menu menu = new Menu (sc, options, "Business Owner Menu");
-		
-		// main loop
-		boolean exit = false;
-		while (!exit)
+		// Log in
+		if (businessOwnerLogin())
 		{
-			switch (menu.prompt())
+			String[] options = {"Add a new employee", "Add working times/dates for next month", 
+							"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+			Menu menu = new Menu (sc, options, "Business Owner Menu");
+			
+			// main loop
+			boolean exit = false;
+			while (!exit)
 			{
-			case "Log out":
-				exit = true;
-				break;
+				switch (menu.prompt())
+				{
+				case "Log out":
+					exit = true;
+					break;
+				}
 			}
 		}
 	}
@@ -159,15 +163,14 @@ public class ABS
 	{
 		String username;
 		String password;
-		String tableName = "Customers";
 		
 		System.out.print("Username: "); username = sc.nextLine();
 		System.out.print("Password: "); password = sc.nextLine();
 		
 		// check if username exists
-		if (db.checkUsername(username, tableName))
+		if (db.checkUsername(username, "Customer"))
 		{
-			if (db.checkPassword(username, password, tableName))
+			if (db.checkPassword(username, password, "Customer"))
 			{
 				return true;
 			}
@@ -181,4 +184,28 @@ public class ABS
 		return false;
 	}
 	
+	private boolean businessOwnerLogin()
+	{
+		String username;
+		String password;
+		
+		System.out.print("Username: "); username = sc.nextLine();
+		System.out.print("Password: "); password = sc.nextLine();
+		
+		// check if username exists
+		if (db.checkUsername(username, "BusinessOwner"))
+		{
+			if (db.checkPassword(username, password, "BusinessOwner"))
+			{
+				return true;
+			}
+			else {
+				System.out.println("Invalid password.\n");
+			}
+		}
+		else {
+			System.out.println("Invalid username.\n");
+		}
+		return false;
+	}
 }
