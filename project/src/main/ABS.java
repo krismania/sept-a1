@@ -155,11 +155,11 @@ public class ABS
 		//JM Check if customer was created successfully
 		if(created) 
 		{
-			System.out.println("\nAccount Created!\n");
+			console.alert("Account Created!");
 		}
 		else 
 		{
-			System.out.println("\nUsername already exists. Please try again.\n");
+			console.alert("Username already exists. Please try again.");
 		}
 //		db.insert(customer);
 //		db.setPassword(username, password);
