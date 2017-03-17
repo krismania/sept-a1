@@ -1,9 +1,15 @@
 package main;
+import java.util.HashMap;
 import java.util.Scanner;
+
+import console.Console;
+import console.Menu;
 
 public class ABS
 {
 	Scanner sc = new Scanner(System.in);
+	Console console = new Console(sc);
+	
 	UserDatabase db = new UserDatabase("awesomeSauce");
 	
 	public ABS()
@@ -116,29 +122,29 @@ public class ABS
 		boolean created;
 		
 		// get username/password -kg
-		System.out.print("username: "); username = sc.nextLine();
-		System.out.print("password: "); password = sc.nextLine();
+		HashMap<String, String> accountInput = console.accountPrompt();
+		username = accountInput.get("username");
+		password = accountInput.get("password");
 		
 		// test password -kg
 		// TN Added username null check in password length validation
 		if ((Account.passwordAccepted(password)) && (username != null))
 		{
-			System.out.println("Password OK!");
-			System.out.println();
+			console.alert("Password OK!");
 		}
 		else
 		{
 			// if password is unacceptable, end account creation here. -kg
-			System.out.println("Invalid password.");
-			System.out.println();
+			console.alert("Invalid password.");
 			return;
 		}
 		
 		// collect customer info -kg
-		System.out.print("Enter your first name: "); firstName = sc.nextLine();
-		System.out.print("Enter your last name: "); lastName = sc.nextLine();
-		System.out.print("Enter an email address: "); email = sc.nextLine();
-		System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+		HashMap<String, String> accountInfoInput = console.accountInfoPrompt();
+		firstName = accountInfoInput.get("firstName");
+		lastName = accountInfoInput.get("lastName");
+		email = accountInfoInput.get("email");
+		phoneNumber = accountInfoInput.get("phoneNumber");
 		
 		// create the Customer instance -kg
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
@@ -164,8 +170,9 @@ public class ABS
 		String username;
 		String password;
 		
-		System.out.print("Username: "); username = sc.nextLine();
-		System.out.print("Password: "); password = sc.nextLine();
+		HashMap<String, String> accountInput = console.accountPrompt();
+		username = accountInput.get("username");
+		password = accountInput.get("password");
 		
 		// check if username exists
 		if (db.checkUsername(username, "Customers"))
@@ -175,11 +182,11 @@ public class ABS
 				return true;
 			}
 			else {
-				System.out.println("Invalid password.\n");
+				console.alert("Invalid password.");
 			}
 		}
 		else {
-			System.out.println("Invalid username.\n");
+			console.alert("Invalid username.");
 		}
 		return false;
 	}
@@ -189,8 +196,9 @@ public class ABS
 		String username;
 		String password;
 		
-		System.out.print("Username: "); username = sc.nextLine();
-		System.out.print("Password: "); password = sc.nextLine();
+		HashMap<String, String> accountInput = console.accountPrompt();
+		username = accountInput.get("username");
+		password = accountInput.get("password");
 		
 		// check if username exists
 		if (db.checkUsername(username, "BusinessOwner"))
@@ -200,11 +208,11 @@ public class ABS
 				return true;
 			}
 			else {
-				System.out.println("Invalid password.\n");
+				console.alert("Invalid password.");
 			}
 		}
 		else {
-			System.out.println("Invalid username.\n");
+			console.alert("Invalid username.");
 		}
 		return false;
 	}
