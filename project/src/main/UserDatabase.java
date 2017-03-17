@@ -18,7 +18,6 @@ public class UserDatabase {
 	public void CreateDatabase()
 	{
 		//JM Initialize a connection
-		System.out.println("[!] Attempting to connect to the database...");
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
@@ -31,7 +30,6 @@ public class UserDatabase {
 			System.exit(0);
 		}
 		//JM Success message means DB is found, or created.
-		System.out.println("[!] Opened database successfully\n");
 		
 		//Customer Table
 		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
@@ -58,7 +56,6 @@ public class UserDatabase {
 	//JM Param = Variable number of Strings (Array)
 	public void CreateDatabaseTable(String... strings)
 	{
-		System.out.println("[!] Creating table in Database...");
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -90,11 +87,9 @@ public class UserDatabase {
 		{
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			System.out.println("[!] Created " + strings[0] +" table in Database!\n");
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			System.out.println("[!] Table " + strings[0] +" already exists!\n");
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -106,7 +101,6 @@ public class UserDatabase {
 	//JM Insert data into database.
 	public boolean CreateDataEntry(String...strings) 
 	{
-		System.out.println("[!] Inserting Data...");
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -138,11 +132,9 @@ public class UserDatabase {
 			stmt = c.createStatement();
 			//JM Insert a customer with generic values and details.
 			stmt.executeUpdate(sql);
-			System.out.println("[!] Data Inserted: New " + strings[0] + "! Welcome, " + strings[5]+"\n");
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			System.out.println("[!] Data failed to insert: " +strings[0] + " " + strings[5] + " already exists!\n");
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
@@ -221,9 +213,7 @@ public class UserDatabase {
 	
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
-	{
-		System.out.println("Fetching Customer Data Entires...");
-		
+	{		
 		try{
 			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
@@ -258,13 +248,10 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("All data presented.");		
 	}
 	
 	public void getBusinessOwnerDataEntries() 
-	{
-		System.out.println("Fetching Business Owner Data Entires...");
-		
+	{		
 		try{
 			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
@@ -299,6 +286,5 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
-		System.out.println("All data presented.");		
 	}
 }
