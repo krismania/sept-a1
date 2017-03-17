@@ -155,6 +155,8 @@ public class ABS
 		{
 			System.out.println("\nUsername already exists. Please try again.\n");
 		}
+//		db.insert(customer);
+//		db.setPassword(username, password);
 	}
 	
 	private boolean customerLogin()
