@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
-import main.Menu;
+
+import console.Menu;
 
 public class MenuTest
 {
