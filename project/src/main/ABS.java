@@ -23,7 +23,7 @@ public class ABS
 	 */
 	
 	public void mainMenu() {
-		String[] options = {"Business Owner", "Customer", "Register", "[debug] print customer db", "Exit"};
+		String[] options = {"Log in", "Register", "[debug] print customer db", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
 		// main loop
@@ -32,11 +32,14 @@ public class ABS
 		{
 			switch (menu.prompt())
 			{
-			case "Business Owner":
-				businessOwnerMenu();
-				break;
-			case "Customer":
-				customerMenu();
+//			case "Business Owner":
+//				businessOwnerMenu();
+//				break;
+//			case "Customer":
+//				customerMenu();
+//				break;
+			case "Log in":
+				login();
 				break;
 			case "Register":
 				customerRegister();
@@ -58,23 +61,19 @@ public class ABS
 	
 	private void businessOwnerMenu()
 	{
-		// Log in
-		if (businessOwnerLogin())
+		String[] options = {"Add a new employee", "Add working times/dates for next month", 
+						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+		Menu menu = new Menu (sc, options, "Business Owner Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
 		{
-			String[] options = {"Add a new employee", "Add working times/dates for next month", 
-							"View summary of bookings", "View employee availability for next 7 days", "Log out"};
-			Menu menu = new Menu (sc, options, "Business Owner Menu");
-			
-			// main loop
-			boolean exit = false;
-			while (!exit)
+			switch (menu.prompt())
 			{
-				switch (menu.prompt())
-				{
-				case "Log out":
-					exit = true;
-					break;
-				}
+			case "Log out":
+				exit = true;
+				break;
 			}
 		}
 	}
@@ -86,22 +85,18 @@ public class ABS
 	
 	private void customerMenu()
 	{
-		// Log in
-		if (customerLogin())
+		String[] options = {"View available days/times", "Log out"};
+		Menu menu = new Menu (sc, options, "Customer Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
 		{
-			String[] options = {"View available days/times", "Log out"};
-			Menu menu = new Menu (sc, options, "Customer Menu");
-			
-			// main loop
-			boolean exit = false;
-			while (!exit)
+			switch (menu.prompt())
 			{
-				switch (menu.prompt())
-				{
-				case "Log out":
-					exit = true;
-					break;
-				}
+			case "Log out":
+				exit = true;
+				break;
 			}
 		}
 	}
@@ -165,7 +160,12 @@ public class ABS
 //		db.setPassword(username, password);
 	}
 	
-	private boolean customerLogin()
+	
+	/*
+	 * Login function for both account types
+	 */
+	
+	private void login()
 	{
 		String username;
 		String password;
@@ -173,13 +173,17 @@ public class ABS
 		HashMap<String, String> accountInput = console.accountPrompt();
 		username = accountInput.get("username");
 		password = accountInput.get("password");
+		
+		//TODO: Login function should check both customer & b.o. accounts
 		
 		// check if username exists
 		if (db.checkUsername(username, "Customers"))
 		{
+			// test the password
 			if (db.checkPassword(username, password, "Customers"))
 			{
-				return true;
+				// TODO: go to the correct submenu depending on account type
+				customerMenu();
 			}
 			else {
 				console.alert("Invalid password.");
@@ -188,32 +192,57 @@ public class ABS
 		else {
 			console.alert("Invalid username.");
 		}
-		return false;
 	}
 	
-	private boolean businessOwnerLogin()
-	{
-		String username;
-		String password;
-		
-		HashMap<String, String> accountInput = console.accountPrompt();
-		username = accountInput.get("username");
-		password = accountInput.get("password");
-		
-		// check if username exists
-		if (db.checkUsername(username, "BusinessOwner"))
-		{
-			if (db.checkPassword(username, password, "BusinessOwner"))
-			{
-				return true;
-			}
-			else {
-				console.alert("Invalid password.");
-			}
-		}
-		else {
-			console.alert("Invalid username.");
-		}
-		return false;
-	}
+//	private boolean customerLogin()
+//	{
+//		String username;
+//		String password;
+//		
+//		HashMap<String, String> accountInput = console.accountPrompt();
+//		username = accountInput.get("username");
+//		password = accountInput.get("password");
+//		
+//		// check if username exists
+//		if (db.checkUsername(username, "Customers"))
+//		{
+//			if (db.checkPassword(username, password, "Customers"))
+//			{
+//				return true;
+//			}
+//			else {
+//				console.alert("Invalid password.");
+//			}
+//		}
+//		else {
+//			console.alert("Invalid username.");
+//		}
+//		return false;
+//	}
+//	
+//	private boolean businessOwnerLogin()
+//	{
+//		String username;
+//		String password;
+//		
+//		HashMap<String, String> accountInput = console.accountPrompt();
+//		username = accountInput.get("username");
+//		password = accountInput.get("password");
+//		
+//		// check if username exists
+//		if (db.checkUsername(username, "BusinessOwner"))
+//		{
+//			if (db.checkPassword(username, password, "BusinessOwner"))
+//			{
+//				return true;
+//			}
+//			else {
+//				console.alert("Invalid password.");
+//			}
+//		}
+//		else {
+//			console.alert("Invalid username.");
+//		}
+//		return false;
+//	}
 }
