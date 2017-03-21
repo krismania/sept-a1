@@ -12,14 +12,19 @@ public class ABS
 	
 	UserDatabase db = new UserDatabase("awesomeSauce");
 	
+	
+	/**
+	 * Creates an instance of the controller class & opens the database.
+	 */
+	
 	public ABS()
 	{
 		db.CreateDatabase();
 	}
 	
 	
-	/*
-	 * Main menu loop. -kg
+	/**
+	 * The main menu loop.
 	 */
 	
 	public void mainMenu() {
@@ -55,8 +60,9 @@ public class ABS
 	}
 	
 	
-	/*
-	 * Business owner submenu. -kg
+	/**
+	 * Business owner sub-menu.
+	 * @author krismania
 	 */
 	
 	private void businessOwnerMenu()
@@ -79,8 +85,9 @@ public class ABS
 	}
 	
 	
-	/*
-	 * Customer submenu. -kg
+	/**
+	 * Customer sub-menu.
+	 * @author krismania
 	 */
 	
 	private void customerMenu()
@@ -102,8 +109,10 @@ public class ABS
 	}
 	
 	
-	/*
-	 * Register a new customer, adapts code from Richard's menu. -kg
+	/**
+	 * Interface for registering a new customer. Adapts code from Richard's
+	 * original menu.
+	 * @author krismania
 	 */
 	
 	private void customerRegister()
@@ -161,8 +170,11 @@ public class ABS
 	}
 	
 	
-	/*
-	 * Login function for both account types
+	/**
+	 * Joint login function for both account types. This method decides whether
+	 * the specified account is a Customer or B.O. and displays the appropriate
+	 * sub-menu.
+	 * @author krismania
 	 */
 	
 	private void login()
