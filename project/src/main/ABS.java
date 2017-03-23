@@ -189,7 +189,7 @@ public class ABS
 		//TODO: Login function should check both customer & b.o. accounts
 		
 		// check if username exists
-		if (db.checkUsername(username, "Customers"))
+		if (db.validateUsername(username))
 		{
 			// test the password
 			if (db.checkPassword(username, password, "Customers"))
@@ -202,7 +202,7 @@ public class ABS
 			}
 		}
 		else {
-			console.alert("Invalid username.");
+			console.alert("Username Exists.");
 		}
 	}
 	
@@ -216,7 +216,7 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "Customers"))
+//		if (db.validateUsername(username, "Customers"))
 //		{
 //			if (db.checkPassword(username, password, "Customers"))
 //			{
@@ -242,7 +242,7 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "BusinessOwner"))
+//		if (db.validateUsername(username, "BusinessOwner"))
 //		{
 //			if (db.checkPassword(username, password, "BusinessOwner"))
 //			{
