@@ -47,7 +47,7 @@ public class LoginPopup extends Application {
         
         //TN- Signup button - navigates to set up for new user name and password        
         Button btSignUp = new Button("Signup");
-        pane.add(btLoginButton, 0, 2);
+        pane.add(btSignUp, 0, 2);
         GridPane.setHalignment(btSignUp, HPos.RIGHT);
         
         //TN - Call method to process login information - this method is
