@@ -35,16 +35,24 @@ public class UserDatabase {
 		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
 				"Password varchar(15)", "Username");
+		
 		//BusinessOwner Table
 		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
 				"Password varchar(15)", "Username");
+		
+		//Employee Table
+		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 		
 		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james");
 		
 		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
 				"0400000000", "JohnRulez", "john");
+		
+		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+				"0400000000", "E001");
 		
 		//Disable getCustomerDataEntries();
 		//Disable getBusinessOwnerDataEntries();
@@ -143,7 +151,8 @@ public class UserDatabase {
 		   
 	}
 	
-	// These two methods are for login -kg //JM for customers
+	//Validation Methods
+	//Customers/Business Owner
 	public boolean validateUsername(String username) 
 	{
 		boolean duplicated = false;
@@ -159,10 +168,8 @@ public class UserDatabase {
 			stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
-			//System.out.println("[!] Checking Duplicate Entries");
+			//JM If rs contains anything, the name exists.
 			while(rs.next()) {
-				String names = rs.getString("Username");
-				//System.out.println("[!] Duplicate: " + names);
 				duplicated = true;
 			}
 		
@@ -196,7 +203,12 @@ public class UserDatabase {
 		
 		return false;
 	}
-
+	
+	//Employee
+	public boolean validateEmpID(String empID) 
+	{
+		return false;
+	}
 	
 	/*JM Enabled generic update to specific data, depending on Username.
 	* Params = table, the table you wish to update data in
