@@ -38,15 +38,25 @@ public class LoginPopup extends Application {
         //TN Inserts a text field and labels it "Password"
         pane.add(new Label("Password:"), 0, 1);
         pane.add(new TextField(), 1, 1);
+     
         
         //TN Creates a button to enter login information
         Button btLoginButton = new Button("Login");
         pane.add(btLoginButton, 1, 2);
         GridPane.setHalignment(btLoginButton, HPos.RIGHT);
         
+        //TN- Signup button - navigates to set up for new user name and password        
+        Button btSignUp = new Button("Signup");
+        pane.add(btLoginButton, 0, 2);
+        GridPane.setHalignment(btSignUp, HPos.RIGHT);
+        
         //TN - Call method to process login information - this method is
-        //not currently functional
+        //not currently functional - Process login Method should capture a Password and Username 
+        //variable then pass it to login
         //btLoginButton.setOnAction(e -> processLogin());
+        
+        //TN - Call addNewUser() method - yet to be implemented
+        //btSignUp.setOnAction(e -> addNewUser());
 
         //TN sets scene for popup box and names tile "login" Instantiates
         //the popup box.
