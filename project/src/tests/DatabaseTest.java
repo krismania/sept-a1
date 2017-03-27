@@ -48,11 +48,11 @@ public class DatabaseTest {
 		assertEquals(true, db.openConnection());
 	}
 	
-	//@Test
-	/*public void updateDataEntryTestExisting() throws SQLException
+	@Test
+	public void updateDataEntryTestExisting() throws SQLException
 	{
 		assertEquals(true, db.updateDataEntry("Customers", "JamesRulez", "JUnitTest", "Password"));
-	} JM Currently causing NullPointerException*/
+	}
 	
 	@Test
 	public void updateDataEntryTestNonExisting() throws SQLException

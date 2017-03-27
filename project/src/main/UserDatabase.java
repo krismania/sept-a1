@@ -129,7 +129,7 @@ public class UserDatabase {
 	//Customers/Business Owner JM
 	public boolean validateUsername(String username) 
 	{
-		boolean duplicated = false;
+		boolean duplicated;
 		
 		String query = "SELECT Username "
 				+ "FROM (SELECT Username from Customers "
@@ -143,8 +143,11 @@ public class UserDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 
 			//JM If rs contains anything, the name exists.
-			while(rs.next()) {
+			rs.next();
+			if (rs.getString(1).equals(username)) {
 				duplicated = true;
+			} else {
+				duplicated = false;
 			}
 		
 		} catch (SQLException e) {
@@ -154,7 +157,7 @@ public class UserDatabase {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return duplicated;
+		return true;
 	}
 	
 	public boolean checkPassword(String username, String password, String tableName)

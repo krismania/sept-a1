@@ -20,7 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
-		db.validateEmpID("E001");
+		db.updateDataEntry("Customers", "JamesRulez", "JUnitTest", "Password");
 	}
 	
 	
