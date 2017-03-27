@@ -1,4 +1,4 @@
-package main;
+package console;
 
 import java.util.Scanner;
 
@@ -61,6 +61,7 @@ public class Menu
 			catch (Exception e)
 			{
 				System.out.println("Error: Invalid Selection!");
+				System.out.println(e.getMessage()); //debug only. -kg
 				System.out.println();
 			}
 			
