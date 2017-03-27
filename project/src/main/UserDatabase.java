@@ -22,41 +22,14 @@ public class UserDatabase {
 		{
 			Class.forName("org.sqlite.JDBC");
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
-			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
+			openConnection();
+			setupScript();
 		}
 		catch (Exception e)
 		{
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
-		//JM Success message means DB is found, or created.
-		
-		//Customer Table
-		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
-		
-		//BusinessOwner Table
-		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
-		
-		//Employee Table
-		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
-		
-		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-				"0400000000", "JamesRulez", "james");
-		
-		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-				"0400000000", "JohnRulez", "john");
-		
-		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
-				"0400000000", "E001");
-		
-		//Disable getCustomerDataEntries();
-		//Disable getBusinessOwnerDataEntries();
-		System.out.println();
 	}
 	
 	//JM CreateDatabaseTable() will create a table within the database.
@@ -92,8 +65,10 @@ public class UserDatabase {
 		
 		try 
 		{
+			
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
+			
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -137,7 +112,6 @@ public class UserDatabase {
 		try
 		{
 			stmt = c.createStatement();
-			//JM Insert a customer with generic values and details.
 			stmt.executeUpdate(sql);
 			return true;
 		} catch(SQLException e) {
@@ -151,8 +125,8 @@ public class UserDatabase {
 		   
 	}
 	
-	//Validation Methods
-	//Customers/Business Owner
+	//***VALIDATION METHODS***JM
+	//Customers/Business Owner JM
 	public boolean validateUsername(String username) 
 	{
 		boolean duplicated = false;
@@ -204,10 +178,31 @@ public class UserDatabase {
 		return false;
 	}
 	
-	//Employee
+	//Employee JM
 	public boolean validateEmpID(String empID) 
 	{
-		return false;
+		boolean duplicated = false;
+		
+		String query = String.format("SELECT EmpID FROM %s WHERE EmpID='%s'", "Employee", empID);
+		
+		try 
+		{
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			if (rs.getString(1).equals(empID)) {
+				return true;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			
+		} catch (Exception e) {
+			//JM Handles errors for Class.forName
+			e.printStackTrace();
+		}
+		
+		return duplicated;
 	}
 	
 	/*JM Enabled generic update to specific data, depending on Username.
@@ -219,26 +214,52 @@ public class UserDatabase {
 	public boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
-				+ "='%s' WHERE username='%s'", dataToInput, userName);
+				+ "='%s' WHERE Username='%s'", dataToInput, userName);
+		boolean exists;
 		try
 		{
-			stmt = c.createStatement();
-			stmt.executeUpdate(sql);
-			stmt.close();
-			return true;
+			
+			if(userName != null)
+			{
+				exists = validateUsername(userName);
+			}
+			else
+			{
+				exists = false;
+			}
+			/*if(!validateUsername(userName))
+			{
+				closeConnection();
+				return false;
+			}*/
+			if(exists)
+			{
+				stmt = c.createStatement();
+				stmt.executeUpdate(sql);
+				System.out.println("Value has been updated for: " + userName);
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+			
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			return false;
 		}
+		catch (NullPointerException s)
+		{
+			s.printStackTrace();
+		}
+		return false;
 	}
 	
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
 	{		
 		try{
-			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
@@ -263,7 +284,6 @@ public class UserDatabase {
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password + "\n");
 		      }
-		      rs.close();
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
@@ -276,7 +296,6 @@ public class UserDatabase {
 	public void getBusinessOwnerDataEntries() 
 	{		
 		try{
-			c = DriverManager.getConnection("jdbc:sqlite:awesomeSauce.db");
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
@@ -301,7 +320,6 @@ public class UserDatabase {
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password);
 		      }
-		      rs.close();
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
@@ -309,5 +327,64 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
+	}
+	
+	public boolean openConnection() throws SQLException {
+		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
+		if(c != null) 
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean closeConnection() throws SQLException {
+		
+		/*if(stmt != null)
+		{
+			stmt.close();
+			stmt = null;
+		}
+		if(rs != null)
+		{
+			rs.close();
+			rs = null;
+		}*/
+		if(c != null) {
+			System.out.println("Connection closed.");
+			c.close();
+			c = null;
+			return true;
+		}
+		else
+		{
+			System.out.println("Connection failed to close.");
+			return false;
+		}
+	}
+	
+	private void setupScript() {
+		//Customer Table
+		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)", "Username");
+		
+		//BusinessOwner Table
+		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)", "Username");
+		
+		//Employee Table
+		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
+		
+		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
+				"0400000000", "JamesRulez", "james");
+		
+		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
+				"0400000000", "JohnRulez", "john");
+		
+		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+				"0400000000", "E001");
 	}
 }
