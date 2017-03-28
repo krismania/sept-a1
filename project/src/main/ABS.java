@@ -50,7 +50,10 @@ public class ABS
 				customerRegister();
 				break;
 			case "[debug] print customer db":
+				console.alert("Customers:");
 				db.getCustomerDataEntries();
+				console.alert("Business Owners:");
+				db.getBusinessOwnerDataEntries();
 				break;
 			case "Exit":
 				exit = true;
