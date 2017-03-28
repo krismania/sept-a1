@@ -24,50 +24,37 @@ import console.Menu;
 // Application.launch(AddEmployee.class, args); 
 public class AddTime extends Application {
 	    private TextField tfEmpNum = new TextField();
-	    private TextField tfTime = new TextField();
 	    private TextField tfDay = new TextField();
-    	private TextField tfMonth = new TextField();
-    	private TextField tfYear = new TextField();
-    	private TextField tfDate = new TextField();
-    	private Button btGenerateDate = new Button("Set Available Date");
+    	private Button btAddDay = new Button("Add Staff Shift Day");
     public void start(Stage primaryStage) 
     {
     	
     	GridPane gridPane = new GridPane();
     	gridPane.setHgap(5);
     	gridPane.setVgap(5);
-    	gridPane.add(new Label("Enter the Employee Number"), 0, 0);
+    	gridPane.add(new Label("Enter Employee Number"), 0, 0);
     	gridPane.add(tfEmpNum, 1, 0);
-    	gridPane.add(new Label("Enter Availability as 2hr blocks"), 0, 1);
-    	gridPane.add(tfTime, 1, 1);
-    	gridPane.add(new Label("Enter day of the Month"), 0, 2);
-    	gridPane.add(tfDay, 1, 2);
-    	gridPane.add(new Label("Enter available Month"), 0, 3);
-    	gridPane.add(tfMonth, 1, 3);
-    	gridPane.add(new Label("Add Availability"), 0, 5);
-    	gridPane.add(btGenerateDate, 1, 5);
-    	gridPane.add(new Label("Availability Confirmed"), 0, 6);
-    	gridPane.add(tfDate, 1, 6);
+    	gridPane.add(new Label("Enter Shift Day: Monday ... Saturday"), 0, 1);
+    	gridPane.add(tfDay, 1, 1);
+    	gridPane.add(new Label("Add Shift Day"), 0, 2);
+    	gridPane.add(btAddDay, 1, 2);
     	
     	gridPane.setAlignment(Pos.CENTER);
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
-    	tfTime.setAlignment(Pos.BOTTOM_RIGHT);
     	tfDay.setAlignment(Pos.BOTTOM_RIGHT);
-    	tfMonth.setAlignment(Pos.BOTTOM_RIGHT);
-    	tfDate.setAlignment(Pos.BOTTOM_RIGHT);
-    	tfDate.setEditable(false);
-    	GridPane.setHalignment(btGenerateDate, HPos.RIGHT);
-    	btGenerateDate.setOnAction(e -> displayAvailability());
+    	GridPane.setHalignment(btAddDay, HPos.RIGHT);
+    	btAddDay.setOnAction(e -> setShift());
 
-    	Scene scene = new Scene(gridPane, 400, 250);
-    	primaryStage.setTitle("Add Booking Availability Time");
+    	Scene scene = new Scene(gridPane, 500, 250);
+    	primaryStage.setTitle("Add Staff Availability");
     	primaryStage.setScene(scene);
     	primaryStage.show();
     	}
 
-    	private void displayAvailability() {
+    	private void setShift() {
 
+    	    Application.launch(AddSift.class, args); 
     	    
-    	    tfDate.setText(String.format("2PM-4PM: 31/03/2017"));
+    	  
     	}
 }
