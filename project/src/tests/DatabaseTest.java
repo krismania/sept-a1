@@ -49,29 +49,53 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void updateDataEntryTestExisting() throws SQLException
+	public void validateUserDoesExistByUsername() throws SQLException
 	{
-		assertEquals(true, db.updateDataEntry("Customers", "JamesRulez", "JUnitTest", "Password"));
+		assertEquals(true, db.validateUsername("JamesRulez"));
 	}
 	
 	@Test
-	public void updateDataEntryTestNonExisting() throws SQLException
+	public void validateUserDoesNotExistByUsername() throws SQLException
 	{
-		assertEquals(false, db.updateDataEntry("Customers", "Test", "JUnitTest", "Password"));
+		assertEquals(false, db.validateUsername("Blehasdji123"));
 	}
 	
 	@Test
-	public void validateEmpIDTest() throws SQLException
+	public void validateEmployeeDoesExistByID() throws SQLException
 	{
 		assertEquals(true, db.validateEmpID("E001"));
 	}
 	
 	@Test
-	public void validateEmpIDTestNonExisting() throws SQLException
+	public void validateEmployeeDoesNotExistByID() throws SQLException
 	{
 		assertEquals(false, db.validateEmpID("abc001"));
 	}
 
+	@Test
+	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
+	{
+		assertEquals(true, db.checkPassword("JamesRulez", "james", "Customers"));
+	}
+	
+	@Test
+	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
+	{
+		assertEquals(false, db.checkPassword("JamesRulez", "ksA1jdlksa", "Customers"));
+	}
+	
+	@Test
+	public void validatePasswordDoesMatchBusinessOwnerSetPassword() throws SQLException
+	{
+		assertEquals(true, db.checkPassword("JohnRulez", "john", "BusinessOwner"));
+	}
+	
+	@Test
+	public void validatePasswordDoesNotMatchBusinessOwnerSetPassword() throws SQLException
+	{
+		assertEquals(false, db.checkPassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+	}
+	
 	@Test
 	public void closeConnectionTest() throws SQLException 
 	{

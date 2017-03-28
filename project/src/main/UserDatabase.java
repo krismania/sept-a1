@@ -8,6 +8,7 @@ import java.sql.*;
 public class UserDatabase {
 	Connection c = null;
 	Statement stmt = null;
+	ResultSet rs = null;
 	String dbName;
 	
 	//JM Constructor
@@ -24,6 +25,7 @@ public class UserDatabase {
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
 			setupScript();
+			closeConnection();
 		}
 		catch (Exception e)
 		{
@@ -65,10 +67,10 @@ public class UserDatabase {
 		
 		try 
 		{
-			
+			openConnection();
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			
+			closeConnection();
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -111,8 +113,10 @@ public class UserDatabase {
 		String sql = strBuilder.toString();
 		try
 		{
+			openConnection();
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
+			closeConnection();
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -129,8 +133,6 @@ public class UserDatabase {
 	//Customers/Business Owner JM
 	public boolean validateUsername(String username) 
 	{
-		boolean duplicated;
-		
 		String query = "SELECT Username "
 				+ "FROM (SELECT Username from Customers "
 				+ "UNION "
@@ -139,17 +141,19 @@ public class UserDatabase {
 				+ "WHERE Username = '"+username+"'";
 		try 
 		{
+			openConnection();
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 
 			//JM If rs contains anything, the name exists.
 			rs.next();
 			if (rs.getString(1).equals(username)) {
-				duplicated = true;
+				closeConnection();
+				return true;
 			} else {
-				duplicated = false;
+				return false;
 			}
-		
+			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
 			
@@ -157,7 +161,7 @@ public class UserDatabase {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean checkPassword(String username, String password, String tableName)
@@ -166,12 +170,14 @@ public class UserDatabase {
 		
 		try
 		{
+			openConnection();
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			rs.next();
 			if (rs.getString(1).equals(password)) {
 				return true;
 			}
+			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -190,19 +196,23 @@ public class UserDatabase {
 		
 		try 
 		{
+			openConnection();
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			if (rs.getString(1).equals(empID)) {
-				return true;
+			rs = stmt.executeQuery(query);
+			if(rs != null) {
+				while(rs.next()){
+				
+					closeConnection();
+					duplicated = true;
+				}
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
-			e.printStackTrace();
+			
 		}
 		
 		return duplicated;
@@ -221,7 +231,7 @@ public class UserDatabase {
 		boolean exists;
 		try
 		{
-			
+			openConnection();
 			if(userName != null)
 			{
 				exists = validateUsername(userName);
@@ -230,20 +240,19 @@ public class UserDatabase {
 			{
 				exists = false;
 			}
-			/*if(!validateUsername(userName))
-			{
-				closeConnection();
-				return false;
-			}*/
+			
 			if(exists)
 			{
+				
 				stmt = c.createStatement();
 				stmt.executeUpdate(sql);
 				System.out.println("Value has been updated for: " + userName);
+				closeConnection();
 				return true;
 			}
 			else 
 			{
+				closeConnection();
 				return false;
 			}
 			
@@ -263,13 +272,14 @@ public class UserDatabase {
 	public void getCustomerDataEntries() 
 	{		
 		try{
+			openConnection();
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT Firstname, Lastname, Email, Phone,"
 					+ "Username, Password FROM Customers";
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			while(rs.next()){
 		         //Retrieve by column name
 		         String first = rs.getString("Firstname");
@@ -287,6 +297,7 @@ public class UserDatabase {
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password + "\n");
 		      }
+			closeConnection();
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
@@ -299,13 +310,14 @@ public class UserDatabase {
 	public void getBusinessOwnerDataEntries() 
 	{		
 		try{
+			openConnection();
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT Firstname, Lastname, Email, Phone,"
 					+ "Username, Password FROM BusinessOwner";
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			while(rs.next()){
 		         //Retrieve by column name
 		         String first = rs.getString("Firstname");
@@ -323,6 +335,7 @@ public class UserDatabase {
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password);
 		      }
+			closeConnection();
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
@@ -343,7 +356,7 @@ public class UserDatabase {
 	
 	public boolean closeConnection() throws SQLException {
 		
-		/*if(stmt != null)
+		if(stmt != null)
 		{
 			stmt.close();
 			stmt = null;
@@ -352,9 +365,8 @@ public class UserDatabase {
 		{
 			rs.close();
 			rs = null;
-		}*/
+		}
 		if(c != null) {
-			System.out.println("Connection closed.");
 			c.close();
 			c = null;
 			return true;
