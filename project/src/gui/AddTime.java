@@ -50,9 +50,9 @@ public class AddTime extends Application {
     	primaryStage.setScene(scene);
     	primaryStage.show();
     	}
-
+        //TN - Calls AddShift Menu GUI and captures Employee Number and Day variables
     	private void setShift() {
-
+            //TN Variable capture not yet implemented
     	    Application.launch(AddSift.class, args); 
     	    
     	  
