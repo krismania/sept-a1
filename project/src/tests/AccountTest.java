@@ -47,7 +47,7 @@ public class AccountTest
 	}
 	
 	
-	// test passwords with invalid length
+	// test passwords with invalid length. -kg
 	
 	@Test
 	public void testInvalidLengthPassword1()
@@ -85,7 +85,7 @@ public class AccountTest
 	}
 	
 	
-	// test some specific cases
+	// test some specific cases. -kg
 	
 	@Test
 	public void testPasswordNoNumbers()
