@@ -137,43 +137,50 @@ public class UserDatabase {
 	//Customers/Business Owner JM
 	public int validateUsername(String username) 
 	{
+		int userType = 0;
 		String query = "SELECT Username "
 				+ "FROM (SELECT Username from Customers "
 				+ "UNION "
 				+ "SELECT Username from BusinessOwner"
 				+ ") a "
+				+ "WHERE Username = '"+username+"'; "
+				+ "SELECT Username "
+				+ "FROM BusinessOwner "
 				+ "WHERE Username = '"+username+"'";
 		try 
 		{
+			System.out.println("[!] Checking for user.");
 			openConnection();
 			stmt = c.createStatement();
-			rs = stmt.executeQuery(query);
-
-			//JM If rs contains anything, the name exists.
-			rs.next();
-			if (rs.getString(1).equals(username)) {
-				closeConnection();
-				openConnection();
-				query = "SELECT Username "
-						+ "FROM BusinessOwner"
-						+ "WHERE Username = '"+username+"'";
-				
-				stmt = c.createStatement();
-				rs = stmt.executeQuery(query);
-				if (rs.getString(1).equals(username)) {
-					return 2;
+			boolean results = stmt.execute(query);
+			int rsCount = 0;
+			
+			do
+			{
+				System.out.println("[!] Checking for Customer or Owner.");
+				if(results)
+				{
+					rs = stmt.getResultSet();
+					rsCount++;
+					
+					while(rs.next()) 
+					{
+						userType++;
+					}
+					rs.close();
 				}
-				return 1;
-			}
+				results = stmt.getMoreResults();
+			} while(results);
+			closeConnection();
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			
+			e.printStackTrace();
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return 0;
+		return userType;
 	}
 	
 	public boolean checkPassword(String username, String password, String tableName)

@@ -49,15 +49,21 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void validateUserDoesExistByUsername() throws SQLException
+	public void validateCustomerDoesExistByUsername() throws SQLException
 	{
-		assertEquals(true, db.validateUsername("JamesRulez"));
+		assertEquals(1, db.validateUsername("JamesRulez"));
+	}
+	
+	@Test
+	public void validateBusinesOwnerDoesExistsByUsername() throws SQLException
+	{
+		assertEquals(2, db.validateUsername("JohnRulez"));
 	}
 	
 	@Test
 	public void validateUserDoesNotExistByUsername() throws SQLException
 	{
-		assertEquals(false, db.validateUsername("Blehasdji123"));
+		assertEquals(0, db.validateUsername("Blehasdji123"));
 	}
 	
 	@Test
