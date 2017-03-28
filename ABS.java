@@ -47,7 +47,7 @@ public class ABS
 	
 	
 	/*
-	 * Business owner submenu. -kg
+	 * Business owner submenu. @authors -kg -RK
 	 */
 	
 	private void businessOwnerMenu()
@@ -65,6 +65,11 @@ public class ABS
 			{
 				switch (menu.prompt())
 				{
+				
+				case "Add a new employee":
+					addEmployee();
+					break;
+						
 				case "Log out":
 					exit = true;
 					break;
@@ -73,6 +78,56 @@ public class ABS
 		}
 	}
 	
+		
+	/*
+	 *  Add new employee
+	 *  @author RK
+	 */
+	
+	private void addEmployee(){
+		
+		// declare variables
+		String firstName;
+		String lastName;
+		String email;
+		String employeeID;
+		
+		// prompt user for input
+		
+		do{
+			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
+			
+			// output error if no first name is entered
+			if(firstName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(firstName.isEmpty());
+		
+		do{
+			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
+			
+			// output error if no last name is entered
+			if(lastName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(lastName.isEmpty());
+		
+		do{
+			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
+			
+			if(!email.contains("@") || !email.contains(".")){
+				System.out.println("Error: Invalid email address format. Must contain @ and .");
+			}
+			
+		}while(!email.contains("@") || !email.contains("."));
+			
+		System.out.println("Enter Employees Employee Number: ");
+		employeeID = sc.nextLine();
+		
+		System.out.println("Employee successfully added!");	
+	}
 	
 	/*
 	 * Customer submenu. -kg
@@ -99,7 +154,6 @@ public class ABS
 			}
 		}
 	}
-	
 	
 	/*
 	 * Register a new customer, adapts code from Richard's menu. -kg
@@ -134,7 +188,7 @@ public class ABS
 			return;
 		}		
 		
-		// collect customer info -kg
+		// collect customer info @author -RK
 		
 		// reprompt customer until valid first name
 		do{
