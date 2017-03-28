@@ -135,7 +135,7 @@ public class UserDatabase {
 	
 	//***VALIDATION METHODS***JM
 	//Customers/Business Owner JM
-	public boolean validateUsername(String username) 
+	public int validateUsername(String username) 
 	{
 		String query = "SELECT Username "
 				+ "FROM (SELECT Username from Customers "
@@ -153,9 +153,17 @@ public class UserDatabase {
 			rs.next();
 			if (rs.getString(1).equals(username)) {
 				closeConnection();
-				return true;
-			} else {
-				return false;
+				openConnection();
+				query = "SELECT Username "
+						+ "FROM BusinessOwner"
+						+ "WHERE Username = '"+username+"'";
+				
+				stmt = c.createStatement();
+				rs = stmt.executeQuery(query);
+				if (rs.getString(1).equals(username)) {
+					return 2;
+				}
+				return 1;
 			}
 			
 		} catch (SQLException e) {
@@ -165,7 +173,7 @@ public class UserDatabase {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return false;
+		return 0;
 	}
 	
 	public boolean checkPassword(String username, String password, String tableName)
@@ -232,7 +240,7 @@ public class UserDatabase {
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
 				+ "='%s' WHERE Username='%s'", dataToInput, userName);
-		boolean exists;
+		int exists = 0;
 		try
 		{
 			openConnection();
@@ -240,12 +248,8 @@ public class UserDatabase {
 			{
 				exists = validateUsername(userName);
 			}
-			else
-			{
-				exists = false;
-			}
 			
-			if(exists)
+			if(exists!=0)
 			{
 				
 				stmt = c.createStatement();
