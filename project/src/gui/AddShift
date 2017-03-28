@@ -19,7 +19,7 @@ import console.Console;
 import console.Menu;
 
 //TN - Class to build basic GUI elements for reserving Shifts - such as text fields
-// and field position. Includes login button
+// and field position. Includes confirmation
 // To call from another class use the following -
 // Application.launch(AddShift.class, args); 
 public class AddShift extends Application {
