@@ -38,6 +38,7 @@ public class UserDatabase {
 	//JM Param = Variable number of Strings (Array)
 	public void CreateDatabaseTable(String... strings)
 	{
+
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -74,6 +75,7 @@ public class UserDatabase {
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
+
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -85,6 +87,7 @@ public class UserDatabase {
 	//JM Insert data into database.
 	public boolean CreateDataEntry(String...strings) 
 	{
+
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
@@ -120,6 +123,7 @@ public class UserDatabase {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
+
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
