@@ -192,20 +192,31 @@ public class ABS
 		//TODO: Login function should check both customer & b.o. accounts
 		
 		// check if username exists
-		if (db.validateUsername(username))
+		if (db.validateUsername(username) == 1)
 		{
 			// test the password
 			if (db.checkPassword(username, password, "Customers"))
 			{
-				// TODO: go to the correct submenu depending on account type
 				customerMenu();
 			}
 			else {
 				console.alert("Invalid password.");
 			}
 		}
+		else if (db.validateUsername(username) == 2)
+		{
+			// test the password
+			if (db.checkPassword(username, password, "BusinessOwner"))
+			{
+				customerMenu();
+			}
+			else
+			{
+				console.alert("Invalid password.");
+			}
+		}
 		else {
-			console.alert("Username Exists.");
+			console.alert("Username Not Found.");
 		}
 	}
 	
