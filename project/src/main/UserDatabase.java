@@ -313,12 +313,13 @@ public class UserDatabase {
 		         String Password = rs.getString("Password");
 
 		         //Display values
-		         System.out.println("\nFirst: " + first);
+		         System.out.println("First: " + first);
 		         System.out.println("Last: " + last);
 		         System.out.println("Email: " + email);
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password + "\n");
+		         System.out.println("Password: " + Password);
+		         System.out.println();
 		      }
 			closeConnection();
 		} catch(SQLException e) {
@@ -357,6 +358,7 @@ public class UserDatabase {
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password);
+		         System.out.println();
 		      }
 			closeConnection();
 		} catch(SQLException e) {

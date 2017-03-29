@@ -51,9 +51,9 @@ public class ABS
 				customerRegister();
 				break;
 			case "[debug] print customer db":
-				console.alert("Customer:");
+				console.alert("Customers:");
 				db.getCustomerDataEntries();
-				console.alert("Business Owners:");
+				console.alert("\nBusiness Owners:");
 				db.getBusinessOwnerDataEntries();
 				break;
 			case "Exit":
@@ -209,7 +209,7 @@ public class ABS
 			// test the password
 			if (db.validatePassword(username, password, "BusinessOwner"))
 			{
-				customerMenu();
+				businessOwnerMenu();
 			}
 			else
 			{
