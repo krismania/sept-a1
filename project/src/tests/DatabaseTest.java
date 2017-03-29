@@ -21,22 +21,22 @@ public class DatabaseTest {
 		//Customer Table
 		db.CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)", "Username");
+						"Password varchar(15)","Type varchar(13)", "Username");
 				
 		//BusinessOwner Table
 		db.CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)", "Username");
+						"Password varchar(15)","Type varchar(13)", "Username");
 				
 	    //Employee Table
 		db.CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 				
 		db.CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-						"0400000000", "JamesRulez", "james");
+						"0400000000", "JamesRulez", "james", "Customer");
 				
 		db.CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-						"0400000000", "JohnRulez", "john");
+						"0400000000", "JohnRulez", "john", "BusinessOwner");
 				
 		db.CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 						"0400000000", "E001");
@@ -49,15 +49,21 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void validateUserDoesExistByUsername() throws SQLException
+	public void validateCustomerDoesExistByUsername() throws SQLException
 	{
-		assertEquals(true, db.validateUsername("JamesRulez"));
+		assertEquals(1, db.validateUsername("JamesRulez"));
+	}
+	
+	@Test
+	public void validateBusinessOwnerDoesExistByUsername() throws SQLException
+	{
+		assertEquals(2, db.validateUsername("JohnRulez"));
 	}
 	
 	@Test
 	public void validateUserDoesNotExistByUsername() throws SQLException
 	{
-		assertEquals(false, db.validateUsername("Blehasdji123"));
+		assertEquals(0, db.validateUsername("Blehasdji123"));
 	}
 	
 	@Test

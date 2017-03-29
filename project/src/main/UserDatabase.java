@@ -38,11 +38,20 @@ public class UserDatabase {
 	//JM Param = Variable number of Strings (Array)
 	public void CreateDatabaseTable(String... strings)
 	{
-
+		int primaryKeyId = 1;
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
 		{
+			if(strings[0].equals("Schedule"))
+			{
+				primaryKeyId = 2;
+				if(i+1 == strings.length)
+				{
+					strBuilder.append("FOREIGN KEY ("+ strings[i] + ") REFERENCES"
+							+ " Employee(EmpID)");
+				}
+			}
 			//JM If first element of array
 			if(i==0) 
 			{
@@ -50,10 +59,13 @@ public class UserDatabase {
 				strBuilder.append("CREATE TABLE " + strings[i] + "(");			
 			}
 			//JM If last element of array
-			else if(i+1 == strings.length)
+			else if(i+primaryKeyId == strings.length)
 			{
 				//JM Insert Primary Key element and close bracket [!].
-				strBuilder.append("PRIMARY KEY (" + strings[i] + "))");			
+				if(i+1 == strings.length)
+				{
+					strBuilder.append("PRIMARY KEY (" + strings[i] + "))");			
+				}
 			}
 			//JM If any element in between first and last
 			else
@@ -76,6 +88,7 @@ public class UserDatabase {
 		} catch (SQLException e) {
 			//JM Catch if table already exists
 
+			//e.printStackTrace();
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -137,43 +150,47 @@ public class UserDatabase {
 	//Customers/Business Owner JM
 	public int validateUsername(String username) 
 	{
-		String query = "SELECT Username "
-				+ "FROM (SELECT Username from Customers "
+		String query = "SELECT Username, Type "
+				+ "FROM (SELECT Username, Type from Customers "
 				+ "UNION "
-				+ "SELECT Username from BusinessOwner"
+				+ "SELECT Username, Type from BusinessOwner"
 				+ ") a "
 				+ "WHERE Username = '"+username+"'";
+		
+		int userType = 0;
+		
 		try 
 		{
 			openConnection();
 			stmt = c.createStatement();
 			rs = stmt.executeQuery(query);
-
-			//JM If rs contains anything, the name exists.
-			rs.next();
-			if (rs.getString(1).equals(username)) {
-				closeConnection();
-				openConnection();
-				query = "SELECT Username "
-						+ "FROM BusinessOwner"
-						+ "WHERE Username = '"+username+"'";
+			
+			while(rs.next())
+			{
+				String type = rs.getString("Type");
 				
-				stmt = c.createStatement();
-				rs = stmt.executeQuery(query);
-				if (rs.getString(1).equals(username)) {
-					return 2;
+				if(type.equals("BusinessOwner"))
+				{
+					userType = 2;
 				}
-				return 1;
+				else
+				{
+					userType = 1;
+				}
 			}
+			
+			closeConnection();
+			
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
+			e.printStackTrace();
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return 0;
+		return userType;
 	}
 	
 	public boolean checkPassword(String username, String password, String tableName)
@@ -353,6 +370,43 @@ public class UserDatabase {
 		}
 	}
 	
+	public void getShifts() {
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM Employee NATURAL JOIN Schedule";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+		         String empID = rs.getString("EmpID");
+		         String shiftID = rs.getString("ShiftID");
+
+		         //Display values
+		         System.out.println("First: " + first);
+		         System.out.println("Last: " + last);
+		         System.out.println("Email: " + email);
+		         System.out.println("Phone: " + phone);
+		         System.out.println("Username: " + empID);
+		         System.out.println("Shifts: " + shiftID);
+		      }
+			closeConnection();
+		}catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+	}
+	
 	public boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
@@ -388,26 +442,32 @@ public class UserDatabase {
 	
 	private void setupScript() {
 		//Customer Table
-		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
+				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//BusinessOwner Table
 		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
+				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 		
+		//Schedule Table
+		CreateDatabaseTable("Schedule", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
+				"Shift_ID", "EmpID");
+		
 		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-				"0400000000", "JamesRulez", "james");
+				"0400000000", "JamesRulez", "james", "Customers");
 		
 		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-				"0400000000", "JohnRulez", "john");
+				"0400000000", "JohnRulez", "john", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "E001");
+		
+		CreateDataEntry("Schedule", "Monday", "Morning", "S001", "E001");
 	}
 }
