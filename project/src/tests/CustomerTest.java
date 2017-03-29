@@ -51,4 +51,46 @@ public class CustomerTest
 	{
 		assertEquals("johndoe", customer.getUsername());
 	}
+	
+	
+	// test static validator methods. -kg
+	
+	@Test
+	public void testValidName()
+	{
+		assertTrue(Customer.validateName("John"));
+	}
+	
+	@Test
+	public void testInvalidName()
+	{
+		assertFalse(Customer.validateName(""));
+	}
+	
+	@Test
+	public void testValidEmail()
+	{
+		assertTrue(Customer.validateEmail("some-email@gmail.com"));
+	}
+	
+	@Test
+	public void testInvalidEmail1()
+	{
+		// no @ symbol
+		assertFalse(Customer.validateEmail("myemail.website.com"));
+	}
+	
+	@Test
+	public void testInvalidEmail2()
+	{
+		// no . symbol
+		assertFalse(Customer.validateEmail("emailwithout@dots"));
+	}
+	
+	@Test
+	public void testInvalidEmail3()
+	{
+		// no . or @ symbols
+		assertFalse(Customer.validateEmail("thisisdefinitelynotanemail"));
+	}
 }
