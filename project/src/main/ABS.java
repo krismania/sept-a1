@@ -113,7 +113,7 @@ public class ABS
 		}
 	}
 	
-	/*
+	/**
 	 *  Add new employee
 	 *  @author RK
 	 */
