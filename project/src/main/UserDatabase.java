@@ -1,21 +1,18 @@
 package main;
 import java.sql.*;
 
-/* JM User Database implementation. 
- * Loads database connection to that specified in line 19. Will then invoke 
- * scripts to create users automatically
-*/
 public class UserDatabase {
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
 	String dbName;
 	
-	//JM Constructor
+	//JM Constructor, reads the name of the database file to work with.
 	public UserDatabase(String nameOfDatabase) {
 		dbName = nameOfDatabase;
 	}
-	
+
+//***CREATE METHODS***JM
 	public void CreateDatabase()
 	{
 		//JM Initialize a connection
@@ -67,15 +64,16 @@ public class UserDatabase {
 			}
 		}
 		
+		//JM Temporary work around - may need to change in Assignment 2
+		//JM If table is schedule
 		if(strings[0].equals("Schedule"))
 		{
+			//Delete previous ) and add foreign key.
 			strBuilder.deleteCharAt(strBuilder.length() - 1);
 			strBuilder.append(", FOREIGN KEY (EmpID) references"
 					+ " Employee (EmpID))");	
 		}
 		
-		
-		//JM Convert string array, into a string.
 		String sql = strBuilder.toString();
 		
 		try 
@@ -146,7 +144,7 @@ public class UserDatabase {
 		   
 	}
 	
-	//***VALIDATION METHODS***JM
+//***VALIDATION METHODS***JM
 	//Customer/Business Owner JM
 	public int validateUsername(String username) 
 	{
@@ -193,7 +191,7 @@ public class UserDatabase {
 		return userType;
 	}
 	
-	public boolean checkPassword(String username, String password, String tableName)
+	public boolean validatePassword(String username, String password, String tableName)
 	{
 		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
 		
@@ -260,7 +258,6 @@ public class UserDatabase {
 		int exists = 0;
 		try
 		{
-			openConnection();
 			if(userName != null)
 			{
 				exists = validateUsername(userName);
@@ -268,7 +265,7 @@ public class UserDatabase {
 			
 			if(exists!=0)
 			{
-				
+				openConnection();
 				stmt = c.createStatement();
 				stmt.executeUpdate(sql);
 				System.out.println("Value has been updated for: " + userName);
@@ -293,6 +290,7 @@ public class UserDatabase {
 		return false;
 	}
 	
+//***RETRIEVE METHODS***JM
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
 	{		
@@ -403,6 +401,7 @@ public class UserDatabase {
 		}
 	}
 	
+//***CONNECTION METHODS***JM
 	public boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
@@ -435,7 +434,8 @@ public class UserDatabase {
 			return false;
 		}
 	}
-	
+
+//***SCRIPT METHODS***JM
 	private void setupScript() {
 		//Customer Table
 		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",

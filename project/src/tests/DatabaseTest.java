@@ -81,25 +81,25 @@ public class DatabaseTest {
 	@Test
 	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(true, db.checkPassword("JamesRulez", "james", "Customer"));
+		assertEquals(true, db.validatePassword("JamesRulez", "james", "Customer"));
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(false, db.checkPassword("JamesRulez", "ksA1jdlksa", "Customer"));
+		assertEquals(false, db.validatePassword("JamesRulez", "ksA1jdlksa", "Customer"));
 	}
 	
 	@Test
 	public void validatePasswordDoesMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(true, db.checkPassword("JohnRulez", "john", "BusinessOwner"));
+		assertEquals(true, db.validatePassword("JohnRulez", "john", "BusinessOwner"));
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(false, db.checkPassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+		assertEquals(false, db.validatePassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
 	}
 	
 	@Test
