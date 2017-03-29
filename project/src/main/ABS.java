@@ -77,6 +77,11 @@ public class ABS
 		{
 			switch (menu.prompt())
 			{
+			
+			case "Add a new employee":
+				addEmployee();
+				break;
+			
 			case "Log out":
 				exit = true;
 				break;
@@ -107,6 +112,57 @@ public class ABS
 			}
 		}
 	}
+	
+	/*
+	 *  Add new employee
+	 *  @author RK
+	 */
+	
+	private void addEmployee(){
+		
+		// declare variables
+		String firstName;
+		String lastName;
+		String email;
+		String employeeID;
+		
+		// prompt user for input
+		
+		do{
+			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
+			
+			// output error if no first name is entered
+			if(firstName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(firstName.isEmpty());
+		
+		do{
+			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
+			
+			// output error if no last name is entered
+			if(lastName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(lastName.isEmpty());
+		
+		do{
+			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
+			
+			if(!email.contains("@") || !email.contains(".")){
+				System.out.println("Error: Invalid email address format. Must contain @ and .");
+			}
+			
+		}while(!email.contains("@") || !email.contains("."));
+			
+		System.out.println("Enter Employees Employee Number: ");
+		employeeID = sc.nextLine();
+		
+		System.out.println("Employee successfully added!");	
+	}
+
 	
 	
 	/**
@@ -149,6 +205,42 @@ public class ABS
 		lastName = accountInfoInput.get("lastName");
 		email = accountInfoInput.get("email");
 		phoneNumber = accountInfoInput.get("phoneNumber");
+		
+		// collect customer info @author -RK
+		
+		// reprompt customer until valid first name
+		do{
+			System.out.print("Enter your first name: "); firstName = sc.nextLine();
+			
+			// output error if no first name is entered
+			if(firstName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(firstName.isEmpty());
+		
+		// reprompt customer until valid last name
+		do{
+			System.out.print("Enter your last name: "); lastName = sc.nextLine();
+			
+			// output error if no last name is entered
+			if(lastName.isEmpty()){
+				System.out.println("Error: A first name must be entered");
+			}
+			
+		}while(lastName.isEmpty());
+		
+		do{
+			System.out.print("Enter an email address: "); email = sc.nextLine();
+			
+			if(!email.contains("@") || !email.contains(".")){
+				System.out.println("Error: Invalid email address format. Must contain @ and .");
+			}
+			
+		}while(!email.contains("@") || !email.contains("."));
+			
+		
+		System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
 		
 		// create the Customer instance -kg
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
