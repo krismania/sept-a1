@@ -50,7 +50,7 @@ public class ABS
 				customerRegister();
 				break;
 			case "[debug] print customer db":
-				console.alert("Customers:");
+				console.alert("Customer:");
 				db.getCustomerDataEntries();
 				console.alert("Business Owners:");
 				db.getBusinessOwnerDataEntries();
@@ -157,7 +157,7 @@ public class ABS
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		created = db.CreateDataEntry("Customer", firstName, lastName, email, phoneNumber, username, password, "Customer");
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -195,7 +195,7 @@ public class ABS
 		if (db.validateUsername(username) == 1)
 		{
 			// test the password
-			if (db.checkPassword(username, password, "Customers"))
+			if (db.checkPassword(username, password, "Customer"))
 			{
 				customerMenu();
 			}
@@ -230,9 +230,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.validateUsername(username, "Customers"))
+//		if (db.validateUsername(username, "Customer"))
 //		{
-//			if (db.checkPassword(username, password, "Customers"))
+//			if (db.checkPassword(username, password, "Customer"))
 //			{
 //				return true;
 //			}

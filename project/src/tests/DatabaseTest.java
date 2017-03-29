@@ -19,7 +19,7 @@ public class DatabaseTest {
 		db = new UserDatabase("JUnitDataBase");
 		db.CreateDatabase();
 		//Customer Table
-		db.CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+		db.CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
 						"Password varchar(15)","Type varchar(13)", "Username");
 				
@@ -32,7 +32,7 @@ public class DatabaseTest {
 		db.CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 				
-		db.CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
+		db.CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 						"0400000000", "JamesRulez", "james", "Customer");
 				
 		db.CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
@@ -81,13 +81,13 @@ public class DatabaseTest {
 	@Test
 	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(true, db.checkPassword("JamesRulez", "james", "Customers"));
+		assertEquals(true, db.checkPassword("JamesRulez", "james", "Customer"));
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(false, db.checkPassword("JamesRulez", "ksA1jdlksa", "Customers"));
+		assertEquals(false, db.checkPassword("JamesRulez", "ksA1jdlksa", "Customer"));
 	}
 	
 	@Test

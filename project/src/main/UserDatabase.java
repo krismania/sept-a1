@@ -43,15 +43,7 @@ public class UserDatabase {
 		
 		for(int i = 0; i < strings.length; i++)
 		{
-			if(strings[0].equals("Schedule"))
-			{
-				primaryKeyId = 2;
-				if(i+1 == strings.length)
-				{
-					strBuilder.append("FOREIGN KEY ("+ strings[i] + ") REFERENCES"
-							+ " Employee(EmpID)");
-				}
-			}
+			
 			//JM If first element of array
 			if(i==0) 
 			{
@@ -74,6 +66,14 @@ public class UserDatabase {
 				strBuilder.append(strings[i] + ", ");
 			}
 		}
+		
+		if(strings[0].equals("Schedule"))
+		{
+			strBuilder.deleteCharAt(strBuilder.length() - 1);
+			strBuilder.append(", FOREIGN KEY (EmpID) references"
+					+ " Employee (EmpID))");	
+		}
+		
 		
 		//JM Convert string array, into a string.
 		String sql = strBuilder.toString();
@@ -147,11 +147,11 @@ public class UserDatabase {
 	}
 	
 	//***VALIDATION METHODS***JM
-	//Customers/Business Owner JM
+	//Customer/Business Owner JM
 	public int validateUsername(String username) 
 	{
 		String query = "SELECT Username, Type "
-				+ "FROM (SELECT Username, Type from Customers "
+				+ "FROM (SELECT Username, Type from Customer "
 				+ "UNION "
 				+ "SELECT Username, Type from BusinessOwner"
 				+ ") a "
@@ -302,7 +302,7 @@ public class UserDatabase {
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT Firstname, Lastname, Email, Phone,"
-					+ "Username, Password FROM Customers";
+					+ "Username, Password FROM Customer";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
@@ -384,18 +384,14 @@ public class UserDatabase {
 		         //Retrieve by column name
 		         String first = rs.getString("Firstname");
 		         String last = rs.getString("Lastname");
-		         String email = rs.getString("Email");
-		         String phone = rs.getString("Phone");
-		         String empID = rs.getString("EmpID");
-		         String shiftID = rs.getString("ShiftID");
+		         String shiftID = rs.getString("Shift_ID");
+		         String day = rs.getString("Day");
+		         String time = rs.getString("Time");
 
 		         //Display values
-		         System.out.println("First: " + first);
-		         System.out.println("Last: " + last);
-		         System.out.println("Email: " + email);
-		         System.out.println("Phone: " + phone);
-		         System.out.println("Username: " + empID);
-		         System.out.println("Shifts: " + shiftID);
+		         System.out.println("\nName: " + first + " " + last);
+		         System.out.println("Shift ID: " + shiftID);
+		         System.out.println("Day and Time: " + day + ", " + time);
 		      }
 			closeConnection();
 		}catch(SQLException e) {
@@ -457,10 +453,10 @@ public class UserDatabase {
 		
 		//Schedule Table
 		CreateDatabaseTable("Schedule", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
-				"Shift_ID", "EmpID");
+				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID
 		
-		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-				"0400000000", "JamesRulez", "james", "Customers");
+		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
+				"0400000000", "JamesRulez", "james", "Customer");
 		
 		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
 				"0400000000", "JohnRulez", "john", "BusinessOwner");
@@ -469,5 +465,7 @@ public class UserDatabase {
 				"0400000000", "E001");
 		
 		CreateDataEntry("Schedule", "Monday", "Morning", "S001", "E001");
+		CreateDataEntry("Schedule", "Tuesday", "Afternoon", "S002", "E001");
+		CreateDataEntry("Schedule", "Wednesday", "Evening", "S003", "E001");
 	}
 }
