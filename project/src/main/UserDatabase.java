@@ -1,5 +1,6 @@
 package main;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserDatabase {
 	Connection c = null;
@@ -370,7 +371,8 @@ public class UserDatabase {
 		}
 	}
 	
-	public void getShifts() {
+	public ArrayList<String> getShifts() {
+		ArrayList<String> Shifts = new ArrayList<String>();
 		try
 		{
 			openConnection();
@@ -381,19 +383,23 @@ public class UserDatabase {
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
-		         //Retrieve by column name
+		         //JM Retrieve by column name
 		         String first = rs.getString("Firstname");
 		         String last = rs.getString("Lastname");
 		         String shiftID = rs.getString("Shift_ID");
 		         String day = rs.getString("Day");
 		         String time = rs.getString("Time");
 
-		         //Display values
-		         System.out.println("\nName: " + first + " " + last);
-		         System.out.println("Shift ID: " + shiftID);
-		         System.out.println("Day and Time: " + day + ", " + time);
+		         //JM Testing! Display values
+		         String empAndShift = ("\nName: " + first + " " + last + 
+		        		 " - Shift ID: " + shiftID);
+		         String andTime = ("Day and Time: " + day + ", " + time);
+		         String combined = String.format("%s\n%s\n", empAndShift, andTime);
+		         System.out.println(combined);
+		         Shifts.add(combined);
 		      }
 			closeConnection();
+			return Shifts;
 		}catch(SQLException e) {
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
@@ -401,6 +407,7 @@ public class UserDatabase {
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
+		return Shifts;
 	}
 	
 //***CONNECTION METHODS***JM
@@ -455,7 +462,7 @@ public class UserDatabase {
 		
 		//Schedule Table
 		CreateDatabaseTable("Schedule", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
-				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID
+				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
@@ -466,8 +473,12 @@ public class UserDatabase {
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "E001");
 		
+		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
+				"0400000000", "E002");
+		
 		CreateDataEntry("Schedule", "Monday", "Morning", "S001", "E001");
 		CreateDataEntry("Schedule", "Tuesday", "Afternoon", "S002", "E001");
 		CreateDataEntry("Schedule", "Wednesday", "Evening", "S003", "E001");
+		CreateDataEntry("Schedule", "Sunday", "Afternoon", "S004", "E002");
 	}
 }
