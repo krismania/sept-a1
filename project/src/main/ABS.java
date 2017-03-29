@@ -20,7 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
-		db.updateDataEntry("Customer", "JamesRulez", "wkwkwA1", "Password");
+		
 	}
 	
 	
