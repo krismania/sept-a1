@@ -20,6 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
+		
 	}
 	
 	
