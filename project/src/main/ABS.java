@@ -242,8 +242,8 @@ public class ABS
 		else
 		{
 			// employee found, add the shift
-			
-			// TODO: add shift to database
+			// TODO: generate a Shift ID
+			db.CreateDataEntry("Schedule", shiftDay, shiftTime, "S001", employeeID);
 		}
 		
 //		do{
