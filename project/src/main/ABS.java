@@ -238,54 +238,86 @@ public class ABS
 		}
 		
 		// collect customer info -kg
-		HashMap<String, String> accountInfoInput = console.accountInfoPrompt();
-		firstName = accountInfoInput.get("firstName");
-		lastName = accountInfoInput.get("lastName");
-		email = accountInfoInput.get("email");
-		phoneNumber = accountInfoInput.get("phoneNumber");
+		HashMap<String, String> accountInfoInput;
+		boolean accepted = false;
+		
+		do
+		{
+			// prompt
+			accountInfoInput = console.accountInfoPrompt();
+			
+			// copy fields into local variables
+			firstName = accountInfoInput.get("firstName");
+			lastName = accountInfoInput.get("lastName");
+			email = accountInfoInput.get("email");
+			phoneNumber = accountInfoInput.get("phoneNumber");
+			
+			// verify each field
+			if (!Customer.validateName(firstName))
+			{
+				console.alert("Error: A first name must be entered");
+			}
+			else if (!Customer.validateName(lastName))
+			{
+				console.alert("Error: A last name must be entered");
+			}
+			else if (!Customer.validateEmail(email))
+			{
+				console.alert("Error: Invalid email address format. Must contain @ and .");
+			}
+			else if (!Customer.validatePhoneNumber(phoneNumber))
+			{
+				console.alert("Error: A contact number must be entered");
+			}
+			else {
+				accepted = true;
+			}
+		}
+		while (!accepted);
 		
 		// collect customer info @author -RK
+		// moved this code above to utilise the prompts that are already printed. -kg
 		
 		// reprompt customer until valid first name
-		do{
-			System.out.print("Enter your first name: "); firstName = sc.nextLine();
-			
-			// output error if no first name is entered
-			if(!Customer.validateName(firstName)){
-				System.out.println("Error: A first name must be entered");
-			}
-			
-		}while(!Customer.validateName(firstName));
-		
-		
-		// reprompt customer until valid last name
-		do{
-			System.out.print("Enter your last name: "); lastName = sc.nextLine();
-			
-			// output error if no last name is entered
-			if(!Customer.validateName(lastName)){
-				System.out.println("Error: A last name must be entered");
-			}
-			
-		}while(!Customer.validateName(lastName));
-		
-		do{
-			System.out.print("Enter an email address: "); email = sc.nextLine();
-			
-			if(!Customer.validateEmail(email)){
-				System.out.println("Error: Invalid email address format. Must contain @ and .");
-			}
-			
-		}while(!Customer.validateEmail(email));
-			
-		do{
-			System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
-			
-			if(!Customer.validatePhoneNumber(phoneNumber)){
-				System.out.println("Error: A contact number must be entered");
-			}
-			
-		}while(!Customer.validatePhoneNumber(phoneNumber));
+//		do{
+//			System.out.print("Enter your first name: "); firstName = sc.nextLine();
+//			
+//			// output error if no first name is entered
+//			if(!Customer.validateName(firstName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!Customer.validateName(firstName));
+//		
+//		
+//		// reprompt customer until valid last name
+//		do{
+//			System.out.print("Enter your last name: "); lastName = sc.nextLine();
+//			
+//			// output error if no last name is entered
+//			if(!Customer.validateName(lastName)){
+//				System.out.println("Error: A last name must be entered");
+//			}
+//			
+//		}while(!Customer.validateName(lastName));
+//		
+//		do{
+//			System.out.print("Enter an email address: "); email = sc.nextLine();
+//			
+//			if(!Customer.validateEmail(email)){
+//				System.out.println("Error: Invalid email address format. Must contain @ and .");
+//			}
+//			
+//		}while(!Customer.validateEmail(email));
+//			
+//		do{
+//			System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+//			
+//			if(!Customer.validatePhoneNumber(phoneNumber)){
+//				System.out.println("Error: A contact number must be entered");
+//			}
+//			
+//		}while(!Customer.validatePhoneNumber(phoneNumber));
 
 		
 		// create the Customer instance -kg
