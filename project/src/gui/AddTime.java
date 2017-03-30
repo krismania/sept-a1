@@ -23,14 +23,22 @@ import console.Menu;
 // To call from another class use the following -
 // Application.launch(AddEmployee.class, args); 
 public class AddTime extends Application {
-	    private TextField tfEmpNum = new TextField();
-	    private TextField tfDay = new TextField();
-    	private Button btAddDay = new Button("Add Staff Shift Day");
+    private TextField tfEmpNum = new TextField();
+    private TextField tfDay = new TextField();
+    private Button btAddDay = new Button("Add Staff Shift Day");
+    
     public void start(Stage primaryStage) 
     {
-    	
     	GridPane gridPane = new GridPane();
-    	gridPane.setHgap(5);
+        
+        /*Scene sceneLogin = new Scene(gridPane);
+        Scene sceneAddEmp = new Scene(gridPane);
+        Scene sceneAddTime = new Scene(gridPane);
+        Scene sceneAddShift = new Scene(gridPane);
+        Stage window = primaryStage;*/
+    	
+        
+        gridPane.setHgap(5);
     	gridPane.setVgap(5);
     	gridPane.add(new Label("Enter Employee Number"), 0, 0);
     	gridPane.add(tfEmpNum, 1, 0);
@@ -43,18 +51,14 @@ public class AddTime extends Application {
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
     	tfDay.setAlignment(Pos.BOTTOM_RIGHT);
     	GridPane.setHalignment(btAddDay, HPos.RIGHT);
-    	btAddDay.setOnAction(e -> setShift());
-
+    	btAddDay.setOnAction(e -> {    		
+    	String empNum = tfEmpNum.getText();
+		String Day = tfDay.getText();
+    	});
+    	
     	Scene scene = new Scene(gridPane, 500, 250);
     	primaryStage.setTitle("Add Staff Availability");
     	primaryStage.setScene(scene);
-    	primaryStage.show();
-    	}
-        //TN - Calls AddShift Menu GUI and captures Employee Number and Day variables
-    	private void setShift() {
-            //TN Variable capture not yet implemented
-    	    Application.launch(AddSift.class, args); 
-    	    
-    	  
-    	}
+    	primaryStage.show();   	
+    }
 }
