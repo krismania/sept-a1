@@ -51,14 +51,16 @@ public class AddTime extends Application {
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
     	tfDay.setAlignment(Pos.BOTTOM_RIGHT);
     	GridPane.setHalignment(btAddDay, HPos.RIGHT);
-    	btAddDay.setOnAction(e -> {    		
-    	String empNum = tfEmpNum.getText();
-		String Day = tfDay.getText();
-    	});
+    	btAddDay.setOnAction(e -> addTime());
     	
     	Scene scene = new Scene(gridPane, 500, 250);
     	primaryStage.setTitle("Add Staff Availability");
     	primaryStage.setScene(scene);
     	primaryStage.show();   	
+    }
+    private void addTime() {  
+    		
+      	String empNum = tfEmpNum.getText();
+    	String Day = tfDay.getText();
     }
 }
