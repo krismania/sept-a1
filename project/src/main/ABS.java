@@ -148,6 +148,7 @@ public class ABS
 			
 		}while(lastName.isEmpty());
 		
+		/*
 		do{
 			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
 			
@@ -156,14 +157,32 @@ public class ABS
 			}
 			
 		}while(!email.contains("@") || !email.contains("."));
+		*/
 			
 		System.out.println("Enter Employees Employee Number: ");
 		employeeID = sc.nextLine();
 		
 		System.out.println("Employee successfully added!");	
 	}
-
 	
+	/*
+	 *  Add new shifts
+	 *  @author RK
+	 */
+	
+	private void addShifts(){
+		// declare variables
+		String employeeID;
+		String shiftDay;
+		
+		// prompt user for input
+		System.out.println("Enter employee ID: ");
+		employeeID = sc.nextLine();
+		
+		System.out.println("Enter shift day: ");
+		shiftDay = sc.nextLine();
+		
+	}
 	
 	/**
 	 * Interface for registering a new customer. Adapts code from Richard's
@@ -213,34 +232,42 @@ public class ABS
 			System.out.print("Enter your first name: "); firstName = sc.nextLine();
 			
 			// output error if no first name is entered
-			if(firstName.isEmpty()){
+			if(!Customer.validateName(firstName)){
 				System.out.println("Error: A first name must be entered");
 			}
 			
-		}while(firstName.isEmpty());
+		}while(!Customer.validateName(firstName));
+		
 		
 		// reprompt customer until valid last name
 		do{
 			System.out.print("Enter your last name: "); lastName = sc.nextLine();
 			
 			// output error if no last name is entered
-			if(lastName.isEmpty()){
-				System.out.println("Error: A first name must be entered");
+			if(!Customer.validateName(lastName)){
+				System.out.println("Error: A last name must be entered");
 			}
 			
-		}while(lastName.isEmpty());
+		}while(!Customer.validateName(lastName));
 		
 		do{
 			System.out.print("Enter an email address: "); email = sc.nextLine();
 			
-			if(!email.contains("@") || !email.contains(".")){
+			if(!Customer.validateEmail(email)){
 				System.out.println("Error: Invalid email address format. Must contain @ and .");
 			}
 			
-		}while(!email.contains("@") || !email.contains("."));
+		}while(!Customer.validateEmail(email));
 			
-		
-		System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+		do{
+			System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+			
+			if(!Customer.validatePhoneNumber(phoneNumber)){
+				System.out.println("Error: A contact number must be entered");
+			}
+			
+		}while(!Customer.validatePhoneNumber(phoneNumber));
+
 		
 		// create the Customer instance -kg
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
