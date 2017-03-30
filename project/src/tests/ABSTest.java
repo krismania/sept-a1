@@ -9,8 +9,8 @@ import main.ABS;
 
 public class ABSTest
 {
-	// test static validator methods. -kg
-	
+
+	// test static validator methods. -kg	
 	@Test
 	public void testValidName()
 	{
@@ -49,4 +49,22 @@ public class ABSTest
 		// no . or @ symbols
 		assertFalse(ABS.validateEmail("thisisdefinitelynotanemail"));
 	}
+	
+	// @author - RK
+	@Test
+	public void testInvalidEmail4(){
+		assertFalse(ABS.validateEmail("richard@kuoch@"));
+	}
+	
+	//@author -RK
+	@Test
+	
+	public void testPhoneNumber(){
+		assertFalse(ABS.validatePhoneNumber(""));
+	}
+	
+	public void testPhoneNumber2(){
+		assertTrue(ABS.validatePhoneNumber("98029744"));
+	}
+	
 }
