@@ -90,6 +90,13 @@ public class Console
 		return prompt(fields);
 	}
 	
+	
+	/**
+	 * Prompts the user for shift information using {@link #prompt(LinkedHashMap) prompt}.
+	 * @return {@link HashMap} containing the keys {@code "employeeID"}, {@code "shiftDay"}
+	 * and {@code "shiftTime"}.
+	 */
+	
 	public HashMap<String, String> addShiftPrompt()
 	{
 		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
