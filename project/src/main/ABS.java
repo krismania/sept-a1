@@ -208,7 +208,8 @@ public class ABS
 		console.alert("Employee successfully added!");
 	}
 	
-	/*
+	
+	/**
 	 *  Add new shifts
 	 *  @author RK
 	 */
@@ -477,11 +478,14 @@ public class ABS
 //		return false;
 //	}
 	
-	// methods for validating information author - RK
+	
+	/**
+	 * Returns true if a valid name is input.
+	 * @author RK
+	 */
 	
 	public static boolean validateName(String input)
 	{
-		// check that name is valid (i.e. it exists) and return true if it is.
 		if(!input.isEmpty()){
 			return true;
 		}
@@ -489,18 +493,28 @@ public class ABS
 		return false;
 	}
 	
+	
+	/**
+	 * Check that email is valid and return true if it is.
+	 * @author RK
+	 */
+	
 	public static boolean validateEmail(String input)
 	{
-		// check that email is valid and return true if it is.
 		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
 			return true;
 		}
 		return false;
 	}
 	
+	
+	/**
+	 * Check that phone number is valid and return true if it is.
+	 * @author RK
+	 */
+	
 	public static boolean validatePhoneNumber(String input)
 	{
-		// check that phone number is valid and return true if it is
 		if(!input.isEmpty()){
 			return true;
 		}
