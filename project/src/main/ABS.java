@@ -174,7 +174,8 @@ public class ABS
 		// declare variables
 		String employeeID;
 		String shiftDay;
-		boolean exists = false;
+		String shiftTime;
+		boolean employeeDB = false;
 		
 		
 		// prompt user for input
@@ -183,23 +184,17 @@ public class ABS
 			System.out.println("Enter employee ID: ");
 			employeeID = sc.nextLine();
 			
-			if(exists=true){
-				System.out.println("Employee ID already exists in the database");
+			if(employeeDB = true){
+				System.out.println("Employee ID cannot be found in database");
 			}
 		}while(false);
 		
-		// check db that shift day and time have already been selected
+		System.out.println("Enter shift day: ");
+		shiftDay = sc.nextLine();
 		
-		do{
-			System.out.println("Enter shift day: ");
-			shiftDay = sc.nextLine();
-			
-			System.out.println("Select a shift time");
-			System.out.println("Morning");
-			System.out.println("Afternoon");
-			System.out.println("Evening");
-			
-		}while(false);
+		System.out.println("Shift times: Morning  Afternoon Evening");
+		System.out.println("Select a shift time:");
+		shiftTime = sc.nextLine();
 		
 	}
 	
