@@ -1,21 +1,19 @@
 package main;
 import java.sql.*;
+import java.util.ArrayList;
 
-/* JM User Database implementation. 
- * Loads database connection to that specified in line 19. Will then invoke 
- * scripts to create users automatically
-*/
 public class UserDatabase {
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
 	String dbName;
 	
-	//JM Constructor
+	//JM Constructor, reads the name of the database file to work with.
 	public UserDatabase(String nameOfDatabase) {
 		dbName = nameOfDatabase;
 	}
-	
+
+//***CREATE METHODS***JM
 	public void CreateDatabase()
 	{
 		//JM Initialize a connection
@@ -38,11 +36,12 @@ public class UserDatabase {
 	//JM Param = Variable number of Strings (Array)
 	public void CreateDatabaseTable(String... strings)
 	{
-
+		int primaryKeyId = 1;
 		StringBuilder strBuilder = new StringBuilder();
 		
 		for(int i = 0; i < strings.length; i++)
 		{
+			
 			//JM If first element of array
 			if(i==0) 
 			{
@@ -50,10 +49,13 @@ public class UserDatabase {
 				strBuilder.append("CREATE TABLE " + strings[i] + "(");			
 			}
 			//JM If last element of array
-			else if(i+1 == strings.length)
+			else if(i+primaryKeyId == strings.length)
 			{
 				//JM Insert Primary Key element and close bracket [!].
-				strBuilder.append("PRIMARY KEY (" + strings[i] + "))");			
+				if(i+1 == strings.length)
+				{
+					strBuilder.append("PRIMARY KEY (" + strings[i] + "))");			
+				}
 			}
 			//JM If any element in between first and last
 			else
@@ -63,7 +65,16 @@ public class UserDatabase {
 			}
 		}
 		
-		//JM Convert string array, into a string.
+		//JM Temporary work around - may need to change in Assignment 2
+		//JM If table is schedule
+		if(strings[0].equals("Schedule"))
+		{
+			//Delete previous ) and add foreign key.
+			strBuilder.deleteCharAt(strBuilder.length() - 1);
+			strBuilder.append(", FOREIGN KEY (EmpID) references"
+					+ " Employee (EmpID))");	
+		}
+		
 		String sql = strBuilder.toString();
 		
 		try 
@@ -76,6 +87,7 @@ public class UserDatabase {
 		} catch (SQLException e) {
 			//JM Catch if table already exists
 
+			//e.printStackTrace();
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -133,45 +145,40 @@ public class UserDatabase {
 		   
 	}
 	
-	//***VALIDATION METHODS***JM
-	//Customers/Business Owner JM
+//***VALIDATION METHODS***JM
+	//Customer/Business Owner JM
 	public int validateUsername(String username) 
 	{
-		int userType = 0;
-		String query = "SELECT Username "
-				+ "FROM (SELECT Username from Customers "
+		String query = "SELECT Username, Type "
+				+ "FROM (SELECT Username, Type from Customer "
 				+ "UNION "
-				+ "SELECT Username from BusinessOwner"
+				+ "SELECT Username, Type from BusinessOwner"
 				+ ") a "
-				+ "WHERE Username = '"+username+"'; "
-				+ "SELECT Username "
-				+ "FROM BusinessOwner "
 				+ "WHERE Username = '"+username+"'";
+		
+		int userType = 0;
+		
 		try 
 		{
-			System.out.println("[!] Checking for user.");
 			openConnection();
 			stmt = c.createStatement();
-			boolean results = stmt.execute(query);
-			int rsCount = 0;
+			rs = stmt.executeQuery(query);
 			
-			do
+			while(rs.next())
 			{
-				System.out.println("[!] Checking for Customer or Owner.");
-				if(results)
+				String type = rs.getString("Type");
+				
+				if(type.equals("BusinessOwner"))
 				{
-					rs = stmt.getResultSet();
-					rsCount++;
-					
-					while(rs.next()) 
-					{
-						userType++;
-					}
-					rs.close();
+					userType = 2;
 				}
-				results = stmt.getMoreResults();
-			} while(results);
+				else
+				{
+					userType = 1;
+				}
+			}
 			closeConnection();
+			
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -183,7 +190,7 @@ public class UserDatabase {
 		return userType;
 	}
 	
-	public boolean checkPassword(String username, String password, String tableName)
+	public boolean validatePassword(String username, String password, String tableName)
 	{
 		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
 		
@@ -250,7 +257,6 @@ public class UserDatabase {
 		int exists = 0;
 		try
 		{
-			openConnection();
 			if(userName != null)
 			{
 				exists = validateUsername(userName);
@@ -258,7 +264,7 @@ public class UserDatabase {
 			
 			if(exists!=0)
 			{
-				
+				openConnection();
 				stmt = c.createStatement();
 				stmt.executeUpdate(sql);
 				System.out.println("Value has been updated for: " + userName);
@@ -283,6 +289,7 @@ public class UserDatabase {
 		return false;
 	}
 	
+//***RETRIEVE METHODS***JM
 	//JM Obtain Data values from tables
 	public void getCustomerDataEntries() 
 	{		
@@ -292,7 +299,7 @@ public class UserDatabase {
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT Firstname, Lastname, Email, Phone,"
-					+ "Username, Password FROM Customers";
+					+ "Username, Password FROM Customer";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
@@ -305,12 +312,13 @@ public class UserDatabase {
 		         String Password = rs.getString("Password");
 
 		         //Display values
-		         System.out.println("\nFirst: " + first);
+		         System.out.println("First: " + first);
 		         System.out.println("Last: " + last);
 		         System.out.println("Email: " + email);
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password + "\n");
+		         System.out.println("Password: " + Password);
+		         System.out.println();
 		      }
 			closeConnection();
 		} catch(SQLException e) {
@@ -349,6 +357,7 @@ public class UserDatabase {
 		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password);
+		         System.out.println();
 		      }
 			closeConnection();
 		} catch(SQLException e) {
@@ -360,6 +369,46 @@ public class UserDatabase {
 		}
 	}
 	
+	public ArrayList<String> getShifts() {
+		ArrayList<String> Shifts = new ArrayList<String>();
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM Employee NATURAL JOIN Schedule";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //JM Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String shiftID = rs.getString("Shift_ID");
+		         String day = rs.getString("Day");
+		         String time = rs.getString("Time");
+
+		         //JM Testing! Display values
+		         String empAndShift = ("\nName: " + first + " " + last + 
+		        		 " - Shift ID: " + shiftID);
+		         String andTime = ("Day and Time: " + day + ", " + time);
+		         String combined = String.format("%s\n%s\n", empAndShift, andTime);
+		         System.out.println(combined);
+		         Shifts.add(combined);
+		      }
+			closeConnection();
+			return Shifts;
+		}catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		return Shifts;
+	}
+	
+//***CONNECTION METHODS***JM
 	public boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
@@ -392,29 +441,42 @@ public class UserDatabase {
 			return false;
 		}
 	}
-	
+
+//***SCRIPT METHODS***JM
 	private void setupScript() {
 		//Customer Table
-		CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
+				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//BusinessOwner Table
 		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)", "Username");
+				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 		
-		CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-				"0400000000", "JamesRulez", "james");
+		//Schedule Table
+		CreateDatabaseTable("Schedule", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
+				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID.
+		
+		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
+				"0400000000", "JamesRulez", "james", "Customer");
 		
 		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-				"0400000000", "JohnRulez", "john");
+				"0400000000", "JohnRulez", "john", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "E001");
+		
+		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
+				"0400000000", "E002");
+		
+		CreateDataEntry("Schedule", "Monday", "Morning", "S001", "E001");
+		CreateDataEntry("Schedule", "Tuesday", "Afternoon", "S002", "E001");
+		CreateDataEntry("Schedule", "Wednesday", "Evening", "S003", "E001");
+		CreateDataEntry("Schedule", "Sunday", "Afternoon", "S004", "E002");
 	}
 }

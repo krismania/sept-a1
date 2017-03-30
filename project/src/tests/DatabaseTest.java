@@ -19,24 +19,24 @@ public class DatabaseTest {
 		db = new UserDatabase("JUnitDataBase");
 		db.CreateDatabase();
 		//Customer Table
-		db.CreateDatabaseTable("Customers", "Firstname varchar(255)", "Lastname varchar(255)",
+		db.CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)", "Username");
+						"Password varchar(15)","Type varchar(13)", "Username");
 				
 		//BusinessOwner Table
 		db.CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)", "Username");
+						"Password varchar(15)","Type varchar(13)", "Username");
 				
 	    //Employee Table
 		db.CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 				
-		db.CreateDataEntry("Customers", "James", "McLennan", "testing@testing.com", 
-						"0400000000", "JamesRulez", "james");
+		db.CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
+						"0400000000", "JamesRulez", "james", "Customer");
 				
 		db.CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-						"0400000000", "JohnRulez", "john");
+						"0400000000", "JohnRulez", "john", "BusinessOwner");
 				
 		db.CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 						"0400000000", "E001");
@@ -55,7 +55,7 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void validateBusinesOwnerDoesExistsByUsername() throws SQLException
+	public void validateBusinessOwnerDoesExistByUsername() throws SQLException
 	{
 		assertEquals(2, db.validateUsername("JohnRulez"));
 	}
@@ -81,25 +81,31 @@ public class DatabaseTest {
 	@Test
 	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(true, db.checkPassword("JamesRulez", "james", "Customers"));
+		assertEquals(true, db.validatePassword("JamesRulez", "james", "Customer"));
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(false, db.checkPassword("JamesRulez", "ksA1jdlksa", "Customers"));
+		assertEquals(false, db.validatePassword("JamesRulez", "ksA1jdlksa", "Customer"));
 	}
 	
 	@Test
 	public void validatePasswordDoesMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(true, db.checkPassword("JohnRulez", "john", "BusinessOwner"));
+		assertEquals(true, db.validatePassword("JohnRulez", "john", "BusinessOwner"));
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(false, db.checkPassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+		assertEquals(false, db.validatePassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+	}
+	
+	@Test
+	public void obtainShifts() throws SQLException
+	{
+		assertNotNull(db.getShifts());
 	}
 	
 	@Test

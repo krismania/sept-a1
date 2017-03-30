@@ -20,6 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
+		db.updateDataEntry("Customer", "JamesRulez", "wkwkwA1", "Password");
 	}
 	
 	
@@ -52,7 +53,7 @@ public class ABS
 			case "[debug] print customer db":
 				console.alert("Customers:");
 				db.getCustomerDataEntries();
-				console.alert("Business Owners:");
+				console.alert("\nBusiness Owners:");
 				db.getBusinessOwnerDataEntries();
 				break;
 			case "Exit":
@@ -157,7 +158,7 @@ public class ABS
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		created = db.CreateDataEntry("Customer", firstName, lastName, email, phoneNumber, username, password, "Customer");
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -195,7 +196,7 @@ public class ABS
 		if (db.validateUsername(username) == 1)
 		{
 			// test the password
-			if (db.checkPassword(username, password, "Customers"))
+			if (db.validatePassword(username, password, "Customer"))
 			{
 				customerMenu();
 			}
@@ -206,9 +207,9 @@ public class ABS
 		else if (db.validateUsername(username) == 2)
 		{
 			// test the password
-			if (db.checkPassword(username, password, "BusinessOwner"))
+			if (db.validatePassword(username, password, "BusinessOwner"))
 			{
-				customerMenu();
+				businessOwnerMenu();
 			}
 			else
 			{
@@ -230,9 +231,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.validateUsername(username, "Customers"))
+//		if (db.validateUsername(username, "Customer"))
 //		{
-//			if (db.checkPassword(username, password, "Customers"))
+//			if (db.validatePassword(username, password, "Customer"))
 //			{
 //				return true;
 //			}
@@ -258,7 +259,7 @@ public class ABS
 //		// check if username exists
 //		if (db.validateUsername(username, "BusinessOwner"))
 //		{
-//			if (db.checkPassword(username, password, "BusinessOwner"))
+//			if (db.validatePassword(username, password, "BusinessOwner"))
 //			{
 //				return true;
 //			}
