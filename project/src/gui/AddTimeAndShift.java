@@ -24,14 +24,14 @@ import console.Menu;
 // Application.launch(AddEmployee.class, args); 
 public class AddTimeAndShift extends Application {
     
-	//TN - addTime variables & button
-	private TextField tfEmpNum = new TextField();
+    //TN - addTime variables & button
+    private TextField tfEmpNum = new TextField();
     private TextField tfDay = new TextField();
     private Button btAddDay = new Button("Add Staff Shift Day");
     
     //TN addShift variables & button
-	private TextField tfShift = new TextField();
-	private TextField tfShiftConfirmed = new TextField();
+    private TextField tfShift = new TextField();
+    private TextField tfShiftConfirmed = new TextField();
     private Button btReserveShift = new Button("Reserve Shift");
     
     //TN - Common variables
@@ -59,13 +59,13 @@ public class AddTimeAndShift extends Application {
     	tfDay.setAlignment(Pos.BOTTOM_RIGHT);
     	GridPane.setHalignment(btAddDay, HPos.RIGHT);
       
-      //TN - Lambda expression that transitions to second menu - 
-      // this is a temporary solution to the problem of transitioning from one JavaFX stage to another. 
-      // It's messy but effective enough for demonstration purposes.	
+        //TN - Lambda expression that transitions to second menu - 
+        // this is a temporary solution to the problem of transitioning from one JavaFX stage to another. 
+        // It's messy but effective enough for demonstration purposes.	
     	btAddDay.setOnAction(e -> {
-           	String empNum = tfEmpNum.getText();
+            String empNum = tfEmpNum.getText();
             String day = tfDay.getText();
-        	String staff = "Enter Shift for Staff #1: " + empNum;
+            String staff = "Enter Shift for Staff #1: " + empNum;
     	    String shift = "Select Shift Morning/Afternoon/Evening";
     	    GridPane gridPane2 = new GridPane();
     	    gridPane2.setHgap(5);
@@ -95,10 +95,9 @@ public class AddTimeAndShift extends Application {
 	  });
 
     	    Scene sceneAddShift = new Scene(gridPane2, 600, 250);
-        	window.setTitle("Confirm Shift");
-        	window.setScene(sceneAddShift);
-        	window.show();
-    	});
+            window.setTitle("Confirm Shift");
+            window.setScene(sceneAddShift);
+            window.show();});
     	
         //TN - Calls initial scene
     	sceneAddTime = new Scene(gridPane1, 500, 250);
