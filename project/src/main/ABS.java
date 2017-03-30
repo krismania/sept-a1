@@ -71,7 +71,7 @@ public class ABS
 	
 	private void businessOwnerMenu()
 	{
-		String[] options = {"Add a new employee", "Add working times/dates for next month", 
+		String[] options = {"Add a new employee", "Add working times/dates", 
 						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
@@ -85,7 +85,9 @@ public class ABS
 			case "Add a new employee":
 				addEmployee();
 				break;
-			
+			case "Add working times/dates":
+				addShifts();
+				break;
 			case "Log out":
 				exit = true;
 				break;
