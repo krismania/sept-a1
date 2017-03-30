@@ -1,3 +1,4 @@
+/*TN Temporarily disabled class in lieu of redesign in Sprint 3 
 package gui;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -30,14 +31,7 @@ public class AddTime extends Application {
     public void start(Stage primaryStage) 
     {
     	GridPane gridPane = new GridPane();
-        
-        /*Scene sceneLogin = new Scene(gridPane);
-        Scene sceneAddEmp = new Scene(gridPane);
-        Scene sceneAddTime = new Scene(gridPane);
-        Scene sceneAddShift = new Scene(gridPane);
-        Stage window = primaryStage;*/
-    	
-        
+           
         gridPane.setHgap(5);
     	gridPane.setVgap(5);
     	gridPane.add(new Label("Enter Employee Number"), 0, 0);
@@ -64,3 +58,4 @@ public class AddTime extends Application {
     	String Day = tfDay.getText();
     }
 }
+*/
