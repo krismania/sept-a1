@@ -215,30 +215,45 @@ public class ABS
 	 */
 	
 	private void addShifts(){
+		
 		// declare variables
 		String employeeID;
 		String shiftDay;
-		String shiftTime;
-		boolean employeeDB = false;
-		
+		String shiftTime;		
 		
 		// prompt user for input
+		HashMap<String, String> shiftInfo = console.addShiftPrompt();
+		employeeID = shiftInfo.get("shiftInfo");
+		shiftDay = shiftInfo.get("shiftDay");
+		shiftTime = shiftInfo.get("shiftTime");
 		
-		do{
-			System.out.println("Enter employee ID: ");
-			employeeID = sc.nextLine();
+		// check if employee exists
+		if (!db.validateEmpID(employeeID))
+		{
+			console.alert("Employee ID cannot be found in database");
+		}
+		else
+		{
+			// employee found, add the shift
 			
-			if(employeeDB = true){
-				System.out.println("Employee ID cannot be found in database");
-			}
-		}while(false);
+			// TODO: add shift to database
+		}
 		
-		System.out.println("Enter shift day: ");
-		shiftDay = sc.nextLine();
-		
-		System.out.println("Shift times: Morning  Afternoon Evening");
-		System.out.println("Select a shift time:");
-		shiftTime = sc.nextLine();
+//		do{
+//			System.out.println("Enter employee ID: ");
+//			employeeID = sc.nextLine();
+//			
+//			if(employeeDB = true){
+//				System.out.println("Employee ID cannot be found in database");
+//			}
+//		}while(false);
+//		
+//		System.out.println("Enter shift day: ");
+//		shiftDay = sc.nextLine();
+//		
+//		System.out.println("Shift times: Morning  Afternoon Evening");
+//		System.out.println("Select a shift time:");
+//		shiftTime = sc.nextLine();
 		
 	}
 	
