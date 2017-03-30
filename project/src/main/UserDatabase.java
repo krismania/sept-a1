@@ -370,6 +370,43 @@ public class UserDatabase {
 		}
 	}
 	
+	public void getEmployeeDataEntries() 
+	{		
+		try{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = "SELECT EmpID, Firstname, Lastname, Email, Phone"
+					+ " FROM Employee";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+			     String id = rs.getString("EmpID"); 
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+
+		         //Display values
+		         System.out.println("ID: " + id);
+		         System.out.println("First: " + first);
+		         System.out.println("Last: " + last);
+		         System.out.println("Email: " + email);
+		         System.out.println("Phone: " + phone);
+		         
+		         System.out.println();
+		      }
+			closeConnection();
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+	}
+	
 	public void getShifts() {
 		try
 		{
