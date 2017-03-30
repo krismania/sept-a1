@@ -89,10 +89,10 @@ public class AddTimeAndShift extends Application {
     	    
           //TN - nested Lambda expression to reacton to second transiiton button press.
           btReserveShift.setOnAction(e1 -> {
-    	    	String shiftBracket = tfShift.getText();
-    	    	tfShiftConfirmed.setText(String.format(empNum + ": " + 
-    	    ". " + day + ", " + shiftBracket));
-    	    	});
+    	      String shiftBracket = tfShift.getText();
+    	      tfShiftConfirmed.setText(String.format("Staff - #" + empNum + ": Shift - " 
+    	    	+ day + ", " + shiftBracket));
+	  });
 
     	    Scene sceneAddShift = new Scene(gridPane2, 600, 250);
         	window.setTitle("Confirm Shift");
