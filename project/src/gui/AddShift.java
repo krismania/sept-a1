@@ -23,9 +23,9 @@ import console.Menu;
 // To call from another class use the following -
 // Application.launch(AddShift.class, args); 
 public class AddShift extends Application {
-	    private TextField tfEmpNum = new TextField();
-	    private TextField tfShift = new TextField();
-	    private TextField tfDay = new TextField();
+	private TextField tfEmpNum = new TextField();
+	private TextField tfShift = new TextField();
+	private TextField tfDay = new TextField();
     	private TextField tfShiftConfirmed = new TextField();
     	private Button btReserveShift = new Button("Reserve Shift");
     public void start(Stage primaryStage) 
@@ -62,9 +62,12 @@ public class AddShift extends Application {
     	}
 
     	private void displayAvailability() {
-
     	    
-    		tfShiftConfirmed.setText(String.format("Tim Novice: Tuesday, Morning"));
+            String empNum = tfEmpNum.getText();
+            String shiftBracket = tfShift.getText();
+            String day = tfDay.getText();
+	    
+            fShiftConfirmed.setText(String.format(empNum + ": " + shiftBracket + ". " + day));
     	  
     	}
 }
