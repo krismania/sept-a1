@@ -206,9 +206,13 @@ public class ABS
 		// employee number to be generated not provided. -kg
 //		System.out.println("Enter Employees Employee Number: ");
 //		employeeID = sc.nextLine();
-//		
-		// TODO: add to database
-		console.alert("Employee successfully added!");
+		
+		// TODO: fix this mess. -kg
+		String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+
+		db.CreateDataEntry("Employee", firstName, lastName, email, phoneNumber, newID);
+
+		console.alert("Employee " + newID + " successfully added!");
 	}
 	
 	
