@@ -37,6 +37,8 @@ public class Customer extends Account
 		return phoneNumber;
 	}
 	
+	/*
+	
 	// methods for validating information
 	
 	public static boolean validateName(String input)
@@ -66,4 +68,6 @@ public class Customer extends Account
 		}
 		return false;
 	}
+	
+	*/
 }

@@ -132,11 +132,11 @@ public class ABS
 			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
 			
 			// output error if no first name is entered
-			if(firstName.isEmpty()){
+			if(!validateName(firstName)){
 				System.out.println("Error: A first name must be entered");
 			}
 			
-		}while(firstName.isEmpty());
+		}while(!validateName(firstName));
 		
 		do{
 			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
@@ -248,19 +248,19 @@ public class ABS
 			phoneNumber = accountInfoInput.get("phoneNumber");
 			
 			// verify each field
-			if (!Customer.validateName(firstName))
+			if (!validateName(firstName))
 			{
 				console.alert("Error: A first name must be entered");
 			}
-			else if (!Customer.validateName(lastName))
+			else if (!validateName(lastName))
 			{
 				console.alert("Error: A last name must be entered");
 			}
-			else if (!Customer.validateEmail(email))
+			else if (!validateEmail(email))
 			{
 				console.alert("Error: Invalid email address format. Must contain @ and .");
 			}
-			else if (!Customer.validatePhoneNumber(phoneNumber))
+			else if (!validatePhoneNumber(phoneNumber))
 			{
 				console.alert("Error: A contact number must be entered");
 			}
@@ -422,4 +422,34 @@ public class ABS
 //		}
 //		return false;
 //	}
+	
+	// methods for validating information author - RK
+	
+	public static boolean validateName(String input)
+	{
+		// check that name is valid (i.e. it exists) and return true if it is.
+		if(!input.isEmpty()){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean validateEmail(String input)
+	{
+		// check that email is valid and return true if it is.
+		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean validatePhoneNumber(String input)
+	{
+		// check that phone number is valid and return true if it is
+		if(!input.isEmpty()){
+			return true;
+		}
+		return false;
+	}
 }
