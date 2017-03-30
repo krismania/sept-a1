@@ -20,6 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
+		
 	}
 	
 	
@@ -50,7 +51,10 @@ public class ABS
 				customerRegister();
 				break;
 			case "[debug] print customer db":
+				console.alert("Customers:");
 				db.getCustomerDataEntries();
+				console.alert("\nBusiness Owners:");
+				db.getBusinessOwnerDataEntries();
 				break;
 			case "Exit":
 				exit = true;
@@ -318,7 +322,7 @@ public class ABS
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		created = db.CreateDataEntry("Customer", firstName, lastName, email, phoneNumber, username, password, "Customer");
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -353,20 +357,31 @@ public class ABS
 		//TODO: Login function should check both customer & b.o. accounts
 		
 		// check if username exists
-		if (db.checkUsername(username, "Customers"))
+		if (db.validateUsername(username) == 1)
 		{
 			// test the password
-			if (db.checkPassword(username, password, "Customers"))
+			if (db.validatePassword(username, password, "Customer"))
 			{
-				// TODO: go to the correct submenu depending on account type
 				customerMenu();
 			}
 			else {
 				console.alert("Invalid password.");
 			}
 		}
+		else if (db.validateUsername(username) == 2)
+		{
+			// test the password
+			if (db.validatePassword(username, password, "BusinessOwner"))
+			{
+				businessOwnerMenu();
+			}
+			else
+			{
+				console.alert("Invalid password.");
+			}
+		}
 		else {
-			console.alert("Invalid username.");
+			console.alert("Username Not Found.");
 		}
 	}
 	
@@ -380,9 +395,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "Customers"))
+//		if (db.validateUsername(username, "Customer"))
 //		{
-//			if (db.checkPassword(username, password, "Customers"))
+//			if (db.validatePassword(username, password, "Customer"))
 //			{
 //				return true;
 //			}
@@ -406,9 +421,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "BusinessOwner"))
+//		if (db.validateUsername(username, "BusinessOwner"))
 //		{
-//			if (db.checkPassword(username, password, "BusinessOwner"))
+//			if (db.validatePassword(username, password, "BusinessOwner"))
 //			{
 //				return true;
 //			}
