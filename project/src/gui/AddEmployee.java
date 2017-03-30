@@ -23,15 +23,15 @@ import console.Menu;
 // To call from another class use the following -
 // Application.launch(AddEmployee.class, args); 
 public class AddEmployee extends Application {
-      private TextField tfEmpFName = new TextField();
+      	private TextField tfEmpFName = new TextField();
     	private TextField tfEmpLName = new TextField();
     	private TextField tfEmpEmailAdd = new TextField();
     	private TextField tfEmpPhNum = new TextField();
     	private TextField tfEmpNum = new TextField();
     	private Button btGenerateEmp = new Button("Add New Employee");
-   //TN - loads GUI 
-   public void start(Stage primaryStage) 
-   {
+		
+    public void start(Stage primaryStage) 
+    {
     	
     	GridPane gridPane = new GridPane();
     	gridPane.setHgap(5);
@@ -54,23 +54,27 @@ public class AddEmployee extends Application {
     	tfEmpEmailAdd.setAlignment(Pos.BOTTOM_RIGHT);
     	tfEmpPhNum.setAlignment(Pos.BOTTOM_RIGHT);
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
-    	tfEmpNum.setEditable(false);
+    	//tfEmpNum.setEditable(false);
     	GridPane.setHalignment(btGenerateEmp, HPos.RIGHT);
-    	//TN - Button calls a Lambda expression which captures inserted values into string variables.
+   	
     	btGenerateEmp.setOnAction(e -> addEmployee());
-
+                
     	Scene scene = new Scene(gridPane, 400, 250);
     	primaryStage.setTitle("Add Employee");
     	primaryStage.setScene(scene);
     	primaryStage.show();
-    	}
-      
-      private void addEmployee() {
-            
-    	    String EmpFName = tfEmpFName.getText();
-    	    String EmpLName = tfEmpLName.getText();
-    	    String EmpEmail = tfEmpEmailAdd.getText();
-    	    String EmpPhNum = tfEmpPhNum.getText();
-    	    String EmpNum = tfEmpNum.getText();
-    	}
+    }
+    
+    private void addEmployee() {
+ 
+        String EmpFName = tfEmpFName.getText();
+        String EmpLName = tfEmpLName.getText();
+        String EmpEmail = tfEmpEmailAdd.getText();
+        String EmpPhNum = tfEmpPhNum.getText();
+        String EmpNum = tfEmpNum.getText();
+   	  System.out.println(EmpFName + ", " + EmpLName + ", " + EmpEmail
+   				+ ", " + EmpPhNum + ", " + EmpNum);
+ 
+    }
+
 }
