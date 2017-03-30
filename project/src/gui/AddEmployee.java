@@ -19,18 +19,19 @@ import console.Console;
 import console.Menu;
 
 //TN - Class to build basic GUI elements for login - such as text fields
-// and field position. Includes login button
+// and field position. Includes employee text fields 
 // To call from another class use the following -
 // Application.launch(AddEmployee.class, args); 
 public class AddEmployee extends Application {
-      	private TextField tfEmpFName = new TextField();
+      private TextField tfEmpFName = new TextField();
     	private TextField tfEmpLName = new TextField();
     	private TextField tfEmpEmailAdd = new TextField();
     	private TextField tfEmpPhNum = new TextField();
     	private TextField tfEmpNum = new TextField();
     	private Button btGenerateEmp = new Button("Add New Employee");
-    public void start(Stage primaryStage) 
-    {
+   //TN - loads GUI 
+   public void start(Stage primaryStage) 
+   {
     	
     	GridPane gridPane = new GridPane();
     	gridPane.setHgap(5);
@@ -55,18 +56,18 @@ public class AddEmployee extends Application {
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
     	tfEmpNum.setEditable(false);
     	GridPane.setHalignment(btGenerateEmp, HPos.RIGHT);
-    	btGenerateEmp.setOnAction(e -> btGenerateEmp());
+    	//TN - Button calls a Lambda expression which captures inserted values into string variables.
+      btGenerateEmp.setOnAction(e -> {
+    		String EmpFName = tfEmpFName.getText();
+    		String tfEmpLName = tfEmpFName.getText();
+    		String tfEmpEmailAdd = tfEmpFName.getText();
+    		String tfEmpPhNum = tfEmpFName.getText();
+    		String tfEmpNum = tfEmpFName.getText();
+      });
 
     	Scene scene = new Scene(gridPane, 400, 250);
     	primaryStage.setTitle("Add Employee");
     	primaryStage.setScene(scene);
     	primaryStage.show();
-    	}
-
-    	private void btGenerateEmp() {
-    	    final int PlaceKeeperEmpNum = 0001;
-    	        
-    	    int empNum = PlaceKeeperEmpNum;
-    	    tfEmpNum.setText(String.format("%d",empNum));
     	}
 }
