@@ -57,13 +57,13 @@ public class AddEmployee extends Application {
     	tfEmpNum.setEditable(false);
     	GridPane.setHalignment(btGenerateEmp, HPos.RIGHT);
     	//TN - Button calls a Lambda expression which captures inserted values into string variables.
-      btGenerateEmp.setOnAction(e -> {
+    	btGenerateEmp.setOnAction(e -> {
     		String EmpFName = tfEmpFName.getText();
-    		String tfEmpLName = tfEmpFName.getText();
-    		String tfEmpEmailAdd = tfEmpFName.getText();
-    		String tfEmpPhNum = tfEmpFName.getText();
-    		String tfEmpNum = tfEmpFName.getText();
-      });
+    		String EmpLName = tfEmpLName.getText();
+    		String EmpEmail = tfEmpEmailAdd.getText();
+    		String EmpPhNum = tfEmpPhNum.getText();
+    		String EmpNum = tfEmpNum.getText();
+    	});
 
     	Scene scene = new Scene(gridPane, 400, 250);
     	primaryStage.setTitle("Add Employee");
