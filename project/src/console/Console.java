@@ -89,4 +89,14 @@ public class Console
 		
 		return prompt(fields);
 	}
+	
+	public HashMap<String, String> addShiftPrompt()
+	{
+		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
+		fields.put("employeeID", "Employee ID");
+		fields.put("shiftDay", "Shift Day (mon/tue/wed/thu/fri/sat/sun)");
+		fields.put("shiftTime", "Shift Time (morning/afternoon/evening)");
+		
+		return prompt(fields);
+	}
 }
