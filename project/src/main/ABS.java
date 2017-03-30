@@ -142,22 +142,21 @@ public class ABS
 			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
 			
 			// output error if no last name is entered
-			if(lastName.isEmpty()){
+			if(!validateName(lastName)){
 				System.out.println("Error: A first name must be entered");
 			}
 			
-		}while(lastName.isEmpty());
+		}while(!validateName(lastName));
 		
-		/*
 		do{
 			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
 			
-			if(!email.contains("@") || !email.contains(".")){
+			if(!validateEmail(email)){
 				System.out.println("Error: Invalid email address format. Must contain @ and .");
 			}
 			
-		}while(!email.contains("@") || !email.contains("."));
-		*/
+		}while(!validateEmail(email));
+
 			
 		System.out.println("Enter Employees Employee Number: ");
 		employeeID = sc.nextLine();
