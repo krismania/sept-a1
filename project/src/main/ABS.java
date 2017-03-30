@@ -130,44 +130,82 @@ public class ABS
 		String firstName;
 		String lastName;
 		String email;
-		String employeeID;
+		String phoneNumber;
 		
 		// prompt user for input
+		HashMap<String, String> employeeInfo;
+		boolean accepted = false;
 		
-		do{
-			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
+		do
+		{
+			// prompt
+			employeeInfo = console.accountInfoPrompt();
 			
-			// output error if no first name is entered
-			if(!validateName(firstName)){
-				System.out.println("Error: A first name must be entered");
+			// copy fields into local variables
+			firstName = employeeInfo.get("firstName");
+			lastName = employeeInfo.get("lastName");
+			email = employeeInfo.get("email");
+			phoneNumber = employeeInfo.get("phoneNumber");
+			
+			// verify each field
+			if (!validateName(firstName))
+			{
+				console.alert("Error: A first name must be entered");
 			}
-			
-		}while(!validateName(firstName));
+			else if (!validateName(lastName))
+			{
+				console.alert("Error: A last name must be entered");
+			}
+			else if (!validateEmail(email))
+			{
+				console.alert("Error: Invalid email address format. Must contain @ and .");
+			}
+			else if (!validatePhoneNumber(phoneNumber))
+			{
+				console.alert("Error: A contact number must be entered");
+			}
+			else {
+				accepted = true;
+			}
+		}
+		while (!accepted);
 		
-		do{
-			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
-			
-			// output error if no last name is entered
-			if(!validateName(lastName)){
-				System.out.println("Error: A first name must be entered");
-			}
-			
-		}while(!validateName(lastName));
-		
-		do{
-			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
-			
-			if(!validateEmail(email)){
-				System.out.println("Error: Invalid email address format. Must contain @ and .");
-			}
-			
-		}while(!validateEmail(email));
+//		do{
+//			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
+//			
+//			// output error if no first name is entered
+//			if(!validateName(firstName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!validateName(firstName));
+//		
+//		do{
+//			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
+//			
+//			// output error if no last name is entered
+//			if(!validateName(lastName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!validateName(lastName));
+//		
+//		do{
+//			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
+//			
+//			if(!validateEmail(email)){
+//				System.out.println("Error: Invalid email address format. Must contain @ and .");
+//			}
+//			
+//		}while(!validateEmail(email));
 
-			
-		System.out.println("Enter Employees Employee Number: ");
-		employeeID = sc.nextLine();
 		
-		System.out.println("Employee successfully added!");	
+		// employee number to be generated not provided. -kg
+//		System.out.println("Enter Employees Employee Number: ");
+//		employeeID = sc.nextLine();
+//		
+		// TODO: add to database
+		console.alert("Employee successfully added!");
 	}
 	
 	/*
