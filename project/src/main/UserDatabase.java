@@ -407,6 +407,42 @@ public class UserDatabase {
 		}
 	}
 	
+	/**
+	 * Temp method to find the highest ID
+	 * TODO: this may need to be removed
+	 * @author krismania
+	 */
+	public String getLastEmployeeID()
+	{
+		String id = "E000"; // if no employee is found, E000 will be returned
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID";
+			rs = stmt.executeQuery(sql);
+			
+			// we only care about the first result. -kg
+			rs.next();
+			id = rs.getString("EmpID");
+			
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
 	public void getShifts() {
 		try
 		{
