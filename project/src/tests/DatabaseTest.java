@@ -103,12 +103,6 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void obtainShifts() throws SQLException
-	{
-		assertNotNull(db.getShifts());
-	}
-	
-	@Test
 	public void closeConnectionTest() throws SQLException 
 	{
 		assertEquals(true, db.closeConnection());
