@@ -230,7 +230,7 @@ public class ABS
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = console.addShiftPrompt();
-		employeeID = shiftInfo.get("shiftInfo");
+		employeeID = shiftInfo.get("employeeID");
 		shiftDay = shiftInfo.get("shiftDay");
 		shiftTime = shiftInfo.get("shiftTime");
 		
