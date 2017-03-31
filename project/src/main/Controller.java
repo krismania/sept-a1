@@ -5,7 +5,7 @@ import java.util.Scanner;
 import console.Console;
 import console.Menu;
 
-public class ABS
+public class Controller
 {
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
@@ -17,7 +17,7 @@ public class ABS
 	 * Creates an instance of the controller class & opens the database.
 	 */
 	
-	public ABS()
+	public Controller()
 	{
 		db.CreateDatabase();
 		

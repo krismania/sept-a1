@@ -5,7 +5,7 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		ABS abs = new ABS();
+		Controller abs = new Controller();
 		abs.mainMenu();
 	}
 	
