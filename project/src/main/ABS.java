@@ -242,8 +242,8 @@ public class ABS
 		else
 		{
 			// employee found, add the shift
-			// TODO: generate a Shift ID
-			db.CreateDataEntry("Schedule", shiftDay, shiftTime, "S001", employeeID);
+			String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
+			db.CreateDataEntry("Schedule", shiftDay, shiftTime, ShiftID, employeeID);
 		}
 		
 //		do{
