@@ -1,0 +1,22 @@
+package gui;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+
+/**
+ * TN - FXML Controller class
+ *
+ * @author tn
+ */
+public class FXMLController implements Initializable {
+
+    /**
+     * TN - Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
+}

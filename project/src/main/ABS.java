@@ -20,6 +20,7 @@ public class ABS
 	public ABS()
 	{
 		db.CreateDatabase();
+		
 	}
 	
 	
@@ -50,7 +51,10 @@ public class ABS
 				customerRegister();
 				break;
 			case "[debug] print customer db":
+				console.alert("Customers:");
 				db.getCustomerDataEntries();
+				console.alert("\nBusiness Owners:");
+				db.getBusinessOwnerDataEntries();
 				break;
 			case "Exit":
 				exit = true;
@@ -67,7 +71,7 @@ public class ABS
 	
 	private void businessOwnerMenu()
 	{
-		String[] options = {"Add a new employee", "Add working times/dates for next month", 
+		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
 						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
@@ -77,6 +81,16 @@ public class ABS
 		{
 			switch (menu.prompt())
 			{
+			
+			case "Add a new employee":
+				addEmployee();
+				break;
+			case "View employees":
+				db.getEmployeeDataEntries();
+				break;
+			case "Add working times/dates":
+				addShifts();
+				break;
 			case "Log out":
 				exit = true;
 				break;
@@ -108,6 +122,147 @@ public class ABS
 		}
 	}
 	
+	/**
+	 *  Add new employee
+	 *  @author RK
+	 */
+	
+	private void addEmployee(){
+		
+		// declare variables
+		String firstName;
+		String lastName;
+		String email;
+		String phoneNumber;
+		
+		// prompt user for input
+		HashMap<String, String> employeeInfo;
+		boolean accepted = false;
+		
+		do
+		{
+			// prompt
+			employeeInfo = console.accountInfoPrompt();
+			
+			// copy fields into local variables
+			firstName = employeeInfo.get("firstName");
+			lastName = employeeInfo.get("lastName");
+			email = employeeInfo.get("email");
+			phoneNumber = employeeInfo.get("phoneNumber");
+			
+			// verify each field
+			if (!validateName(firstName))
+			{
+				console.alert("Error: A first name must be entered");
+			}
+			else if (!validateName(lastName))
+			{
+				console.alert("Error: A last name must be entered");
+			}
+			else if (!validateEmail(email))
+			{
+				console.alert("Error: Invalid email address format. Must contain @ and .");
+			}
+			else if (!validatePhoneNumber(phoneNumber))
+			{
+				console.alert("Error: A contact number must be entered");
+			}
+			else {
+				accepted = true;
+			}
+		}
+		while (!accepted);
+		
+//		do{
+//			System.out.print("Enter Employees First Name: "); firstName = sc.nextLine();
+//			
+//			// output error if no first name is entered
+//			if(!validateName(firstName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!validateName(firstName));
+//		
+//		do{
+//			System.out.println("Enter Employees Last Name: "); lastName = sc.nextLine();
+//			
+//			// output error if no last name is entered
+//			if(!validateName(lastName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!validateName(lastName));
+//		
+//		do{
+//			System.out.println("Enter Employees Email Address: "); email = sc.nextLine();
+//			
+//			if(!validateEmail(email)){
+//				System.out.println("Error: Invalid email address format. Must contain @ and .");
+//			}
+//			
+//		}while(!validateEmail(email));
+
+		
+		// employee number to be generated not provided. -kg
+//		System.out.println("Enter Employees Employee Number: ");
+//		employeeID = sc.nextLine();
+		
+		// TODO: fix this mess. -kg
+		String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+
+		db.CreateDataEntry("Employee", firstName, lastName, email, phoneNumber, newID);
+
+		console.alert("Employee " + newID + " successfully added!");
+	}
+	
+	
+	/**
+	 *  Add new shifts
+	 *  @author RK
+	 */
+	
+	private void addShifts(){
+		
+		// declare variables
+		String employeeID;
+		String shiftDay;
+		String shiftTime;		
+		
+		// prompt user for input
+		HashMap<String, String> shiftInfo = console.addShiftPrompt();
+		employeeID = shiftInfo.get("employeeID");
+		shiftDay = shiftInfo.get("shiftDay");
+		shiftTime = shiftInfo.get("shiftTime");
+		
+		// check if employee exists
+		if (!db.validateEmpID(employeeID))
+		{
+			console.alert("Employee ID cannot be found in database");
+		}
+		else
+		{
+			// employee found, add the shift
+			String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
+			db.CreateDataEntry("Schedule", shiftDay, shiftTime, ShiftID, employeeID);
+		}
+		
+//		do{
+//			System.out.println("Enter employee ID: ");
+//			employeeID = sc.nextLine();
+//			
+//			if(employeeDB = true){
+//				System.out.println("Employee ID cannot be found in database");
+//			}
+//		}while(false);
+//		
+//		System.out.println("Enter shift day: ");
+//		shiftDay = sc.nextLine();
+//		
+//		System.out.println("Shift times: Morning  Afternoon Evening");
+//		System.out.println("Select a shift time:");
+//		shiftTime = sc.nextLine();
+		
+	}
 	
 	/**
 	 * Interface for registering a new customer. Adapts code from Richard's
@@ -144,17 +299,93 @@ public class ABS
 		}
 		
 		// collect customer info -kg
-		HashMap<String, String> accountInfoInput = console.accountInfoPrompt();
-		firstName = accountInfoInput.get("firstName");
-		lastName = accountInfoInput.get("lastName");
-		email = accountInfoInput.get("email");
-		phoneNumber = accountInfoInput.get("phoneNumber");
+		HashMap<String, String> accountInfoInput;
+		boolean accepted = false;
+		
+		do
+		{
+			// prompt
+			accountInfoInput = console.accountInfoPrompt();
+			
+			// copy fields into local variables
+			firstName = accountInfoInput.get("firstName");
+			lastName = accountInfoInput.get("lastName");
+			email = accountInfoInput.get("email");
+			phoneNumber = accountInfoInput.get("phoneNumber");
+			
+			// verify each field
+			if (!validateName(firstName))
+			{
+				console.alert("Error: A first name must be entered");
+			}
+			else if (!validateName(lastName))
+			{
+				console.alert("Error: A last name must be entered");
+			}
+			else if (!validateEmail(email))
+			{
+				console.alert("Error: Invalid email address format. Must contain @ and .");
+			}
+			else if (!validatePhoneNumber(phoneNumber))
+			{
+				console.alert("Error: A contact number must be entered");
+			}
+			else {
+				accepted = true;
+			}
+		}
+		while (!accepted);
+		
+		// collect customer info @author -RK
+		// moved this code above to utilise the prompts that are already printed. -kg
+		
+		// reprompt customer until valid first name
+//		do{
+//			System.out.print("Enter your first name: "); firstName = sc.nextLine();
+//			
+//			// output error if no first name is entered
+//			if(!Customer.validateName(firstName)){
+//				System.out.println("Error: A first name must be entered");
+//			}
+//			
+//		}while(!Customer.validateName(firstName));
+//		
+//		
+//		// reprompt customer until valid last name
+//		do{
+//			System.out.print("Enter your last name: "); lastName = sc.nextLine();
+//			
+//			// output error if no last name is entered
+//			if(!Customer.validateName(lastName)){
+//				System.out.println("Error: A last name must be entered");
+//			}
+//			
+//		}while(!Customer.validateName(lastName));
+//		
+//		do{
+//			System.out.print("Enter an email address: "); email = sc.nextLine();
+//			
+//			if(!Customer.validateEmail(email)){
+//				System.out.println("Error: Invalid email address format. Must contain @ and .");
+//			}
+//			
+//		}while(!Customer.validateEmail(email));
+//			
+//		do{
+//			System.out.print("Enter a contact number: "); phoneNumber = sc.nextLine();
+//			
+//			if(!Customer.validatePhoneNumber(phoneNumber)){
+//				System.out.println("Error: A contact number must be entered");
+//			}
+//			
+//		}while(!Customer.validatePhoneNumber(phoneNumber));
+
 		
 		// create the Customer instance -kg
 		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		created = db.CreateDataEntry("Customers", firstName, lastName, email, phoneNumber, username, password);
+		created = db.CreateDataEntry("Customer", firstName, lastName, email, phoneNumber, username, password, "Customer");
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -189,20 +420,31 @@ public class ABS
 		//TODO: Login function should check both customer & b.o. accounts
 		
 		// check if username exists
-		if (db.checkUsername(username, "Customers"))
+		if (db.validateUsername(username) == 1)
 		{
 			// test the password
-			if (db.checkPassword(username, password, "Customers"))
+			if (db.validatePassword(username, password, "Customer"))
 			{
-				// TODO: go to the correct submenu depending on account type
 				customerMenu();
 			}
 			else {
 				console.alert("Invalid password.");
 			}
 		}
+		else if (db.validateUsername(username) == 2)
+		{
+			// test the password
+			if (db.validatePassword(username, password, "BusinessOwner"))
+			{
+				businessOwnerMenu();
+			}
+			else
+			{
+				console.alert("Invalid password.");
+			}
+		}
 		else {
-			console.alert("Invalid username.");
+			console.alert("Username Not Found.");
 		}
 	}
 	
@@ -216,9 +458,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "Customers"))
+//		if (db.validateUsername(username, "Customer"))
 //		{
-//			if (db.checkPassword(username, password, "Customers"))
+//			if (db.validatePassword(username, password, "Customer"))
 //			{
 //				return true;
 //			}
@@ -242,9 +484,9 @@ public class ABS
 //		password = accountInput.get("password");
 //		
 //		// check if username exists
-//		if (db.checkUsername(username, "BusinessOwner"))
+//		if (db.validateUsername(username, "BusinessOwner"))
 //		{
-//			if (db.checkPassword(username, password, "BusinessOwner"))
+//			if (db.validatePassword(username, password, "BusinessOwner"))
 //			{
 //				return true;
 //			}
@@ -257,4 +499,47 @@ public class ABS
 //		}
 //		return false;
 //	}
+	
+	
+	/**
+	 * Returns true if a valid name is input.
+	 * @author RK
+	 */
+	
+	public static boolean validateName(String input)
+	{
+		if(!input.isEmpty()){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * Check that email is valid and return true if it is.
+	 * @author RK
+	 */
+	
+	public static boolean validateEmail(String input)
+	{
+		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Check that phone number is valid and return true if it is.
+	 * @author RK
+	 */
+	
+	public static boolean validatePhoneNumber(String input)
+	{
+		if(!input.isEmpty()){
+			return true;
+		}
+		return false;
+	}
 }
