@@ -230,7 +230,7 @@ public class ABS
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = console.addShiftPrompt();
-		employeeID = shiftInfo.get("shiftInfo");
+		employeeID = shiftInfo.get("employeeID");
 		shiftDay = shiftInfo.get("shiftDay");
 		shiftTime = shiftInfo.get("shiftTime");
 		
@@ -242,8 +242,8 @@ public class ABS
 		else
 		{
 			// employee found, add the shift
-			// TODO: generate a Shift ID
-			db.CreateDataEntry("Schedule", shiftDay, shiftTime, "S001", employeeID);
+			String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
+			db.CreateDataEntry("Schedule", shiftDay, shiftTime, ShiftID, employeeID);
 		}
 		
 //		do{
