@@ -456,12 +456,12 @@ public class UserDatabase {
 			openConnection();
 			stmt = c.createStatement();
 			
-			String sql = "SELECT Shift_ID FROM Shifts ORDER BY Shift_ID DESC";
+			String sql = "SELECT Shift_ID FROM Schedule ORDER BY Shift_ID DESC";
 			rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
 			rs.next();
-			id = rs.getString("ShiftID");
+			id = rs.getString("Shift_ID");
 			
 			closeConnection();
 		}
