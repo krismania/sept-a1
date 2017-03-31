@@ -97,7 +97,7 @@ public class UserDatabase {
 	}
 	
 	//JM Insert data into database.
-	public boolean CreateDataEntry(String...strings) 
+	public boolean CreateDataEntry(String...strings) throws SQLException 
 	{
 
 		StringBuilder strBuilder = new StringBuilder();
@@ -135,7 +135,7 @@ public class UserDatabase {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-
+			e.printStackTrace();
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
@@ -369,10 +369,6 @@ public class UserDatabase {
 		}
 	}
 	
-
-	public ArrayList<String> getShifts() {
-		ArrayList<String> Shifts = new ArrayList<String>();
-
 	public void getEmployeeDataEntries() 
 	{		
 		try{
@@ -446,7 +442,8 @@ public class UserDatabase {
 		return id;
 	}
 	
-	public void getShifts() {
+	public ArrayList<String> getShifts() {
+		ArrayList<String> Shifts = new ArrayList<String>();
 		try
 		{
 			openConnection();
