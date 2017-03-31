@@ -103,7 +103,8 @@ public class AddTimeAndShift extends Application {
     	sceneAddTime = new Scene(gridPane1, 500, 250);
     	window.setTitle("Add Staff Availability");
     	window.setScene(sceneAddTime);
-    	window.show(); 
+    	window.show();
+    	
     }   
     
 }
