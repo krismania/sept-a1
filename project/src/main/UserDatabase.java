@@ -201,6 +201,7 @@ public class UserDatabase {
 			rs = stmt.executeQuery(sql);
 			rs.next();
 			if (rs.getString(1).equals(password)) {
+				closeConnection();
 				return true;
 			}
 			closeConnection();
