@@ -135,7 +135,7 @@ public class UserDatabase {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
