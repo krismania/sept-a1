@@ -97,7 +97,7 @@ public class UserDatabase {
 	}
 	
 	//JM Insert data into database.
-	public boolean CreateDataEntry(String...strings) throws SQLException 
+	public boolean CreateDataEntry(String...strings) 
 	{
 
 		StringBuilder strBuilder = new StringBuilder();
