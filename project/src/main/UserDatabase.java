@@ -420,7 +420,7 @@ public class UserDatabase {
 			openConnection();
 			stmt = c.createStatement();
 			
-			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID";
+			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID DESC";
 			rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
