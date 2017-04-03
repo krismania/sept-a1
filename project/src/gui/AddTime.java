@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 import console.Console;
 import console.Menu;
+import java.util.HashMap;
 
 //TN - Class to build basic GUI elements for login - such as text fields
 // and field position. Includes login button
@@ -55,6 +56,24 @@ public class AddTime extends Application {
             //TN Variable capture not yet implemented
     	    //Application.launch(AddShift.class, args); 
     	    
+    		
+    		/* @author RK */
+    		
+    		// temporary variables until variable capture implemented
+    		String employeeID;
+    		String day;
+    		
+    		HashMap<String, String> map = new HashMap<String, String>();
+    		
+    		map.put("Employee ID", "E008");
+    		map.put("Day","Monday");
+    		
+    		employeeID = map.get("Employee ID");
+    		System.out.println("Employee ID is " + employeeID);
+    		
+    		day = map.get("Day");
+    		System.out.println("Day is " + day);
+    		
     	  
     	}
 }
