@@ -53,7 +53,7 @@ public class AddTime extends Application {
         //TN - Calls AddShift Menu GUI and captures Employee Number and Day variables
     	private void setShift() {
             //TN Variable capture not yet implemented
-    	    Application.launch(AddSift.class, args); 
+    	    //Application.launch(AddShift.class, args); 
     	    
     	  
     	}
