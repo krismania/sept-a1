@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.util.Scanner;
+import java.util.HashMap;
 
 import console.Console;
 import console.Menu;
@@ -68,5 +69,48 @@ public class AddEmployee extends Application {
     	        
     	    int empNum = PlaceKeeperEmpNum;
     	    tfEmpNum.setText(String.format("%d",empNum));
+    	    
+    	    
+    	    
+    	    
     	}
+    	
+    	/* @author RK */
+    	
+    	private void employee(){
+    		
+    		String firstName;
+    		String lastName;
+    		String email;
+    		String employeeID;
+    		
+    		// HashMap for adding employee 
+    		
+					/*<key, value>*/
+    		HashMap<String, String> map = new HashMap<String, String>();
+    		map.put("First Name","Richard");
+    		map.put("Last Name", "Kuoch");
+    		map.put("Email", "abc123@gmail.com");
+    		map.put("Employee ID", "E008");
+    		
+    		// Just testing hashMap for employees. Will refine after....
+    		
+    		firstName = map.get("First Name");
+    		System.out.println("First name is " + firstName);
+    		lastName = map.get("Last Name");
+    		System.out.println("Last name is " + lastName);
+    		email = map.get("Email");
+    		System.out.println("Email is " + email);
+    		employeeID = map.get("Employee ID");
+    		System.out.println("Employee ID is " + employeeID);
+    		
+    		
+    		map.remove("First Name");
+    		
+    		if(map.containsKey("First Name")){
+    			System.out.println("First Name is still a variable");
+    		}else{
+    			System.out.println("First name is no longer a variable");
+    		}
+    	} 	
 }
