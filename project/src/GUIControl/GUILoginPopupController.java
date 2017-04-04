@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -25,6 +27,11 @@ import javafx.scene.Scene;
  */
 public class GUILoginPopupController implements Initializable {
     
+    @FXML
+    private PasswordField password;
+
+    @FXML
+    private TextField userName;
     
     @FXML
     private Button signup;
