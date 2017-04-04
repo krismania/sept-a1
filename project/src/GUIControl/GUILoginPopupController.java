@@ -5,14 +5,18 @@
  */
 package GUIControl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javafx.stage.Stage;
+import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 
 /**
  * FXML Controller class
@@ -23,10 +27,10 @@ public class GUILoginPopupController implements Initializable {
     
     
     @FXML
-    private Button Signup;
+    private Button signup;
 
     @FXML
-    private Button Login;
+    private Button login;
 
     @FXML
     void registerNewUser(ActionEvent event) {
@@ -41,9 +45,24 @@ public class GUILoginPopupController implements Initializable {
     private Label label;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleButtonAction(ActionEvent event) throws IOException {
+        Stage stage;
+        Parent root;
+        if(event.getSource()==login) {
+        	//TN - get reference button stage
+        	stage=(Stage) login.getScene().getWindow();
+        	//TN - load other scene
+        	root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
+        }
+        else
+        {
+        	stage=(Stage) signup.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+        }
+        //TN - call a new scene instance
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
     
     @Override
