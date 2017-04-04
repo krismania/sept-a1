@@ -7,7 +7,12 @@ package GUIControl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -15,13 +20,35 @@ import javafx.fxml.Initializable;
  * @author tn
  */
 public class GUILoginPopupController implements Initializable {
+    
+    
+    @FXML
+    private Button Signup;
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private Button Login;
+
+    @FXML
+    void registerNewUser(ActionEvent event) {
+
+    }
+
+    @FXML
+    void processLogin(ActionEvent event) {
+
+    }
+    @FXML
+    private Label label;
+    
+    @FXML
+    private void handleButtonAction(ActionEvent event) {
+        System.out.println("You clicked me!");
+        label.setText("Hello World!");
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }  
     
 }
