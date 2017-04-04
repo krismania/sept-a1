@@ -56,7 +56,7 @@ public class AddEmployee extends Application {
     	tfEmpNum.setAlignment(Pos.BOTTOM_RIGHT);
     	tfEmpNum.setEditable(false);
     	GridPane.setHalignment(btGenerateEmp, HPos.RIGHT);
-    	btGenerateEmp.setOnAction(e -> btGenerateEmp());
+    	btGenerateEmp.setOnAction(e -> employee());
 
     	Scene scene = new Scene(gridPane, 400, 250);
     	primaryStage.setTitle("Add Employee");

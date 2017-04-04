@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="GUIControl.GUIAddEmployeeController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIAddEmployeeController">
    <children>
-      <TextField layoutX="314.0" layoutY="77.0" />
+      <TextField fx:id="tfEmpFName" layoutX="314.0" layoutY="77.0" onAction="#handleButtonAction" />
       <Label layoutX="97.0" layoutY="82.0" text="Enter Employees First Name" />
       <Label layoutX="96.0" layoutY="135.0" text="Enter Employees Last Name" />
-      <TextField layoutX="314.0" layoutY="130.0" />
+      <TextField fx:id="tfEmpLName" layoutX="314.0" layoutY="130.0" />
       <Label layoutX="96.0" layoutY="184.0" text="Enter Employees Email Address" />
-      <TextField layoutX="314.0" layoutY="179.0" />
+      <TextField fx:id="tfEmpEmailAdd" layoutX="314.0" layoutY="179.0" />
       <Label layoutX="96.0" layoutY="234.0" text="Enter Employees Phone Number" />
-      <TextField layoutX="314.0" layoutY="229.0" />
+      <TextField fx:id="tfEmpPhNum" layoutX="314.0" layoutY="229.0" />
+      <Button fx:id="submitNewEmpData" layoutX="423.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit Input" />
    </children>
 </AnchorPane>
