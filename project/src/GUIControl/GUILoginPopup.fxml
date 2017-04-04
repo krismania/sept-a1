@@ -10,11 +10,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUILoginPopupController">
    <children>
-      <Button fx:id="signup" layoutX="85.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Sign up" />
+      <Button fx:id="businessOwner" layoutX="22.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Staff Access" />
       <Button fx:id="login" layoutX="466.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Log in" />
       <TextField fx:id="userName" layoutX="266.0" layoutY="117.0" onAction="#handleButtonAction" prefHeight="27.0" prefWidth="239.0" />
       <Label layoutX="116.0" layoutY="122.0" text="Enter User Name:" />
       <Label layoutX="116.0" layoutY="192.0" text="Enter Password:" />
       <PasswordField fx:id="password" layoutX="266.0" layoutY="187.0" onAction="#handleButtonAction" prefHeight="27.0" prefWidth="239.0" />
+      <Button fx:id="signup" layoutX="63.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Sign up" />
    </children>
 </AnchorPane>

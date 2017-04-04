@@ -35,9 +35,15 @@ public class GUILoginPopupController implements Initializable {
     
     @FXML
     private Button signup;
+    
+    @FXML
+    private Button businessOwner;
 
     @FXML
     private Button login;
+    
+    @FXML
+    private Button exit;
 
     @FXML
     void registerNewUser(ActionEvent event) {
@@ -59,12 +65,17 @@ public class GUILoginPopupController implements Initializable {
         	//TN - get reference button stage
         	stage=(Stage) login.getScene().getWindow();
         	//TN - load other scene
-        	root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
+        	root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+        }
+        else if(event.getSource()==businessOwner)
+        {
+        	stage=(Stage) businessOwner.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
         }
         else
         {
         	stage=(Stage) signup.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+            root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")); 	
         }
         //TN - call a new scene instance
         Scene scene = new Scene(root);

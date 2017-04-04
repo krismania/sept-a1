@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +34,10 @@ public class GUIBOMenuController implements Initializable {
 
     @FXML
     private Button viewBooking;
+    
+    @FXML
+    private Button exit;
+    
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
@@ -53,11 +58,19 @@ public class GUIBOMenuController implements Initializable {
         	stage=(Stage) viewBooking.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOViewBooking.fxml"));
         }
+
         //TN - call a new scene instance
+        
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }    
+    @FXML
+    private void closeButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) exit.getScene().getWindow();
+        stage.close();
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
