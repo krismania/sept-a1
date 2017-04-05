@@ -11,12 +11,12 @@ import main.UserDatabase;
 
 public class DatabaseTest {
 
-	public UserDatabase db;
+	public UserDatabase db = new UserDatabase("JUnitDataBase");
 
 	@Before
 	public void setUp() throws Exception 
 	{
-		db = new UserDatabase("JUnitDataBase");
+		//db = new UserDatabase("JUnitDataBase");
 		db.CreateDatabase();
 		//Customer Table
 		db.CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
@@ -25,20 +25,20 @@ public class DatabaseTest {
 				
 		//BusinessOwner Table
 		db.CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
-						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)","Type varchar(13)", "Username");
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)","Type varchar(13)", "Username");
 				
 	    //Employee Table
 		db.CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 				
-		db.CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
-						"0400000000", "JamesRulez", "james", "Customer");
+		db.addCustomer("James", "McLennan", "testing@testing.com", 
+						"0400000000", "JamesRulez", "james");
 				
-		db.CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-						"0400000000", "JohnRulez", "john", "BusinessOwner");
+		db.addBusinessOwner("John", "Doe", "rabbits@rocks.com",
+						"0400000000", "JohnRulez", "john");
 				
-		db.CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+		db.addEmployee("Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 						"0400000000", "E001");
 	}
 

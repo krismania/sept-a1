@@ -96,8 +96,43 @@ public class UserDatabase {
 		
 	}
 	
+	//Add customer into database.(JM)
+	public boolean addCustomer(String firstName, String lastname, String email, String phoneNumber,
+			String username, String password)
+	{
+		if(CreateDataEntry("Customer", firstName, lastname, email, 
+				phoneNumber, username, password, "Customer"))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	//Add businessOwner into database.(JM)
+	public boolean addBusinessOwner(String firstName, String lastname, String email, String phoneNumber,
+			String username, String password)
+	{
+		if(CreateDataEntry("BusinessOwner", firstName, lastname, email, 
+				phoneNumber, username, password, "BusinessOwner"))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	//Add employee into database.(JM)
+	public boolean addEmployee(String firstName, String lastname, String email, String phoneNumber, String empID)
+	{
+		if(CreateDataEntry("Employee", firstName, lastname, email, 
+				phoneNumber, empID))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	//JM Insert data into database.
-	public boolean CreateDataEntry(String...strings) 
+	private boolean CreateDataEntry(String...strings) 
 	{
 
 		StringBuilder strBuilder = new StringBuilder();
