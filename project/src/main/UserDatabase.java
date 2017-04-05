@@ -370,8 +370,9 @@ public class UserDatabase {
 	}
 	
 
-	public ArrayList<String> getShifts() {
-		ArrayList<String> Shifts = new ArrayList<String>();
+	//public ArrayList<String> getShifts() {
+		//ArrayList<String> Shifts = new ArrayList<String>();
+	//}
 
 	public void getEmployeeDataEntries() 
 	{		
@@ -446,7 +447,7 @@ public class UserDatabase {
 		return id;
 	}
 	
-	public void getShifts() {
+	/*public void getShifts() {
 		try
 		{
 			openConnection();
@@ -482,7 +483,7 @@ public class UserDatabase {
 		    e.printStackTrace();
 		}
 		return Shifts;
-	}
+	}*/
 	
 //***CONNECTION METHODS***JM
 	public boolean openConnection() throws SQLException {
