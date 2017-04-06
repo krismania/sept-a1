@@ -673,7 +673,7 @@ public class Database {
 	 * TODO: this may need to be removed
 	 * @author krismania
 	 */
-	private String getLastEmployeeID()
+	public String getLastEmployeeID()
 	{
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
@@ -709,7 +709,7 @@ public class Database {
 	 * TODO: this WILL need to be removed
 	 * @author krismania
 	 */
-	private String getLastShiftID()
+	public String getLastShiftID()
 	{
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try
