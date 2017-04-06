@@ -49,6 +49,7 @@ public class GUILoginPopupController implements Initializable {
     
     @FXML
     private Button exit;
+    private boolean result;
 
     @FXML
     void registerNewUser(ActionEvent event) {
@@ -66,11 +67,19 @@ public class GUILoginPopupController implements Initializable {
     private void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
+        
         if(event.getSource()==login) {
+        	login();
+        	if (login() == true) { 
+        		stage=(Stage) login.getScene().getWindow();
+        		root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+        	}
+        	else
         	//TN - get reference button stage
-        	stage=(Stage) login.getScene().getWindow();
-        	//TN - load other scene
-        	root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+            //stage=(Stage) login.getScene().getWindow();
+            //TN - load other scene
+        	//stage=(Stage) login.getScene().getWindow();
+        	GUIAlert.infoBox("Incorrect username or password. please try again", "");
         }
         else if(event.getSource()==businessOwner)
         {
@@ -93,7 +102,7 @@ public class GUILoginPopupController implements Initializable {
         stage.show();
     }
     
-    private void login()
+    private boolean login()
     {
     	// get the input
     	// put it in a hashmap
@@ -106,13 +115,16 @@ public class GUILoginPopupController implements Initializable {
     	if (accountType.equals(Customer.class))
     	{
     		// user logged in as a customer
+    		return true;
     	}
     	else if (accountType.equals(BusinessOwner.class))
     	{
     		// user logged in as a b.o.
+    		return true;
     	}
     	else {
     		// account is invalid
+    		return false;
     	}
     }
 
