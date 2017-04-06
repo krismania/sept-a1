@@ -12,7 +12,7 @@ public class Controller
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
 	
-	Database db = Database.getInstance();
+	Database db = new Database("awesomeSauce");
 	
 	
 	/**

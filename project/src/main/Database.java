@@ -11,21 +11,8 @@ public class Database {
 	ResultSet rs = null;
 	String dbName;
 	
-	// singleton object
-	private static Database instance = null;
-	
-	public static Database getInstance()
-	{
-		if (instance == null)
-		{
-			instance = new Database("awesomeSauce");
-		}
-		
-		return instance;
-	}
-	
 	//JM Constructor, reads the name of the database file to work with.
-	private Database(String nameOfDatabase) {
+	public Database(String nameOfDatabase){
 		dbName = nameOfDatabase;
 	}
 
