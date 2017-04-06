@@ -23,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import main.Controller;
 
 /**
  * FXML Controller class
@@ -84,7 +85,7 @@ public class GUILoginPopupController implements Initializable {
         else
         {
         	stage=(Stage) signup.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")); 	
+            root = FXMLLoader.load(getClass().getResource("GUISignup.fxml")); 	
         }
         //TN - call a new scene instance
         Scene scene = new Scene(root);
