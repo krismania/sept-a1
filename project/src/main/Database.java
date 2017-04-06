@@ -76,6 +76,15 @@ public class Database {
 	}
 	
 	/**
+	 * Returns true if a user with the specified username exists in the database
+	 * @author krismania
+	 */
+	public boolean accountExists(String username)
+	{
+		return validateUsername(username) != null;
+	}
+	
+	/**
 	 * Returns the account specified by the given username, or null if none
 	 * is found.
 	 * @author krismania
