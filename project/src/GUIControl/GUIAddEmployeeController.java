@@ -50,7 +50,23 @@ public class GUIAddEmployeeController implements Initializable {
     	submitNewEmpData.setOnAction(e -> employee());
 
     }
-	private void employee(){
+    /*public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
+    {
+    	if(firstName.equals("tfEmfName"))
+        {
+            System.out.print(true);
+            return true;
+        }
+        else
+        {
+            System.out.print(false);
+            return false;
+        }
+
+    }*/
+    
+    
+    private void employee(){
 		
 		String firstName = tfEmpFName.getText();
 		String lastName = tfEmpLName.getText();
