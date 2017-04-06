@@ -14,13 +14,14 @@ import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-
 
 /**
  * FXML Controller class
@@ -29,6 +30,9 @@ import javafx.scene.control.Button;
  */
 public class GUICustMenuController implements Initializable {
 
+	@FXML
+	private Button viewAvailCust;
+	
     @FXML
     private Button exit;
     
@@ -40,9 +44,21 @@ public class GUICustMenuController implements Initializable {
     /**
      * Initializes the controller class.
      */
+  
+    @FXML
+    void handleButtonAction(ActionEvent event) throws IOException {
+       	//TN - get reference button stage
+        Stage stage = (Stage) viewAvailCust.getScene().getWindow();
+       	//TN - load other scene
+        Parent root = FXMLLoader.load(getClass().getResource("GUICustViewAvail.fxml"));
+   
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
 }
