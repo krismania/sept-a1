@@ -23,6 +23,8 @@ public class Controller
 	{
 		db.CreateDatabase();
 		
+		// TODO debug
+		db.getShifts(1);
 	}
 	
 	
