@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -69,6 +71,11 @@ public class GUILoginPopupController implements Initializable {
         }
         else if(event.getSource()==businessOwner)
         {
+
+        	String pw = password.getText();
+     
+        	pw.passwordAccepted.Account(pw);
+        	
         	stage=(Stage) businessOwner.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
         }
@@ -82,7 +89,7 @@ public class GUILoginPopupController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

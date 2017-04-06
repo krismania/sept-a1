@@ -16,9 +16,34 @@ import javafx.fxml.Initializable;
  */
 public class GUICustViewAvailController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+
+
+    @FXML
+    private TextField sunday;
+
+    @FXML
+    private TextField saturday;
+
+    @FXML
+    private TextField wednesday;
+
+    @FXML
+    private TextField thursday;
+
+    @FXML
+    private TextField friday;
+
+    @FXML
+    private TextField Tuesday;
+
+    @FXML
+    private TextField monday;
+
+    @FXML
+    void outputAvail(ActionEvent event) {
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
