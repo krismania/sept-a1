@@ -95,7 +95,7 @@ public class Database {
 			if (type.equals(Customer.class))
 			{
 				try (ResultSet customerQuery = stmt.executeQuery(
-								"SELECT * FROM Customer WHERE Username = " + username))
+								String.format("SELECT * FROM Customer WHERE Username = '%s'", username)))
 				{
 					if (customerQuery.next())
 					{
@@ -114,7 +114,7 @@ public class Database {
 			else if (type.equals(BusinessOwner.class))
 			{
 				try (ResultSet boQuery = stmt.executeQuery(
-								"SELECT * FROM BusinessOwner WHERE Username = " + username))
+								String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username)))
 				{
 					if (boQuery.next())
 					{
