@@ -14,15 +14,24 @@ public class Controller
 	
 	Database db = Database.getInstance();
 	
+	private static Controller instance = null;
+	
+	public static Controller getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new Controller();
+		}
+		return instance;
+	}
+	
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
 	 */
-	
-	public Controller()
+	private Controller()
 	{
 		db.CreateDatabase();
-		
 	}
 	
 	
