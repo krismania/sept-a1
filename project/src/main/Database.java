@@ -90,52 +90,42 @@ public class Database {
 	 * @author krismania
 	 */
 	public Account getAccount(String username)
-	{
-		String sql = "SELECT Type, Username FROM (SELECT * FROM 'BusinessOwner' UNION SELECT * FROM 'Customer') WHERE Username = " + username;
+	{		
+		Class<? extends Account> type = validateUsername(username);
 		
 		try
 		{
-			try (ResultSet typeQuery = stmt.executeQuery(sql))
+			if (type.equals(Customer.class))
 			{
-				// result set should be exactly 1 record long
-				if (typeQuery.next())
+				try (ResultSet customerQuery = stmt.executeQuery("SELECT * FROM Customer"))
 				{
-					// decide the account type
-					String type = typeQuery.getString("Type");
-					
-					if (type.equals("Customer"))
+					if (customerQuery.next())
 					{
-						try (ResultSet customerQuery = stmt.executeQuery("SELECT * FROM Customer"))
-						{
-							if (customerQuery.next())
-							{
-								// get info
-								String first = rs.getString("Firstname");
-						        String last = rs.getString("Lastname");
-						        String email = rs.getString("Email");
-						        String phone = rs.getString("Phone");
-						        String usr = rs.getString("Username");
-						        
-						        // create customer obj and return it
-						        return new Customer(usr, first, last, email, phone);
-							}
-						}
+						// get info
+						String first = rs.getString("Firstname");
+				        String last = rs.getString("Lastname");
+				        String email = rs.getString("Email");
+				        String phone = rs.getString("Phone");
+				        String usr = rs.getString("Username");
+				        
+				        // create customer obj and return it
+				        return new Customer(usr, first, last, email, phone);
 					}
-					else if (type.equals("BusinessOwner"))
+				}
+			}
+			else if (type.equals(BusinessOwner.class))
+			{
+				try (ResultSet boQuery = stmt.executeQuery("SELECT * FROM BusinessOwner"))
+				{
+					if (boQuery.next())
 					{
-						try (ResultSet boQuery = stmt.executeQuery("SELECT * FROM BusinessOwner"))
-						{
-							if (boQuery.next())
-							{
-								// get info
-								String usr = rs.getString("Username");
-								String businessName = "[business_name]";
-								// TODO: store business name in db
-								
-								// create obj and return
-								return new BusinessOwner(usr, businessName);
-							}
-						}
+						// get info
+						String usr = rs.getString("Username");
+						String businessName = "[business_name]";
+						// TODO: store business name in db
+						
+						// create obj and return
+						return new BusinessOwner(usr, businessName);
 					}
 				}
 			}
@@ -144,6 +134,7 @@ public class Database {
 		{
 			// TODO: logging
 		}
+			
 		return null;
 	}
 	
@@ -432,15 +423,17 @@ public class Database {
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
 				+ "='%s' WHERE Username='%s'", dataToInput, userName);
-		int exists = 0;
+		
+		boolean exists = false;
+		
 		try
 		{
 			if(userName != null)
 			{
-				exists = validateUsername(userName);
+				exists = accountExists(userName);
 			}
 			
-			if(exists!=0)
+			if(exists)
 			{
 				openConnection();
 				stmt = c.createStatement();
