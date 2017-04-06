@@ -64,8 +64,66 @@ public class Database {
 		return false;
 	}
 	
+	/**
+	 * Returns the account specified by the given username, or null if none
+	 * is found.
+	 * @author krismania
+	 */
 	public Account getAccount(String username)
 	{
+		String sql = "SELECT Type, Username FROM (SELECT * FROM 'BusinessOwner' UNION SELECT * FROM 'Customer') WHERE Username = " + username;
+		
+		try
+		{
+			try (ResultSet typeQuery = stmt.executeQuery(sql))
+			{
+				// result set should be exactly 1 record long
+				if (typeQuery.next())
+				{
+					// decide the account type
+					String type = typeQuery.getString("Type");
+					
+					if (type.equals("Customer"))
+					{
+						try (ResultSet customerQuery = stmt.executeQuery("SELECT * FROM Customer"))
+						{
+							if (customerQuery.next())
+							{
+								// get info
+								String first = rs.getString("Firstname");
+						        String last = rs.getString("Lastname");
+						        String email = rs.getString("Email");
+						        String phone = rs.getString("Phone");
+						        String usr = rs.getString("Username");
+						        
+						        // create customer obj and return it
+						        return new Customer(usr, first, last, email, phone);
+							}
+						}
+					}
+					else if (type.equals("BusinessOwner"))
+					{
+						try (ResultSet boQuery = stmt.executeQuery("SELECT * FROM BusinessOwner"))
+						{
+							if (boQuery.next())
+							{
+								// get info
+								String usr = rs.getString("Username");
+								String businessName = "[business_name]";
+								// TODO: store business name in db
+								
+								// create obj and return
+								return new BusinessOwner(usr, businessName);
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
 		return null;
 	}
 	
