@@ -56,7 +56,7 @@ public class GUIBOMenuController implements Initializable {
         else
         {
         	stage=(Stage) viewBooking.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIBOViewBooking.fxml"));
+            root = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
         }
 
         //TN - call a new scene instance
