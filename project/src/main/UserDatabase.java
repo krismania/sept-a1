@@ -170,7 +170,7 @@ public class UserDatabase {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-
+			//e.printStackTrace();
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
@@ -236,6 +236,7 @@ public class UserDatabase {
 			rs = stmt.executeQuery(sql);
 			rs.next();
 			if (rs.getString(1).equals(password)) {
+				closeConnection();
 				return true;
 			}
 			closeConnection();
@@ -403,7 +404,6 @@ public class UserDatabase {
 		    e.printStackTrace();
 		}
 	}
-	
 
 	//public ArrayList<String> getShifts() {
 		//ArrayList<String> Shifts = new ArrayList<String>();
@@ -459,7 +459,7 @@ public class UserDatabase {
 			openConnection();
 			stmt = c.createStatement();
 			
-			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID";
+			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID DESC";
 			rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
@@ -482,7 +482,45 @@ public class UserDatabase {
 		return id;
 	}
 	
-	/*public void getShifts() {
+	/**
+	 * Temp method to find the highest ID
+	 * TODO: this WILL need to be removed
+	 * @author krismania
+	 */
+	public String getLastShiftID()
+	{
+		String id = "S000"; // if no employee is found, E000 will be returned
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = "SELECT Shift_ID FROM Schedule ORDER BY Shift_ID DESC";
+			rs = stmt.executeQuery(sql);
+			
+			// we only care about the first result. -kg
+			rs.next();
+			id = rs.getString("Shift_ID");
+			
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
+	public ArrayList<String> getShifts()
+	{
+		ArrayList<String> Shifts = new ArrayList<String>();
 		try
 		{
 			openConnection();
@@ -518,7 +556,7 @@ public class UserDatabase {
 		    e.printStackTrace();
 		}
 		return Shifts;
-	}*/
+	}
 	
 //***CONNECTION METHODS***JM
 	public boolean openConnection() throws SQLException {

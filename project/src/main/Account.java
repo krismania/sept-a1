@@ -7,20 +7,13 @@ package main;
 
 public abstract class Account
 {
-	private String username;
+	public final String username;
 	
 	
 	public Account(String username)
 	{
 		this.username = username;
 	}
-
-	
-	public String getUsername()
-	{
-		return username;
-	}
-	
 	
 	@Override
 	public String toString()
@@ -28,11 +21,11 @@ public abstract class Account
 		return username;
 	}
 	
-	
-	/*
-	 * Password rule validation. -kg
+	/**
+	 * Validates account passwords based on some rules
+	 * TODO: document the rules
+	 * @author krismania
 	 */
-	
 	public static boolean passwordAccepted(String password)
 	{
 		//check length

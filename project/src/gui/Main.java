@@ -22,9 +22,9 @@ public class Main
 	{
 		//ABS abs = new ABS();
 		//abs.mainMenu();
-		//Application.launch(LoginPopup.class, args);
+		
 		//Application.launch(AddEmployee.class, args);
-		Application.launch(AddTime.class, args);
+		Application.launch(AddTimeAndShift.class, args);
 	}
 	
 }

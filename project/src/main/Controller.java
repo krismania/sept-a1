@@ -5,7 +5,7 @@ import java.util.Scanner;
 import console.Console;
 import console.Menu;
 
-public class ABS
+public class Controller
 {
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
@@ -17,7 +17,7 @@ public class ABS
 	 * Creates an instance of the controller class & opens the database.
 	 */
 	
-	public ABS()
+	public Controller()
 	{
 		db.CreateDatabase();
 		
@@ -230,7 +230,7 @@ public class ABS
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = console.addShiftPrompt();
-		employeeID = shiftInfo.get("shiftInfo");
+		employeeID = shiftInfo.get("employeeID");
 		shiftDay = shiftInfo.get("shiftDay");
 		shiftTime = shiftInfo.get("shiftTime");
 		
@@ -242,8 +242,8 @@ public class ABS
 		else
 		{
 			// employee found, add the shift
-			// TODO: generate a Shift ID
-			db.CreateDataEntry("Schedule", shiftDay, shiftTime, "S001", employeeID);
+			String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
+			db.CreateDataEntry("Schedule", shiftDay, shiftTime, ShiftID, employeeID);
 		}
 		
 //		do{
