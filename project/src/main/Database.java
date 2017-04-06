@@ -89,6 +89,12 @@ public class Database {
 	{		
 		Class<? extends Account> type = validateUsername(username);
 		
+		// check if type is null
+		if (type == null)
+		{
+			return null;
+		}
+		
 		try
 		{
 			openConnection();
