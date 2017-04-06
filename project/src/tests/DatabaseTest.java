@@ -7,17 +7,16 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.Database;
-import main.Customer;
-import main.BusinessOwner;
+import main.*;
 
 public class DatabaseTest {
 
 	public Database db = new Database("JUnitDataBase");
 	Customer testCustomer = new Customer("JamesRulez", "James", "McLennan", "testing@testing.com", 
 			"0400000000");
-	
 	BusinessOwner testBO = new BusinessOwner("JohnRulez", "Hairshop");
+	Employee testEmp = new Employee(1, "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+			"0400000000");
 
 	@Before
 	public void setUp() throws Exception 
@@ -40,8 +39,7 @@ public class DatabaseTest {
 				
 		db.addAccount(testBO, "john");
 				
-		db.addEmployee("Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
-						"0400000000", "E001");
+		db.addEmployee(testEmp);
 	}
 
 	@Test

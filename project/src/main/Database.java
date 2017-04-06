@@ -44,8 +44,18 @@ public class Database {
 			return false;
 	}
 	
+	/**
+	 * addEmployee will instantiate an employee into the database.
+	 * @param employee
+	 * @author James
+	 */
 	public boolean addEmployee(Employee employee)
 	{
+		if(CreateDataEntry("Employee", employee.getFirstName(), employee.getLastName(), employee.getEmail(), 
+				employee.getPhoneNumber(), Integer.toString(employee.ID)))
+		{
+			return true;
+		}
 		return false;
 	}
 	
@@ -156,17 +166,6 @@ public class Database {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	//Add employee into database.(JM)
-	public boolean addEmployee(String firstName, String lastname, String email, String phoneNumber, String empID)
-	{
-		if(CreateDataEntry("Employee", firstName, lastname, email, 
-				phoneNumber, empID))
-		{
-			return true;
-		}
-		return false;
 	}
 	
 	//JM Insert data into database.
