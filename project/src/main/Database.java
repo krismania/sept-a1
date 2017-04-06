@@ -819,8 +819,7 @@ public class Database {
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
 		
-		CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-				"0400000000", "JohnRulez", "john", "BusinessOwner");
+		CreateDataEntry("BusinessOwner", "JohnRulez", "john", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "E001");
