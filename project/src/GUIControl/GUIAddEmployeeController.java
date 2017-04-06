@@ -48,8 +48,15 @@ public class GUIAddEmployeeController implements Initializable {
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
     	
-    	submitNewEmpData.setOnAction(e -> employee());
-
+    	submitNewEmpData.setOnAction(e -> {
+    	if (employee() != true)
+    	{
+    		GUIAlert.infoBox("You have entered incorrect data please try again", "");
+    	}
+    	else
+    		employee();
+    	    GUIAlert.infoBox("New employee is successfully added", "");
+    	});
     }
     /*public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
     {
@@ -66,8 +73,8 @@ public class GUIAddEmployeeController implements Initializable {
 
     }*/
     
-    
-    private void employee(){
+    //TN - Gathers Employee variables and returns a boolean for validation of field processing
+    private boolean employee(){
 		
 		String firstName = tfEmpFName.getText();
 		String lastName = tfEmpLName.getText();
@@ -84,8 +91,8 @@ public class GUIAddEmployeeController implements Initializable {
 		map.put("phoneNumber", phone);
 		
 		// Just testing hashMap for employees. Will refine after....
-		
-		Controller.getInstance().addEmployee(map);
+		boolean value = Controller.getInstance().addEmployee(map);
+		return value;
 	} 	
     @Override
     public void initialize(URL url, ResourceBundle rb) {
