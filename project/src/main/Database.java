@@ -91,6 +91,7 @@ public class Database {
 		
 		try
 		{
+			openConnection()
 			if (type.equals(Customer.class))
 			{
 				try (ResultSet customerQuery = stmt.executeQuery("SELECT * FROM Customer"))
@@ -125,6 +126,7 @@ public class Database {
 					}
 				}
 			}
+			closeConnection();
 		}
 		catch (SQLException e)
 		{
