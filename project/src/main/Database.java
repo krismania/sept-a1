@@ -310,17 +310,21 @@ public class Database {
 	}
 	
 //***VALIDATION METHODS***JM
-	//Customer/Business Owner JM
-	public int validateUsername(String username) 
-	{
+
+	/**
+	 * Returns a class object describing which type of user {@code username} is,
+	 * or null if the username is not found.
+	 * @author James
+	 * @author krismania
+	 */
+	private Class<? extends Account> validateUsername(String username) 
+	{		
 		String query = "SELECT Username, Type "
 				+ "FROM (SELECT Username, Type from Customer "
 				+ "UNION "
 				+ "SELECT Username, Type from BusinessOwner"
 				+ ") a "
 				+ "WHERE Username = '"+username+"'";
-		
-		int userType = 0;
 		
 		try 
 		{
@@ -334,11 +338,11 @@ public class Database {
 				
 				if(type.equals("BusinessOwner"))
 				{
-					userType = 2;
+					return BusinessOwner.class;
 				}
-				else
+				else if (type.equals("Customer"))
 				{
-					userType = 1;
+					return Customer.class;
 				}
 			}
 			closeConnection();
@@ -351,7 +355,7 @@ public class Database {
 			//JM Handles errors for Class.forName
 			e.printStackTrace();
 		}
-		return userType;
+		return null;
 	}
 	
 	public boolean validatePassword(String username, String password, String tableName)
