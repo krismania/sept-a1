@@ -19,17 +19,36 @@ public class CustomerTest
 				"0418 123 456");
 	}
 	
-	/*
-	 * Tests the getter methods of Customer
-	 */
+	
+	// test customer info getters. -kg
+	
 	@Test
-	public void getterTest()
+	public void testGetFirstName()
 	{
 		assertEquals("John", customer.getFirstName());
-		assertEquals("Doe", customer.getLastName());
-		assertEquals("johndoe@gmail.com", customer.getEmail());
-		assertEquals("0418 123 456", customer.getPhoneNumber());
-		assertEquals("johndoe", customer.getUsername());
 	}
-
+	
+	@Test
+	public void testGetLastName()
+	{
+		assertEquals("Doe", customer.getLastName());
+	}
+	
+	@Test
+	public void testGetEmail()
+	{
+		assertEquals("johndoe@gmail.com", customer.getEmail());
+	}
+	
+	@Test
+	public void testGetPhoneNumber()
+	{
+		assertEquals("0418 123 456", customer.getPhoneNumber());
+	}
+	
+	@Test
+	public void testGetUsername()
+	{
+		assertEquals("johndoe", customer.username);
+	}
 }
