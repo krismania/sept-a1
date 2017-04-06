@@ -25,24 +25,20 @@ public class Database {
 	{
 		if(account instanceof Customer)
 		{
-			if(CreateDataEntry("Customer", ((Customer) account).getFirstName(), 
-					((Customer) account).getLastName(), ((Customer) account).getEmail(), 
-					((Customer) account).getPhoneNumber(), account.username, password, "Customer"))
-			{
-				return true;
-			}
-			return false;
+			Customer c = (Customer) account;
+			
+			return CreateDataEntry("Customer", c.getFirstName(),
+							c.getLastName(), c.getEmail(), c.getPhoneNumber(),
+							c.username, password, "Customer");
 		}
 		else if(account instanceof BusinessOwner)
 		{
-			if(CreateDataEntry("BusinessOwner", account.username, password, "BusinessOwner"))
-			{
-				return true;
-			}
-			return false;
+			BusinessOwner bo = (BusinessOwner) account;
+			
+			return CreateDataEntry("BusinessOwner", bo.username, password, "BusinessOwner");
 		}
-		else 
-			return false;
+
+		return false;
 	}
 	
 	/**
