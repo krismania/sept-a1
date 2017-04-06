@@ -42,11 +42,11 @@ public class DatabaseTest {
 		db.addEmployee(testEmp);
 	}
 
-	@Test
+	/*@Test
 	public void openConnectionTest() throws SQLException 
 	{
 		assertEquals(true, db.openConnection());
-	}
+	}*/
 	
 	@Test
 	public void validateCustomerDoesExistByUsername() throws SQLException
@@ -102,9 +102,9 @@ public class DatabaseTest {
 		assertEquals(false, db.validatePassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
 	}
 	
-	@Test
+	/*@Test
 	public void closeConnectionTest() throws SQLException 
 	{
 		assertEquals(true, db.closeConnection());
-	}
+	}*/
 }

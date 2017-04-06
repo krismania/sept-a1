@@ -688,7 +688,7 @@ public class Database {
 	}
 	
 //***CONNECTION METHODS***JM
-	public boolean openConnection() throws SQLException {
+	private boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
 		{
@@ -697,7 +697,7 @@ public class Database {
 		return false;
 	}
 	
-	public boolean closeConnection() throws SQLException {
+	private boolean closeConnection() throws SQLException {
 		
 		if(stmt != null)
 		{
