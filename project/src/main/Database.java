@@ -473,7 +473,7 @@ public class Database {
 	}
 	
 	//Employee JM
-	public boolean validateEmpID(String empID) 
+	private boolean validateEmpID(String empID) 
 	{
 		boolean duplicated = false;
 		
@@ -509,7 +509,7 @@ public class Database {
 	* dataToInput = the actual string you wish to insert as the update
 	* valueToUpdate = the value you wish to update. ie. Name, Password, Username etc.
 	*/
-	public boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
+	private boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
 	{
 		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
 				+ "='%s' WHERE Username='%s'", dataToInput, userName);
@@ -667,7 +667,7 @@ public class Database {
 	 * TODO: this may need to be removed
 	 * @author krismania
 	 */
-	public String getLastEmployeeID()
+	private String getLastEmployeeID()
 	{
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
@@ -703,7 +703,7 @@ public class Database {
 	 * TODO: this WILL need to be removed
 	 * @author krismania
 	 */
-	public String getLastShiftID()
+	private String getLastShiftID()
 	{
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try

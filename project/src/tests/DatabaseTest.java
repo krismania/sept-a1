@@ -69,37 +69,37 @@ public class DatabaseTest {
 	@Test
 	public void validateEmployeeDoesExistByID() throws SQLException
 	{
-		assertEquals(true, db.validateEmpID("E001"));
+		assertTrue(db.getEmployee(1) instanceof Employee);
 	}
 	
 	@Test
 	public void validateEmployeeDoesNotExistByID() throws SQLException
 	{
-		assertEquals(false, db.validateEmpID("abc001"));
+		assertNull(db.getEmployee(999));
 	}
 
 	@Test
 	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(true, db.validatePassword("JamesRulez", "james", "Customer"));
+		assertTrue(db.login("JamesRulez", "james") instanceof Customer);
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(false, db.validatePassword("JamesRulez", "ksA1jdlksa", "Customer"));
+		assertNull(db.login("JamesRulez", "ksA1jdlksa"));
 	}
 	
 	@Test
 	public void validatePasswordDoesMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(true, db.validatePassword("JohnRulez", "john", "BusinessOwner"));
+		assertTrue(db.login("JohnRulez", "john") instanceof BusinessOwner);
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(false, db.validatePassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+		assertNull(db.login("JamesRulez", "jkosadJ1"));
 	}
 	
 	/*@Test
