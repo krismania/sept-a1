@@ -178,6 +178,47 @@ public class Database {
 		return null;
 	}
 	
+	// TODO: return array of Shifts
+	public ArrayList<String> getShifts()
+	{
+		ArrayList<String> Shifts = new ArrayList<String>();
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM Employee NATURAL JOIN Schedule";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //JM Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String shiftID = rs.getString("Shift_ID");
+		         String day = rs.getString("Day");
+		         String time = rs.getString("Time");
+	
+		         //JM Testing! Display values
+		         String empAndShift = ("\nName: " + first + " " + last + 
+		        		 " - Shift ID: " + shiftID);
+		         String andTime = ("Day and Time: " + day + ", " + time);
+		         String combined = String.format("%s\n%s\n", empAndShift, andTime);
+		         System.out.println(combined);
+		         Shifts.add(combined);
+		      }
+			closeConnection();
+			return Shifts;
+		}catch(SQLException e) {
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		return Shifts;
+	}
+
 	/**
 	 * Attempt to log into an account with the provided credentials. If the login
 	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
@@ -693,47 +734,7 @@ public class Database {
 		return id;
 	}
 	
-	public ArrayList<String> getShifts()
-	{
-		ArrayList<String> Shifts = new ArrayList<String>();
-		try
-		{
-			openConnection();
-			stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM Employee NATURAL JOIN Schedule";
-			
-			rs = stmt.executeQuery(sql);
-			while(rs.next()){
-		         //JM Retrieve by column name
-		         String first = rs.getString("Firstname");
-		         String last = rs.getString("Lastname");
-		         String shiftID = rs.getString("Shift_ID");
-		         String day = rs.getString("Day");
-		         String time = rs.getString("Time");
-
-		         //JM Testing! Display values
-		         String empAndShift = ("\nName: " + first + " " + last + 
-		        		 " - Shift ID: " + shiftID);
-		         String andTime = ("Day and Time: " + day + ", " + time);
-		         String combined = String.format("%s\n%s\n", empAndShift, andTime);
-		         System.out.println(combined);
-		         Shifts.add(combined);
-		      }
-			closeConnection();
-			return Shifts;
-		}catch(SQLException e) {
-			//JM Handle errors for JDBC
-		    e.printStackTrace();
-		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
-		}
-		return Shifts;
-	}
-	
-//***CONNECTION METHODS***JM
+	//***CONNECTION METHODS***JM
 	private boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
