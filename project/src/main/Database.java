@@ -1,5 +1,6 @@
 package main;
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 public class Database {
@@ -59,11 +60,21 @@ public class Database {
 		return false;
 	}
 	
+	/**
+	 * addShift will instantiate a shift into the database, which
+	 * is connected to an employee.
+	 * @param shift
+	 * @author James
+	 */
 	public boolean addShift(Shift shift)
 	{
+		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.getEmployeeID()))
+		{
+			return true;
+		}
 		return false;
 	}
-	
+
 	public Account getAccount(String username)
 	{
 		return null;
@@ -214,7 +225,30 @@ public class Database {
 		    e.printStackTrace();
 		}
 		return false;
-		   
+	}
+	
+	private boolean CreateShift(DayOfWeek day, Time time, int iD, int employeeID) 
+	{
+		String sql = "INSERT INTO Schedule VALUES ('"
+				+ day + "', '" + time + "', '" + iD + "'"
+						+ ", '" + employeeID + "')";
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+			closeConnection();
+			return true;
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+			//e.printStackTrace();
+			return false;
+		} catch(Exception e) {
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		return false;
 	}
 	
 //***VALIDATION METHODS***JM
