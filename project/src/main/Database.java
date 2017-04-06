@@ -14,9 +14,34 @@ public class Database {
 	}
 
 //***PUBLIC API***
-	public boolean addAccount(Account account)
+	/**
+	 * addAccount will instantiate a user's details into the database.
+	 * @param account
+	 * @param password - As account does not store password. Directly pass to DB.
+	 * @author James
+	 */
+	public boolean addAccount(Account account, String password)
 	{
-		return false;
+		if(account instanceof Customer)
+		{
+			if(CreateDataEntry("Customer", ((Customer) account).getFirstName(), 
+					((Customer) account).getLastName(), ((Customer) account).getEmail(), 
+					((Customer) account).getPhoneNumber(), account.username, password, "Customer"))
+			{
+				return true;
+			}
+			return false;
+		}
+		else if(account instanceof BusinessOwner)
+		{
+			if(CreateDataEntry("BusinessOwner", account.username, password, "BusinessOwner"))
+			{
+				return true;
+			}
+			return false;
+		}
+		else 
+			return false;
 	}
 	
 	public boolean addEmployee(Employee employee)
@@ -131,30 +156,6 @@ public class Database {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	//Add customer into database.(JM)
-	public boolean addCustomer(String firstName, String lastname, String email, String phoneNumber,
-			String username, String password)
-	{
-		if(CreateDataEntry("Customer", firstName, lastname, email, 
-				phoneNumber, username, password, "Customer"))
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	//Add businessOwner into database.(JM)
-	public boolean addBusinessOwner(String firstName, String lastname, String email, String phoneNumber,
-			String username, String password)
-	{
-		if(CreateDataEntry("BusinessOwner", firstName, lastname, email, 
-				phoneNumber, username, password, "BusinessOwner"))
-		{
-			return true;
-		}
-		return false;
 	}
 	
 	//Add employee into database.(JM)
@@ -637,9 +638,8 @@ public class Database {
 				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//BusinessOwner Table
-		CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)","Type varchar(13)", "Username");
+		CreateDatabaseTable("BusinessOwner", "Username varchar(15)",
+				"Password varchar(15)", "Type varchar(13)", "Username");
 		
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
