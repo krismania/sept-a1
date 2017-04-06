@@ -7,8 +7,10 @@ package GUIControl;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.*;
 import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,6 +90,29 @@ public class GUILoginPopupController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+    
+    private void login()
+    {
+    	// get the input
+    	// put it in a hashmap
+    	HashMap<String, String> loginInfo = new HashMap<String, String>();
+    	
+    	// call the controller login function and receives a class object
+    	// the class object expresses the type of account we have
+    	Class<?> accountType = Controller.getInstance().login(loginInfo);
+    	
+    	if (accountType.equals(Customer.class))
+    	{
+    		// user logged in as a customer
+    	}
+    	else if (accountType.equals(BusinessOwner.class))
+    	{
+    		// user logged in as a b.o.
+    	}
+    	else {
+    		// account is invalid
+    	}
     }
 
     @Override

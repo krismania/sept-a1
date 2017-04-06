@@ -393,12 +393,11 @@ public class Controller
 	 * sub-menu.
 	 * @author krismania
 	 */
-	private void login()
+	public Class<? extends Account> login(HashMap<String, String> accountInput)
 	{
 		String username;
 		String password;
 		
-		HashMap<String, String> accountInput = console.accountPrompt();
 		username = accountInput.get("username");
 		password = accountInput.get("password");
 		
@@ -407,15 +406,16 @@ public class Controller
 		
 		if (account instanceof Customer)
 		{
-			customerMenu();
+			return Customer.class;
 		}
 		else if (account instanceof BusinessOwner)
 		{
-			businessOwnerMenu();
+			return BusinessOwner.class;
 		}
 		else 
 		{
 			console.alert("Invalid username or password");
+			return null;
 		}
 	}
 	
