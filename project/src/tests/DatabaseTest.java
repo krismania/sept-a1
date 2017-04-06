@@ -7,16 +7,20 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.UserDatabase;
+import main.*;
 
 public class DatabaseTest {
 
-	public UserDatabase db;
+	public Database db = new Database("JUnitDataBase");
+	Customer testCustomer = new Customer("JamesRulez", "James", "McLennan", "testing@testing.com", 
+			"0400000000");
+	BusinessOwner testBO = new BusinessOwner("JohnRulez", "Hairshop");
+	Employee testEmp = new Employee(1, "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+			"0400000000");
 
 	@Before
 	public void setUp() throws Exception 
 	{
-		db = new UserDatabase("JUnitDataBase");
 		db.CreateDatabase();
 		//Customer Table
 		db.CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
@@ -24,87 +28,83 @@ public class DatabaseTest {
 						"Password varchar(15)","Type varchar(13)", "Username");
 				
 		//BusinessOwner Table
-		db.CreateDatabaseTable("BusinessOwner", "Firstname varchar(255)", "Lastname varchar(255)",
-						"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-						"Password varchar(15)","Type varchar(13)", "Username");
+		db.CreateDatabaseTable("BusinessOwner", "Username varchar(15)",
+				"Password varchar(15)","Type varchar(13)", "Username");
 				
 	    //Employee Table
 		db.CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 						"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 				
-		db.CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
-						"0400000000", "JamesRulez", "james", "Customer");
+		db.addAccount(testCustomer, "james");
 				
-		db.CreateDataEntry("BusinessOwner", "John", "Doe", "rabbits@rocks.com",
-						"0400000000", "JohnRulez", "john", "BusinessOwner");
+		db.addAccount(testBO, "john");
 				
-		db.CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
-						"0400000000", "E001");
+		db.addEmployee(testEmp);
 	}
 
-	@Test
+	/*@Test
 	public void openConnectionTest() throws SQLException 
 	{
 		assertEquals(true, db.openConnection());
-	}
+	}*/
 	
 	@Test
 	public void validateCustomerDoesExistByUsername() throws SQLException
 	{
-		assertEquals(1, db.validateUsername("JamesRulez"));
+		assertEquals(true, db.accountExists("JamesRulez"));
 	}
 	
 	@Test
 	public void validateBusinessOwnerDoesExistByUsername() throws SQLException
 	{
-		assertEquals(2, db.validateUsername("JohnRulez"));
+		assertEquals(true, db.accountExists("JohnRulez"));
 	}
 	
 	@Test
 	public void validateUserDoesNotExistByUsername() throws SQLException
 	{
-		assertEquals(0, db.validateUsername("Blehasdji123"));
+		assertEquals(false, db.accountExists("Blehasdji123"));
 	}
 	
 	@Test
 	public void validateEmployeeDoesExistByID() throws SQLException
 	{
-		assertEquals(true, db.validateEmpID("E001"));
+		assertTrue(db.getEmployee(1) instanceof Employee);
 	}
 	
 	@Test
 	public void validateEmployeeDoesNotExistByID() throws SQLException
 	{
-		assertEquals(false, db.validateEmpID("abc001"));
+		assertNull(db.getEmployee(999));
 	}
 
 	@Test
 	public void validatePasswordDoesMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(true, db.validatePassword("JamesRulez", "james", "Customer"));
+		assertTrue(db.login("JamesRulez", "james") instanceof Customer);
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchCustomersSetPassword() throws SQLException
 	{
-		assertEquals(false, db.validatePassword("JamesRulez", "ksA1jdlksa", "Customer"));
+		assertNull(db.login("JamesRulez", "ksA1jdlksa"));
 	}
 	
 	@Test
 	public void validatePasswordDoesMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(true, db.validatePassword("JohnRulez", "john", "BusinessOwner"));
+		assertTrue(db.login("JohnRulez", "john") instanceof BusinessOwner);
 	}
 	
 	@Test
 	public void validatePasswordDoesNotMatchBusinessOwnerSetPassword() throws SQLException
 	{
-		assertEquals(false, db.validatePassword("JohnRulez", "jkosadJ1", "BusinessOwner"));
+		assertNull(db.login("JamesRulez", "jkosadJ1"));
 	}
 	
-	@Test
+	/*@Test
 	public void closeConnectionTest() throws SQLException 
 	{
 		assertEquals(true, db.closeConnection());
-	}
+	}*/
 }

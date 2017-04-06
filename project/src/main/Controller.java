@@ -1,4 +1,6 @@
 package main;
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -10,7 +12,7 @@ public class Controller
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
 	
-	UserDatabase db = new UserDatabase("awesomeSauce");
+	Database db = new Database("awesomeSauce");
 	
 	
 	/**
@@ -208,9 +210,13 @@ public class Controller
 //		employeeID = sc.nextLine();
 		
 		// TODO: fix this mess. -kg
-		String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+		//String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+		
+		int newID = 0; // TODO: temp test value
+		
+		Employee employee = new Employee(newID, firstName, lastName, email, phoneNumber);
 
-		db.CreateDataEntry("Employee", firstName, lastName, email, phoneNumber, newID);
+		db.addEmployee(employee);
 
 		console.alert("Employee " + newID + " successfully added!");
 	}
@@ -224,26 +230,30 @@ public class Controller
 	private void addShifts(){
 		
 		// declare variables
-		String employeeID;
-		String shiftDay;
+		int employeeID;
+		DayOfWeek shiftDay;
 		String shiftTime;		
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = console.addShiftPrompt();
-		employeeID = shiftInfo.get("employeeID");
-		shiftDay = shiftInfo.get("shiftDay");
+		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
+		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		shiftTime = shiftInfo.get("shiftTime");
 		
 		// check if employee exists
-		if (!db.validateEmpID(employeeID))
+		if (db.getEmployee(employeeID) == null)
 		{
 			console.alert("Employee ID cannot be found in database");
 		}
 		else
 		{
 			// employee found, add the shift
-			String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
-			db.CreateDataEntry("Schedule", shiftDay, shiftTime, ShiftID, employeeID);
+			// TODO: this should be an int
+			// String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
+			int shiftID = 0;
+			Shift shift = new Shift(shiftID, employeeID, shiftDay, new Time(0));
+			
+			db.addShift(shift);
 		}
 		
 //		do{
@@ -382,10 +392,10 @@ public class Controller
 
 		
 		// create the Customer instance -kg
-		// Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
+		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db -kg
-		created = db.CreateDataEntry("Customer", firstName, lastName, email, phoneNumber, username, password, "Customer");
+		created = db.addAccount(customer, password);
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -407,7 +417,6 @@ public class Controller
 	 * sub-menu.
 	 * @author krismania
 	 */
-	
 	private void login()
 	{
 		String username;
@@ -417,34 +426,20 @@ public class Controller
 		username = accountInput.get("username");
 		password = accountInput.get("password");
 		
-		//TODO: Login function should check both customer & b.o. accounts
+		// attempt login
+		Account account = db.login(username, password);
 		
-		// check if username exists
-		if (db.validateUsername(username) == 1)
+		if (account instanceof Customer)
 		{
-			// test the password
-			if (db.validatePassword(username, password, "Customer"))
-			{
-				customerMenu();
-			}
-			else {
-				console.alert("Invalid password.");
-			}
+			customerMenu();
 		}
-		else if (db.validateUsername(username) == 2)
+		else if (account instanceof BusinessOwner)
 		{
-			// test the password
-			if (db.validatePassword(username, password, "BusinessOwner"))
-			{
-				businessOwnerMenu();
-			}
-			else
-			{
-				console.alert("Invalid password.");
-			}
+			businessOwnerMenu();
 		}
-		else {
-			console.alert("Username Not Found.");
+		else 
+		{
+			console.alert("Invalid username or password");
 		}
 	}
 	
