@@ -147,7 +147,7 @@ public class Database {
 		try
 		{
 			openConnection();
-			
+			// TODO: use int IDs instead of strings
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
 			{
@@ -174,12 +174,32 @@ public class Database {
 	
 	public Shift getShift(int id)
 	{
+		// TODO: implement getShift
 		return null;
 	}
 	
+	/**
+	 * Attempt to log into an account with the provided credentials. If the login
+	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
+	 * the return value is null.
+	 * @author krismania
+	 */
 	public Account login(String username, String password)
 	{
-		return null;
+		boolean valid = false;
+		Account account = getAccount(username);
+		
+		if (account instanceof Customer)
+		{
+			valid = validatePassword(username, password, "Customer");
+		}
+		else if (account instanceof BusinessOwner)
+		{
+			valid = validatePassword(username, password, "BusinessOwner");
+		}
+		
+		if (valid) return account;
+		else return null;
 	}
 
 	
@@ -387,7 +407,7 @@ public class Database {
 		return null;
 	}
 	
-	public boolean validatePassword(String username, String password, String tableName)
+	private boolean validatePassword(String username, String password, String tableName)
 	{
 		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
 		
@@ -406,6 +426,7 @@ public class Database {
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			// TODO: logging
 		}
 		
 		return false;
