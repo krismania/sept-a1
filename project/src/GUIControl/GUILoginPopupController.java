@@ -74,7 +74,7 @@ public class GUILoginPopupController implements Initializable {
 
         	String pw = password.getText();
      
-        	pw.passwordAccepted.Account(pw);
+        	//pw.passwordAccepted.Account(pw);
         	
         	stage=(Stage) businessOwner.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
