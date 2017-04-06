@@ -56,7 +56,7 @@ public class GUIAddEmployeeController implements Initializable {
 		String firstName = tfEmpFName.getText();
 		String lastName = tfEmpLName.getText();
 		String email = tfEmpEmailAdd.getText();
-		String employeeID;
+		String phone = tfEmpPhNum.getText();
 		
 		// HashMap for adding employee 
 		
@@ -65,6 +65,7 @@ public class GUIAddEmployeeController implements Initializable {
 		map.put("firstName",firstName);
 		map.put("lastName", lastName);
 		map.put("email", email);
+		map.put("phoneNumber", phone);
 		
 		// Just testing hashMap for employees. Will refine after....
 		

@@ -508,7 +508,7 @@ public class Controller
 	
 	public static boolean validatePhoneNumber(String input)
 	{
-		if(!input.isEmpty()){
+		if(input != null && !input.isEmpty()){
 			return true;
 		}
 		return false;
