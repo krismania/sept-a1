@@ -67,19 +67,15 @@ public class GUILoginPopupController implements Initializable {
     private void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
-        
-        if(event.getSource()==login) {
-        	login();
-        	if (login() == true) { 
+        login();
+        if((event.getSource()==login)&&(login() != false)) {
+
         		stage=(Stage) login.getScene().getWindow();
         		root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
-        	}
-        	else
+        	
         	//TN - get reference button stage
             //stage=(Stage) login.getScene().getWindow();
             //TN - load other scene
-        	//stage=(Stage) login.getScene().getWindow();
-        	GUIAlert.infoBox("Incorrect username or password. please try again", "");
         }
         else if(event.getSource()==businessOwner)
         {
