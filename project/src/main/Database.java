@@ -138,8 +138,37 @@ public class Database {
 		return null;
 	}
 	
+	/**
+	 * Returns the employee specified by the given ID, or null if none is found.
+	 * @author krismania
+	 */
 	public Employee getEmployee(int id)
 	{
+		try
+		{
+			openConnection();
+			
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
+			{
+				if (rs.next())
+				{
+					String first = rs.getString("Firstname");
+			        String last = rs.getString("Lastname");
+			        String email = rs.getString("Email");
+			        String phone = rs.getString("Phone");
+
+			        return new Employee(id, first, last, email, phone);
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
 		return null;
 	}
 	
