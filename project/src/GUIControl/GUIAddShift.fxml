@@ -6,6 +6,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIAddShiftController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUIControl.GUIAddShiftController">
+   <children>
+      <TextField layoutX="369.0" layoutY="69.0" prefHeight="25.0" prefWidth="211.0" />
+      <Label layoutX="39.0" layoutY="114.0" prefHeight="27.0" prefWidth="267.0" text="Selected Shift: Morning/Afternoon/Evening" />
+      <Label layoutX="39.0" layoutY="69.0" prefHeight="27.0" prefWidth="211.0" text="Employee ID" />
+      <TextField layoutX="369.0" layoutY="114.0" prefHeight="25.0" prefWidth="211.0" />
+      <TextField layoutX="369.0" layoutY="214.0" prefHeight="25.0" prefWidth="211.0" />
+      <Label layoutX="39.0" layoutY="162.0" prefHeight="27.0" prefWidth="211.0" text="Confirm Shift" />
+      <Label layoutX="39.0" layoutY="214.0" prefHeight="27.0" prefWidth="211.0" text="Availability Confirmed" />
+      <Button layoutX="410.0" layoutY="162.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="130.0" text="Reserve Shift" />
+   </children>
 </AnchorPane>
