@@ -68,7 +68,7 @@ public class GUILoginPopupController implements Initializable {
         Stage stage;
         Parent root;
         //login();
-        if((event.getSource()==login)&&(login() != false)) {
+        if(event.getSource()==login) {
 
         		stage=(Stage) login.getScene().getWindow();
         		root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
@@ -98,15 +98,16 @@ public class GUILoginPopupController implements Initializable {
         stage.show();
     }
     
-    private boolean login()
-    {
+    //private boolean login()
+    //{
     	
+		/*
 		String pwCheck = password.getText();
 		String unCheck = userName.getText();
 
 		// HashMap for adding employee 
 		
-				/*<key, value>*/
+				//<key, value>
 
 		
 		// Just testing hashMap for employees. Will refine after....
@@ -134,7 +135,8 @@ public class GUILoginPopupController implements Initializable {
     		// account is invalid
     		return false;
     	}
-    }
+    	*/
+    //}
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
