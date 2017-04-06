@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -71,36 +72,20 @@ public class GUIAddEmployeeController implements Initializable {
 		String firstName = tfEmpFName.getText();
 		String lastName = tfEmpLName.getText();
 		String email = tfEmpEmailAdd.getText();
-		String employeeID;
+		String phone = tfEmpPhNum.getText();
 		
 		// HashMap for adding employee 
 		
 				/*<key, value>*/
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("First Name",firstName);
-		map.put("Last Name", lastName);
-		map.put("Email", email);
-		map.put("Employee ID", "E008");
+		map.put("firstName",firstName);
+		map.put("lastName", lastName);
+		map.put("email", email);
+		map.put("phoneNumber", phone);
 		
 		// Just testing hashMap for employees. Will refine after....
 		
-		firstName = map.get("First Name");
-		System.out.println("First name is " + firstName);
-		lastName = map.get("Last Name");
-		System.out.println("Last name is " + lastName);
-		email = map.get("Email");
-		System.out.println("Email is " + email);
-		employeeID = map.get("Employee ID");
-		System.out.println("Employee ID is " + employeeID);
-		
-		
-		map.remove("First Name");
-		
-		if(map.containsKey("First Name")){
-			System.out.println("First Name is still a variable");
-		}else{
-			System.out.println("First name is no longer a variable");
-		}
+		Controller.getInstance().addEmployee(map);
 	} 	
     @Override
     public void initialize(URL url, ResourceBundle rb) {
