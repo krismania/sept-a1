@@ -43,6 +43,11 @@ public class Database {
 	{
 		return null;
 	}
+	
+	public Account login(String username, String password)
+	{
+		return null;
+	}
 
 	
 //***CREATE METHODS***JM
