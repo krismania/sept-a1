@@ -67,7 +67,7 @@ public class GUILoginPopupController implements Initializable {
     private void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
-        login();
+        //login();
         if((event.getSource()==login)&&(login() != false)) {
 
         		stage=(Stage) login.getScene().getWindow();
@@ -100,6 +100,18 @@ public class GUILoginPopupController implements Initializable {
     
     private boolean login()
     {
+    	
+		String pwCheck = password.getText();
+		String unCheck = userName.getText();
+
+		// HashMap for adding employee 
+		
+				/*<key, value>*/
+
+		
+		// Just testing hashMap for employees. Will refine after....
+		boolean value = Controller.getInstance().addEmployee(map);
+		return value;
     	// get the input
     	// put it in a hashmap
     	HashMap<String, String> loginInfo = new HashMap<String, String>();
@@ -123,7 +135,6 @@ public class GUILoginPopupController implements Initializable {
     		return false;
     	}
     }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
