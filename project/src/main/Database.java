@@ -13,6 +13,38 @@ public class Database {
 		dbName = nameOfDatabase;
 	}
 
+//***PUBLIC API***
+	public boolean addAccount(Account account)
+	{
+		return false;
+	}
+	
+	public boolean addEmployee(Employee employee)
+	{
+		return false;
+	}
+	
+	public boolean addShift(Shift shift)
+	{
+		return false;
+	}
+	
+	public Account getAccount(String username)
+	{
+		return null;
+	}
+	
+	public Employee getEmployee(int id)
+	{
+		return null;
+	}
+	
+	public Shift getShift(int id)
+	{
+		return null;
+	}
+
+	
 //***CREATE METHODS***JM
 	public void CreateDatabase()
 	{
