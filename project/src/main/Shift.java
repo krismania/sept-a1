@@ -37,4 +37,10 @@ public class Shift
 	{
 		return time;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("shift-%s-emp-%s", ID, employeeID);
+	}
 }

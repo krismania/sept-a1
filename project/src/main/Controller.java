@@ -12,7 +12,7 @@ public class Controller
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
 	
-	Database db = Database.getInstance();
+	Database db = new Database("awesomeSauce");
 	
 	private static Controller instance = null;
 	
@@ -32,6 +32,9 @@ public class Controller
 	private Controller()
 	{
 		db.CreateDatabase();
+		
+		// TODO debug
+		db.getShifts(1);
 	}
 	
 	
