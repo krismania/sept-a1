@@ -1,7 +1,9 @@
 package main;
 import java.sql.*;
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Database {
 	Connection c = null;
@@ -64,7 +66,7 @@ public class Database {
 	 */
 	public boolean addShift(Shift shift)
 	{
-		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.getEmployeeID()))
+		if(CreateShift(shift.getDay().getDisplayName(TextStyle.FULL, Locale.ENGLISH), shift.getTime(), shift.ID, shift.getEmployeeID()))
 		{
 			return true;
 		}
@@ -111,7 +113,7 @@ public class Database {
 				        String email = rs.getString("Email");
 				        String phone = rs.getString("Phone");
 				        String usr = rs.getString("Username");
-				        
+				        closeConnection();
 				        // create customer obj and return it
 				        return new Customer(usr, first, last, email, phone);
 					}
@@ -127,8 +129,7 @@ public class Database {
 						// get info
 						String usr = rs.getString("Username");
 						String businessName = "[business_name]";
-						// TODO: store business name in db
-						
+						closeConnection();
 						// create obj and return
 						return new BusinessOwner(usr, businessName);
 					}
@@ -163,7 +164,7 @@ public class Database {
 			        String last = rs.getString("Lastname");
 			        String email = rs.getString("Email");
 			        String phone = rs.getString("Phone");
-
+			        closeConnection();
 			        return new Employee(id, first, last, email, phone);
 				}
 			}
@@ -178,9 +179,31 @@ public class Database {
 		return null;
 	}
 	
-	public Shift getShift(int id)
+	public Shift getShift(int shiftID)
 	{
-		// TODO: implement getShift
+		try
+		{
+			openConnection();
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Shift NATURAL JOIN Schedule WHERE Shift_ID = '%s'", shiftID)))
+			{
+				if (rs.next())
+				{
+					String day = rs.getString("Day");
+			        Time time = rs.getTime("Time");
+			        int empID = rs.getInt("EmpID");
+			        closeConnection();
+			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), time);
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
 		return null;
 	}
 	
@@ -380,7 +403,7 @@ public class Database {
 		return false;
 	}
 	
-	private boolean CreateShift(DayOfWeek day, Time time, int iD, int employeeID) 
+	private boolean CreateShift(String day, Time time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Schedule VALUES ('"
 				+ day + "', '" + time + "', '" + iD + "'"
@@ -790,7 +813,7 @@ public class Database {
 				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
 		
 		//Schedule Table
-		CreateDatabaseTable("Schedule", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
 				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
@@ -805,9 +828,9 @@ public class Database {
 		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
 				"0400000000", "E002");
 		
-		CreateDataEntry("Schedule", "Monday", "Morning", "S001", "E001");
-		CreateDataEntry("Schedule", "Tuesday", "Afternoon", "S002", "E001");
-		CreateDataEntry("Schedule", "Wednesday", "Evening", "S003", "E001");
-		CreateDataEntry("Schedule", "Sunday", "Afternoon", "S004", "E002");
+		CreateDataEntry("Shift", "Monday", "Morning", "S001", "E001");
+		CreateDataEntry("Shift", "Tuesday", "Afternoon", "S002", "E001");
+		CreateDataEntry("Shift", "Wednesday", "Evening", "S003", "E001");
+		CreateDataEntry("Shift", "Sunday", "Afternoon", "S004", "E002");
 	}
 }
