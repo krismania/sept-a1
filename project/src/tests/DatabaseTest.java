@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.UserDatabase;
+import main.Database;
 
 public class DatabaseTest {
 
-	public UserDatabase db = new UserDatabase("JUnitDataBase");
+	public Database db = new Database("JUnitDataBase");
 
 	@Before
 	public void setUp() throws Exception 

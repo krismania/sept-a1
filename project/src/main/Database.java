@@ -2,14 +2,14 @@ package main;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserDatabase {
+public class Database {
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
 	String dbName;
 	
 	//JM Constructor, reads the name of the database file to work with.
-	public UserDatabase(String nameOfDatabase) {
+	public Database(String nameOfDatabase) {
 		dbName = nameOfDatabase;
 	}
 

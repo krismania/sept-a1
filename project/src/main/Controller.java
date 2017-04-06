@@ -10,7 +10,7 @@ public class Controller
 	Scanner sc = new Scanner(System.in);
 	Console console = new Console(sc);
 	
-	UserDatabase db = new UserDatabase("awesomeSauce");
+	Database db = new Database("awesomeSauce");
 	
 	
 	/**
