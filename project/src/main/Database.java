@@ -91,10 +91,11 @@ public class Database {
 		
 		try
 		{
-			openConnection()
+			openConnection();
 			if (type.equals(Customer.class))
 			{
-				try (ResultSet customerQuery = stmt.executeQuery("SELECT * FROM Customer"))
+				try (ResultSet customerQuery = stmt.executeQuery(
+								"SELECT * FROM Customer WHERE Username = " + username))
 				{
 					if (customerQuery.next())
 					{
@@ -112,7 +113,8 @@ public class Database {
 			}
 			else if (type.equals(BusinessOwner.class))
 			{
-				try (ResultSet boQuery = stmt.executeQuery("SELECT * FROM BusinessOwner"))
+				try (ResultSet boQuery = stmt.executeQuery(
+								"SELECT * FROM BusinessOwner WHERE Username = " + username))
 				{
 					if (boQuery.next())
 					{
