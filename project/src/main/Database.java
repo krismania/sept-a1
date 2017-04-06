@@ -213,7 +213,6 @@ public class Database {
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
 			setupScript();
-			closeConnection();
 		}
 		catch (Exception e)
 		{
@@ -558,24 +557,15 @@ public class Database {
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
-			String sql = "SELECT Firstname, Lastname, Email, Phone,"
-					+ "Username, Password FROM BusinessOwner";
+			String sql = "SELECT Username, Password FROM BusinessOwner";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
 		         //Retrieve by column name
-		         String first = rs.getString("Firstname");
-		         String last = rs.getString("Lastname");
-		         String email = rs.getString("Email");
-		         String phone = rs.getString("Phone");
 		         String Username = rs.getString("Username");
 		         String Password = rs.getString("Password");
 
 		         //Display values
-		         System.out.println("First: " + first);
-		         System.out.println("Last: " + last);
-		         System.out.println("Email: " + email);
-		         System.out.println("Phone: " + phone);
 		         System.out.println("Username: " + Username);
 		         System.out.println("Password: " + Password);
 		         System.out.println();
