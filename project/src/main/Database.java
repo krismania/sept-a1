@@ -176,11 +176,11 @@ public class Database {
 					if (customerQuery.next())
 					{
 						// get info
-						String first = rs.getString("Firstname");
-				        String last = rs.getString("Lastname");
-				        String email = rs.getString("Email");
-				        String phone = rs.getString("Phone");
-				        String usr = rs.getString("Username");
+						String first = customerQuery.getString("Firstname");
+				        String last = customerQuery.getString("Lastname");
+				        String email = customerQuery.getString("Email");
+				        String phone = customerQuery.getString("Phone");
+				        String usr = customerQuery.getString("Username");
 				        closeConnection();
 				        // create customer obj and return it
 				        return new Customer(usr, first, last, email, phone);
@@ -195,7 +195,7 @@ public class Database {
 					if (boQuery.next())
 					{
 						// get info
-						String usr = rs.getString("Username");
+						String usr = boQuery.getString("Username");
 						String businessName = "[business_name]";
 						closeConnection();
 						// create obj and return
@@ -208,6 +208,7 @@ public class Database {
 		catch (SQLException e)
 		{
 			// TODO: logging
+			e.printStackTrace();
 		}
 			
 		return null;
@@ -373,7 +374,7 @@ public class Database {
 			openConnection();
 			stmt = c.createStatement();
 			
-			String sql = String.format("SELECT * FROM Shifts WHERE Shift_ID NOT IN"
+			String sql = String.format("SELECT * FROM Shift WHERE Shift_ID NOT IN"
 					+ "(SELECT SHIFT_ID FROM Booking)");
 			
 			rs = stmt.executeQuery(sql);
@@ -444,6 +445,7 @@ public class Database {
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
 			setupScript();
+			closeConnection();
 		}
 		catch (Exception e)
 		{
@@ -574,7 +576,7 @@ public class Database {
 	
 	private boolean CreateShift(DayOfWeek day, ShiftTime time, int iD, int employeeID) 
 	{
-		String sql = "INSERT INTO Schedule VALUES ('"
+		String sql = "INSERT INTO Shift VALUES ('"
 				+ day.name() + "', '" + time.name() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		

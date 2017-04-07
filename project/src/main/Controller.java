@@ -44,9 +44,9 @@ public class Controller
 		return new ArrayList<Employee>();
 	}
 	
-	public ArrayList<Shift> getAllShifts()
+	public ArrayList<Shift> getAllOpenShifts()
 	{
-		return new ArrayList<Shift>();
+		return db.getShiftsNotBooked();
 	}
 	
 	/**

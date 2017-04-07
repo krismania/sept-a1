@@ -102,7 +102,7 @@ public class Console
 				break;
                         case "Staff Availability - Days and Times:":
 				alert("Staff Availability - Days and Times:");
-				viewDaysAndTime(c.getAllShifts());
+				viewDaysAndTime(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -128,7 +128,7 @@ public class Console
 			{
 			case "View available days/times":
 				alert("Available Days and Times:");
-				viewDaysAndTime(c.getAllShifts());
+				viewDaysAndTime(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -363,16 +363,17 @@ public class Console
 			DayOfWeek day = current.getDay();
 			ShiftTime time = current.getTime();
 			Locale locale = new Locale("au", "AU");
-			
-			alert("Shift ID: " + Integer.toString(shiftID));
-			alert("Employee: " + Integer.toString(empID));
-			alert("Day: " + day.getDisplayName(TextStyle.SHORT, locale));
-			alert("Time: " + time.toString());
+			System.out.println("***");
+			System.out.println("Option: " + Integer.toString(shiftID));
+			System.out.println("Employee: " + Integer.toString(empID) 
+					+ ", Day: " + day.getDisplayName(TextStyle.SHORT, locale) 
+					+ ", Time: " + time.toString());
 		}
+		System.out.println();
 		
 		if(timeSlots.isEmpty())
 		{
-			alert("Currently no shifts have been scheduled.");
+			alert("There are currently no available timeslots.");
 		}
 	}
 	
