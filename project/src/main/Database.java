@@ -134,6 +134,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			if (type.equals(Customer.class))
 			{
 				try (ResultSet customerQuery = stmt.executeQuery(
@@ -188,6 +189,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			// TODO: use int IDs instead of strings
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
@@ -224,6 +226,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
 			{
 				if (rs.next())
@@ -261,6 +264,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Shift NATURAL JOIN Schedule WHERE Shift_ID = '%s'", shiftID)))
 			{
