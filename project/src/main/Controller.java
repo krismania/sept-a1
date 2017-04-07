@@ -63,13 +63,13 @@ public class Controller
 	 * @author krismania
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
-	{
-		// TODO: fix this mess. -kg
-		//String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+	{		
+		Employee employee = db.buildEmployee();
 		
-		int newID = 0; // TODO: temp test value
-		
-		Employee employee = new Employee(newID, firstName, lastName, email, phoneNumber);
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee.setEmail(email);
+		employee.setPhoneNumber(phoneNumber);
 		
 		return db.addEmployee(employee);
 	}
