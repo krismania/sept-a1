@@ -54,7 +54,6 @@ public class GUIAddEmployeeController implements Initializable {
     		GUIAlert.infoBox("You have entered incorrect data please try again", "");
     	}
     	else
-    		employee();
     	    GUIAlert.infoBox("New employee is successfully added", "");
     	});
     }
@@ -75,7 +74,7 @@ public class GUIAddEmployeeController implements Initializable {
     
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
     private boolean employee(){
-		
+    	
 		String firstName = tfEmpFName.getText();
 		String lastName = tfEmpLName.getText();
 		String email = tfEmpEmailAdd.getText();

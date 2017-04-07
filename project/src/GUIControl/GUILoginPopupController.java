@@ -33,10 +33,10 @@ import main.Controller;
 public class GUILoginPopupController implements Initializable {
     
     @FXML
-    private PasswordField password;
+    private PasswordField tfPassword;
 
     @FXML
-    private TextField userName;
+    private TextField tfUsername;
     
     @FXML
     private Button signup;
@@ -65,61 +65,68 @@ public class GUILoginPopupController implements Initializable {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException {
+        //login();
+        loop:
+        do {
+    	    GUIAlert.infoBox("Your login is incorrect, please try again", "");	
+        	Stage stage = (Stage) exit.getScene().getWindow();
+    	    stage.close();
+    	    continue loop;          
+    	}
+        while (login() == false);
         Stage stage;
         Parent root;
-        //login();
         if(event.getSource()==login) {
-
-        		stage=(Stage) login.getScene().getWindow();
-        		root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
-        	
-        	//TN - get reference button stage
-            //stage=(Stage) login.getScene().getWindow();
-            //TN - load other scene
+        	stage = (Stage) login.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
+            //TN - call a new scene instance
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
-        else if(event.getSource()==businessOwner)
-        {
-
-        	String pw = password.getText();
-     
-        	//pw.passwordAccepted.Account(pw);
-        	
-        	stage=(Stage) businessOwner.getScene().getWindow();
+        //TN - get reference button stage
+        //stage=(Stage) login.getScene().getWindow();
+        //TN - load other scene
+        
+        else if(event.getSource()==businessOwner) {
+            stage=(Stage) businessOwner.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-        }
+            //TN - call a new scene instance
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }   
         else
-        {
-        	stage=(Stage) signup.getScene().getWindow();
+            stage=(Stage) signup.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUISignup.fxml")); 	
-        }
-        //TN - call a new scene instance
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        
+            //TN - call a new scene instance
+            //Scene scene = new Scene(root);
+            //stage.setScene(scene);
+            //stage.show();
+        
     }
-    
-    //private boolean login()
-    //{
-    	
-		/*
-		String pwCheck = password.getText();
-		String unCheck = userName.getText();
 
+    private boolean login() {
+    	
+        String username = tfUsername.getText();
+	    String password = tfPassword.getText();
 		// HashMap for adding employee 
 		
 				//<key, value>
 
 		
 		// Just testing hashMap for employees. Will refine after....
-		boolean value = Controller.getInstance().addEmployee(map);
-		return value;
+
     	// get the input
     	// put it in a hashmap
-    	HashMap<String, String> loginInfo = new HashMap<String, String>();
+    	HashMap<String, String> map = new HashMap<String, String>();
+        map.put("username",username);
+        map.put("password",password);
     	
     	// call the controller login function and receives a class object
     	// the class object expresses the type of account we have
-    	Class<?> accountType = Controller.getInstance().login(loginInfo);
+    	Class<?> accountType = Controller.getInstance().login(map);
     	
     	if (accountType.equals(Customer.class))
     	{
@@ -131,12 +138,12 @@ public class GUILoginPopupController implements Initializable {
     		// user logged in as a b.o.
     		return true;
     	}
-    	else {
+    	else 
     		// account is invalid
     		return false;
-    	}
-    	*/
-    //}
+    	
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
