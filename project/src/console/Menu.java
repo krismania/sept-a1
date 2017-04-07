@@ -54,14 +54,14 @@ public class Menu
 				}
 				else
 				{
-					// if selection isn't a valid option, throw an exception
-					throw new Exception();
+					// if selection isn't a valid option, re-prompt. -kg
+					System.out.println("Please select an option from the list above.");
+					System.out.println();
 				}
 			}
 			catch (Exception e)
 			{
-				System.out.println("Error: Invalid Selection!");
-				System.out.println(e.getMessage()); //debug only. -kg
+				System.out.println("Please input a number.");
 				System.out.println();
 			}
 			

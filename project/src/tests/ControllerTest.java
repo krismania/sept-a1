@@ -5,66 +5,66 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.ABS;
+import main.Controller;
 
-public class ABSTest
+public class ControllerTest
 {
 
 	// test static validator methods. -kg	
 	@Test
 	public void testValidName()
 	{
-		assertTrue(ABS.validateName("John"));
+		assertTrue(Controller.validateName("John"));
 	}
 	
 	@Test
 	public void testInvalidName()
 	{
-		assertFalse(ABS.validateName(""));
+		assertFalse(Controller.validateName(""));
 	}
 	
 	@Test
 	public void testValidEmail()
 	{
-		assertTrue(ABS.validateEmail("some-email@gmail.com"));
+		assertTrue(Controller.validateEmail("some-email@gmail.com"));
 	}
 	
 	@Test
 	public void testInvalidEmail1()
 	{
 		// no @ symbol
-		assertFalse(ABS.validateEmail("myemail.website.com"));
+		assertFalse(Controller.validateEmail("myemail.website.com"));
 	}
 	
 	@Test
 	public void testInvalidEmail2()
 	{
 		// no . symbol
-		assertFalse(ABS.validateEmail("emailwithout@dots"));
+		assertFalse(Controller.validateEmail("emailwithout@dots"));
 	}
 	
 	@Test
 	public void testInvalidEmail3()
 	{
 		// no . or @ symbols
-		assertFalse(ABS.validateEmail("thisisdefinitelynotanemail"));
+		assertFalse(Controller.validateEmail("thisisdefinitelynotanemail"));
 	}
 	
 	// @author - RK
 	@Test
 	public void testInvalidEmail4(){
-		assertFalse(ABS.validateEmail("richard@kuoch@"));
+		assertFalse(Controller.validateEmail("richard@kuoch@"));
 	}
 	
 	//@author -RK
 	@Test
 	
 	public void testPhoneNumber(){
-		assertFalse(ABS.validatePhoneNumber(""));
+		assertFalse(Controller.validatePhoneNumber(""));
 	}
 	
 	public void testPhoneNumber2(){
-		assertTrue(ABS.validatePhoneNumber("98029744"));
+		assertTrue(Controller.validatePhoneNumber("98029744"));
 	}
 	
 }

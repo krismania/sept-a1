@@ -49,6 +49,6 @@ public class CustomerTest
 	@Test
 	public void testGetUsername()
 	{
-		assertEquals("johndoe", customer.getUsername());
+		assertEquals("johndoe", customer.username);
 	}
 }
