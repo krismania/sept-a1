@@ -24,13 +24,13 @@ import javafx.scene.Scene;
  *
  * @author tn
  */
-public class GUIBOMenuController implements Initializable {
+public class GUISignup implements Initializable {
 
     @FXML
     private Button addEmp;
 
     @FXML
-    private Button addTime;
+    private Button addShift;
 
     @FXML
     private Button viewBooking;
@@ -49,9 +49,9 @@ public class GUIBOMenuController implements Initializable {
         	//TN - load other scene
         	root = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
         }
-        else if(event.getSource()==addTime) {
+        else if(event.getSource()==addShift) {
         	stage=(Stage) addShift.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
+            root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml"));
         }
         else
         {

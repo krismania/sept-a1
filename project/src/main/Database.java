@@ -12,7 +12,7 @@ public class Database {
 	String dbName;
 	
 	//JM Constructor, reads the name of the database file to work with.
-	public Database(String nameOfDatabase) {
+	public Database(String nameOfDatabase){
 		dbName = nameOfDatabase;
 	}
 
@@ -208,40 +208,43 @@ public class Database {
 	}
 	
 	// TODO: return array of Shifts
-	public ArrayList<String> getShifts()
+	public ArrayList<Shift> getShifts(int EmpID)
 	{
-		ArrayList<String> Shifts = new ArrayList<String>();
+		ArrayList<Shift> Shifts = new ArrayList<Shift>();
 		try
 		{
 			openConnection();
 			stmt = c.createStatement();
 			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM Employee NATURAL JOIN Schedule";
+			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s'", EmpID);
 			
 			rs = stmt.executeQuery(sql);
-			while(rs.next()){
+			
+			while(rs.next())
+			{
 		         //JM Retrieve by column name
-		         String first = rs.getString("Firstname");
-		         String last = rs.getString("Lastname");
-		         String shiftID = rs.getString("Shift_ID");
-		         String day = rs.getString("Day");
-		         String time = rs.getString("Time");
-	
-		         //JM Testing! Display values
-		         String empAndShift = ("\nName: " + first + " " + last + 
-		        		 " - Shift ID: " + shiftID);
-		         String andTime = ("Day and Time: " + day + ", " + time);
-		         String combined = String.format("%s\n%s\n", empAndShift, andTime);
-		         System.out.println(combined);
-		         Shifts.add(combined);
-		      }
+		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
+		         Time time = rs.getTime("Time");
+		         int shiftID = rs.getInt("Shift_ID");
+		         
+		         // create shift object. -kg
+		         Shift shift = new Shift(shiftID, EmpID, day, time);
+		         
+		         // add it to the list
+		         Shifts.add(shift);
+		         
+		         // TODO: debug print shift
+		         System.out.println(shift.toString());
+		    }
 			closeConnection();
-			return Shifts;
-		}catch(SQLException e) {
+		}
+		catch(SQLException e)
+		{
 			//JM Handle errors for JDBC
 		    e.printStackTrace();
-		} catch(Exception e) {
+		}
+		catch(Exception e)
+		{
 		    //JM Handle errors for Class.forName
 		    e.printStackTrace();
 		}
@@ -810,11 +813,11 @@ public class Database {
 		
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "EmpID varchar(20)", "EmpID");
+				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 		
 		//Schedule Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(9)", "Shift_ID varchar(20)",
-				"EmpID varchar(20)", "Shift_ID"); //Schedule also has a foreign key for EmpID.
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time time(7)", "Shift_ID int",
+				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
@@ -822,14 +825,14 @@ public class Database {
 		CreateDataEntry("BusinessOwner", "JohnRulez", "john", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
-				"0400000000", "E001");
+				"0400000000", "1");
 		
 		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
-				"0400000000", "E002");
+				"0400000000", "2");
 		
-		CreateDataEntry("Shift", "Monday", "Morning", "S001", "E001");
-		CreateDataEntry("Shift", "Tuesday", "Afternoon", "S002", "E001");
-		CreateDataEntry("Shift", "Wednesday", "Evening", "S003", "E001");
-		CreateDataEntry("Shift", "Sunday", "Afternoon", "S004", "E002");
+		CreateDataEntry("Shift", "MONDAY", "0", "1", "1");
+		CreateDataEntry("Shift", "TUESDAY", "0", "2", "1");
+		CreateDataEntry("Shift", "WEDNESDAY", "0", "3", "1");
+		CreateDataEntry("Shift", "SUNDAY", "0", "4", "2");
 	}
 }
