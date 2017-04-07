@@ -2,15 +2,19 @@ package console;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Locale;
 
 import main.Account;
 import main.BusinessOwner;
 import main.Controller;
 import main.Customer;
+import main.Shift;
 
 /**
  * Handles the applications interaction with the console. Any input
@@ -120,6 +124,10 @@ public class Console
 		{
 			switch (menu.prompt())
 			{
+			case "View available days/times":
+				alert("Available Days and Times:");
+				viewDaysAndTime(c.getAllShifts());
+				break;
 			case "Log out":
 				exit = true;
 				break;
@@ -343,6 +351,27 @@ public class Console
 		}
 	}
 	
+	private void viewDaysAndTime(ArrayList<Shift> timeSlots)
+	{
+		for(Shift current : timeSlots)
+		{
+			int shiftID = current.ID;
+			int empID = current.getEmployeeID();
+			DayOfWeek day = current.getDay();
+			Time time = current.getTime();
+			Locale locale = new Locale("au", "AU");
+			
+			alert("Shift ID: " + Integer.toString(shiftID));
+			alert("Employee: " + Integer.toString(empID));
+			alert("Day: " + day.getDisplayName(TextStyle.SHORT, locale));
+			alert("Time: " + time.toString());
+		}
+		
+		if(timeSlots.isEmpty())
+		{
+			alert("Currently no shifts have been scheduled.");
+		}
+	}
 	
 	// **** CLASS FUNCTIONALITY ****
 	
