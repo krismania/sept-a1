@@ -416,26 +416,17 @@ public class Console
 	
 	private HashMap<String, String> accountPrompt()
 	{
-		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
-		
-		 	HashMap<String, String> input = new HashMap<String, String>();
-	        
-	        System.out.println("Username: ");
-	        input.put("username", sc.nextLine());
-	        
-	        System.out.println("Password: ");
-	        
-	        
-	        /* 
-	         * char[] pw = console.readPassword("Password: ");
-	         * String password = String.valueOf(pw);
-	         * input.put("password", password);
-	         */
-	        
-	        
-	        System.out.println(); // add space under last field -kg
-	        
-	        return input;
+	 	HashMap<String, String> input = new HashMap<String, String>();
+        
+        System.out.print("Username: ");
+        input.put("username", sc.nextLine());
+        
+        System.out.print("Password: ");
+        input.put("password", sc.nextLine());
+ 
+        System.out.println(); // add space under last field -kg
+        
+        return input;
 	}
 	
 	
