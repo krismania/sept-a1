@@ -42,8 +42,8 @@ public class GUIAddTimeController implements Initializable {
         if(event.getSource()==btRecordAvail) {
             //TN - Need to impliment capture data and send to method
         	
-        	//TN - Directs to confirmation scene
-        	stage=(Stage) btRecordAvail.getScene().getWindow();
+            //TN - Directs to confirmation scene
+            stage=(Stage) btRecordAvail.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml"));
             
         }
