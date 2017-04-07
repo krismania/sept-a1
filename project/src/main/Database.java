@@ -93,6 +93,41 @@ public class Database {
 	}
 	
 	/**
+	 * Generates a new Shift object with the next valid ID and the supplied
+	 * Employee ID.
+	 * @author krismania
+	 */
+	public Shift buildShift(int employeeID)
+	{
+		// find the highest ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Shift_ID) AS id FROM Shift"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Shift(id, employeeID, null, null);
+	}
+	
+	/**
 	 * addShift will instantiate a shift into the database, which
 	 * is connected to an employee.
 	 * @param shift
