@@ -30,7 +30,7 @@ public class GUIBOMenuController implements Initializable {
     private Button addEmp;
 
     @FXML
-    private Button addShift;
+    private Button addTime;
 
     @FXML
     private Button viewBooking;
@@ -49,9 +49,9 @@ public class GUIBOMenuController implements Initializable {
         	//TN - load other scene
         	root = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
         }
-        else if(event.getSource()==addShift) {
+        else if(event.getSource()==addTime) {
         	stage=(Stage) addShift.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml"));
+            root = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
         }
         else
         {
