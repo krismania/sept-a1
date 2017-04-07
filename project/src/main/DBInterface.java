@@ -96,12 +96,8 @@ public interface DBInterface
 	Account login(String username, String password);
 	
 	
-	//***CREATE METHODS***JM
-	void CreateDatabase();
 	
 	
-	//JM CreateDatabaseTable() will create a table within the database.
-	//JM Param = Variable number of Strings (Array)
-	void CreateDatabaseTable(String... strings);
+	
 	
 }

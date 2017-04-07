@@ -437,12 +437,8 @@ public class Database implements DBInterface {
 	}
 
 	
-//***CREATE METHODS***JM
-	/* (non-Javadoc)
-	 * @see main.DBInterface#CreateDatabase()
-	 */
-	@Override
-	public void CreateDatabase()
+	//***CREATE METHODS***JM
+	private void CreateDatabase()
 	{
 		//JM Initialize a connection
 		try
@@ -459,13 +455,10 @@ public class Database implements DBInterface {
 		}
 	}
 	
+	
 	//JM CreateDatabaseTable() will create a table within the database.
 	//JM Param = Variable number of Strings (Array)
-	/* (non-Javadoc)
-	 * @see main.DBInterface#CreateDatabaseTable(java.lang.String)
-	 */
-	@Override
-	public void CreateDatabaseTable(String... strings)
+	private void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
 		StringBuilder strBuilder = new StringBuilder();
