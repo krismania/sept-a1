@@ -134,7 +134,7 @@ public class Controller
 	 */
 	public boolean validatePhoneNumber(String input)
 	{
-		if(input != null && !input.isEmpty()){
+		if(input != null && !input.isEmpty() && input.length() <= 10){
 			return true;
 		}
 		return false;
