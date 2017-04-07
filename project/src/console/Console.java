@@ -287,12 +287,12 @@ public class Console
 		// TN Added username null check in password length validation
 		if ((Account.passwordAccepted(password)) && (username != null))
 		{
-			alert("Password OK!");
+			
 		}
 		else
 		{
 			// if password is unacceptable, end account creation here. -kg
-			alert("Invalid password.");
+			alert("Password must be greater than 6 characters,contain an upper case, lower case and a digit.  ");
 			return;
 		}
 		
