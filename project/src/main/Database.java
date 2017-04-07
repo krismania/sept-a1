@@ -55,8 +55,8 @@ public class Database {
 		try
 		{
 			openConnection();
-			
-			try (ResultSet customerQuery = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
 			{
 				if (rs.next())
 				{
