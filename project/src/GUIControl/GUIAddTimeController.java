@@ -36,7 +36,7 @@ public class GUIAddTimeController implements Initializable {
     private Button menu;
     
     @FXML
-    void handleButtonAction(ActionEvent event) throws IOException{
+    private void handleButtonAction(ActionEvent event) throws IOException{
         Stage stage;
         Parent root;
         if(event.getSource()==btRecordAvail) {
