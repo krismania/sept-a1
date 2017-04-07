@@ -93,7 +93,9 @@ public class Console
 				addEmployee();
 				break;
 			case "View employees":
-				// c.getAllEmployees(); // TODO: print employees
+				c.getAllEmployees();
+				//TN - prints output to console
+				custDisplay();// TODO: print employees
 				break;
 			case "Add working times/dates":
 				addShifts();
@@ -120,6 +122,8 @@ public class Console
 		{
 			switch (menu.prompt())
 			{
+			case "View available days/times":
+				custDisplay();
 			case "Log out":
 				exit = true;
 				break;
@@ -430,4 +434,44 @@ public class Console
 		
 		return prompt(fields);
 	}
+	
+    public static void custDisplay() 
+    {
+        //loadPersistentData();
+        // TN -Iterate through inputed values in array and print summary.
+        System.out.println();
+        System.out.println("       Current Available Booking Days");
+        System.out.println();
+    
+        {
+            // print basic employee details
+            System.out.printf("       Customer Booking Availability This Week: \n\n");
+            System.out.printf("----------------------View Only-------------------------\n\n\n");
+            // use the accessor for name so that the overridden version can
+            // be invoked polymorphically for an AcademicEmployee later on
+            System.out.printf("----------------------Monday Slots----------------------\n");
+            System.out.printf("       Monday: Morning, Status: Available \n");
+            System.out.printf("       Monday: Afternoon, Status: Full \n");
+            System.out.printf("       Monday: Evening, Status: Full \n\n");
+            System.out.printf("----------------------Tuesday Slots---------------------\n");
+            System.out.printf("       Tuesday: Morning, Status: Available \n");
+            System.out.printf("       Tuesday: Afternoon, Status: Full \n");
+            System.out.printf("       Tuesday: Evening, Status: Available \n\n");
+            System.out.printf("----------------------Wednesday Slots-------------------\n");
+            System.out.printf("       Wednesday: Morning, Status: Available \n");
+            System.out.printf("       Wednesday: Afternoon, Status: Full \n");
+            System.out.printf("       Wednesday: Evening, Status: Available \n\n");
+            System.out.printf("----------------------Thursday Slots---------------------\n");
+            System.out.printf("       Thursday: Morning, Status: Available \n");
+            System.out.printf("       Thursday: Afternoon, Status: Full \n");
+            System.out.printf("       Thursday: Evening, Status: Available \n\n");
+            System.out.printf("----------------------Friday Slots-----------------------\n");
+            System.out.printf("       Friday: Morning, Status: Available \n");
+            System.out.printf("       Friday: Afternoon, Status: Full \n");
+            System.out.printf("       Friday: Evening, Status: Available \n\n");
+            System.out.printf("--------------------------End----------------------------\n\n");
+
+         }
+}
+     
 }
