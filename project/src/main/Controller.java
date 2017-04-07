@@ -8,8 +8,8 @@ public class Controller
 {
 	Scanner sc = new Scanner(System.in);
 	
-	// DBInterface db = new Database("awesomeSauce");
-	DBInterface db = new DummyDatabase();
+	DBInterface db = new Database("awesomeSauce");
+	// DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
 	
 	private static Controller instance = null;
 	
