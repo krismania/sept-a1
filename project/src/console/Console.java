@@ -1,6 +1,7 @@
 package console;
 
 import java.sql.Time;
+
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -416,10 +417,25 @@ public class Console
 	private HashMap<String, String> accountPrompt()
 	{
 		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
-		fields.put("username", "Username");
-		fields.put("password", "Password");
 		
-		return prompt(fields);
+		 	HashMap<String, String> input = new HashMap<String, String>();
+	        
+	        System.out.println("Username: ");
+	        input.put("username", sc.nextLine());
+	        
+	        System.out.println("Password: ");
+	        
+	        
+	        /* 
+	         * char[] pw = console.readPassword("Password: ");
+	         * String password = String.valueOf(pw);
+	         * input.put("password", password);
+	         */
+	        
+	        
+	        System.out.println(); // add space under last field -kg
+	        
+	        return input;
 	}
 	
 	
