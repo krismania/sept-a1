@@ -10,7 +10,8 @@ import java.time.DayOfWeek;
 public class Shift
 {
 	public final int ID;
-	private int employeeID;
+	public final int employeeID;
+	
 	private DayOfWeek day;
 	private ShiftTime time;
 	
@@ -22,11 +23,6 @@ public class Shift
 		this.time = time;
 	}
 	
-	public int getEmployeeID()
-	{
-		return employeeID;
-	}
-	
 	public DayOfWeek getDay()
 	{
 		return day;
@@ -35,6 +31,16 @@ public class Shift
 	public ShiftTime getTime()
 	{
 		return time;
+	}
+	
+	public void setDay(DayOfWeek day)
+	{
+		this.day = day;
+	}
+	
+	public void setTime(Time time)
+	{
+		this.time = time;
 	}
 	
 	@Override

@@ -44,6 +44,40 @@ public class Database {
 	}
 	
 	/**
+	 * Generates a new empty employee object with the next valid ID.
+	 * @author krismania
+	 */
+	public Employee buildEmployee()
+	{
+		// find the highest current ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Employee(id, "", "", "", "");
+	}
+	
+	/**
 	 * addEmployee will instantiate an employee into the database.
 	 * @param employee
 	 * @author James
@@ -56,6 +90,41 @@ public class Database {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Generates a new Shift object with the next valid ID and the supplied
+	 * Employee ID.
+	 * @author krismania
+	 */
+	public Shift buildShift(int employeeID)
+	{
+		// find the highest ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Shift_ID) AS id FROM Shift"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Shift(id, employeeID, null, null);
 	}
 	
 	/**
@@ -100,6 +169,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			if (type.equals(Customer.class))
 			{
 				try (ResultSet customerQuery = stmt.executeQuery(
@@ -154,6 +224,7 @@ public class Database {
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			// TODO: use int IDs instead of strings
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
@@ -179,11 +250,56 @@ public class Database {
 		return null;
 	}
 	
+	/**
+	 * Returns all employees that have been registered, otherwise returns null.
+	 * @author James
+	 */
+	public ArrayList<Employee> getAllEmployees()
+	{
+		ArrayList<Employee> completeTeam = new ArrayList<Employee>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
+			{
+				if (rs.next())
+				{
+					String first = rs.getString("Firstname");
+			        String last = rs.getString("Lastname");
+			        String email = rs.getString("Email");
+			        String phone = rs.getString("Phone");
+			        int EmpID = rs.getInt("EmpID");
+			        
+			        Employee current = new Employee(EmpID, last, email, phone, first);
+			        
+			        completeTeam.add(current);
+				}
+				else
+				{
+					if(!completeTeam.isEmpty())
+					{
+						return completeTeam;
+					}
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		return null;
+	}
+	
 	public Shift getShift(int shiftID)
 	{
 		try
 		{
 			openConnection();
+			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Shift NATURAL JOIN Schedule WHERE Shift_ID = '%s'", shiftID)))
 			{
@@ -504,86 +620,11 @@ public class Database {
 		return false;
 	}
 	
-	//Employee JM
-	private boolean validateEmpID(String empID) 
-	{
-		boolean duplicated = false;
-		
-		String query = String.format("SELECT EmpID FROM %s WHERE EmpID='%s'", "Employee", empID);
-		
-		try 
-		{
-			openConnection();
-			stmt = c.createStatement();
-			rs = stmt.executeQuery(query);
-			if(rs != null) {
-				while(rs.next()){
-				
-					closeConnection();
-					duplicated = true;
-				}
-			}
-		}
-		catch (SQLException e) {
-			
-			
-		} catch (Exception e) {
-			//JM Handles errors for Class.forName
-			
-		}
-		
-		return duplicated;
-	}
-	
-	/*JM Enabled generic update to specific data, depending on Username.
-	* Params = table, the table you wish to update data in
-	* userName = Username of specific user
-	* dataToInput = the actual string you wish to insert as the update
-	* valueToUpdate = the value you wish to update. ie. Name, Password, Username etc.
-	*/
-	private boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
-	{
-		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
-				+ "='%s' WHERE Username='%s'", dataToInput, userName);
-		
-		boolean exists = false;
-		
-		try
-		{
-			if(userName != null)
-			{
-				exists = accountExists(userName);
-			}
-			
-			if(exists)
-			{
-				openConnection();
-				stmt = c.createStatement();
-				stmt.executeUpdate(sql);
-				System.out.println("Value has been updated for: " + userName);
-				closeConnection();
-				return true;
-			}
-			else 
-			{
-				closeConnection();
-				return false;
-			}
-			
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (NullPointerException s)
-		{
-			s.printStackTrace();
-		}
-		return false;
-	}
-	
 //***RETRIEVE METHODS***JM
-	//JM Obtain Data values from tables
+	/**
+	 * Debug method! Remove on release/submit
+	 * @author James
+	 */
 	public void getCustomerDataEntries() 
 	{		
 		try{
@@ -623,6 +664,10 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * Debug method! Remove on release/submit
+	 * @author James
+	 */
 	public void getBusinessOwnerDataEntries() 
 	{		
 		try{
@@ -653,46 +698,6 @@ public class Database {
 		}
 	}
 
-	//public ArrayList<String> getShifts() {
-		//ArrayList<String> Shifts = new ArrayList<String>();
-	//}
-
-	public void getEmployeeDataEntries() 
-	{		
-		try{
-			openConnection();
-			stmt = c.createStatement();
-			
-			String sql = "SELECT EmpID, Firstname, Lastname, Email, Phone"
-					+ " FROM Employee";
-			
-			rs = stmt.executeQuery(sql);
-			while(rs.next()){
-		         //Retrieve by column name
-			     String id = rs.getString("EmpID"); 
-		         String first = rs.getString("Firstname");
-		         String last = rs.getString("Lastname");
-		         String email = rs.getString("Email");
-		         String phone = rs.getString("Phone");
-
-		         //Display values
-		         System.out.println("ID: " + id);
-		         System.out.println("First: " + first);
-		         System.out.println("Last: " + last);
-		         System.out.println("Email: " + email);
-		         System.out.println("Phone: " + phone);
-		         
-		         System.out.println();
-		      }
-			closeConnection();
-		} catch(SQLException e) {
-			//JM Handle errors for JDBC
-		    e.printStackTrace();
-		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * Temp method to find the highest ID
@@ -835,4 +840,51 @@ public class Database {
 		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
 	}
+	
+//*** Future Dev Requirements. No longer needed***
+	
+
+	/**Update data entry
+	 * @author James
+	 */
+	/*private boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
+	{
+		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
+				+ "='%s' WHERE Username='%s'", dataToInput, userName);
+		
+		boolean exists = false;
+		
+		try
+		{
+			if(userName != null)
+			{
+				exists = accountExists(userName);
+			}
+			
+			if(exists)
+			{
+				openConnection();
+				stmt = c.createStatement();
+				stmt.executeUpdate(sql);
+				System.out.println("Value has been updated for: " + userName);
+				closeConnection();
+				return true;
+			}
+			else 
+			{
+				closeConnection();
+				return false;
+			}
+			
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		catch (NullPointerException s)
+		{
+			s.printStackTrace();
+		}
+		return false;
+	}*/
 }

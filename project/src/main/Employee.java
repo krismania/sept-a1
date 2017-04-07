@@ -45,4 +45,28 @@ public class Employee implements PersonalDetails
 	{
 		return phoneNumber;
 	}
+
+	@Override
+	public void setFirstName(String name)
+	{
+		firstName = name;
+	}
+
+	@Override
+	public void setLastName(String name)
+	{
+		lastName = name;
+	}
+
+	@Override
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	@Override
+	public void setPhoneNumber(String phone)
+	{
+		phoneNumber = phone;		
+	}
 }
