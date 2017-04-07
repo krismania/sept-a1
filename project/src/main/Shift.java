@@ -11,7 +11,8 @@ import java.time.DayOfWeek;
 public class Shift
 {
 	public final int ID;
-	private int employeeID;
+	public final int employeeID;
+	
 	private DayOfWeek day;
 	private Time time;
 	
@@ -21,11 +22,6 @@ public class Shift
 		this.employeeID = employeeID;
 		this.day = day;
 		this.time = time;
-	}
-	
-	public int getEmployeeID()
-	{
-		return employeeID;
 	}
 	
 	public DayOfWeek getDay()

@@ -100,7 +100,7 @@ public class Database {
 	 */
 	public boolean addShift(Shift shift)
 	{
-		if(CreateShift(shift.getDay().getDisplayName(TextStyle.FULL, Locale.ENGLISH), shift.getTime(), shift.ID, shift.getEmployeeID()))
+		if(CreateShift(shift.getDay().getDisplayName(TextStyle.FULL, Locale.ENGLISH), shift.getTime(), shift.ID, shift.employeeID))
 		{
 			return true;
 		}
