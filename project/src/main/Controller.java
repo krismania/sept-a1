@@ -85,10 +85,9 @@ public class Controller
 	
 	public boolean addShift(int employeeID, DayOfWeek day, Time time)
 	{
-		// TODO: this should be an int
-		// String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
-		int shiftID = 0;
-		Shift shift = new Shift(shiftID, employeeID, day, time);
+		Shift shift = db.buildShift(employeeID);
+		shift.setDay(day);
+		shift.setTime(time);
 		
 		return db.addShift(shift);
 	}
