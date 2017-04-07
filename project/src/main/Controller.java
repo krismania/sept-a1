@@ -68,13 +68,13 @@ public class Controller
 	 * @author krismania
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
-	{
-		// TODO: fix this mess. -kg
-		//String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
+	{		
+		Employee employee = db.buildEmployee();
 		
-		int newID = 0; // TODO: temp test value
-		
-		Employee employee = new Employee(newID, firstName, lastName, email, phoneNumber);
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee.setEmail(email);
+		employee.setPhoneNumber(phoneNumber);
 		
 		return db.addEmployee(employee);
 	}
@@ -88,12 +88,11 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, Time time)
+	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
 	{
-		// TODO: this should be an int
-		// String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
-		int shiftID = 0;
-		Shift shift = new Shift(shiftID, employeeID, day, time);
+		Shift shift = db.buildShift(employeeID);
+		shift.setDay(day);
+		shift.setTime(time);
 		
 		return db.addShift(shift);
 	}

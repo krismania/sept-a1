@@ -1,6 +1,5 @@
 package main;
 
-import java.sql.Time;
 import java.time.DayOfWeek;
 
 /**
@@ -11,11 +10,12 @@ import java.time.DayOfWeek;
 public class Shift
 {
 	public final int ID;
-	private int employeeID;
-	private DayOfWeek day;
-	private Time time;
+	public final int employeeID;
 	
-	public Shift(int ID, int employeeID, DayOfWeek day, Time time)
+	private DayOfWeek day;
+	private ShiftTime time;
+	
+	public Shift(int ID, int employeeID, DayOfWeek day, ShiftTime time)
 	{
 		this.ID = ID;
 		this.employeeID = employeeID;
@@ -23,24 +23,30 @@ public class Shift
 		this.time = time;
 	}
 	
-	public int getEmployeeID()
-	{
-		return employeeID;
-	}
-	
 	public DayOfWeek getDay()
 	{
 		return day;
 	}
 	
-	public Time getTime()
+	public ShiftTime getTime()
 	{
 		return time;
+	}
+	
+	public void setDay(DayOfWeek day)
+	{
+		this.day = day;
+	}
+	
+	public void setTime(ShiftTime time)
+	{
+		this.time = time;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("shift-%s-emp-%s", ID, employeeID);
+		return String.format("ID: %s, EmployeeID: %s, Day: %s, Time: %s",
+						ID, employeeID, day.toString(), time.toString());
 	}
 }

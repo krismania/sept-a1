@@ -10,11 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Locale;
 
-import main.Account;
-import main.BusinessOwner;
-import main.Controller;
-import main.Customer;
-import main.Shift;
+import main.*;
+
 
 /**
  * Handles the applications interaction with the console. Any input
@@ -239,13 +236,13 @@ public class Console
 		// declare variables
 		int employeeID;
 		DayOfWeek shiftDay;
-		String shiftTime;		
+		ShiftTime shiftTime;		
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		shiftTime = shiftInfo.get("shiftTime");
+		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
 		
 		// check if employee exists
 		if (c.employeeExists(employeeID))
@@ -255,7 +252,7 @@ public class Console
 		else
 		{
 			// employee found, add the shift
-			if (c.addShift(employeeID, shiftDay, new Time(0)))
+			if (c.addShift(employeeID, shiftDay, shiftTime))
 			{
 				// TODO: success
 			}
@@ -356,9 +353,9 @@ public class Console
 		for(Shift current : timeSlots)
 		{
 			int shiftID = current.ID;
-			int empID = current.getEmployeeID();
+			int empID = current.employeeID;
 			DayOfWeek day = current.getDay();
-			Time time = current.getTime();
+			ShiftTime time = current.getTime();
 			Locale locale = new Locale("au", "AU");
 			
 			alert("Shift ID: " + Integer.toString(shiftID));
