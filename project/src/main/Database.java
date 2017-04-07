@@ -367,6 +367,50 @@ public class Database {
 		return Shifts;
 	}
 
+	public ArrayList<Shift> getShiftsNotBooked()
+	{
+		ArrayList<Shift> openShifts = new ArrayList<Shift>();
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = String.format("SELECT * FROM Shifts WHERE Shift_ID NOT IN"
+					+ "(SELECT SHIFT_ID FROM Booking)");
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+		         //JM Retrieve by column name
+		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
+		         Time time = rs.getTime("Time");
+		         int shiftID = rs.getInt("Shift_ID");
+		         int EmpID = rs.getInt("EmpID");
+		         
+		         // create shift object. -kg
+		         Shift shift = new Shift(shiftID, EmpID, day, time);
+		         
+		         // add it to the list
+		         openShifts.add(shift);
+		         
+		         // TODO: debug print shift
+		         System.out.println(shift.toString());
+		    }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    e.printStackTrace();
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		return openShifts;
+	}
 	/**
 	 * Attempt to log into an account with the provided credentials. If the login
 	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
@@ -445,12 +489,20 @@ public class Database {
 		
 		//JM Temporary work around - may need to change in Assignment 2
 		//JM If table is schedule
-		if(strings[0].equals("Schedule"))
+		if(strings[0].equals("Shift"))
 		{
 			//Delete previous ) and add foreign key.
 			strBuilder.deleteCharAt(strBuilder.length() - 1);
 			strBuilder.append(", FOREIGN KEY (EmpID) references"
 					+ " Employee (EmpID))");	
+		}
+		
+		else if(strings[0].equals("Booking"))
+		{
+			strBuilder.deleteCharAt(strBuilder.length() - 1);
+			strBuilder.append(", FOREIGN KEY (EmpID) references"
+					+ " Employee (EmpID), FOREIGN KEY (Shift_ID) "
+					+ "references Shift(Shift_ID))");
 		}
 		
 		String sql = strBuilder.toString();
@@ -820,9 +872,15 @@ public class Database {
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 		
+
 		//Schedule Table
 		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
+
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
+		
+		//Booking Table
+		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
+				"Shift_ID int", "day varchar(9)", "Booking_ID");
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
@@ -835,10 +893,15 @@ public class Database {
 		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
 				"0400000000", "2");
 		
+
 		CreateDataEntry("Shift", "MONDAY", "MORNING", "1", "1");
 		CreateDataEntry("Shift", "TUESDAY", "AFTERNOON", "2", "1");
 		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
+
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "1", "MONDAY");
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "4", "SUNDAY");
+
 	}
 	
 //*** Future Dev Requirements. No longer needed***
