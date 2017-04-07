@@ -515,7 +515,7 @@ public class Database {
 		} catch (SQLException e) {
 			//JM Catch if table already exists
 
-			//e.printStackTrace();
+			e.printStackTrace();
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
@@ -563,7 +563,7 @@ public class Database {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
@@ -587,7 +587,7 @@ public class Database {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
