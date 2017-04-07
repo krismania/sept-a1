@@ -44,6 +44,11 @@ public class Controller
 		return new ArrayList<Employee>();
 	}
 	
+	public ArrayList<Shift> getAllShifts()
+	{
+		return new ArrayList<Shift>();
+	}
+	
 	/**
 	 * Add a customer to the database.
 	 * @author krismania
