@@ -1,9 +1,7 @@
 package main;
 import java.sql.*;
 import java.time.DayOfWeek;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Database {
 	Connection c = null;
@@ -135,7 +133,7 @@ public class Database {
 	 */
 	public boolean addShift(Shift shift)
 	{
-		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.getEmployeeID()))
+		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
 		{
 			return true;
 		}
@@ -384,7 +382,7 @@ public class Database {
 			{
 		         //JM Retrieve by column name
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         Time time = rs.getTime("Time");
+		         ShiftTime time = ShiftTime.valueOf(rs.getString("Time").toUpperCase());
 		         int shiftID = rs.getInt("Shift_ID");
 		         int EmpID = rs.getInt("EmpID");
 		         

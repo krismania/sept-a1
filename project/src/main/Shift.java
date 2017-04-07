@@ -38,7 +38,7 @@ public class Shift
 		this.day = day;
 	}
 	
-	public void setTime(Time time)
+	public void setTime(ShiftTime time)
 	{
 		this.time = time;
 	}

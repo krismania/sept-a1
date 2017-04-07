@@ -83,7 +83,7 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, Time time)
+	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
 	{
 		Shift shift = db.buildShift(employeeID);
 		shift.setDay(day);
