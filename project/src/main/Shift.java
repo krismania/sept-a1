@@ -38,6 +38,16 @@ public class Shift
 		return time;
 	}
 	
+	public void setDay(DayOfWeek day)
+	{
+		this.day = day;
+	}
+	
+	public void setTime(Time time)
+	{
+		this.time = time;
+	}
+	
 	@Override
 	public String toString()
 	{
