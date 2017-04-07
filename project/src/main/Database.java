@@ -12,6 +12,7 @@ public class Database implements DBInterface {
 	//JM Constructor, reads the name of the database file to work with.
 	public Database(String nameOfDatabase){
 		dbName = nameOfDatabase;
+		CreateDatabase();
 	}
 
 //***PUBLIC API***

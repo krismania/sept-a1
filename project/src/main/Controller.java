@@ -27,7 +27,7 @@ public class Controller
 	 */
 	private Controller()
 	{
-		db.CreateDatabase();
+		// db.CreateDatabase();
 	}
 
 	public ArrayList<Customer> getAllCustomers()
