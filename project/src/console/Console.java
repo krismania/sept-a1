@@ -11,6 +11,7 @@ import main.Account;
 import main.BusinessOwner;
 import main.Controller;
 import main.Customer;
+import main.ShiftTime;
 
 /**
  * Handles the applications interaction with the console. Any input
@@ -231,13 +232,13 @@ public class Console
 		// declare variables
 		int employeeID;
 		DayOfWeek shiftDay;
-		String shiftTime;		
+		ShiftTime shiftTime;		
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		shiftTime = shiftInfo.get("shiftTime");
+		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
 		
 		// check if employee exists
 		if (c.employeeExists(employeeID))
@@ -247,7 +248,7 @@ public class Console
 		else
 		{
 			// employee found, add the shift
-			if (c.addShift(employeeID, shiftDay, new Time(0)))
+			if (c.addShift(employeeID, shiftDay, shiftTime))
 			{
 				// TODO: success
 			}
