@@ -30,13 +30,13 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
 
     @FXML
-	private Button exit;
+    private Button exit;
  
     @FXML
-	private Button menu;
-
-	@FXML
-	void handleButtonAction(ActionEvent event) throws IOException{
+    private Button menu;
+    
+    @FXML
+    void handleButtonAction(ActionEvent event) throws IOException{
         Stage stage;
         Parent root;
         if(event.getSource()==btRecordAvail) {
