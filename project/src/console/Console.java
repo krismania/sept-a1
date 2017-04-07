@@ -100,6 +100,10 @@ public class Console
 			case "Add working times/dates":
 				addShifts();
 				break;
+                        case "Staff Availability - Days and Times:":
+				alert("Staff Availability - Days and Times:");
+				viewDaysAndTime(c.getAllShifts());
+				break;
 			case "Log out":
 				exit = true;
 				break;
