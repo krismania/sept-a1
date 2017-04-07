@@ -292,7 +292,8 @@ public class Console
 		else
 		{
 			// if password is unacceptable, end account creation here. -kg
-			alert("Password must be greater than 6 characters,contain an upper case, lower case and a digit.  ");
+			alert("Password must be greater than 6 characters and"
+					+ " contain a digit, an upper case and lower case ");
 			return;
 		}
 		
