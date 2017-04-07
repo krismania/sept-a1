@@ -863,7 +863,8 @@ public class Database {
 				"Password varchar(15)","Type varchar(13)", "Username");
 		
 		//BusinessOwner Table
-		CreateDatabaseTable("BusinessOwner", "Username varchar(15)",
+		CreateDatabaseTable("BusinessOwner", "Username varchar(15)", "BusinessName varchar(30)",
+				"Name varchar(255)", "Address varchar(255)", "Phone varchar(10)",
 				"Password varchar(15)", "Type varchar(13)", "Username");
 		
 		//Employee Table
@@ -883,7 +884,8 @@ public class Database {
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
 		
-		CreateDataEntry("BusinessOwner", "JohnRulez", "john", "BusinessOwner");
+		CreateDataEntry("BusinessOwner", "JohnRulez", "SomeBusiness", "John S.",
+						"10 Some St, Some Town", "(03) 5555 5555", "john", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "1");
