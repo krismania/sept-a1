@@ -3,7 +3,7 @@ import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 
-public class Database {
+public class Database implements DBInterface {
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
@@ -15,12 +15,10 @@ public class Database {
 	}
 
 //***PUBLIC API***
-	/**
-	 * addAccount will instantiate a user's details into the database.
-	 * @param account
-	 * @param password - As account does not store password. Directly pass to DB.
-	 * @author James
+	/* (non-Javadoc)
+	 * @see main.DBInterface#addAccount(main.Account, java.lang.String)
 	 */
+	@Override
 	public boolean addAccount(Account account, String password)
 	{
 		if(account instanceof Customer)
@@ -41,10 +39,10 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Generates a new empty employee object with the next valid ID.
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#buildEmployee()
 	 */
+	@Override
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
@@ -75,11 +73,10 @@ public class Database {
 		return new Employee(id, "", "", "", "");
 	}
 	
-	/**
-	 * addEmployee will instantiate an employee into the database.
-	 * @param employee
-	 * @author James
+	/* (non-Javadoc)
+	 * @see main.DBInterface#addEmployee(main.Employee)
 	 */
+	@Override
 	public boolean addEmployee(Employee employee)
 	{
 		if(CreateDataEntry("Employee", employee.getFirstName(), employee.getLastName(), employee.getEmail(), 
@@ -90,11 +87,10 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Generates a new Shift object with the next valid ID and the supplied
-	 * Employee ID.
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#buildShift(int)
 	 */
+	@Override
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
@@ -125,12 +121,10 @@ public class Database {
 		return new Shift(id, employeeID, null, null);
 	}
 	
-	/**
-	 * addShift will instantiate a shift into the database, which
-	 * is connected to an employee.
-	 * @param shift
-	 * @author James
+	/* (non-Javadoc)
+	 * @see main.DBInterface#addShift(main.Shift)
 	 */
+	@Override
 	public boolean addShift(Shift shift)
 	{
 		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
@@ -140,20 +134,19 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Returns true if a user with the specified username exists in the database
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#accountExists(java.lang.String)
 	 */
+	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
 	
-	/**
-	 * Returns the account specified by the given username, or null if none
-	 * is found.
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getAccount(java.lang.String)
 	 */
+	@Override
 	public Account getAccount(String username)
 	{		
 		Class<? extends Account> type = validateUsername(username);
@@ -213,10 +206,10 @@ public class Database {
 		return null;
 	}
 	
-	/**
-	 * Returns the employee specified by the given ID, or null if none is found.
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getEmployee(int)
 	 */
+	@Override
 	public Employee getEmployee(int id)
 	{
 		try
@@ -248,10 +241,10 @@ public class Database {
 		return null;
 	}
 	
-	/**
-	 * Returns all employees that have been registered, otherwise returns null.
-	 * @author James
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getAllEmployees()
 	 */
+	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
 		ArrayList<Employee> completeTeam = new ArrayList<Employee>();
@@ -292,6 +285,10 @@ public class Database {
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getShift(int)
+	 */
+	@Override
 	public Shift getShift(int shiftID)
 	{
 		try
@@ -322,6 +319,10 @@ public class Database {
 	}
 	
 	// TODO: return array of Shifts
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getShifts(int)
+	 */
+	@Override
 	public ArrayList<Shift> getShifts(int EmpID)
 	{
 		ArrayList<Shift> Shifts = new ArrayList<Shift>();
@@ -365,6 +366,10 @@ public class Database {
 		return Shifts;
 	}
 
+	/* (non-Javadoc)
+	 * @see main.DBInterface#getShiftsNotBooked()
+	 */
+	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
 		ArrayList<Shift> openShifts = new ArrayList<Shift>();
@@ -409,12 +414,10 @@ public class Database {
 		}
 		return openShifts;
 	}
-	/**
-	 * Attempt to log into an account with the provided credentials. If the login
-	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
-	 * the return value is null.
-	 * @author krismania
+	/* (non-Javadoc)
+	 * @see main.DBInterface#login(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Account login(String username, String password)
 	{
 		boolean valid = false;
@@ -435,6 +438,10 @@ public class Database {
 
 	
 //***CREATE METHODS***JM
+	/* (non-Javadoc)
+	 * @see main.DBInterface#CreateDatabase()
+	 */
+	@Override
 	public void CreateDatabase()
 	{
 		//JM Initialize a connection
@@ -454,6 +461,10 @@ public class Database {
 	
 	//JM CreateDatabaseTable() will create a table within the database.
 	//JM Param = Variable number of Strings (Array)
+	/* (non-Javadoc)
+	 * @see main.DBInterface#CreateDatabaseTable(java.lang.String)
+	 */
+	@Override
 	public void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
@@ -675,7 +686,7 @@ public class Database {
 	 * Debug method! Remove on release/submit
 	 * @author James
 	 */
-	public void getCustomerDataEntries() 
+	private void getCustomerDataEntries() 
 	{		
 		try{
 			openConnection();
@@ -718,7 +729,7 @@ public class Database {
 	 * Debug method! Remove on release/submit
 	 * @author James
 	 */
-	public void getBusinessOwnerDataEntries() 
+	private void getBusinessOwnerDataEntries() 
 	{		
 		try{
 			openConnection();
@@ -754,7 +765,7 @@ public class Database {
 	 * TODO: this may need to be removed
 	 * @author krismania
 	 */
-	public String getLastEmployeeID()
+	private String getLastEmployeeID()
 	{
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
@@ -790,7 +801,7 @@ public class Database {
 	 * TODO: this WILL need to be removed
 	 * @author krismania
 	 */
-	public String getLastShiftID()
+	private String getLastShiftID()
 	{
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try
