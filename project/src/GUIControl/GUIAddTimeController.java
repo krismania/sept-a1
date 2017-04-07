@@ -52,6 +52,9 @@ public class GUIAddTimeController implements Initializable {
             stage=(Stage) menu.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
         }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 	
     @FXML
