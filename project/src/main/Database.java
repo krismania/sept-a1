@@ -66,7 +66,7 @@ public class Database {
 	 */
 	public boolean addShift(Shift shift)
 	{
-		if(CreateShift(shift.getDay().getDisplayName(TextStyle.FULL, Locale.ENGLISH), shift.getTime(), shift.ID, shift.getEmployeeID()))
+		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.getEmployeeID()))
 		{
 			return true;
 		}
@@ -190,7 +190,7 @@ public class Database {
 				if (rs.next())
 				{
 					String day = rs.getString("Day");
-			        Time time = rs.getTime("Time");
+			        ShiftTime time = ShiftTime.valueOf(rs.getString("Time"));
 			        int empID = rs.getInt("EmpID");
 			        closeConnection();
 			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), time);
@@ -224,7 +224,7 @@ public class Database {
 			{
 		         //JM Retrieve by column name
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         Time time = rs.getTime("Time");
+		         ShiftTime time = ShiftTime.valueOf(rs.getString("Time"));
 		         int shiftID = rs.getInt("Shift_ID");
 		         
 		         // create shift object. -kg
@@ -406,10 +406,10 @@ public class Database {
 		return false;
 	}
 	
-	private boolean CreateShift(String day, Time time, int iD, int employeeID) 
+	private boolean CreateShift(DayOfWeek day, ShiftTime time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Schedule VALUES ('"
-				+ day + "', '" + time + "', '" + iD + "'"
+				+ day.name() + "', '" + time.name() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -816,7 +816,7 @@ public class Database {
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 		
 		//Schedule Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time time(7)", "Shift_ID int",
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
@@ -830,9 +830,9 @@ public class Database {
 		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
 				"0400000000", "2");
 		
-		CreateDataEntry("Shift", "MONDAY", "0", "1", "1");
-		CreateDataEntry("Shift", "TUESDAY", "0", "2", "1");
-		CreateDataEntry("Shift", "WEDNESDAY", "0", "3", "1");
-		CreateDataEntry("Shift", "SUNDAY", "0", "4", "2");
+		CreateDataEntry("Shift", "MONDAY", "MORNING", "1", "1");
+		CreateDataEntry("Shift", "TUESDAY", "AFTERNOON", "2", "1");
+		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
+		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
 	}
 }

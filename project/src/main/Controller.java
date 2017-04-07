@@ -203,13 +203,13 @@ public class Controller
 		// declare variables
 		int employeeID;
 		DayOfWeek shiftDay;
-		String shiftTime;		
+		ShiftTime shiftTime;		
 		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = console.addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		shiftTime = shiftInfo.get("shiftTime");
+		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
 		
 		// check if employee exists
 		if (db.getEmployee(employeeID) == null)
@@ -222,7 +222,7 @@ public class Controller
 			// TODO: this should be an int
 			// String ShiftID = String.format("S%03d", Integer.parseInt(db.getLastShiftID().substring(1))+1);
 			int shiftID = 0;
-			Shift shift = new Shift(shiftID, employeeID, shiftDay, new Time(0));
+			Shift shift = new Shift(shiftID, employeeID, shiftDay, shiftTime);
 			
 			db.addShift(shift);
 		}
