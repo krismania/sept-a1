@@ -44,6 +44,40 @@ public class Database {
 	}
 	
 	/**
+	 * Generates a new empty employee object with the next valid ID.
+	 * @author krismania
+	 */
+	public Employee buildEmployee()
+	{
+		// find the highest current ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			
+			try (ResultSet customerQuery = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			// TODO: logging
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Employee(id, "", "", "", "");
+	}
+	
+	/**
 	 * addEmployee will instantiate an employee into the database.
 	 * @param employee
 	 * @author James
