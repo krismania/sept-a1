@@ -32,9 +32,6 @@ public class Controller
 	private Controller()
 	{
 		db.CreateDatabase();
-		
-		// TODO debug
-		db.getShifts(1);
 	}
 	
 	
@@ -43,40 +40,34 @@ public class Controller
 	 * The main menu loop.
 	 */
 	
-//	public void mainMenu() {
-//		String[] options = {"Log in", "Register", "[debug] print customer db", "Exit"};
-//		Menu menu = new Menu(sc, options, "Appointment Booking System");
-//		
-//		// main loop
-//		boolean exit = false;
-//		while (!exit)
-//		{
-//			switch (menu.prompt())
-//			{
-////			case "Business Owner":
-////				businessOwnerMenu();
-////				break;
-////			case "Customer":
-////				customerMenu();
-////				break;
-//			case "Log in":
-//				login();
-//				break;
-//			case "Register":
-//				customerRegister();
-//				break;
-//			case "[debug] print customer db":
-//				console.alert("Customers:");
-//				db.getCustomerDataEntries();
-//				console.alert("\nBusiness Owners:");
-//				db.getBusinessOwnerDataEntries();
-//				break;
-//			case "Exit":
-//				exit = true;
-//				break;
-//			}
-//		}
-//	}
+	public void mainMenu() {
+		String[] options = {"Log in", "Register", "[debug] print customer db", "Exit"};
+		Menu menu = new Menu(sc, options, "Appointment Booking System");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			case "Log in":
+				login();
+				break;
+			case "Register":
+				customerRegister();
+				break;
+			case "[debug] print customer db":
+				console.alert("Customers:");
+				db.getCustomerDataEntries();
+				console.alert("\nBusiness Owners:");
+				db.getBusinessOwnerDataEntries();
+				break;
+			case "Exit":
+				exit = true;
+				break;
+			}
+		}
+	}
 	
 	
 	/**
@@ -84,34 +75,34 @@ public class Controller
 	 * @author krismania
 	 */
 	
-//	private void businessOwnerMenu()
-//	{
-//		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
-//						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
-//		Menu menu = new Menu (sc, options, "Business Owner Menu");
-//		
-//		// main loop
-//		boolean exit = false;
-//		while (!exit)
-//		{
-//			switch (menu.prompt())
-//			{
-//			
-//			case "Add a new employee":
-//				addEmployee();
-//				break;
-//			case "View employees":
-//				db.getEmployeeDataEntries();
-//				break;
-//			case "Add working times/dates":
-//				addShifts();
-//				break;
-//			case "Log out":
-//				exit = true;
-//				break;
-//			}
-//		}
-//	}
+	private void businessOwnerMenu()
+	{
+		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
+						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+		Menu menu = new Menu (sc, options, "Business Owner Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			
+			case "Add a new employee":
+				addEmployee();
+				break;
+			case "View employees":
+				db.getEmployeeDataEntries();
+				break;
+			case "Add working times/dates":
+				addShifts();
+				break;
+			case "Log out":
+				exit = true;
+				break;
+			}
+		}
+	}
 	
 	
 	/**
@@ -119,23 +110,23 @@ public class Controller
 	 * @author krismania
 	 */
 	
-//	private void customerMenu()
-//	{
-//		String[] options = {"View available days/times", "Log out"};
-//		Menu menu = new Menu (sc, options, "Customer Menu");
-//		
-//		// main loop
-//		boolean exit = false;
-//		while (!exit)
-//		{
-//			switch (menu.prompt())
-//			{
-//			case "Log out":
-//				exit = true;
-//				break;
-//			}
-//		}
-//	}
+	private void customerMenu()
+	{
+		String[] options = {"View available days/times", "Log out"};
+		Menu menu = new Menu (sc, options, "Customer Menu");
+		
+		// main loop
+		boolean exit = false;
+		while (!exit)
+		{
+			switch (menu.prompt())
+			{
+			case "Log out":
+				exit = true;
+				break;
+			}
+		}
+	}
 	
 	/**
 	 *  Add new employee
@@ -143,9 +134,8 @@ public class Controller
 	 */
 	
 	
-	public boolean addEmployee(HashMap<String, String> employeeInfo)
+	private void addEmployee()
 	{
-		System.out.println("Entering addEmployee");
 		// declare variables
 		String firstName;
 		String lastName;
@@ -153,39 +143,42 @@ public class Controller
 		String phoneNumber;
 		
 		// prompt user for input
+		HashMap<String, String> employeeInfo;
 		boolean accepted = false;
 		
 		// prompt
-		// employeeInfo = console.accountInfoPrompt();
-		
-		// copy fields into local variables
-		firstName = employeeInfo.get("firstName");
-		lastName = employeeInfo.get("lastName");
-		email = employeeInfo.get("email");
-		phoneNumber = employeeInfo.get("phoneNumber");
-		
-		// verify each field
-		if (!validateName(firstName))
+		do
 		{
-			console.alert("Error: A first name must be entered");
+			employeeInfo = console.accountInfoPrompt();
+			
+			// copy fields into local variables
+			firstName = employeeInfo.get("firstName");
+			lastName = employeeInfo.get("lastName");
+			email = employeeInfo.get("email");
+			phoneNumber = employeeInfo.get("phoneNumber");
+			
+			// verify each field
+			if (!validateName(firstName))
+			{
+				console.alert("Error: A first name must be entered");
+			}
+			else if (!validateName(lastName))
+			{
+				console.alert("Error: A last name must be entered");
+			}
+			else if (!validateEmail(email))
+			{
+				console.alert("Error: Invalid email address format. Must contain @ and .");
+			}
+			else if (!validatePhoneNumber(phoneNumber))
+			{
+				console.alert("Error: A contact number must be entered");
+			}
+			else {
+				accepted = true;
+			}
 		}
-		else if (!validateName(lastName))
-		{
-			console.alert("Error: A last name must be entered");
-		}
-		else if (!validateEmail(email))
-		{
-			console.alert("Error: Invalid email address format. Must contain @ and .");
-		}
-		else if (!validatePhoneNumber(phoneNumber))
-		{
-			console.alert("Error: A contact number must be entered");
-		}
-		else {
-			accepted = true;
-		}
-		
-		if (!accepted) return false; // stop here if details are invalid
+		while (!accepted);
 		
 		// TODO: fix this mess. -kg
 		//String newID = String.format("E%03d", Integer.parseInt(db.getLastEmployeeID().substring(1))+1);
@@ -197,7 +190,6 @@ public class Controller
 		db.addEmployee(employee);
 
 		console.alert("Employee " + newID + " successfully added!");
-		return true;
 	}
 	
 	
@@ -396,11 +388,12 @@ public class Controller
 	 * sub-menu.
 	 * @author krismania
 	 */
-	public Class<? extends Account> login(HashMap<String, String> accountInput)
+	private void login()
 	{
 		String username;
 		String password;
 		
+		HashMap<String, String> accountInput = console.accountPrompt();
 		username = accountInput.get("username");
 		password = accountInput.get("password");
 		
@@ -409,16 +402,15 @@ public class Controller
 		
 		if (account instanceof Customer)
 		{
-			return Customer.class;
+			customerMenu();
 		}
 		else if (account instanceof BusinessOwner)
 		{
-			return BusinessOwner.class;
+			businessOwnerMenu();
 		}
 		else 
 		{
 			console.alert("Invalid username or password");
-			return null;
 		}
 	}
 	
