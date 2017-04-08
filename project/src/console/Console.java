@@ -248,42 +248,44 @@ public class Console
 		DayOfWeek shiftDay;
 		ShiftTime shiftTime;
 		boolean result;
-		String testAddShift = null;
-		String wrongInput = "You have have not entered the Shift details correctly. "
-		+ "Please try again. Enter Day: eg monday,enter and theb Shift: eg morning, then enter.";
+		String testAddShift = " ";
+		String testValue = " ";
+		String wrongInput = "You have have not entered the Shift details correctly. Try again: \n";
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		//TN - ternary expression to validate input lengths  prior to acceptance
-		testAddShift.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+		testAddShift = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		result = (((testAddShift.length() < 6)||(testAddShift.length() > 7)) ? true:false);
-		if (result != true)
-	   	{
-    	//shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-    	    shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
-    		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-    		// check if employee exists
-    		if (c.employeeExists(employeeID))
-    		{
-    			alert("Employee ID cannot be found in database");
-	    	}
-    		else
-    		{
-    			// employee found, add the shift
-    		    if (c.addShift(employeeID, shiftDay, shiftTime))
-	        	{
-	        		// TODO: success
-	        	}
-		    	else
-		        {
-	    	    	// TODO: failure
-	     	    }
-		    }
 
-        }
-		else
-			shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
+		while (result == true)
+		{
+			System.out.println(testAddShift);
 			alert(wrongInput);
+			System.out.println(testAddShift);
+			testAddShift.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+			break;
+		}			
+    	//shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+        shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
+    	shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+    	// check if employee exists
+    	if (c.employeeExists(employeeID))
+    	{
+    		alert("Employee ID cannot be found in database");
+	    }
+    	else
+    	{
+    	    // employee found, add the shift
+            if (c.addShift(employeeID, shiftDay, shiftTime))
+	        {
+            	alert("Shift has been successfully added.");
+	        }
+		    else
+		    {
+	    	    // TODO: failure
+	     	}
+		}
 	}
 	
 	/**
