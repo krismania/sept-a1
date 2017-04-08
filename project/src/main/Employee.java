@@ -12,8 +12,8 @@ public class Employee implements PersonalDetails
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	
-	public Employee(String firstName, String lastName, String email, String phoneNumber, int ID)
+	//TN Constructor
+	public Employee(int ID, String firstName, String lastName, String email, String phoneNumber)
 	{
 		this.ID = ID;
 		this.firstName = firstName;
