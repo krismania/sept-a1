@@ -492,6 +492,12 @@ public class Database implements DBInterface {
 		return openShifts;
 	}
 	
+	
+	@Override
+	public ArrayList<Booking> getFutureBookings()
+	{
+	}
+	
 	/**
 	 * @author krismania
 	 */

@@ -103,16 +103,17 @@ public interface DBInterface
 	ArrayList<Booking> getPastBookings();
 	
 	/**
+	 * Returns a list of all bookings that have not yet occurred (including
+	 * today's bookings).
+	 */
+	ArrayList<Booking> getFutureBookings();
+	
+	/**
 	 * Attempt to log into an account with the provided credentials. If the login
 	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
 	 * the return value is null.
 	 * @author krismania
 	 */
 	Account login(String username, String password);
-	
-	
-	
-	
-	
-	
+
 }
