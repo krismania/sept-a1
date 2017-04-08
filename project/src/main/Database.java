@@ -78,7 +78,7 @@ public class Database implements DBInterface {
 		// create the object and return it
 		int id = currentHighestID + 1;
 		
-		return new Employee(id, "", "", "", "");
+		return new Employee("", "", "", "", id);
 	}
   
 	@Override
@@ -311,7 +311,7 @@ public class Database implements DBInterface {
 			        String email = rs.getString("Email");
 			        String phone = rs.getString("Phone");
 			        closeConnection();
-			        return new Employee(id, first, last, email, phone);
+			        return new Employee(first, last, email, phone, id);
 				}
 			}
 			
@@ -344,7 +344,7 @@ public class Database implements DBInterface {
 			        String phone = rs.getString("Phone");
 			        int EmpID = rs.getInt("EmpID");
 			        
-			        Employee current = new Employee(EmpID, last, email, phone, first);
+			        Employee current = new Employee(first, last, email, phone, EmpID);
 			        
 			        roster.add(current);
 				}

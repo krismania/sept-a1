@@ -13,7 +13,7 @@ public class Employee implements PersonalDetails
 	private String email;
 	private String phoneNumber;
 	
-	public Employee(int ID, String firstName, String lastName, String email, String phoneNumber)
+	public Employee(String firstName, String lastName, String email, String phoneNumber, int ID)
 	{
 		this.ID = ID;
 		this.firstName = firstName;
