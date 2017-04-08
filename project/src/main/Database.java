@@ -199,6 +199,53 @@ public class Database implements DBInterface {
 		return null;
 	}
 	
+	/**
+	 * @author James
+	 * @author krismania
+	 */
+	@Override
+	public ArrayList<Customer> getAllCustomers()
+	{
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT Firstname, Lastname, Email, Phone,"
+					+ "Username, Password FROM Customer";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+		         String Username = rs.getString("Username");
+		         String Password = rs.getString("Password");
+
+		         // create Customer object & add to list. -kg
+		         customers.add(new Customer(Username, first, last, email, phone));
+		      }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		} 
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return customers;
+	}
+	
 	@Override
 	public Employee getEmployee(int id)
 	{
