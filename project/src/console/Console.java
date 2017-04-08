@@ -247,35 +247,36 @@ public class Console
 		int employeeID;
 		DayOfWeek shiftDay;
 		ShiftTime shiftTime;
-		int result;
-		String testAddShift = " ";
+		int result1;
+		int result2;
+		String testAddDay = " ";
+		String testAddTime = " ";
 		String testValue = " ";
-		String wrongInput = "You have have not entered the Shift details correctly. Try again: \n";
-		String success = "Shift has been successfully added \n";
+		String wrongInput = "You have have not entered the Shift details correctly. "
+				+ "Press \"Enter\" and Try again: \n\n";
+		String success = "Shift has been successfully added \n\n";
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		//TN - ternary expression to validate input lengths  prior to acceptance
-		testAddShift = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		result = (((testAddShift.length() < 6)||(testAddShift.length() > 7)) ? 1:0);
+		testAddDay = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+		testAddTime = testValue.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+		result1 = (((testAddDay.length() < 6)||(testAddDay.length() > 7)) ? 1:0);
+		result2 = (((testAddTime.length() < 7)||(testAddTime.length() > 9)||
+				(testAddTime.length() == 8)) ? 1:0);
 		
-		if (result != 0)
+		if ((result1 != 0)||(result2 != 0))
 		{
-			//TN - test printout of value
-			//System.out.println(testAddShift);
 			alert(wrongInput);
-			testAddShift = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 			sc.nextLine();
-			if((testAddShift.length() == 6)||(testAddShift.length() == 7)) {
-				result = 0;
-				alert(success);
-			}
+			addShifts();
 		}
 		else
 		{	
-    	    //shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-            shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
-    	    shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+    	    //shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());  
+    	    //shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+			shiftDay = DayOfWeek.valueOf(testAddDay.toUpperCase());
+			shiftTime = ShiftTime.valueOf(testAddTime.toUpperCase());
     	    // check if employee exists
     	    if (c.employeeExists(employeeID))
     	    {
