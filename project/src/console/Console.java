@@ -107,7 +107,7 @@ public class Console
 				break;
                         case "Staff Availability - Days and Times:":
 				alert("Staff Availability - Days and Times:");
-				viewDaysAndTime(c.getAllOpenShifts());
+				displayShifts(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -133,7 +133,7 @@ public class Console
 			{
 			case "View available days/times":
 				alert("Available Days and Times:");
-				viewDaysAndTime(c.getAllOpenShifts());
+				displayShifts(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -372,7 +372,10 @@ public class Console
 		}
 	}
 	
-	private void viewDaysAndTime(ArrayList<Shift> timeSlots)
+	/**
+	 * Display the provided shifts in a table
+	 */
+	private void displayShifts(ArrayList<Shift> shifts)
 	{
 		for(Shift current : timeSlots)
 		{
