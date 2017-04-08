@@ -1,11 +1,11 @@
 package console;
 
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -459,7 +459,7 @@ public class Console
 			String employeeName = employee.getFirstName() + " " + employee.getLastName();
 			
 			// Print the date if we haven't yet done so
-			if (currentDate != booking.getDate())
+			if (currentDate == null || !currentDate.equals(booking.getDate()))
 			{
 				currentDate = booking.getDate();
 				printDate = dateFormat.format(currentDate);
