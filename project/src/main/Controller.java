@@ -8,7 +8,8 @@ public class Controller
 {
 	Scanner sc = new Scanner(System.in);
 	
-	Database db = new Database("awesomeSauce");
+	DBInterface db = new Database("awesomeSauce");
+	// DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
 	
 	private static Controller instance = null;
 	
@@ -26,7 +27,7 @@ public class Controller
 	 */
 	private Controller()
 	{
-		db.CreateDatabase();
+		// db.CreateDatabase();
 	}
 
 	public ArrayList<Customer> getAllCustomers()
