@@ -182,10 +182,14 @@ public class Database implements DBInterface {
 					{
 						// get info
 						String usr = boQuery.getString("Username");
-						String businessName = "[business_name]";
+						String businessName = boQuery.getString("BusinessName");
+						String ownerName = boQuery.getString("Name");
+						String address = boQuery.getString("Address");
+						String phone = boQuery.getString("Phone");
+						
 						closeConnection();
 						// create obj and return
-						return new BusinessOwner(usr, businessName);
+						return new BusinessOwner(usr, businessName, ownerName, address, phone);
 					}
 				}
 			}
