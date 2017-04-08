@@ -184,7 +184,7 @@ public class DummyDatabase implements DBInterface
 		
 		bookings.add(new Booking(1, "someuser", 3, 1, new Date(0)));
 		bookings.add(new Booking(2, "someOtherUser", 4, 5, new Date(0)));
-		bookings.add(new Booking(3, "someuser", 9, 5, new Date(0)));
+		bookings.add(new Booking(3, "someuser", 5, 9, new Date(0)));
 		bookings.add(new Booking(4, "krismania", 2, 6, new Date(0)));
 		bookings.add(new Booking(5, "idk", 2, 7, new Date(0)));
 		

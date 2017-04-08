@@ -44,4 +44,10 @@ public class Booking
 	{
 		return date;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Booking: %d, Cust: %s", ID, customer);
+	}
 }

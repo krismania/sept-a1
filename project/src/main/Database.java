@@ -489,6 +489,7 @@ public class Database implements DBInterface {
 	@Override
 	public ArrayList<Booking> getPastBookings()
 	{
+		// TODO: unimplemented
 		return new ArrayList<Booking>();
 	}
 

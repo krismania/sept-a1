@@ -1,5 +1,8 @@
 package console;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -24,7 +27,9 @@ public class Console
 {
 	private Scanner sc;
 	private Controller c;
+	
 	private Locale locale;
+	DateFormat dateFormat;
 	
 	private Logger logger;
 	
@@ -34,8 +39,9 @@ public class Console
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
 		
-		// get the system's locale
+		// get the system's locale & set date format
 		locale = Locale.getDefault();
+		dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
 		// set the scanner & get controller instance
 		this.sc = sc;
@@ -121,6 +127,7 @@ public class Console
 				displayShifts(c.getAllOpenShifts());
 				break;
             case "View past bookings":
+            	displayBookings(c.getPastBookings());
             	break;
 			case "Log out":
 				exit = true;
@@ -423,6 +430,42 @@ public class Console
 			
 			// print the shift
 			System.out.printf(formatString, printDay, shift.ID, employeeName, shift.getTime().toString());
+		}
+		System.out.println();
+	}
+	
+	
+	private void displayBookings(ArrayList<Booking> bookings)
+	{
+		if(bookings.isEmpty())
+		{
+			// if there are no bookings, display a message and exit.
+			alert("No past bookings found.");
+			return;
+		}
+		
+		// print the bookings in a table
+		String formatString = "%-10s %3s   %-20s %-25s\n";
+		Date currentDate = null; // store the date we're up to
+		
+		// print header
+		printHeader(formatString, "Date", "ID", "Employee", "Customer");
+		
+		for (Booking booking : bookings)
+		{
+			// set up variables
+			String printDate = "";
+			Employee employee = c.getEmployee(booking.getEmployeeID());
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			
+			// Print the date if we haven't yet done so
+			if (currentDate != booking.getDate())
+			{
+				currentDate = booking.getDate();
+				printDate = dateFormat.format(currentDate);
+			};
+			
+			System.out.printf(formatString, printDate, booking.ID, employeeName, booking.getCustomer());
 		}
 		System.out.println();
 	}
