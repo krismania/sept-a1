@@ -97,7 +97,8 @@ public class Console
 	private void businessOwnerMenu()
 	{
 		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
-						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+						"View summary of bookings", "View past bookings", 
+						"View employee availability for next 7 days", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
 		// main loop
@@ -110,15 +111,17 @@ public class Console
 				addEmployee();
 				break;
 			case "View employees":
-				// c.getAllEmployees(); // TODO: print employees
+				c.getAllEmployees();
 				break;
 			case "Add working times/dates":
 				addShifts();
 				break;
-                        case "Staff Availability - Days and Times:":
+            case "Staff Availability - Days and Times:":
 				alert("Staff Availability - Days and Times:");
 				displayShifts(c.getAllOpenShifts());
 				break;
+            case "View past bookings":
+            	break;
 			case "Log out":
 				exit = true;
 				break;
