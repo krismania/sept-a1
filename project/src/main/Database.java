@@ -440,6 +440,7 @@ public class Database implements DBInterface {
 		return Shifts;
 	}
 
+	// TODO: broken by Booking changes
 	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
@@ -595,8 +596,7 @@ public class Database implements DBInterface {
 		{
 			strBuilder.deleteCharAt(strBuilder.length() - 1);
 			strBuilder.append(", FOREIGN KEY (EmpID) references"
-					+ " Employee (EmpID), FOREIGN KEY (Shift_ID) "
-					+ "references Shift(Shift_ID))");
+					+ " Employee (EmpID))");
 		}
 		
 		String sql = strBuilder.toString();
@@ -897,16 +897,14 @@ public class Database implements DBInterface {
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
-		
 
 		//Schedule Table
 		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
-
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		//Booking Table
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
-				"Shift_ID int", "day varchar(9)", "Booking_ID");
+				"Date DATE", "Time varchar(10)", "Booking_ID");
 	}
 	
 	private void createTestData()
@@ -931,8 +929,8 @@ public class Database implements DBInterface {
 		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "1", "MONDAY");
-		CreateDataEntry("Booking", "2", "JamesRulez", "2", "4", "SUNDAY");
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "MORNING");
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "AFTERNOON");
 
 		logger.info("DB created.");
 	}
