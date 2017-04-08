@@ -78,7 +78,7 @@ public class Database implements DBInterface {
 		// create the object and return it
 		int id = currentHighestID + 1;
 		
-		return new Employee(id, "", "", "", "");
+		return new Employee(id,"", "", "", "");
 	}
   
 	@Override
@@ -328,7 +328,7 @@ public class Database implements DBInterface {
 	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
-		ArrayList<Employee> completeTeam = new ArrayList<Employee>();
+		ArrayList<Employee> roster = new ArrayList<Employee>();
 		
 		try
 		{
@@ -336,7 +336,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
 			{
-				if (rs.next())
+				while(rs.next())
 				{
 					String first = rs.getString("Firstname");
 			        String last = rs.getString("Lastname");
@@ -344,16 +344,9 @@ public class Database implements DBInterface {
 			        String phone = rs.getString("Phone");
 			        int EmpID = rs.getInt("EmpID");
 			        
-			        Employee current = new Employee(EmpID, last, email, phone, first);
+			        Employee current = new Employee(EmpID, first, last, email, phone);
 			        
-			        completeTeam.add(current);
-				}
-				else
-				{
-					if(!completeTeam.isEmpty())
-					{
-						return completeTeam;
-					}
+			        roster.add(current);
 				}
 			}
 			
@@ -363,7 +356,7 @@ public class Database implements DBInterface {
 		{
 			logger.warning(e.toString());
 		}
-		return null;
+		return roster;
 	}
 	
 	@Override
