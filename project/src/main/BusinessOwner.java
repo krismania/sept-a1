@@ -12,11 +12,14 @@ public class BusinessOwner extends Account
 	private String address;
 	private String phoneNumber;
 
-	public BusinessOwner(String username, String businessName)
+	public BusinessOwner(String username, String businessName, String ownerName, String address, String phone)
 	{
 		super(username);
 		
 		this.businessName = businessName;
+		this.name = ownerName;
+		this.address = address;
+		this.phoneNumber = phone;
 	}
 	
 	public String getBusinessName()
