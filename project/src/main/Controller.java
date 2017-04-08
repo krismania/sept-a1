@@ -49,6 +49,11 @@ public class Controller
 		return db.getAllBusinessOwners();
 	}
 	
+	public Employee getEmployee(int id)
+	{
+		return db.getEmployee(id);
+	}
+	
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
