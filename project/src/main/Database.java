@@ -515,7 +515,22 @@ public class Database implements DBInterface {
 			Class.forName("org.sqlite.JDBC");
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
-			setupScript();
+			
+			// test if the db is empty. -kg
+			boolean empty;
+			stmt = c.createStatement();
+			rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
+			rs.next();
+			empty = (rs.getInt(1) == 0);
+			rs.close();
+			
+			if (empty)
+			{
+				// if DB is empty, create the required tables and test data
+				createTables();
+				createTestData();
+			}
+			
 			closeConnection();
 		}
 		catch (Exception e)
