@@ -13,6 +13,10 @@ public class Controller
 	
 	private static Controller instance = null;
 	
+	/**
+	 * Returns the singleton instance of of the Controller class.
+	 * @author krismania
+	 */
 	public static Controller getInstance()
 	{
 		if (instance == null)
