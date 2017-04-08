@@ -241,23 +241,18 @@ public class Console
 		int employeeID;
 		DayOfWeek shiftDay;
 		ShiftTime shiftTime;		
-		
+		String wrongInput = "You have have not entered the Shift details correctly. "
+		+ "Please try again. Enter Day: eg monday,enter and theb Shift: eg morning, then enter.";
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
-		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+		shiftDay = ((shiftInfo.get("shiftDay").length() < 6)||(shiftInfo.get("shiftDay").length() > 7)) 
+				? null:DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
 		//TN - Validate data
-		String testShiftDay = shiftInfo.get("shiftDay");
-		if (((testShiftDay.length() < 6)||(testShiftDay.length() > 7)))
+        if (shiftDay == null)
 		{
-		    alert("You have have not entered the Shift details correctly. Please try again. Enter Day: eg monday,"
-		    		+ " enter and theb Shift: eg morning, then enter.");
-		}	
-		else if (testShiftDay == null)
-		{
-                    alert("You have have not entered a Shift details value. Please try again. Enter Day: eg monday,"
-		    		+ " enter and theb Shift: eg morning, then enter.");
+            alert(wrongInput);
 		}
 		// check if employee exists
 		if (c.employeeExists(employeeID))
