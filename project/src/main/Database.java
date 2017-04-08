@@ -1,7 +1,11 @@
 package main;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -488,11 +492,51 @@ public class Database implements DBInterface {
 		return openShifts;
 	}
 	
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public ArrayList<Booking> getPastBookings()
 	{
-		// TODO: unimplemented
-		return new ArrayList<Booking>();
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		// date formatter used to parse dates from the db
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			try (ResultSet bookingQuery = stmt.executeQuery(
+							"SELECT * FROM Booking WHERE Date < DATE('now')"))
+			{
+				while (bookingQuery.next())
+				{
+					int id = bookingQuery.getInt("Booking_ID");
+					String customer = bookingQuery.getString("customerID");
+					int employeeID = bookingQuery.getInt("EmpID");
+					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
+					ShiftTime time = ShiftTime.valueOf(bookingQuery.getString("Time"));
+					
+					// construct the object & add to list. -kg
+					bookings.add(new Booking(id, customer, employeeID, date, time));
+				}
+			}
+			
+			stmt.close();
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		catch (ParseException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return bookings;
 	}
 
 	@Override
