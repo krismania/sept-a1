@@ -1,6 +1,7 @@
 package main;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,14 +49,50 @@ public class Controller
 		return db.getAllBusinessOwners();
 	}
 	
+	public Employee getEmployee(int id)
+	{
+		return db.getEmployee(id);
+	}
+	
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
 	}
 	
+	/**
+	 * Returns a sorted list of available shifts.
+	 * @author James
+	 * @author krismania
+	 */
 	public ArrayList<Shift> getAllOpenShifts()
 	{
-		return db.getShiftsNotBooked();
+		ArrayList<Shift> shifts = db.getShiftsNotBooked();
+		
+		// comparator to sort based on day and time
+		Comparator<Shift> byDayAndTime = new Comparator<Shift>()
+		{
+			@Override
+			public int compare(Shift s1, Shift s2)
+			{
+				// sort on day
+				int byDay = s1.getDay().getValue() - s2.getDay().getValue();
+				
+				// if same day, compare time
+				if (byDay == 0)
+				{
+					return s1.getTime().getValue() - s2.getTime().getValue();
+				}
+				else
+				{
+					return byDay;
+				}
+			}
+		};
+		
+		logger.info("Sorting shift list");
+		shifts.sort(byDayAndTime);
+		
+		return shifts;
 	}
 	
 	/**

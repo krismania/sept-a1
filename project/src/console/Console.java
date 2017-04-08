@@ -1,15 +1,15 @@
 package console;
 
-import java.sql.Time;
-
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import main.*;
 
@@ -24,10 +24,20 @@ public class Console
 {
 	private Scanner sc;
 	private Controller c;
+	private Locale locale;
 	
+	private Logger logger;
 	
 	public Console(Scanner sc)
 	{
+		// get the logger & set level
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		// get the system's locale
+		locale = Locale.getDefault();
+		
+		// set the scanner & get controller instance
 		this.sc = sc;
 		this.c = Controller.getInstance();
 	}
@@ -107,7 +117,7 @@ public class Console
 				break;
                         case "Staff Availability - Days and Times:":
 				alert("Staff Availability - Days and Times:");
-				viewDaysAndTime(c.getAllOpenShifts());
+				displayShifts(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -133,7 +143,7 @@ public class Console
 			{
 			case "View available days/times":
 				alert("Available Days and Times:");
-				viewDaysAndTime(c.getAllOpenShifts());
+				displayShifts(c.getAllOpenShifts());
 				break;
 			case "Log out":
 				exit = true;
@@ -372,27 +382,46 @@ public class Console
 		}
 	}
 	
-	private void viewDaysAndTime(ArrayList<Shift> timeSlots)
+	/**
+	 * Display the provided shifts in a table
+	 * @author krismania
+	 */
+	private void displayShifts(ArrayList<Shift> shifts)
 	{
-		for(Shift current : timeSlots)
+		if(shifts.isEmpty())
 		{
-			int shiftID = current.ID;
-			int empID = current.employeeID;
-			DayOfWeek day = current.getDay();
-			ShiftTime time = current.getTime();
-			Locale locale = new Locale("au", "AU");
-			System.out.println("***");
-			System.out.println("Option: " + Integer.toString(shiftID));
-			System.out.println("Employee: " + Integer.toString(empID) 
-					+ ", Day: " + day.getDisplayName(TextStyle.SHORT, locale) 
-					+ ", Time: " + time.toString());
+			// if there are no shifts, display a message and exit.
+			alert("There are currently no available timeslots.");
+			return;
+		}
+		
+		// print each shift in the list
+		String formatString = "%-10s %3s   %-25s %-10s\n";
+		DayOfWeek currentDay = null; // store the day we're up to
+		
+		// print header
+		printHeader(formatString, "Day", "ID", "Employee", "Time");
+		
+		for (Shift shift : shifts)
+		{
+			// get the employee obj of this shift
+			Employee employee = c.getEmployee(shift.employeeID);
+			
+			// set up some helper variables
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			String printDay = "";
+			
+			// print the current day if it's changed
+			if (currentDay != shift.getDay())
+			{
+				currentDay = shift.getDay();
+				printDay = currentDay.getDisplayName(TextStyle.FULL, locale);
+			}
+			
+			// print the shift
+			System.out.printf(formatString, printDay, shift.ID, employeeName, shift.getTime().toString());
 		}
 		System.out.println();
-		
-		if(timeSlots.isEmpty())
-		{
-			alert("There are currently no available timeslots.");
-		}
 	}
 	
 	// **** CLASS FUNCTIONALITY ****
@@ -497,6 +526,26 @@ public class Console
 		fields.put("shiftTime", "Shift Time (eg. morning/afternoon/evening)");
 		
 		return prompt(fields);
+	}
+	
+	/**
+	 * Helper method that prints the given headers in the provided format, and
+	 * adds an underline the same length as the header row.
+	 * @author krismania
+	 */
+	private void printHeader(String format, Object... titles)
+	{
+		String header = String.format(format, titles);
+		String divider = "";
+		
+		for (int i = 0; i < header.length(); i++)
+		{
+			divider += "-";
+		}
+		
+		divider += "\n";
+		
+		System.out.print(header + divider);
 	}
 
 }
