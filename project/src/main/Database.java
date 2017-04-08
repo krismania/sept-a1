@@ -218,8 +218,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
-			String sql = "SELECT Firstname, Lastname, Email, Phone,"
-					+ "Username, Password FROM Customer";
+			String sql = "SELECT * FROM Customer";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
@@ -264,7 +263,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
-			String sql = "SELECT Username, Password FROM BusinessOwner";
+			String sql = "SELECT * FROM BusinessOwner";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()){
