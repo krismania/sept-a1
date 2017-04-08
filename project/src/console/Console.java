@@ -271,21 +271,21 @@ public class Console
 		
 		if ((result1 != 0)||(result2 != 0))
 		{
-			alert(wrongInput);
-			sc.nextLine();
-			addShifts();
+		    alert(wrongInput);
+	            sc.nextLine();
+                    addShifts();
 		}
 		else
 		{	
-    	    //shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());  
-    	    //shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-			shiftDay = DayOfWeek.valueOf(testAddDay.toUpperCase());
-			shiftTime = ShiftTime.valueOf(testAddTime.toUpperCase());
+    	            //shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());  
+    	            //shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+                    shiftDay = DayOfWeek.valueOf(testAddDay.toUpperCase());
+                    shiftTime = ShiftTime.valueOf(testAddTime.toUpperCase());
     	    // check if employee exists
     	    if (c.employeeExists(employeeID))
     	    {
     	        alert("Employee ID cannot be found in database");
-	        }
+	    }
     	    else
     	    {
     	        // employee found, add the shift
