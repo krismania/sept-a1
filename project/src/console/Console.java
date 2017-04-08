@@ -437,7 +437,7 @@ public class Console
 			return;
 		}
 		
-		String formatString = "%-10s %3s   %-25s %-10s\n";
+		String formatString = "%-3s %-15s %-40s %-20s\n";
 		
 		printHeader(formatString, "ID", "Name", "Email", "Phone Number");
 		
@@ -445,8 +445,8 @@ public class Console
 		{
 			String employeeName = employee.getFirstName() + " " + employee.getLastName();
 			
-			System.out.printf(formatString, employee.ID, employeeName, employee.getEmail(), 
-					employee.getPhoneNumber());
+			System.out.printf(formatString, employee.ID, employeeName, 
+					employee.getEmail(), employee.getPhoneNumber());
 		}
 		System.out.println();
 		
