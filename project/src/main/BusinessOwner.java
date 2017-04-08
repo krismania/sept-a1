@@ -8,12 +8,18 @@ package main;
 public class BusinessOwner extends Account
 {
 	private String businessName;
-	
-	public BusinessOwner(String username, String businessName)
+	private String name;
+	private String address;
+	private String phoneNumber;
+
+	public BusinessOwner(String username, String businessName, String ownerName, String address, String phone)
 	{
 		super(username);
 		
 		this.businessName = businessName;
+		this.name = ownerName;
+		this.address = address;
+		this.phoneNumber = phone;
 	}
 	
 	public String getBusinessName()
@@ -21,4 +27,38 @@ public class BusinessOwner extends Account
 		return businessName;
 	}
 	
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
+
+	public String getPhoneNumber()
+	{
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber)
+	{
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setBusinessName(String businessName)
+	{
+		this.businessName = businessName;
+	}
 }
