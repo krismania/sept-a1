@@ -7,7 +7,7 @@ import java.util.Date;
  * a shift and a date.
  * @author krismania
  */
-public class Booking
+public class Booking implements Comparable<Booking>
 {
 	public final int ID;
 	private String customer;
@@ -49,5 +49,11 @@ public class Booking
 	public String toString()
 	{
 		return String.format("Booking: %d, Cust: %s", ID, customer);
+	}
+
+	@Override
+	public int compareTo(Booking b)
+	{
+		return this.date.compareTo(b.date);
 	}
 }
