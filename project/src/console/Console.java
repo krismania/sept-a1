@@ -1,9 +1,11 @@
 package console;
 
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -22,6 +24,7 @@ public class Console
 {
 	private Scanner sc;
 	private Controller c;
+	private Locale locale;
 	
 	private Logger logger;
 	
@@ -31,6 +34,10 @@ public class Console
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
 		
+		// get the system's locale
+		locale = Locale.getDefault();
+		
+		// set the scanner & get controller instance
 		this.sc = sc;
 		this.c = Controller.getInstance();
 	}
