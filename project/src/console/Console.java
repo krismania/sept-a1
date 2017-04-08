@@ -62,7 +62,7 @@ public class Console
 	 */
 	public void mainMenu()
 	{
-		String[] options = {"Log in", "Register", "[debug] print customer db", "Exit"};
+		String[] options = {"Log in", "Register", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
 		// main loop
@@ -76,18 +76,6 @@ public class Console
 				break;
 			case "Register":
 				customerRegister();
-				break;
-			case "[debug] print customer db":
-				alert("Customers:");
-				for (Customer customer : c.getAllCustomers())
-				{
-					alert(customer.toString());
-				}
-				alert("Business Owners:");
-				for (BusinessOwner bo : c.getAllBusinessOwners())
-				{
-					alert(bo.toString());
-				}
 				break;
 			case "Exit":
 				exit = true;
@@ -117,7 +105,7 @@ public class Console
 				addEmployee();
 				break;
 			case "View employees":
-				c.getAllEmployees();
+				displayEmployees(c.getAllEmployees());
 				break;
 			case "Add working times/dates":
 				addShifts();
@@ -437,7 +425,6 @@ public class Console
 		System.out.println();
 	}
 	
-	
 	private void displayBookings(ArrayList<Booking> bookings)
 	{
 		if(bookings.isEmpty())
@@ -472,7 +459,34 @@ public class Console
 		}
 		System.out.println();
 	}
-	
+
+	/**
+	 * Display all current employees
+	 * @author James
+	 */
+	private void displayEmployees(ArrayList<Employee> roster)
+	{
+		if(roster.isEmpty())
+		{
+			//If there are no employees, display message and exit.
+			alert("There are currently no employees.");
+			return;
+		}
+		
+		String formatString = "%-3s %-15s %-40s %-20s\n";
+		
+		printHeader(formatString, "ID", "Name", "Email", "Phone Number");
+		
+		for(Employee employee : roster)
+		{
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			
+			System.out.printf(formatString, employee.ID, employeeName, 
+					employee.getEmail(), employee.getPhoneNumber());
+		}
+		System.out.println();
+	}
+
 	// **** CLASS FUNCTIONALITY ****
 	
 	
