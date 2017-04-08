@@ -445,11 +445,11 @@ public class Console
 		}
 		
 		// print the bookings in a table
-		String formatString = "%-10s %3s   %-20s %-25s\n";
+		String formatString = "%-12s %-10s %3s   %-20s %-25s\n";
 		Date currentDate = null; // store the date we're up to
 		
 		// print header
-		printHeader(formatString, "Date", "ID", "Employee", "Customer");
+		printHeader(formatString, "Date", "Time", "ID", "Employee", "Customer");
 		
 		for (Booking booking : bookings)
 		{
@@ -465,7 +465,7 @@ public class Console
 				printDate = dateFormat.format(currentDate);
 			};
 			
-			System.out.printf(formatString, printDate, booking.ID, employeeName, booking.getCustomer());
+			System.out.printf(formatString, printDate, booking.getTime().toString(), booking.ID, employeeName, booking.getCustomer());
 		}
 		System.out.println();
 	}
