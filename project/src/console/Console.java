@@ -244,7 +244,7 @@ public class Console
 	private void addShifts(){
 		
 		// declare variables
-		int employeeID;
+		int employeeID = -1;
 		DayOfWeek shiftDay;
 		ShiftTime shiftTime;
 		int result1;
@@ -257,7 +257,11 @@ public class Console
 		String success = "Shift has been successfully added \n\n";
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
-		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
+		
+		// try/catch to prevent NumberFormatException. -kg
+		try { employeeID = Integer.parseInt(shiftInfo.get("employeeID")); }
+		catch (NumberFormatException e) { /* TODO: log this */ };
+		
 		//TN - ternary expression to validate input lengths  prior to acceptance
 		testAddDay = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		testAddTime = testValue.valueOf(shiftInfo.get("shiftTime").toUpperCase());
