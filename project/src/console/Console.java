@@ -246,6 +246,7 @@ public class Console
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
+		//TN - ternery expression to validate input lengths  prior to acceptance
 		shiftDay = ((shiftInfo.get("shiftDay").length() < 6)||(shiftInfo.get("shiftDay").length() > 7)) 
 				? null:DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
