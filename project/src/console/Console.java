@@ -384,6 +384,7 @@ public class Console
 	
 	/**
 	 * Display the provided shifts in a table
+	 * @author krismania
 	 */
 	private void displayShifts(ArrayList<Shift> shifts)
 	{
@@ -394,24 +395,33 @@ public class Console
 			return;
 		}
 		
+		// print each shift in the list
+		String formatString = "%-10s %3s   %-25s %-10s\n";
+		DayOfWeek currentDay = null; // store the day we're up to
+		
+		// print header
+		printHeader(formatString, "Day", "ID", "Employee", "Time");
+		
 		for (Shift shift : shifts)
 		{
-			System.out.println(shift);
+			// get the employee obj of this shift
+			Employee employee = c.getEmployee(shift.employeeID);
 			
-//			int shiftID = current.ID;
-//			int empID = current.employeeID;
-//			DayOfWeek day = current.getDay();
-//			ShiftTime time = current.getTime();
-//			Locale locale = new Locale("au", "AU");
-//			System.out.println("***");
-//			System.out.println("Option: " + Integer.toString(shiftID));
-//			System.out.println("Employee: " + Integer.toString(empID) 
-//					+ ", Day: " + day.getDisplayName(TextStyle.SHORT, locale) 
-//					+ ", Time: " + time.toString());
+			// set up some helper variables
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			String printDay = "";
+			
+			// print the current day if it's changed
+			if (currentDay != shift.getDay())
+			{
+				currentDay = shift.getDay();
+				printDay = currentDay.getDisplayName(TextStyle.FULL, locale);
+			}
+			
+			// print the shift
+			System.out.printf(formatString, printDay, shift.ID, employeeName, shift.getTime().toString());
 		}
 		System.out.println();
-		
-		
 	}
 	
 	// **** CLASS FUNCTIONALITY ****
