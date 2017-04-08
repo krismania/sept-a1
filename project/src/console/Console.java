@@ -110,12 +110,12 @@ public class Console
 				addEmployee();
 				break;
 			case "View employees":
-				// c.getAllEmployees(); // TODO: print employees
+				displayEmployees(c.getAllEmployees());
 				break;
 			case "Add working times/dates":
 				addShifts();
 				break;
-                        case "Staff Availability - Days and Times:":
+            case "Staff Availability - Days and Times:":
 				alert("Staff Availability - Days and Times:");
 				displayShifts(c.getAllOpenShifts());
 				break;
@@ -424,6 +424,33 @@ public class Console
 		System.out.println();
 	}
 	
+	/**
+	 * Display all current employees
+	 * @author James
+	 */
+	private void displayEmployees(ArrayList<Employee> roster)
+	{
+		if(roster.isEmpty())
+		{
+			//If there are no employees, display message and exit.
+			alert("There are currently no employees.");
+			return;
+		}
+		
+		String formatString = "%-10s %3s   %-25s %-10s\n";
+		
+		printHeader(formatString, "ID", "Name", "Email", "Phone Number");
+		
+		for(Employee employee : roster)
+		{
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			
+			System.out.printf(formatString, employee.ID, employeeName, employee.getEmail(), 
+					employee.getPhoneNumber());
+		}
+		System.out.println();
+		
+	}
 	// **** CLASS FUNCTIONALITY ****
 	
 	
@@ -533,7 +560,7 @@ public class Console
 	 * adds an underline the same length as the header row.
 	 * @author krismania
 	 */
-	private void printHeader(String format, Object... titles)
+	private void  printHeader(String format, Object... titles)
 	{
 		String header = String.format(format, titles);
 		String divider = "";
