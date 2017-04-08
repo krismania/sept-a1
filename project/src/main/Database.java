@@ -250,6 +250,49 @@ public class Database implements DBInterface {
 		return customers;
 	}
 	
+	/**
+	 * @author James
+	 * @author krismania
+	 */
+	public ArrayList<BusinessOwner> getAllBusinessOwners()
+	{
+		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT Username, Password FROM BusinessOwner";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String Username = rs.getString("Username");
+		         String Password = rs.getString("Password");
+
+		         //Display values
+		         System.out.println("Username: " + Username);
+		         System.out.println("Password: " + Password);
+		         System.out.println();
+		      }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return businessOwners;
+	}
+	
 	@Override
 	public Employee getEmployee(int id)
 	{
