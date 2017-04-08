@@ -105,6 +105,15 @@ public class Controller
 		return bookings;
 	}
 	
+	public ArrayList<Booking> getFutureBookings()
+	{
+		ArrayList<Booking> bookings = db.getFutureBookings();
+		
+		bookings.sort(Comparator.naturalOrder());
+		
+		return bookings;
+	}
+	
 	/**
 	 * Add a customer to the database.
 	 * @author krismania
