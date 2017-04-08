@@ -56,7 +56,7 @@ public class Console
 	 */
 	public void mainMenu()
 	{
-		String[] options = {"Log in", "Register", "[debug] print customer db", "Exit"};
+		String[] options = {"Log in", "Register", "Exit"};
 		Menu menu = new Menu(sc, options, "Appointment Booking System");
 		
 		// main loop
@@ -70,18 +70,6 @@ public class Console
 				break;
 			case "Register":
 				customerRegister();
-				break;
-			case "[debug] print customer db":
-				alert("Customers:");
-				for (Customer customer : c.getAllCustomers())
-				{
-					alert(customer.toString());
-				}
-				alert("Business Owners:");
-				for (BusinessOwner bo : c.getAllBusinessOwners())
-				{
-					alert(bo.toString());
-				}
 				break;
 			case "Exit":
 				exit = true;
