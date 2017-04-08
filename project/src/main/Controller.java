@@ -1,6 +1,7 @@
 package main;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,7 +98,11 @@ public class Controller
 	
 	public ArrayList<Booking> getPastBookings()
 	{
-		return db.getPastBookings();
+		ArrayList<Booking> bookings = db.getPastBookings();
+		
+		bookings.sort(Comparator.reverseOrder());
+		
+		return bookings;
 	}
 	
 	/**
