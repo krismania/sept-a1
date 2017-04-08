@@ -494,15 +494,24 @@ public class Database implements DBInterface {
 	
 	
 	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		return getBookings("Date < DATE('now')");
+	}
+	
+	@Override
 	public ArrayList<Booking> getFutureBookings()
 	{
+		return getBookings("Date >= DATE('now')");
 	}
 	
 	/**
+	 * Returns an ArrayList of bookings in the database, restricted by the given
+	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
+	 * clause in the SQL query.
 	 * @author krismania
 	 */
-	@Override
-	public ArrayList<Booking> getPastBookings()
+	private ArrayList<Booking> getBookings(String constraint)
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		
@@ -515,7 +524,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			
 			try (ResultSet bookingQuery = stmt.executeQuery(
-							"SELECT * FROM Booking WHERE Date < DATE('now')"))
+							"SELECT * FROM Booking WHERE " + constraint))
 			{
 				while (bookingQuery.next())
 				{
