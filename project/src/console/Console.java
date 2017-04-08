@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import main.*;
 
-
 /**
  * Handles the applications interaction with the console. Any input
  * collected from the user, as well as any output printed to them, should go

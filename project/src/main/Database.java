@@ -2,25 +2,34 @@ package main;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Database {
+public class Database implements DBInterface {
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
 	String dbName;
 	
+	private Logger logger;
+	
 	//JM Constructor, reads the name of the database file to work with.
-	public Database(String nameOfDatabase){
+	public Database(String nameOfDatabase)
+	{
+		// get the logger & set level
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		logger.info("Instantiated DB");
+		
+		// set up db
 		dbName = nameOfDatabase;
+		CreateDatabase();
 	}
 
 //***PUBLIC API***
-	/**
-	 * addAccount will instantiate a user's details into the database.
-	 * @param account
-	 * @param password - As account does not store password. Directly pass to DB.
-	 * @author James
-	 */
+
+	@Override
 	public boolean addAccount(Account account, String password)
 	{
 		if(account instanceof Customer)
@@ -41,10 +50,7 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Generates a new empty employee object with the next valid ID.
-	 * @author krismania
-	 */
+	@Override
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
@@ -66,7 +72,7 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		// create the object and return it
@@ -75,11 +81,7 @@ public class Database {
 		return new Employee(id, "", "", "", "");
 	}
 	
-	/**
-	 * addEmployee will instantiate an employee into the database.
-	 * @param employee
-	 * @author James
-	 */
+	@Override
 	public boolean addEmployee(Employee employee)
 	{
 		if(CreateDataEntry("Employee", employee.getFirstName(), employee.getLastName(), employee.getEmail(), 
@@ -90,11 +92,7 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Generates a new Shift object with the next valid ID and the supplied
-	 * Employee ID.
-	 * @author krismania
-	 */
+	@Override
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
@@ -116,7 +114,7 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		// create the object and return it
@@ -125,12 +123,7 @@ public class Database {
 		return new Shift(id, employeeID, null, null);
 	}
 	
-	/**
-	 * addShift will instantiate a shift into the database, which
-	 * is connected to an employee.
-	 * @param shift
-	 * @author James
-	 */
+	@Override
 	public boolean addShift(Shift shift)
 	{
 		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
@@ -140,20 +133,13 @@ public class Database {
 		return false;
 	}
 	
-	/**
-	 * Returns true if a user with the specified username exists in the database
-	 * @author krismania
-	 */
+	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
 	
-	/**
-	 * Returns the account specified by the given username, or null if none
-	 * is found.
-	 * @author krismania
-	 */
+	@Override
 	public Account getAccount(String username)
 	{		
 		Class<? extends Account> type = validateUsername(username);
@@ -207,17 +193,13 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
-			e.printStackTrace();
+			logger.warning(e.toString());
 		}
 			
 		return null;
 	}
 	
-	/**
-	 * Returns the employee specified by the given ID, or null if none is found.
-	 * @author krismania
-	 */
+	@Override
 	public Employee getEmployee(int id)
 	{
 		try
@@ -243,16 +225,13 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return null;
 	}
 	
-	/**
-	 * Returns all employees that have been registered, otherwise returns null.
-	 * @author James
-	 */
+	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
 		ArrayList<Employee> completeTeam = new ArrayList<Employee>();
@@ -288,11 +267,12 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		return null;
 	}
 	
+	@Override
 	public Shift getShift(int shiftID)
 	{
 		try
@@ -316,13 +296,13 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return null;
 	}
 	
-	// TODO: return array of Shifts
+	@Override
 	public ArrayList<Shift> getShifts(int EmpID)
 	{
 		ArrayList<Shift> Shifts = new ArrayList<Shift>();
@@ -356,16 +336,17 @@ public class Database {
 		catch(SQLException e)
 		{
 			//JM Handle errors for JDBC
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		catch(Exception e)
 		{
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return Shifts;
 	}
-
+	
+	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
 		ArrayList<Shift> openShifts = new ArrayList<Shift>();
@@ -401,21 +382,17 @@ public class Database {
 		catch(SQLException e)
 		{
 			//JM Handle errors for JDBC
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		catch(Exception e)
 		{
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return openShifts;
 	}
-	/**
-	 * Attempt to log into an account with the provided credentials. If the login
-	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
-	 * the return value is null.
-	 * @author krismania
-	 */
+
+	@Override
 	public Account login(String username, String password)
 	{
 		boolean valid = false;
@@ -435,8 +412,8 @@ public class Database {
 	}
 
 	
-//***CREATE METHODS***JM
-	public void CreateDatabase()
+	//***CREATE METHODS***JM
+	private void CreateDatabase()
 	{
 		//JM Initialize a connection
 		try
@@ -449,14 +426,15 @@ public class Database {
 		}
 		catch (Exception e)
 		{
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			logger.severe(e.toString());
 			System.exit(0);
 		}
 	}
 	
+	
 	//JM CreateDatabaseTable() will create a table within the database.
 	//JM Param = Variable number of Strings (Array)
-	public void CreateDatabaseTable(String... strings)
+	private void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
 		StringBuilder strBuilder = new StringBuilder();
@@ -516,12 +494,11 @@ public class Database {
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-
-			e.printStackTrace();
+			logger.warning(e.toString());
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
-			e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		
 	}
@@ -565,11 +542,11 @@ public class Database {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			e.printStackTrace();
+			logger.warning(e.toString());
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return false;
 	}
@@ -589,10 +566,10 @@ public class Database {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			e.printStackTrace();
+			logger.warning(e.toString());
 			return false;
 		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
 		    e.printStackTrace();
 		}
 		return false;
@@ -639,10 +616,10 @@ public class Database {
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			e.printStackTrace();
+			logger.warning(e.toString());
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
-			e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return null;
 	}
@@ -665,8 +642,7 @@ public class Database {
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return false;
@@ -677,7 +653,7 @@ public class Database {
 	 * Debug method! Remove on release/submit
 	 * @author James
 	 */
-	public void getCustomerDataEntries() 
+	private void getCustomerDataEntries() 
 	{		
 		try{
 			openConnection();
@@ -720,7 +696,7 @@ public class Database {
 	 * Debug method! Remove on release/submit
 	 * @author James
 	 */
-	public void getBusinessOwnerDataEntries() 
+	private void getBusinessOwnerDataEntries() 
 	{		
 		try{
 			openConnection();
@@ -756,7 +732,7 @@ public class Database {
 	 * TODO: this may need to be removed
 	 * @author krismania
 	 */
-	public String getLastEmployeeID()
+	private String getLastEmployeeID()
 	{
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
@@ -792,7 +768,7 @@ public class Database {
 	 * TODO: this WILL need to be removed
 	 * @author krismania
 	 */
-	public String getLastShiftID()
+	private String getLastShiftID()
 	{
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try
@@ -852,13 +828,16 @@ public class Database {
 		}
 		else
 		{
-			System.out.println("Connection failed to close.");
+			logger.warning("DB Connection failed to close");
 			return false;
 		}
 	}
 
 //***SCRIPT METHODS***JM
-	private void setupScript() {
+	private void setupScript()
+	{
+		logger.info("Creating database tables...");
+		
 		//Customer Table
 		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
@@ -883,6 +862,8 @@ public class Database {
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
 				"Shift_ID int", "day varchar(9)", "Booking_ID");
 		
+		logger.info("Creating DB test data...");
+		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
 		
@@ -904,6 +885,7 @@ public class Database {
 		CreateDataEntry("Booking", "1", "JamesRulez", "1", "1", "MONDAY");
 		CreateDataEntry("Booking", "2", "JamesRulez", "2", "4", "SUNDAY");
 
+		logger.info("DB created.");
 	}
 	
 //*** Future Dev Requirements. No longer needed***
