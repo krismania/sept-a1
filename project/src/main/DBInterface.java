@@ -62,6 +62,17 @@ public interface DBInterface
 	 */
 	Account getAccount(String username);
 	
+	/**
+	 * Get a list of all customers in the DB.
+	 * @author krismania
+	 */
+	ArrayList<Customer> getAllCustomers();
+	
+	/**
+	 * Get a list of all Business owners in the database;
+	 * @author krismania
+	 */
+	ArrayList<BusinessOwner> getAllBusinessOwners();
 	
 	/**
 	 * Returns the employee specified by the given ID, or null if none is found.

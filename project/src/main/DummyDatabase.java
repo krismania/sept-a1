@@ -53,7 +53,7 @@ public class DummyDatabase implements DBInterface
 	{
 		if (username.equals("JohnRulez"))
 		{
-			return new BusinessOwner("johnRulez", "John's Business");
+			return new BusinessOwner("JohnRulez", "SomeBusiness", "John S.", "10 Some St, Some Town", "(03) 5555 5555");
 		}
 		else if (username.equals("badUsername"))
 		{
@@ -63,6 +63,27 @@ public class DummyDatabase implements DBInterface
 		{
 			return new Customer("candy", "Candice", "Carazalez", "candy@sourcefed.com", "1234 5681");
 		}
+	}
+	
+	@Override
+	public ArrayList<Customer> getAllCustomers()
+	{
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		customers.add(new Customer("JamesRulez", "James", "McLennan", "testing@testing.com", "0400000000"));
+		customers.add(new Customer("krismania", "Kristian", "Giglia", "s3543819@student.rmit.edu.au", "0400 123 456"));
+		
+		return customers;
+	}
+	
+	@Override
+	public ArrayList<BusinessOwner> getAllBusinessOwners()
+	{
+		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
+		
+		businessOwners.add(new BusinessOwner("JohnRulez", "SomeBusiness", "John S.", "10 Some St, Some Town", "(03) 5555 5555"));
+		
+		return businessOwners;
 	}
 	
 	
