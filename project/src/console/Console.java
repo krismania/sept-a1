@@ -427,15 +427,19 @@ public class Console
         System.out.print("Username: ");
         input.put("username", sc.nextLine());
         
-        System.out.print("Password: ");
-        input.put("password", sc.nextLine());
-	
-	// Mask Password
-	/*	
-	char[] pw = console.readPassword("Password: ");
-	String password = String.valueOf(pw);
-	input.put("password", password);
-	*/
+        // try to use io.Console for password input. -kg
+        java.io.Console cons = System.console();
+        
+        if (cons != null)
+        {
+        	// password is masked if we can use io.Console. -kg
+        	input.put("password", new String(cons.readPassword("Password: ")));
+        }
+        else
+        {
+        	System.out.print("Password: ");
+        	input.put("password", sc.nextLine());
+        }
  
         System.out.println(); // add space under last field -kg
         
