@@ -421,9 +421,6 @@ public class Database implements DBInterface {
 		         
 		         // add it to the list
 		         Shifts.add(shift);
-		         
-		         // TODO: debug print shift
-		         System.out.println(shift.toString());
 		    }
 			closeConnection();
 		}
