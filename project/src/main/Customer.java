@@ -69,4 +69,11 @@ public class Customer extends Account implements PersonalDetails
 	{
 		phoneNumber = phone;		
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Customer: %s, Name: %s %s, Email: %s, Phone: %s",
+						username, firstName, lastName, email, phoneNumber);
+	}
 }

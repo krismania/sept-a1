@@ -61,4 +61,11 @@ public class BusinessOwner extends Account
 	{
 		this.businessName = businessName;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("BO: %s, Name: %s, Business: %s, Address: %s, Phone: %s",
+						username, name, businessName, address, phoneNumber);
+	}
 }
