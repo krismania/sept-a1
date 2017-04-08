@@ -248,7 +248,18 @@ public class Console
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
 		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-		
+		//TN - Validate data
+		String testShiftDay = shiftInfo.get("shiftDay");
+		if (((testShiftDay.length() < 6)||(testShiftDay.length() > 7)))
+		{
+		    alert("You have have not entered the Shift details correctly. Please try again. Enter Day: eg monday,"
+		    		+ " enter and theb Shift: eg morning, then enter.");
+		}	
+		else if (testShiftDay == null)
+		{
+                    alert("You have have not entered a Shift details value. Please try again. Enter Day: eg monday,"
+		    		+ " enter and theb Shift: eg morning, then enter.");
+		}
 		// check if employee exists
 		if (c.employeeExists(employeeID))
 		{
