@@ -1,17 +1,17 @@
 package console;
 
 import java.sql.Time;
+
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Locale;
 
-import main.Account;
-import main.BusinessOwner;
-import main.Controller;
-import main.Customer;
-import main.ShiftTime;
+import main.*;
 
 /**
  * Handles the applications interaction with the console. Any input
@@ -99,6 +99,10 @@ public class Console
 			case "Add working times/dates":
 				addShifts();
 				break;
+                        case "Staff Availability - Days and Times:":
+				alert("Staff Availability - Days and Times:");
+				viewDaysAndTime(c.getAllOpenShifts());
+				break;
 			case "Log out":
 				exit = true;
 				break;
@@ -121,6 +125,10 @@ public class Console
 		{
 			switch (menu.prompt())
 			{
+			case "View available days/times":
+				alert("Available Days and Times:");
+				viewDaysAndTime(c.getAllOpenShifts());
+				break;
 			case "Log out":
 				exit = true;
 				break;
@@ -232,31 +240,44 @@ public class Console
 		// declare variables
 		int employeeID;
 		DayOfWeek shiftDay;
-		ShiftTime shiftTime;		
-		
+		ShiftTime shiftTime;
+		boolean result;
+		String testAddShift = null;
+		String wrongInput = "You have have not entered the Shift details correctly. "
+		+ "Please try again. Enter Day: eg monday,enter and theb Shift: eg morning, then enter.";
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		employeeID = Integer.parseInt(shiftInfo.get("employeeID"));
-		shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-		
-		// check if employee exists
-		if (c.employeeExists(employeeID))
-		{
-			alert("Employee ID cannot be found in database");
-		}
+		//TN - ternary expression to validate input lengths  prior to acceptance
+		testAddShift.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+		result = (((testAddShift.length() < 6)||(testAddShift.length() > 7)) ? true:false);
+		if (result != true)
+	   	{
+    	//shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+    	    shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
+    		shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+    		// check if employee exists
+    		if (c.employeeExists(employeeID))
+    		{
+    			alert("Employee ID cannot be found in database");
+	    	}
+    		else
+    		{
+    			// employee found, add the shift
+    		    if (c.addShift(employeeID, shiftDay, shiftTime))
+	        	{
+	        		// TODO: success
+	        	}
+		    	else
+		        {
+	    	    	// TODO: failure
+	     	    }
+		    }
+
+        }
 		else
-		{
-			// employee found, add the shift
-			if (c.addShift(employeeID, shiftDay, shiftTime))
-			{
-				// TODO: success
-			}
-			else
-			{
-				// TODO: failure
-			}
-		}
+			shiftDay = DayOfWeek.valueOf(testAddShift.toUpperCase());
+			alert(wrongInput);
 	}
 	
 	/**
@@ -284,12 +305,13 @@ public class Console
 		// TN Added username null check in password length validation
 		if ((Account.passwordAccepted(password)) && (username != null))
 		{
-			alert("Password OK!");
+			
 		}
 		else
 		{
-			// if password is unacceptable, end account creation here. -kg
-			alert("Invalid password.");
+			// if password is unacceptable, end account creation here. -RK
+			alert("Password must be greater than 6 characters and"
+ 				+ " contain a digit, an upper case and lower case ");
 			return;
 		}
 		
@@ -344,6 +366,28 @@ public class Console
 		}
 	}
 	
+	private void viewDaysAndTime(ArrayList<Shift> timeSlots)
+	{
+		for(Shift current : timeSlots)
+		{
+			int shiftID = current.ID;
+			int empID = current.employeeID;
+			DayOfWeek day = current.getDay();
+			ShiftTime time = current.getTime();
+			Locale locale = new Locale("au", "AU");
+			System.out.println("***");
+			System.out.println("Option: " + Integer.toString(shiftID));
+			System.out.println("Employee: " + Integer.toString(empID) 
+					+ ", Day: " + day.getDisplayName(TextStyle.SHORT, locale) 
+					+ ", Time: " + time.toString());
+		}
+		System.out.println();
+		
+		if(timeSlots.isEmpty())
+		{
+			alert("There are currently no available timeslots.");
+		}
+	}
 	
 	// **** CLASS FUNCTIONALITY ****
 	
@@ -390,11 +434,28 @@ public class Console
 	
 	private HashMap<String, String> accountPrompt()
 	{
-		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
-		fields.put("username", "Username");
-		fields.put("password", "Password");
-		
-		return prompt(fields);
+	 	HashMap<String, String> input = new HashMap<String, String>();
+        
+        System.out.print("Username: ");
+        input.put("username", sc.nextLine());
+        
+        // try to use io.Console for password input. -kg
+        java.io.Console cons = System.console();
+        
+        if (cons != null)
+        {
+        	// password is masked if we can use io.Console. -kg
+        	input.put("password", new String(cons.readPassword("Password: ")));
+        }
+        else
+        {
+        	System.out.print("Password: ");
+        	input.put("password", sc.nextLine());
+        }
+ 
+        System.out.println(); // add space under last field -kg
+        
+        return input;
 	}
 	
 	
@@ -426,9 +487,10 @@ public class Console
 	{
 		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
 		fields.put("employeeID", "Employee ID");
-		fields.put("shiftDay", "Shift Day (mon/tue/wed/thu/fri/sat/sun)");
-		fields.put("shiftTime", "Shift Time (morning/afternoon/evening)");
+		fields.put("shiftDay", "Shift Day (eg. monday/tuesday/.../saturday/sunday)");
+		fields.put("shiftTime", "Shift Time (eg. morning/afternoon/evening)");
 		
 		return prompt(fields);
 	}
+
 }

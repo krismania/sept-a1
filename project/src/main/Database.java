@@ -2,6 +2,8 @@ package main;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database implements DBInterface {
 	Connection c = null;
@@ -9,16 +11,24 @@ public class Database implements DBInterface {
 	ResultSet rs = null;
 	String dbName;
 	
+	private Logger logger;
+	
 	//JM Constructor, reads the name of the database file to work with.
-	public Database(String nameOfDatabase){
+	public Database(String nameOfDatabase)
+	{
+		// get the logger & set level
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		logger.info("Instantiated DB");
+		
+		// set up db
 		dbName = nameOfDatabase;
 		CreateDatabase();
 	}
 
 //***PUBLIC API***
-	/* (non-Javadoc)
-	 * @see main.DBInterface#addAccount(main.Account, java.lang.String)
-	 */
+
 	@Override
 	public boolean addAccount(Account account, String password)
 	{
@@ -39,10 +49,7 @@ public class Database implements DBInterface {
 
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#buildEmployee()
-	 */
+
 	@Override
 	public Employee buildEmployee()
 	{
@@ -65,7 +72,7 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		// create the object and return it
@@ -73,10 +80,7 @@ public class Database implements DBInterface {
 		
 		return new Employee(id, "", "", "", "");
 	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#addEmployee(main.Employee)
-	 */
+  
 	@Override
 	public boolean addEmployee(Employee employee)
 	{
@@ -88,9 +92,6 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#buildShift(int)
-	 */
 	@Override
 	public Shift buildShift(int employeeID)
 	{
@@ -113,7 +114,7 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		// create the object and return it
@@ -122,9 +123,6 @@ public class Database implements DBInterface {
 		return new Shift(id, employeeID, null, null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#addShift(main.Shift)
-	 */
 	@Override
 	public boolean addShift(Shift shift)
 	{
@@ -134,19 +132,13 @@ public class Database implements DBInterface {
 		}
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#accountExists(java.lang.String)
-	 */
+
 	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getAccount(java.lang.String)
-	 */
+
 	@Override
 	public Account getAccount(String username)
 	{		
@@ -170,11 +162,11 @@ public class Database implements DBInterface {
 					if (customerQuery.next())
 					{
 						// get info
-						String first = rs.getString("Firstname");
-				        String last = rs.getString("Lastname");
-				        String email = rs.getString("Email");
-				        String phone = rs.getString("Phone");
-				        String usr = rs.getString("Username");
+						String first = customerQuery.getString("Firstname");
+				        String last = customerQuery.getString("Lastname");
+				        String email = customerQuery.getString("Email");
+				        String phone = customerQuery.getString("Phone");
+				        String usr = customerQuery.getString("Username");
 				        closeConnection();
 				        // create customer obj and return it
 				        return new Customer(usr, first, last, email, phone);
@@ -189,7 +181,7 @@ public class Database implements DBInterface {
 					if (boQuery.next())
 					{
 						// get info
-						String usr = rs.getString("Username");
+						String usr = boQuery.getString("Username");
 						String businessName = "[business_name]";
 						closeConnection();
 						// create obj and return
@@ -201,15 +193,12 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 			
 		return null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getEmployee(int)
-	 */
+
 	@Override
 	public Employee getEmployee(int id)
 	{
@@ -236,15 +225,12 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getAllEmployees()
-	 */
+  }
+  
 	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
@@ -281,14 +267,11 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getShift(int)
-	 */
 	@Override
 	public Shift getShift(int shiftID)
 	{
@@ -313,16 +296,12 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return null;
 	}
 	
-	// TODO: return array of Shifts
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getShifts(int)
-	 */
 	@Override
 	public ArrayList<Shift> getShifts(int EmpID)
 	{
@@ -357,19 +336,16 @@ public class Database implements DBInterface {
 		catch(SQLException e)
 		{
 			//JM Handle errors for JDBC
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		catch(Exception e)
 		{
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return Shifts;
 	}
 
-	/* (non-Javadoc)
-	 * @see main.DBInterface#getShiftsNotBooked()
-	 */
 	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
@@ -379,7 +355,7 @@ public class Database implements DBInterface {
 			openConnection();
 			stmt = c.createStatement();
 			
-			String sql = String.format("SELECT * FROM Shifts WHERE Shift_ID NOT IN"
+			String sql = String.format("SELECT * FROM Shift WHERE Shift_ID NOT IN"
 					+ "(SELECT SHIFT_ID FROM Booking)");
 			
 			rs = stmt.executeQuery(sql);
@@ -406,18 +382,16 @@ public class Database implements DBInterface {
 		catch(SQLException e)
 		{
 			//JM Handle errors for JDBC
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		catch(Exception e)
 		{
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return openShifts;
 	}
-	/* (non-Javadoc)
-	 * @see main.DBInterface#login(java.lang.String, java.lang.String)
-	 */
+
 	@Override
 	public Account login(String username, String password)
 	{
@@ -448,10 +422,11 @@ public class Database implements DBInterface {
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
 			setupScript();
+			closeConnection();
 		}
 		catch (Exception e)
 		{
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			logger.severe(e.toString());
 			System.exit(0);
 		}
 	}
@@ -519,12 +494,11 @@ public class Database implements DBInterface {
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-
-			//e.printStackTrace();
+			logger.warning(e.toString());
 			
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
-			e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		
 	}
@@ -568,18 +542,18 @@ public class Database implements DBInterface {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			//e.printStackTrace();
+			logger.warning(e.toString());
 			return false;
 		} catch(Exception e) {
 		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return false;
 	}
 	
 	private boolean CreateShift(DayOfWeek day, ShiftTime time, int iD, int employeeID) 
 	{
-		String sql = "INSERT INTO Schedule VALUES ('"
+		String sql = "INSERT INTO Shift VALUES ('"
 				+ day.name() + "', '" + time.name() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
@@ -592,10 +566,10 @@ public class Database implements DBInterface {
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
-			//e.printStackTrace();
+			logger.warning(e.toString());
 			return false;
 		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
 		    e.printStackTrace();
 		}
 		return false;
@@ -642,10 +616,10 @@ public class Database implements DBInterface {
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
-			e.printStackTrace();
+			logger.warning(e.toString());
 		} catch (Exception e) {
 			//JM Handles errors for Class.forName
-			e.printStackTrace();
+			logger.warning(e.toString());
 		}
 		return null;
 	}
@@ -668,8 +642,7 @@ public class Database implements DBInterface {
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
-			// TODO: logging
+			logger.warning(e.toString());
 		}
 		
 		return false;
@@ -855,13 +828,16 @@ public class Database implements DBInterface {
 		}
 		else
 		{
-			System.out.println("Connection failed to close.");
+			logger.warning("DB Connection failed to close");
 			return false;
 		}
 	}
 
 //***SCRIPT METHODS***JM
-	private void setupScript() {
+	private void setupScript()
+	{
+		logger.info("Creating database tables...");
+		
 		//Customer Table
 		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
@@ -886,6 +862,8 @@ public class Database implements DBInterface {
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
 				"Shift_ID int", "day varchar(9)", "Booking_ID");
 		
+		logger.info("Creating DB test data...");
+		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
 				"0400000000", "JamesRulez", "james", "Customer");
 		
@@ -907,6 +885,7 @@ public class Database implements DBInterface {
 		CreateDataEntry("Booking", "1", "JamesRulez", "1", "1", "MONDAY");
 		CreateDataEntry("Booking", "2", "JamesRulez", "2", "4", "SUNDAY");
 
+		logger.info("DB created.");
 	}
 	
 //*** Future Dev Requirements. No longer needed***

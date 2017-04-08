@@ -1,18 +1,22 @@
 package main;
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller
 {
-	Scanner sc = new Scanner(System.in);
+	private Logger logger;
 	
 	DBInterface db = new Database("awesomeSauce");
 	// DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
 	
 	private static Controller instance = null;
 	
+	/**
+	 * Returns the singleton instance of of the Controller class.
+	 * @author krismania
+	 */
 	public static Controller getInstance()
 	{
 		if (instance == null)
@@ -27,7 +31,11 @@ public class Controller
 	 */
 	private Controller()
 	{
-		// db.CreateDatabase();
+		// get the logger
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		logger.info("Instantiated Controller");
 	}
 
 	public ArrayList<Customer> getAllCustomers()
@@ -43,6 +51,11 @@ public class Controller
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return new ArrayList<Employee>();
+	}
+	
+	public ArrayList<Shift> getAllOpenShifts()
+	{
+		return db.getShiftsNotBooked();
 	}
 	
 	/**
@@ -129,7 +142,7 @@ public class Controller
 	 */
 	public boolean validatePhoneNumber(String input)
 	{
-		if(input != null && !input.isEmpty()){
+		if(input != null && !input.isEmpty() && input.length() <= 10){
 			return true;
 		}
 		return false;
