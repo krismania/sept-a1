@@ -510,5 +510,25 @@ public class Console
 		
 		return prompt(fields);
 	}
+	
+	/**
+	 * Helper method that prints the given headers in the provided format, and
+	 * adds an underline the same length as the header row.
+	 * @author krismania
+	 */
+	private void printHeader(String format, Object... titles)
+	{
+		String header = String.format(format, titles);
+		String divider = "";
+		
+		for (int i = 0; i < header.length(); i++)
+		{
+			divider += "-";
+		}
+		
+		divider += "\n";
+		
+		System.out.print(header + divider);
+	}
 
 }
