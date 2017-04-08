@@ -266,16 +266,18 @@ public class Database implements DBInterface {
 			String sql = "SELECT * FROM BusinessOwner";
 			
 			rs = stmt.executeQuery(sql);
-			while(rs.next()){
-		         //Retrieve by column name
-		         String Username = rs.getString("Username");
-		         String Password = rs.getString("Password");
+			while(rs.next())
+			{
+		        //Retrieve by column name         
+	         	String usr = rs.getString("Username");
+				String businessName = rs.getString("BusinessName");
+				String ownerName = rs.getString("Name");
+				String address = rs.getString("Address");
+				String phone = rs.getString("Phone");
 
-		         //Display values
-		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password);
-		         System.out.println();
-		      }
+				// build obj and add to list. -kg
+				businessOwners.add(new BusinessOwner(usr, businessName, ownerName, address, phone));
+			}
 			closeConnection();
 		}
 		catch(SQLException e)
