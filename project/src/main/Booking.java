@@ -51,9 +51,19 @@ public class Booking implements Comparable<Booking>
 		return String.format("Booking: %d, Cust: %s", ID, customer);
 	}
 
+	/**
+	 * Sort by date and then by time.
+	 */
 	@Override
 	public int compareTo(Booking b)
 	{
-		return this.date.compareTo(b.date);
+		int byDate = this.date.compareTo(b.date);
+		
+		if (byDate == 0)
+		{
+			return this.time.getValue() - b.time.getValue();
+		}
+		
+		return byDate;
 	}
 }
