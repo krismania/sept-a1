@@ -63,7 +63,10 @@ public class Console
 				break;
 			case "[debug] print customer db":
 				alert("Customers:");
-				// c.getAllCustomers(); // TODO: print customers
+				for (Customer customer : c.getAllCustomers())
+				{
+					alert(customer.toString());
+				}
 				alert("\nBusiness Owners:");
 				// c.getAllBusinessOwners(); // TODO: print b.o.s
 				break;
