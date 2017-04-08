@@ -1,6 +1,6 @@
 package main;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Keeps track of an individual booking made by a customer & tied to an employee,
