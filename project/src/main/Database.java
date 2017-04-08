@@ -49,7 +49,7 @@ public class Database implements DBInterface {
 
 		return false;
 	}
-	
+
 	@Override
 	public Employee buildEmployee()
 	{
@@ -80,7 +80,7 @@ public class Database implements DBInterface {
 		
 		return new Employee(id, "", "", "", "");
 	}
-	
+  
 	@Override
 	public boolean addEmployee(Employee employee)
 	{
@@ -132,13 +132,13 @@ public class Database implements DBInterface {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
-	
+
 	@Override
 	public Account getAccount(String username)
 	{		
@@ -182,10 +182,14 @@ public class Database implements DBInterface {
 					{
 						// get info
 						String usr = boQuery.getString("Username");
-						String businessName = "[business_name]";
+						String businessName = boQuery.getString("BusinessName");
+						String ownerName = boQuery.getString("Name");
+						String address = boQuery.getString("Address");
+						String phone = boQuery.getString("Phone");
+						
 						closeConnection();
 						// create obj and return
-						return new BusinessOwner(usr, businessName);
+						return new BusinessOwner(usr, businessName, ownerName, address, phone);
 					}
 				}
 			}
@@ -197,6 +201,96 @@ public class Database implements DBInterface {
 		}
 			
 		return null;
+	}
+	
+	/**
+	 * @author James
+	 * @author krismania
+	 */
+	@Override
+	public ArrayList<Customer> getAllCustomers()
+	{
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM Customer";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+		         //Retrieve by column name
+		         String first = rs.getString("Firstname");
+		         String last = rs.getString("Lastname");
+		         String email = rs.getString("Email");
+		         String phone = rs.getString("Phone");
+		         String Username = rs.getString("Username");
+
+		         // create Customer object & add to list. -kg
+		         customers.add(new Customer(Username, first, last, email, phone));
+		      }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		} 
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return customers;
+	}
+	
+	/**
+	 * @author James
+	 * @author krismania
+	 */
+	public ArrayList<BusinessOwner> getAllBusinessOwners()
+	{
+		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM BusinessOwner";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+		        //Retrieve by column name         
+	         	String usr = rs.getString("Username");
+				String businessName = rs.getString("BusinessName");
+				String ownerName = rs.getString("Name");
+				String address = rs.getString("Address");
+				String phone = rs.getString("Phone");
+
+				// build obj and add to list. -kg
+				businessOwners.add(new BusinessOwner(usr, businessName, ownerName, address, phone));
+			}
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return businessOwners;
 	}
 	
 	@Override
@@ -229,8 +323,8 @@ public class Database implements DBInterface {
 		}
 		
 		return null;
-	}
-	
+  }
+  
 	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
@@ -345,7 +439,7 @@ public class Database implements DBInterface {
 		}
 		return Shifts;
 	}
-	
+
 	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
@@ -649,83 +743,7 @@ public class Database implements DBInterface {
 	}
 	
 //***RETRIEVE METHODS***JM
-	/**
-	 * Debug method! Remove on release/submit
-	 * @author James
-	 */
-	private void getCustomerDataEntries() 
-	{		
-		try{
-			openConnection();
-			stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT Firstname, Lastname, Email, Phone,"
-					+ "Username, Password FROM Customer";
-			
-			rs = stmt.executeQuery(sql);
-			while(rs.next()){
-		         //Retrieve by column name
-		         String first = rs.getString("Firstname");
-		         String last = rs.getString("Lastname");
-		         String email = rs.getString("Email");
-		         String phone = rs.getString("Phone");
-		         String Username = rs.getString("Username");
-		         String Password = rs.getString("Password");
-
-		         //Display values
-		         System.out.println("First: " + first);
-		         System.out.println("Last: " + last);
-		         System.out.println("Email: " + email);
-		         System.out.println("Phone: " + phone);
-		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password);
-		         System.out.println();
-		      }
-			closeConnection();
-		} catch(SQLException e) {
-			//JM Handle errors for JDBC
-		    e.printStackTrace();
-		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
-		}
-	}
 	
-	/**
-	 * Debug method! Remove on release/submit
-	 * @author James
-	 */
-	private void getBusinessOwnerDataEntries() 
-	{		
-		try{
-			openConnection();
-			stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT Username, Password FROM BusinessOwner";
-			
-			rs = stmt.executeQuery(sql);
-			while(rs.next()){
-		         //Retrieve by column name
-		         String Username = rs.getString("Username");
-		         String Password = rs.getString("Password");
-
-		         //Display values
-		         System.out.println("Username: " + Username);
-		         System.out.println("Password: " + Password);
-		         System.out.println();
-		      }
-			closeConnection();
-		} catch(SQLException e) {
-			//JM Handle errors for JDBC
-		    e.printStackTrace();
-		} catch(Exception e) {
-		    //JM Handle errors for Class.forName
-		    e.printStackTrace();
-		}
-	}
-
 	
 	/**
 	 * Temp method to find the highest ID

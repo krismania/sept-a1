@@ -40,17 +40,17 @@ public class Controller
 
 	public ArrayList<Customer> getAllCustomers()
 	{
-		return new ArrayList<Customer>();
+		return db.getAllCustomers();
 	}
 	
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
-		return new ArrayList<BusinessOwner>();
+		return db.getAllBusinessOwners();
 	}
 	
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return new ArrayList<Employee>();
+		return db.getAllEmployees();
 	}
 	
 	public ArrayList<Shift> getAllOpenShifts()
