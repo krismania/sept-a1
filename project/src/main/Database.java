@@ -485,6 +485,12 @@ public class Database implements DBInterface {
 		}
 		return openShifts;
 	}
+	
+	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		return new ArrayList<Booking>();
+	}
 
 	@Override
 	public Account login(String username, String password)

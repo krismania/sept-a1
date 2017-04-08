@@ -95,6 +95,11 @@ public class Controller
 		return shifts;
 	}
 	
+	public ArrayList<Booking> getPastBookings()
+	{
+		return db.getPastBookings();
+	}
+	
 	/**
 	 * Add a customer to the database.
 	 * @author krismania

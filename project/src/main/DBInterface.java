@@ -97,6 +97,10 @@ public interface DBInterface
 	
 	ArrayList<Shift> getShiftsNotBooked();
 	
+	/**
+	 * Returns a list of all bookings that occurred before the current date.
+	 */
+	ArrayList<Booking> getPastBookings();
 	
 	/**
 	 * Attempt to log into an account with the provided credentials. If the login

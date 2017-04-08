@@ -1,6 +1,9 @@
 package main;
 
+import java.sql.Date;
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -171,6 +174,23 @@ public class DummyDatabase implements DBInterface
 		Collections.shuffle(shifts);
 		
 		return shifts;
+	}
+	
+	
+	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		bookings.add(new Booking(1, "someuser", 3, 1, new Date(0)));
+		bookings.add(new Booking(2, "someOtherUser", 4, 5, new Date(0)));
+		bookings.add(new Booking(3, "someuser", 9, 5, new Date(0)));
+		bookings.add(new Booking(4, "krismania", 2, 6, new Date(0)));
+		bookings.add(new Booking(5, "idk", 2, 7, new Date(0)));
+		
+		Collections.shuffle(bookings);
+		
+		return bookings;
 	}
 	
 	
