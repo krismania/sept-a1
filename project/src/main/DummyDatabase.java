@@ -2,6 +2,7 @@ package main;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DummyDatabase implements DBInterface
 {
@@ -105,6 +106,9 @@ public class DummyDatabase implements DBInterface
 		employees.add(new Employee(4, "Gus", "Sorola", "gus@rt.com", "(03) 1243-5468"));
 		employees.add(new Employee(5, "John", "Smith", "john@smith.com", "+61 400 685 354"));
 
+		// shuffle the list (the DB doesn't guarantee the order
+		Collections.shuffle(employees);
+		
 		return employees;
 	}
 	
@@ -135,6 +139,9 @@ public class DummyDatabase implements DBInterface
 		
 		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
 		
+		// shuffle the list (the DB doesn't guarantee the order
+		Collections.shuffle(shifts);
+		
 		return shifts;
 	}
 	
@@ -154,6 +161,9 @@ public class DummyDatabase implements DBInterface
 		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, ShiftTime.MORNING));
 		
 		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
+		
+		// shuffle the list (the DB doesn't guarantee the order
+		Collections.shuffle(shifts);
 		
 		return shifts;
 	}
