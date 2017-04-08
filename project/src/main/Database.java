@@ -360,6 +360,33 @@ public class Database implements DBInterface {
 	}
 	
 	@Override
+	public boolean validateShift(String day, String time, int empID)
+	{
+		boolean shiftExists = false;
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
+									+ " Day = '%s' AND Time = '%s'", empID, day.toUpperCase(), time)))
+			{
+				while (rs.next())
+				{
+					shiftExists = true;
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return shiftExists;
+	}
+	
+	@Override
 	public Shift getShift(int shiftID)
 	{
 		try
@@ -885,9 +912,8 @@ public class Database implements DBInterface {
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 		
 
-		//Schedule Table
+		//Shift Table
 		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
-
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		//Booking Table

@@ -148,6 +148,11 @@ public class Controller
 		return db.login(username, password);
 	}
 	
+	public boolean validateShift(String day, String time, int empID)
+	{
+		return db.validateShift(day, time.toUpperCase(), empID);
+	}
+	
 	/**
 	 * Returns true if a valid name is input.
 	 * @author RK
