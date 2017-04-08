@@ -8,8 +8,8 @@ public class Controller
 {
 	private Logger logger;
 	
-	// DBInterface db = new Database("awesomeSauce");
-	DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
+	DBInterface db = new Database("awesomeSauce");
+	// DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
 	
 	private static Controller instance = null;
 	
@@ -45,12 +45,12 @@ public class Controller
 	
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
-		return new ArrayList<BusinessOwner>();
+		return db.getAllBusinessOwners();
 	}
 	
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return new ArrayList<Employee>();
+		return db.getAllEmployees();
 	}
 	
 	public ArrayList<Shift> getAllOpenShifts()

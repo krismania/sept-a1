@@ -67,8 +67,11 @@ public class Console
 				{
 					alert(customer.toString());
 				}
-				alert("\nBusiness Owners:");
-				// c.getAllBusinessOwners(); // TODO: print b.o.s
+				alert("Business Owners:");
+				for (BusinessOwner bo : c.getAllBusinessOwners())
+				{
+					alert(bo.toString());
+				}
 				break;
 			case "Exit":
 				exit = true;
