@@ -852,10 +852,16 @@ public class Database implements DBInterface {
 	}
 
 //***SCRIPT METHODS***JM
-	private void setupScript()
+	
+	/**
+	 * Attempt to create the required DB tables
+	 * @author krismania
+	 * @author James
+	 */
+	private void createTables()
 	{
 		logger.info("Creating database tables...");
-		
+				
 		//Customer Table
 		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
@@ -879,7 +885,10 @@ public class Database implements DBInterface {
 		//Booking Table
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
 				"Shift_ID int", "day varchar(9)", "Booking_ID");
-		
+	}
+	
+	private void createTestData()
+	{
 		logger.info("Creating DB test data...");
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
