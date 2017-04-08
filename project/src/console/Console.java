@@ -471,8 +471,8 @@ public class Console
 	{
 		LinkedHashMap<String, String> fields = new LinkedHashMap<String, String>();
 		fields.put("employeeID", "Employee ID");
-		fields.put("shiftDay", "Shift Day (mon/tue/wed/thu/fri/sat/sun)");
-		fields.put("shiftTime", "Shift Time (morning/afternoon/evening)");
+		fields.put("shiftDay", "Shift Day (eg. monday/tuesday/.../saturday/sunday)");
+		fields.put("shiftTime", "Shift Time (eg. morning/afternoon/evening)");
 		
 		return prompt(fields);
 	}
