@@ -560,7 +560,7 @@ public class Console
 	 * adds an underline the same length as the header row.
 	 * @author krismania
 	 */
-	private void  printHeader(String format, Object... titles)
+	private void printHeader(String format, Object... titles)
 	{
 		String header = String.format(format, titles);
 		String divider = "";
