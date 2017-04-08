@@ -515,7 +515,22 @@ public class Database implements DBInterface {
 			Class.forName("org.sqlite.JDBC");
 			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
 			openConnection();
-			setupScript();
+			
+			// test if the db is empty. -kg
+			boolean empty;
+			stmt = c.createStatement();
+			rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
+			rs.next();
+			empty = (rs.getInt(1) == 0);
+			rs.close();
+			
+			if (empty)
+			{
+				// if DB is empty, create the required tables and test data
+				createTables();
+				createTestData();
+			}
+			
 			closeConnection();
 		}
 		catch (Exception e)
@@ -852,10 +867,16 @@ public class Database implements DBInterface {
 	}
 
 //***SCRIPT METHODS***JM
-	private void setupScript()
+	
+	/**
+	 * Attempt to create the required DB tables
+	 * @author krismania
+	 * @author James
+	 */
+	private void createTables()
 	{
 		logger.info("Creating database tables...");
-		
+				
 		//Customer Table
 		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
@@ -879,7 +900,10 @@ public class Database implements DBInterface {
 		//Booking Table
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
 				"Shift_ID int", "day varchar(9)", "Booking_ID");
-		
+	}
+	
+	private void createTestData()
+	{
 		logger.info("Creating DB test data...");
 		
 		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
