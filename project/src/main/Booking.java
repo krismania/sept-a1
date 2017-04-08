@@ -12,17 +12,17 @@ public class Booking implements Comparable<Booking>
 	public final int ID;
 	private String customer;
 	private int employeeID;
-	private int shiftID;
 	private Date date;
+	private ShiftTime time;
 	
-	public Booking(int ID, String customer, int employeeID, int shiftID, Date date)
+	public Booking(int ID, String customer, int employeeID, Date date, ShiftTime time)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
 		this.customer = customer;
 		this.employeeID = employeeID;
-		this.shiftID = shiftID;
 		this.date = date;
+		this.time = time;
 	}
 	
 	public String getCustomer()
@@ -35,14 +35,14 @@ public class Booking implements Comparable<Booking>
 		return employeeID;
 	}
 	
-	public int getShiftID()
-	{
-		return shiftID;
-	}
-	
 	public Date getDate()
 	{
 		return date;
+	}
+	
+	public ShiftTime getTime()
+	{
+		return time;
 	}
 	
 	@Override
