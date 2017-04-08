@@ -1,6 +1,9 @@
 package main;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -181,12 +184,20 @@ public class DummyDatabase implements DBInterface
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
-		bookings.add(new Booking(1, "someuser", 3, 1, new Date(0)));
-		bookings.add(new Booking(2, "someOtherUser", 4, 5, new Date(0)));
-		bookings.add(new Booking(3, "someuser", 5, 9, new Date(0)));
-		bookings.add(new Booking(4, "krismania", 2, 6, new Date(0)));
-		bookings.add(new Booking(5, "idk", 2, 7, new Date(0)));
+		try
+		{
+			bookings.add(new Booking(1, "someuser", 3, dateFormat.parse("22.03.2017"), ShiftTime.AFTERNOON));
+			bookings.add(new Booking(2, "someOtherUser", 4, dateFormat.parse("22.03.2017"), ShiftTime.MORNING));
+			bookings.add(new Booking(3, "someuser", 5, dateFormat.parse("22.03.2017"), ShiftTime.EVENING));
+			bookings.add(new Booking(4, "krismania", 2, dateFormat.parse("24.03.2017"), ShiftTime.MORNING));
+			bookings.add(new Booking(5, "idk", 2, dateFormat.parse("25.03.2017"), ShiftTime.AFTERNOON));
+		}
+		catch (ParseException e)
+		{
+			throw new RuntimeException("DateTime parse exception");
+		}
 		
 		Collections.shuffle(bookings);
 		
