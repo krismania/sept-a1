@@ -228,7 +228,6 @@ public class Database implements DBInterface {
 		         String email = rs.getString("Email");
 		         String phone = rs.getString("Phone");
 		         String Username = rs.getString("Username");
-		         String Password = rs.getString("Password");
 
 		         // create Customer object & add to list. -kg
 		         customers.add(new Customer(Username, first, last, email, phone));
