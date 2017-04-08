@@ -252,6 +252,7 @@ public class Database implements DBInterface {
 	 * @author James
 	 * @author krismania
 	 */
+	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
