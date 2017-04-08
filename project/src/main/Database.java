@@ -49,7 +49,7 @@ public class Database implements DBInterface {
 
 		return false;
 	}
-	
+
 	@Override
 	public Employee buildEmployee()
 	{
@@ -80,7 +80,7 @@ public class Database implements DBInterface {
 		
 		return new Employee(id, "", "", "", "");
 	}
-	
+  
 	@Override
 	public boolean addEmployee(Employee employee)
 	{
@@ -132,13 +132,13 @@ public class Database implements DBInterface {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
-	
+
 	@Override
 	public Account getAccount(String username)
 	{		
@@ -198,7 +198,7 @@ public class Database implements DBInterface {
 			
 		return null;
 	}
-	
+
 	@Override
 	public Employee getEmployee(int id)
 	{
@@ -229,8 +229,8 @@ public class Database implements DBInterface {
 		}
 		
 		return null;
-	}
-	
+  }
+  
 	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
@@ -345,7 +345,7 @@ public class Database implements DBInterface {
 		}
 		return Shifts;
 	}
-	
+
 	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
