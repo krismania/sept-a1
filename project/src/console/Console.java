@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Locale;
 
 import main.*;
@@ -25,9 +27,14 @@ public class Console
 	private Scanner sc;
 	private Controller c;
 	
+	private Logger logger;
 	
 	public Console(Scanner sc)
 	{
+		// get the logger & set level
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
 		this.sc = sc;
 		this.c = Controller.getInstance();
 	}
