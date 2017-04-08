@@ -1,18 +1,13 @@
 package console;
 
-import java.sql.Time;
-
 import java.time.DayOfWeek;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Locale;
 
 import main.*;
 
@@ -387,35 +382,10 @@ public class Console
 	{
 		if(shifts.isEmpty())
 		{
+			// if there are no shifts, display a message and exit.
 			alert("There are currently no available timeslots.");
 			return;
 		}
-		
-		// sort the shifts by day
-		Comparator<Shift> byDayAndTime = new Comparator<Shift>()
-		{
-			@Override
-			public int compare(Shift s1, Shift s2)
-			{
-				// sort on day
-				int byDay = s1.getDay().getValue() - s2.getDay().getValue();
-				
-				// if same day, compare time
-				if (byDay == 0)
-				{
-					return s1.getTime().getValue() - s2.getTime().getValue();
-				}
-				else
-				{
-					return byDay;
-				}
-			}
-		};
-		
-		//Comparator<Shift> byDay = ((s1, s2) -> s1.getDay().getValue() - s2.getDay().getValue());
-		
-		logger.info("Sorting shift list");
-		shifts.sort(byDayAndTime);
 		
 		for (Shift shift : shifts)
 		{
