@@ -91,7 +91,12 @@ public class DummyDatabase implements DBInterface
 	@Override
 	public Employee getEmployee(int id)
 	{
-		return new Employee(5, "John", "Smith", "john@smith.com", "+61 400 685 354");
+		for (Employee employee: getAllEmployees())
+		{
+			if (employee.ID == id) return employee;
+		}
+		
+		return null;
 	}
 	
 	
