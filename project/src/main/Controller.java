@@ -206,10 +206,7 @@ public class Controller
 	 */
 	public boolean validatePhoneNumber(String input)
 	{
-		if(input.replace(" ", "").matches("^\\(\\d{2}\\)(\\d{8})|(\\d{2})(\\d{4}\\-\\d{4})|\\d{10}|"
-				+ "(\\d{4}\\-\\d{4})|(\\+)(\\d{2})(\\d{8})")){
-			return true;
-		}
-		return false;
+		input = input.replaceAll("[ -.()]?", "");
+		return input.matches("^+?(\\d{8}|\\d{10,11})$");
 	}
 }
