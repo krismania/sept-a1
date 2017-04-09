@@ -213,7 +213,7 @@ public class Controller
 	 */
 	public boolean validatePhoneNumber(String input)
 	{
-		input = input.replaceAll("[ \\-.()]?", "");
+		input = input.replaceAll("[ \\-.()]", "");
 		return input.matches("\\+?(\\d{8}|\\d{10,11})");
 	}
 }
