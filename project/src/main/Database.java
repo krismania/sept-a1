@@ -367,6 +367,7 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 */
+	
 	@Override
 	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
 	{
