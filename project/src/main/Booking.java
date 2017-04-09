@@ -1,5 +1,8 @@
 package main;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.Date;
 
 /**
@@ -40,6 +43,12 @@ public class Booking implements Comparable<Booking>
 		return date;
 	}
 	
+	public DayOfWeek getDay()
+	{
+		DateFormat weekdayFormat = new SimpleDateFormat("EEEE");
+		return DayOfWeek.valueOf(weekdayFormat.format(date).toUpperCase());
+	}
+	
 	public ShiftTime getTime()
 	{
 		return time;
@@ -48,7 +57,8 @@ public class Booking implements Comparable<Booking>
 	@Override
 	public String toString()
 	{
-		return String.format("Booking: %d, Cust: %s", ID, customer);
+		return String.format("Booking: %d, Day: %s, Time: %s, Cust: %s",
+						ID, getDay().toString(), time.toString(), customer);
 	}
 
 	/**

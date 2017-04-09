@@ -3,6 +3,8 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,37 +63,37 @@ public class Controller
 	}
 	
 	/**
-	 * Returns a sorted list of available shifts.
+	 * Returns a hash map of shifts and bookings
 	 * @author James
 	 * @author krismania
 	 */
-	public ArrayList<Shift> getAllOpenShifts()
+	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		ArrayList<Shift> shifts = db.getShiftsNotBooked();
+		TreeMap<Shift, Booking> shifts = db.getShiftBookings();
 		
-		// comparator to sort based on day and time
-		Comparator<Shift> byDayAndTime = new Comparator<Shift>()
-		{
-			@Override
-			public int compare(Shift s1, Shift s2)
-			{
-				// sort on day
-				int byDay = s1.getDay().getValue() - s2.getDay().getValue();
-				
-				// if same day, compare time
-				if (byDay == 0)
-				{
-					return s1.getTime().getValue() - s2.getTime().getValue();
-				}
-				else
-				{
-					return byDay;
-				}
-			}
-		};
-		
-		logger.info("Sorting shift list");
-		shifts.sort(byDayAndTime);
+//		// comparator to sort based on day and time
+//		Comparator<Shift> byDayAndTime = new Comparator<Shift>()
+//		{
+//			@Override
+//			public int compare(Shift s1, Shift s2)
+//			{
+//				// sort on day
+//				int byDay = s1.getDay().getValue() - s2.getDay().getValue();
+//				
+//				// if same day, compare time
+//				if (byDay == 0)
+//				{
+//					return s1.getTime().getValue() - s2.getTime().getValue();
+//				}
+//				else
+//				{
+//					return byDay;
+//				}
+//			}
+//		};
+//		
+//		logger.info("Sorting shift list");
+//		shifts.sort(byDayAndTime);
 		
 		return shifts;
 	}

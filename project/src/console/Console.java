@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,7 +93,7 @@ public class Console
 	{
 		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
 						"View summary of future bookings", "View past bookings", 
-						"View employee availability for next 7 days", "Log out"};
+						"View employee availability (next 7 days)", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
 		// main loop
@@ -110,9 +111,9 @@ public class Console
 			case "Add working times/dates":
 				addShifts();
 				break;
-            case "Staff Availability - Days and Times:":
+            case "View employee availability (next 7 days)":
 				alert("Staff Availability - Days and Times:");
-				displayShifts(c.getAllOpenShifts());
+				displayShifts(c.getShiftBookings());
 				break;
             case "View summary of future bookings":
             	alert("Future bookings (sorted by Date [asc]):");
@@ -146,7 +147,7 @@ public class Console
 			{
 			case "View available days/times":
 				alert("Available Days and Times:");
-				displayShifts(c.getAllOpenShifts());
+				displayShifts(c.getShiftBookings());
 				break;
 			case "Log out":
 				exit = true;
@@ -402,9 +403,9 @@ public class Console
 	 * Display the provided shifts in a table
 	 * @author krismania
 	 */
-	private void displayShifts(ArrayList<Shift> shifts)
+	private void displayShifts(TreeMap<Shift, Booking> shiftBookings)
 	{
-		if(shifts.isEmpty())
+		if(shiftBookings.isEmpty())
 		{
 			// if there are no shifts, display a message and exit.
 			alert("There are currently no available timeslots.");
@@ -412,30 +413,32 @@ public class Console
 		}
 		
 		// print each shift in the list
-		String formatString = "%-10s %3s   %-25s %-10s\n";
+		String formatString = "%-10s %3s   %-25s %-10s %-9s\n";
 		DayOfWeek currentDay = null; // store the day we're up to
 		
 		// print header
-		printHeader(formatString, "Day", "ID", "Employee", "Time");
+		printHeader(formatString, "Day", "ID", "Employee", "Time", "");
 		
-		for (Shift shift : shifts)
+		for (Map.Entry<Shift, Booking> i : shiftBookings.entrySet())
 		{
 			// get the employee obj of this shift
-			Employee employee = c.getEmployee(shift.employeeID);
+			Employee employee = c.getEmployee(i.getKey().employeeID);
 			
 			// set up some helper variables
 			String employeeName = employee.getFirstName() + " " + employee.getLastName();
 			String printDay = "";
+			String booked = (i.getValue() == null ? "" : "[booked]");
 			
 			// print the current day if it's changed
-			if (currentDay != shift.getDay())
+			if (currentDay != i.getKey().getDay())
 			{
-				currentDay = shift.getDay();
+				currentDay = i.getKey().getDay();
 				printDay = currentDay.getDisplayName(TextStyle.FULL, locale);
 			}
 			
 			// print the shift
-			System.out.printf(formatString, printDay, shift.ID, employeeName, shift.getTime().toString());
+			System.out.printf(formatString, printDay, i.getKey().ID, employeeName,
+							i.getKey().getTime().toString(), booked);
 		}
 		System.out.println();
 	}

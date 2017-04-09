@@ -5,7 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -467,51 +470,56 @@ public class Database implements DBInterface {
 		return Shifts;
 	}
 
-	// TODO: broken by Booking changes
+	/**
+	 * @author krismania
+	 */
 	@Override
-	public ArrayList<Shift> getShiftsNotBooked()
+	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		ArrayList<Shift> openShifts = new ArrayList<Shift>();
-		try
+		// get the list of employees
+		logger.info("getting employees");
+		ArrayList<Employee> employees = getAllEmployees();
+		
+		// build the list of all shifts
+		logger.info("getting shifts");
+		ArrayList<Shift> shifts = new ArrayList<Shift>();
+		for (Employee employee : employees)
 		{
-			openConnection();
-			stmt = c.createStatement();
-			
-			String sql = String.format("SELECT * FROM Shift WHERE Shift_ID NOT IN"
-					+ "(SELECT SHIFT_ID FROM Booking)");
-			
-			rs = stmt.executeQuery(sql);
-			
-			while(rs.next())
+			shifts.addAll(getShifts(employee.ID));
+		}
+		
+		// get the list of bookings in the next 7 days
+		logger.info("getting upcoming bookings");
+		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
+		
+		// create hashmap to decide which shifts are booked within the next 7 days
+		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
+		
+		// iterate over each shift and decide if it's been booked
+		for (Shift shift : shifts)
+		{
+			logger.fine("looping shift " + shift.ID);
+			// find a booking with matching details
+			boolean found = false;
+			for (Booking booking : bookings)
 			{
-		         //JM Retrieve by column name
-		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         ShiftTime time = ShiftTime.valueOf(rs.getString("Time").toUpperCase());
-		         int shiftID = rs.getInt("Shift_ID");
-		         int EmpID = rs.getInt("EmpID");
-		         
-		         // create shift object. -kg
-		         Shift shift = new Shift(shiftID, EmpID, day, time);
-		         
-		         // add it to the list
-		         openShifts.add(shift);
-		         
-		         // TODO: debug print shift
-		         System.out.println(shift.toString());
-		    }
-			closeConnection();
+				logger.fine(shift.toString() + " | " + booking.toString());
+				// figure out weekday of booking
+				if (booking.getDay() == shift.getDay() && booking.getTime() == shift.getTime() &&
+								booking.getEmployeeID() == shift.employeeID)
+				{
+					// booking and shift match, to hash map
+					shiftBookings.put(shift, booking);
+					found = true;
+					break;
+				}
+			}
+			// otherwise, enter null as the booking
+			if (!found) shiftBookings.put(shift, null);
+			logger.fine("found match: " + found);
 		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-			logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
-		return openShifts;
+		
+		return shiftBookings;
 	}
 	
 	
