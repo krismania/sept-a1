@@ -283,10 +283,7 @@ public class Console
 		
 		if ((result1 != 0)||(result2 != 0))
 		{
-		    alert("You have have not entered the Shift details correctly. "
-					+ "Press \"Enter\" and Try again: \n\n");
-	        sc.nextLine();
-            addShifts();
+		    alert("Shift could not be added due to invalid input.");
 		}
 		else
 		{
@@ -302,12 +299,12 @@ public class Console
     	    	if(!c.shiftExists(shiftDay.toString(), shiftTime.toString(), employeeID))
     	    	{// employee found, add the shift
 	                if (c.addShift(employeeID, shiftDay, shiftTime))
-	                	alert("Shift has been successfully added \n\n");
+	                	alert("Shift has been successfully added");
 			        else
-			        	alert("Shift could not be added. \n\n");
+			        	alert("Shift could not be added.");
 		     	}
     	    	else
-    	    		alert("Shift cannot be added as Employee is already working at this time.\n\n");
+    	    		alert("Shift cannot be added as employee is already working at this time.");
     	    }
         }
 	}
