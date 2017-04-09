@@ -1,15 +1,12 @@
 package main;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class DummyDatabase implements DBInterface
 {
@@ -136,9 +133,9 @@ public class DummyDatabase implements DBInterface
 		return new Shift(shiftID, 3, DayOfWeek.WEDNESDAY, ShiftTime.AFTERNOON);
 	}
 	
-	public HashMap<Shift, Booking> getShiftBookings()
+	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		return new HashMap<Shift, Booking>();
+		return new TreeMap<Shift, Booking>();
 		// TODO: unimplemented
 	}
 	
