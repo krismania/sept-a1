@@ -59,25 +59,64 @@ public class ControllerTest
 	
 	// @author - RK
 	@Test
-	public void testInvalidEmail4(){
+	public void testInvalidEmail4()
+	{
 		assertFalse(controller.validateEmail("richard@kuoch@"));
 	}
 	
 	//@author -RK
 	@Test
-	public void testPhoneNumber(){
+	public void testPhoneNumber()
+	{
 		assertFalse(controller.validatePhoneNumber(""));
 	}
 	
 	@Test
-	public void testPhoneNumber2(){
+	public void testPhoneNumber2()
+	{
 		assertTrue(controller.validatePhoneNumber("98029744"));
 	}
 	
 	@Test
-	public void testPhoneNumber3(){
+	public void testPhoneNumber3()
+	{
 		assertFalse(controller.validatePhoneNumber("042515267485516654951"));
 	}
 	
+	@Test
+	public void testPhoneNumber4()
+	{
+		assertFalse(controller.validatePhoneNumber("++61 412 123 456"));
+	}
+	
+	@Test
+	public void testPhoneNumber5()
+	{
+		assertFalse(controller.validatePhoneNumber("1234567"));
+	}
+	
+	@Test
+	public void testPhoneNumber6()
+	{
+		assertTrue(controller.validatePhoneNumber("+61 400 123 456"));
+	}
+	
+	@Test
+	public void testPhoneNumber7()
+	{
+		assertTrue(controller.validatePhoneNumber("0418-1234"));
+	}
+	
+	@Test
+	public void testPhoneNumber8()
+	{
+		assertTrue(controller.validatePhoneNumber("1800.456.678"));
+	}
+	
+	@Test
+	public void testPhoneNumber9()
+	{
+		assertTrue(controller.validatePhoneNumber("(03) 9876 5432"));
+	}
 	
 }
