@@ -115,9 +115,11 @@ public class Console
 				displayShifts(c.getAllOpenShifts());
 				break;
             case "View summary of future bookings":
+            	alert("Future bookings (sorted by Date [asc]):");
             	displayBookings(c.getFutureBookings());
             	break;
             case "View past bookings":
+            	alert("Past bookings (sorted by Date [desc]):");
             	displayBookings(c.getPastBookings());
             	break;
 			case "Log out":
