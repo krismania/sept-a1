@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -411,7 +412,7 @@ public class Console
 	 * Display the provided shifts in a table
 	 * @author krismania
 	 */
-	private void displayShifts(HashMap<Shift, Booking> shiftBookings)
+	private void displayShifts(TreeMap<Shift, Booking> shiftBookings)
 	{
 		if(shiftBookings.isEmpty())
 		{

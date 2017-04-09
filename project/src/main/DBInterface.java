@@ -3,6 +3,7 @@ package main;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 
 public interface DBInterface
@@ -101,7 +102,7 @@ public interface DBInterface
 	ArrayList<Shift> getShifts(int EmpID);
 	
 	
-	public HashMap<Shift, Booking> getShiftBookings();
+	public TreeMap<Shift, Booking> getShiftBookings();
 	
 	/**
 	 * Returns a list of all bookings that occurred before the current date.

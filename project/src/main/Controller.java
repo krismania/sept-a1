@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,9 +67,9 @@ public class Controller
 	 * @author James
 	 * @author krismania
 	 */
-	public HashMap<Shift, Booking> getShiftBookings()
+	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		HashMap<Shift, Booking> shifts = db.getShiftBookings();
+		TreeMap<Shift, Booking> shifts = db.getShiftBookings();
 		
 //		// comparator to sort based on day and time
 //		Comparator<Shift> byDayAndTime = new Comparator<Shift>()

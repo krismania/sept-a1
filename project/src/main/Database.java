@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -474,7 +476,7 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 */
 	@Override
-	public HashMap<Shift, Booking> getShiftBookings()
+	public TreeMap<Shift, Booking> getShiftBookings()
 	{
 		// get the list of employees
 		logger.info("getting employees");
@@ -493,7 +495,7 @@ public class Database implements DBInterface {
 		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
 		
 		// create hashmap to decide which shifts are booked within the next 7 days
-		HashMap<Shift, Booking> shiftBookings = new HashMap<Shift, Booking>();
+		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
 		
 		// iterate over each shift and decide if it's been booked
 		for (Shift shift : shifts)
