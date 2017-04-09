@@ -251,7 +251,7 @@ public class Console
 	}
 	
 	/**
-	 *  Add new shifts. Does not allow for multiple shifts at the same time
+	 *  Add new shifts. Does not allow for duplicate shifts
 	 *  for the same Employee.
 	 *  @author RK
 	 *  @author James
@@ -262,13 +262,9 @@ public class Console
 		int employeeID = -1;
 		DayOfWeek shiftDay;
 		ShiftTime shiftTime;
-		int result1;
-		int result2;
-		String testAddDay = " ";
-		String testAddTime = " ";
-		String wrongInput = "You have have not entered the Shift details correctly. "
-				+ "Press \"Enter\" and Try again: \n\n";
-		String success = "Shift has been successfully added \n\n";
+		int result1, result2;
+		String testAddDay = " ", testAddTime = " ";
+		
 		// prompt user for input
 		HashMap<String, String> shiftInfo = addShiftPrompt();
 		
@@ -279,15 +275,18 @@ public class Console
 		//TN - ternary expression to validate input lengths  prior to acceptance
 		testAddDay = String.valueOf(shiftInfo.get("shiftDay").toUpperCase());
 		testAddTime = String.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+		
 		result1 = (((testAddDay.length() < 6)||(testAddDay.length() > 9)) ? 1:0);
+		
 		result2 = (((testAddTime.length() < 7)||(testAddTime.length() > 9)||
 				(testAddTime.length() == 8)) ? 1:0);
 		
 		if ((result1 != 0)||(result2 != 0))
 		{
-		    alert(wrongInput);
-	            sc.nextLine();
-                    addShifts();
+		    alert("You have have not entered the Shift details correctly. "
+					+ "Press \"Enter\" and Try again: \n\n");
+	        sc.nextLine();
+            addShifts();
 		}
 		else
 		{
@@ -296,27 +295,19 @@ public class Console
             
     	    // check if employee exists
     	    if (c.employeeExists(employeeID))
-    	    {
     	        alert("Employee ID cannot be found in database");
-	    }
     	    else
     	    {
     	    	//Check if the shift already exists
     	    	if(!c.shiftExists(shiftDay.toString(), shiftTime.toString(), employeeID))
     	    	{// employee found, add the shift
 	                if (c.addShift(employeeID, shiftDay, shiftTime))
-		            {
-	            	    alert(success);
-		            }
+	                	alert("Shift has been successfully added \n\n");
 			        else
-			        {
-		    	        // TODO: failure
-		     	    }
-    	    	}
+			        	alert("Shift could not be added. \n\n");
+		     	}
     	    	else
-    	    	{
     	    		alert("Shift cannot be added as Employee is already working at this time.\n\n");
-    	    	}
     	    }
         }
 	}
