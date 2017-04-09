@@ -1,7 +1,11 @@
 package main;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -252,6 +256,7 @@ public class Database implements DBInterface {
 	 * @author James
 	 * @author krismania
 	 */
+	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
@@ -464,6 +469,7 @@ public class Database implements DBInterface {
 		return Shifts;
 	}
 
+	// TODO: broken by Booking changes
 	@Override
 	public ArrayList<Shift> getShiftsNotBooked()
 	{
@@ -508,6 +514,68 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		return openShifts;
+	}
+	
+	
+	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		return getBookings("Date < DATE('now')");
+	}
+	
+	@Override
+	public ArrayList<Booking> getFutureBookings()
+	{
+		return getBookings("Date >= DATE('now')");
+	}
+	
+	/**
+	 * Returns an ArrayList of bookings in the database, restricted by the given
+	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
+	 * clause in the SQL query.
+	 * @author krismania
+	 */
+	private ArrayList<Booking> getBookings(String constraint)
+	{
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		// date formatter used to parse dates from the db
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			try (ResultSet bookingQuery = stmt.executeQuery(
+							"SELECT * FROM Booking WHERE " + constraint))
+			{
+				while (bookingQuery.next())
+				{
+					int id = bookingQuery.getInt("Booking_ID");
+					String customer = bookingQuery.getString("customerID");
+					int employeeID = bookingQuery.getInt("EmpID");
+					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
+					ShiftTime time = ShiftTime.valueOf(bookingQuery.getString("Time"));
+					
+					// construct the object & add to list. -kg
+					bookings.add(new Booking(id, customer, employeeID, date, time));
+				}
+			}
+			
+			stmt.close();
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		catch (ParseException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return bookings;
 	}
 
 	@Override
@@ -612,8 +680,7 @@ public class Database implements DBInterface {
 		{
 			strBuilder.deleteCharAt(strBuilder.length() - 1);
 			strBuilder.append(", FOREIGN KEY (EmpID) references"
-					+ " Employee (EmpID), FOREIGN KEY (Shift_ID) "
-					+ "references Shift(Shift_ID))");
+					+ " Employee (EmpID))");
 		}
 		
 		String sql = strBuilder.toString();
@@ -914,7 +981,6 @@ public class Database implements DBInterface {
 		//Employee Table
 		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
-		
 
 		//Shift Table
 		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
@@ -922,7 +988,7 @@ public class Database implements DBInterface {
 		
 		//Booking Table
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
-				"Shift_ID int", "day varchar(9)", "Booking_ID");
+				"Date DATE", "Time varchar(10)", "Booking_ID");
 	}
 	
 	private void createTestData()
@@ -947,8 +1013,11 @@ public class Database implements DBInterface {
 		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "1", "MONDAY");
-		CreateDataEntry("Booking", "2", "JamesRulez", "2", "4", "SUNDAY");
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "MORNING");
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "AFTERNOON");
+		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "AFTERNOON");
+		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "EVENING");
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "AFTERNOON");
 
 		logger.info("DB created.");
 	}

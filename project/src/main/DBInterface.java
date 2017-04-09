@@ -102,6 +102,16 @@ public interface DBInterface
 	
 	ArrayList<Shift> getShiftsNotBooked();
 	
+	/**
+	 * Returns a list of all bookings that occurred before the current date.
+	 */
+	ArrayList<Booking> getPastBookings();
+	
+	/**
+	 * Returns a list of all bookings that have not yet occurred (including
+	 * today's bookings).
+	 */
+	ArrayList<Booking> getFutureBookings();
 	
 	/**
 	 * Attempt to log into an account with the provided credentials. If the login
@@ -110,10 +120,5 @@ public interface DBInterface
 	 * @author krismania
 	 */
 	Account login(String username, String password);
-	
-	
-	
-	
-	
-	
+
 }

@@ -1,8 +1,11 @@
 package console;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -24,7 +27,9 @@ public class Console
 {
 	private Scanner sc;
 	private Controller c;
+	
 	private Locale locale;
+	DateFormat dateFormat;
 	
 	private Logger logger;
 	
@@ -34,8 +39,9 @@ public class Console
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
 		
-		// get the system's locale
+		// get the system's locale & set date format
 		locale = Locale.getDefault();
+		dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
 		// set the scanner & get controller instance
 		this.sc = sc;
@@ -85,7 +91,8 @@ public class Console
 	private void businessOwnerMenu()
 	{
 		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
-						"View summary of bookings", "View employee availability for next 7 days", "Log out"};
+						"View summary of future bookings", "View past bookings", 
+						"View employee availability for next 7 days", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
 		// main loop
@@ -107,6 +114,14 @@ public class Console
 				alert("Staff Availability - Days and Times:");
 				displayShifts(c.getAllOpenShifts());
 				break;
+            case "View summary of future bookings":
+            	alert("Future bookings (sorted by Date [asc]):");
+            	displayBookings(c.getFutureBookings());
+            	break;
+            case "View past bookings":
+            	alert("Past bookings (sorted by Date [desc]):");
+            	displayBookings(c.getPastBookings());
+            	break;
 			case "Log out":
 				exit = true;
 				break;
@@ -434,6 +449,41 @@ public class Console
 		System.out.println();
 	}
 	
+	private void displayBookings(ArrayList<Booking> bookings)
+	{
+		if(bookings.isEmpty())
+		{
+			// if there are no bookings, display a message and exit.
+			alert("No past bookings found.");
+			return;
+		}
+		
+		// print the bookings in a table
+		String formatString = "%-12s %-10s %3s   %-20s %-25s\n";
+		Date currentDate = null; // store the date we're up to
+		
+		// print header
+		printHeader(formatString, "Date", "Time", "ID", "Employee", "Customer");
+		
+		for (Booking booking : bookings)
+		{
+			// set up variables
+			String printDate = "";
+			Employee employee = c.getEmployee(booking.getEmployeeID());
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
+			
+			// Print the date if we haven't yet done so
+			if (currentDate == null || !currentDate.equals(booking.getDate()))
+			{
+				currentDate = booking.getDate();
+				printDate = dateFormat.format(currentDate);
+			};
+			
+			System.out.printf(formatString, printDate, booking.getTime().toString(), booking.ID, employeeName, booking.getCustomer());
+		}
+		System.out.println();
+	}
+
 	/**
 	 * Display all current employees
 	 * @author James
@@ -459,8 +509,8 @@ public class Console
 					employee.getEmail(), employee.getPhoneNumber());
 		}
 		System.out.println();
-		
 	}
+
 	// **** CLASS FUNCTIONALITY ****
 	
 	
