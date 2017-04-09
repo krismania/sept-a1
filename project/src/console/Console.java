@@ -92,7 +92,7 @@ public class Console
 	{
 		String[] options = {"Add a new employee", "View employees", "Add working times/dates", 
 						"View summary of future bookings", "View past bookings", 
-						"View employee availability for next 7 days", "Log out"};
+						"View employee availability (next 7 days)", "Log out"};
 		Menu menu = new Menu (sc, options, "Business Owner Menu");
 		
 		// main loop
@@ -110,7 +110,7 @@ public class Console
 			case "Add working times/dates":
 				addShifts();
 				break;
-            case "Staff Availability - Days and Times:":
+            case "View employee availability (next 7 days)":
 				alert("Staff Availability - Days and Times:");
 				displayShifts(c.getAllOpenShifts());
 				break;
