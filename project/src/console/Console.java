@@ -197,56 +197,56 @@ public class Console
 	private void addEmployee()
 	{
 		// declare variables
-		String firstName;
-		String lastName;
-		String email;
-		String phoneNumber;
+		String firstName, lastName, email, phoneNumber;
 		
 		// prompt user for input
 		HashMap<String, String> employeeInfo;
 		boolean accepted = false;
 		
 		// prompt
-		do
+		alert("Please enter Employee first name, last name, email and phone number.\n"
+				+ "Email must contain '@' and a '.'\n"
+				+ "Phone number must be 10 digits long.\n");
+		employeeInfo = accountInfoPrompt();
+			
+		// copy fields into local variables
+		firstName = employeeInfo.get("firstName");
+		lastName = employeeInfo.get("lastName");
+		email = employeeInfo.get("email");
+		phoneNumber = employeeInfo.get("phoneNumber");
+			
+		// verify each field
+		if (!c.validateName(firstName))
 		{
-			employeeInfo = accountInfoPrompt();
-			
-			// copy fields into local variables
-			firstName = employeeInfo.get("firstName");
-			lastName = employeeInfo.get("lastName");
-			email = employeeInfo.get("email");
-			phoneNumber = employeeInfo.get("phoneNumber");
-			
-			// verify each field
-			if (!c.validateName(firstName))
-			{
-				alert("Error: A first name must be entered");
-			}
-			else if (!c.validateName(lastName))
-			{
-				alert("Error: A last name must be entered");
-			}
-			else if (!c.validateEmail(email))
-			{
-				alert("Error: Invalid email address format. Must contain @ and .");
-			}
-			else if (!c.validatePhoneNumber(phoneNumber))
-			{
-				alert("Error: A contact number must be entered");
-			}
-			else {
-				accepted = true;
-			}
+			alert("Employee could not be added, a first name must be entered");
 		}
-		while (!accepted);
+		else if (!c.validateName(lastName))
+		{
+			alert("Employee could not be added, a last name must be entered");
+		}
+		else if (!c.validateEmail(email))
+		{
+			alert("Employee could not be added, invalid email address format. Must contain @ and .");
+		}
+		else if (!c.validatePhoneNumber(phoneNumber))
+		{
+			alert("Employee could not be added, a contact number must be entered.");
+		}
+		else 
+		{
+			accepted = true;
+		}
 
-		if (c.addEmployee(firstName, lastName, email, phoneNumber))
+		if(accepted)
 		{
-			alert("Employee successfully added!");
-		}
-		else
-		{
-			alert("Employee could not be added.");
+			if (c.addEmployee(firstName, lastName, email, phoneNumber))
+			{
+				alert("Employee successfully added!");
+			}
+			else
+			{
+				alert("Employee could not be added.");
+			}
 		}
 	}
 	
