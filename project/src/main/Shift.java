@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
  * a day of the week and a time.
  * @author krismania
  */
-public class Shift
+public class Shift implements Comparable<Shift>
 {
 	public final int ID;
 	public final int employeeID;
@@ -48,5 +48,18 @@ public class Shift
 	{
 		return String.format("ID: %s, EmployeeID: %s, Day: %s, Time: %s",
 						ID, employeeID, day.toString(), time.toString());
+	}
+
+	@Override
+	public int compareTo(Shift s)
+	{
+		int byDay = day.compareTo(s.day);
+		
+		if (byDay == 0)
+		{
+			return time.compareTo(s.time);
+		}
+		
+		return byDay;
 	}
 }
