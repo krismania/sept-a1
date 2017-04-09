@@ -1001,11 +1001,11 @@ public class Database implements DBInterface {
 	{
 		logger.info("Creating DB test data...");
 		
-		CreateDataEntry("Customer", "James", "McLennan", "testing@testing.com", 
-				"0400000000", "JamesRulez", "james", "Customer");
+		CreateDataEntry("Customer", "sept", "customer", "sept@customer.test", 
+				"0400000000", "septC", "septCust1", "Customer");
 		
-		CreateDataEntry("BusinessOwner", "JohnRulez", "SomeBusiness", "John S.",
-						"10 Some St, Some Town", "(03) 5555 5555", "john", "BusinessOwner");
+		CreateDataEntry("BusinessOwner", "septB", "SomeBusiness", "John S.",
+						"10 Some St, Some Town", "(03) 5555 5555", "septBus1", "BusinessOwner");
 		
 		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
 				"0400000000", "1");
