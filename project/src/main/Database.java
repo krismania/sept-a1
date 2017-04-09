@@ -359,8 +359,11 @@ public class Database implements DBInterface {
 		return roster;
 	}
 	
+	/**
+	 * @author James
+	 */
 	@Override
-	public boolean validateShift(String day, String time, int empID)
+	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
 	{
 		boolean shiftExists = false;
 		try
@@ -369,7 +372,8 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
-									+ " Day = '%s' AND Time = '%s'", empID, day.toUpperCase(), time)))
+									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
+									time.toString().toUpperCase())))
 			{
 				while (rs.next())
 				{

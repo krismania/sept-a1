@@ -1,5 +1,6 @@
 package main;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 
@@ -56,9 +57,8 @@ public interface DBInterface
 	
 	/**
 	 * Check if shift exists, returns true if it does.
-	 * @author James
 	 */
-	boolean validateShift(String day, String time, int empID);
+	boolean shiftExists(DayOfWeek day, ShiftTime time, int empID);
 	
 	/**
 	 * Returns the account specified by the given username, or null if none

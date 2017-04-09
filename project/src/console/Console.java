@@ -287,7 +287,7 @@ public class Console
     	    else
     	    {
     	    	//Check if the shift already exists
-    	    	if(!c.validateShift(shiftDay.toString(), shiftTime.toString(), employeeID))
+    	    	if(!c.shiftExists(shiftDay.toString(), shiftTime.toString(), employeeID))
     	    	{// employee found, add the shift
 	                if (c.addShift(employeeID, shiftDay, shiftTime))
 		            {

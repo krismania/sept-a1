@@ -148,9 +148,12 @@ public class Controller
 		return db.login(username, password);
 	}
 	
-	public boolean validateShift(String day, String time, int empID)
+	public boolean shiftExists(String dayString, String timeString, int empID)
 	{
-		return db.validateShift(day, time.toUpperCase(), empID);
+		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
+		ShiftTime time = ShiftTime.valueOf(timeString.toUpperCase());
+		
+		return db.shiftExists(day, time, empID);
 	}
 	
 	/**
