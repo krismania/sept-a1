@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class DummyDatabase implements DBInterface
 {
@@ -135,6 +136,12 @@ public class DummyDatabase implements DBInterface
 		return new Shift(shiftID, 3, DayOfWeek.WEDNESDAY, ShiftTime.AFTERNOON);
 	}
 	
+	public HashMap<Shift, Booking> getShiftBookings()
+	{
+		return new HashMap<Shift, Booking>();
+		// TODO: unimplemented
+	}
+	
 	
 	@Override
 	public ArrayList<Shift> getShifts(int EmpID)
@@ -162,27 +169,27 @@ public class DummyDatabase implements DBInterface
 	}
 	
 	
-	@Override
-	public ArrayList<Shift> getShiftsNotBooked()
-	{
-		ArrayList<Shift> shifts = new ArrayList<Shift>();
-		
-		shifts.add(new Shift(1, 3, DayOfWeek.MONDAY, ShiftTime.AFTERNOON));
-		
-		shifts.add(new Shift(4, 4, DayOfWeek.TUESDAY, ShiftTime.MORNING));
-		shifts.add(new Shift(5, 4, DayOfWeek.TUESDAY, ShiftTime.AFTERNOON));
-		
-		shifts.add(new Shift(6, 2, DayOfWeek.THURSDAY, ShiftTime.EVENING));
-		
-		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, ShiftTime.MORNING));
-		
-		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
-		
-		// shuffle the list (the DB doesn't guarantee the order
-		Collections.shuffle(shifts);
-		
-		return shifts;
-	}
+//	@Override
+//	public ArrayList<Shift> getShiftsNotBooked()
+//	{
+//		ArrayList<Shift> shifts = new ArrayList<Shift>();
+//		
+//		shifts.add(new Shift(1, 3, DayOfWeek.MONDAY, ShiftTime.AFTERNOON));
+//		
+//		shifts.add(new Shift(4, 4, DayOfWeek.TUESDAY, ShiftTime.MORNING));
+//		shifts.add(new Shift(5, 4, DayOfWeek.TUESDAY, ShiftTime.AFTERNOON));
+//		
+//		shifts.add(new Shift(6, 2, DayOfWeek.THURSDAY, ShiftTime.EVENING));
+//		
+//		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, ShiftTime.MORNING));
+//		
+//		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
+//		
+//		// shuffle the list (the DB doesn't guarantee the order
+//		Collections.shuffle(shifts);
+//		
+//		return shifts;
+//	}
 	
 	
 	@Override
