@@ -295,27 +295,19 @@ public class Console
             
     	    // check if employee exists
     	    if (c.employeeExists(employeeID))
-    	    {
     	        alert("Employee ID cannot be found in database");
-    	    }
     	    else
     	    {
     	    	//Check if the shift already exists
     	    	if(!c.shiftExists(shiftDay.toString(), shiftTime.toString(), employeeID))
     	    	{// employee found, add the shift
 	                if (c.addShift(employeeID, shiftDay, shiftTime))
-		            {
-	            	    alert("Shift has been successfully added \n\n");
-		            }
+	                	alert("Shift has been successfully added \n\n");
 			        else
-			        {
-		    	        alert("Shift could not be added. \n\n");
-		     	    }
-    	    	}
+			        	alert("Shift could not be added. \n\n");
+		     	}
     	    	else
-    	    	{
     	    		alert("Shift cannot be added as Employee is already working at this time.\n\n");
-    	    	}
     	    }
         }
 	}
