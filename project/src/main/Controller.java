@@ -148,6 +148,14 @@ public class Controller
 		return db.login(username, password);
 	}
 	
+	public boolean shiftExists(String dayString, String timeString, int empID)
+	{
+		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
+		ShiftTime time = ShiftTime.valueOf(timeString.toUpperCase());
+		
+		return db.shiftExists(day, time, empID);
+	}
+	
 	/**
 	 * Returns true if a valid name is input.
 	 * @author RK

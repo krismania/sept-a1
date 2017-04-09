@@ -236,8 +236,10 @@ public class Console
 	}
 	
 	/**
-	 *  Add new shifts.
+	 *  Add new shifts. Does not allow for multiple shifts at the same time
+	 *  for the same Employee.
 	 *  @author RK
+	 *  @author James
 	 */
 	private void addShifts(){
 		
@@ -249,7 +251,6 @@ public class Console
 		int result2;
 		String testAddDay = " ";
 		String testAddTime = " ";
-		String testValue = " ";
 		String wrongInput = "You have have not entered the Shift details correctly. "
 				+ "Press \"Enter\" and Try again: \n\n";
 		String success = "Shift has been successfully added \n\n";
@@ -261,9 +262,9 @@ public class Console
 		catch (NumberFormatException e) { /* TODO: log this */ };
 		
 		//TN - ternary expression to validate input lengths  prior to acceptance
-		testAddDay = testValue.valueOf(shiftInfo.get("shiftDay").toUpperCase());
-		testAddTime = testValue.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-		result1 = (((testAddDay.length() < 6)||(testAddDay.length() > 7)) ? 1:0);
+		testAddDay = String.valueOf(shiftInfo.get("shiftDay").toUpperCase());
+		testAddTime = String.valueOf(shiftInfo.get("shiftTime").toUpperCase());
+		result1 = (((testAddDay.length() < 6)||(testAddDay.length() > 9)) ? 1:0);
 		result2 = (((testAddTime.length() < 7)||(testAddTime.length() > 9)||
 				(testAddTime.length() == 8)) ? 1:0);
 		
@@ -274,11 +275,10 @@ public class Console
                     addShifts();
 		}
 		else
-		{	
-    	            //shiftDay = DayOfWeek.valueOf(shiftInfo.get("shiftDay").toUpperCase());  
-    	            //shiftTime = ShiftTime.valueOf(shiftInfo.get("shiftTime").toUpperCase());
-                    shiftDay = DayOfWeek.valueOf(testAddDay.toUpperCase());
-                    shiftTime = ShiftTime.valueOf(testAddTime.toUpperCase());
+		{
+			shiftDay = DayOfWeek.valueOf(testAddDay.toUpperCase());
+            shiftTime = ShiftTime.valueOf(testAddTime.toUpperCase());
+            
     	    // check if employee exists
     	    if (c.employeeExists(employeeID))
     	    {
@@ -286,15 +286,22 @@ public class Console
 	    }
     	    else
     	    {
-    	        // employee found, add the shift
-                if (c.addShift(employeeID, shiftDay, shiftTime))
-	            {
-            	    alert(success);
-	            }
-		        else
-		        {
-	    	        // TODO: failure
-	     	    }
+    	    	//Check if the shift already exists
+    	    	if(!c.shiftExists(shiftDay.toString(), shiftTime.toString(), employeeID))
+    	    	{// employee found, add the shift
+	                if (c.addShift(employeeID, shiftDay, shiftTime))
+		            {
+	            	    alert(success);
+		            }
+			        else
+			        {
+		    	        // TODO: failure
+		     	    }
+    	    	}
+    	    	else
+    	    	{
+    	    		alert("Shift cannot be added as Employee is already working at this time.\n\n");
+    	    	}
     	    }
         }
 	}

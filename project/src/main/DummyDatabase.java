@@ -117,6 +117,11 @@ public class DummyDatabase implements DBInterface
 		return employees;
 	}
 	
+	@Override
+	public boolean shiftExists(DayOfWeek day, ShiftTime time, int EmployeeID)
+	{
+		return false;
+	}
 	
 	@Override
 	public Shift getShift(int shiftID)
