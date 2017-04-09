@@ -329,6 +329,11 @@ public class Console
 		String phoneNumber;
 		boolean created;
 		
+		alert("Please enter Username, password, first name, last name, email and phone number.\n"
+				+ "Password must be greater than 6 characters and contain a digit, an upper case and lower case\n"
+				+ "Email must contain '@' and a '.'\n"
+				+ "Phone number must be 10 digits long.");
+		
 		// get username/password -kg
 		HashMap<String, String> accountInput = accountPrompt();
 		username = accountInput.get("username");
@@ -343,7 +348,7 @@ public class Console
 		else
 		{
 			// if password is unacceptable, end account creation here. -RK
-			alert("Password must be greater than 6 characters and"
+			alert("*Password must be greater than 6 characters and"
  				+ " contain a digit, an upper case and lower case ");
 			return;
 		}
