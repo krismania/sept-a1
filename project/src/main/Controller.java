@@ -10,12 +10,29 @@ import java.util.logging.Logger;
 
 public class Controller
 {
-	private Logger logger;
-	
-	DBInterface db = new Database("awesomeSauce");
-	// DBInterface db = new DummyDatabase(); // switch to this to use the dummy db
+	// if true, use DummyDB instead of real db connection
+	public static boolean debugDB = false;
 	
 	private static Controller instance = null;
+	
+	private Logger logger;
+	private DBInterface db;
+	
+	/**
+	 * Creates an instance of the controller class & opens the database.
+	 */
+	private Controller()
+	{
+		// get the logger
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		// instantiate DB
+		if (debugDB) db = new DummyDatabase();
+		else db = new Database("awesomeSauce");
+		
+		logger.info("Instantiated Controller");
+	}
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -28,18 +45,6 @@ public class Controller
 			instance = new Controller();
 		}
 		return instance;
-	}
-	
-	/**
-	 * Creates an instance of the controller class & opens the database.
-	 */
-	private Controller()
-	{
-		// get the logger
-		logger = Logger.getLogger(getClass().getName());
-		logger.setLevel(Level.ALL);
-		
-		logger.info("Instantiated Controller");
 	}
 
 	public ArrayList<Customer> getAllCustomers()
