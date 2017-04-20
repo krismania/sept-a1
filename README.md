@@ -1,22 +1,29 @@
 # Software Engineering: Process &amp; Techniques Assignment
 
-## Folder Structure
-```
-│
-└─┬ project
-  │ Eclipse project folder
-  │
-  └─┬ src
-    │
-    ├── data
-    │   Json data files
-    │
-    ├── main
-    │   Java source code
-    │
-    └── tests
-        jUnit tests
-```
+## Team Information
+
+### Team Name
+extendedClass
+
+### Members
+- s3543182 - James McLennan
+- s3543819 - Kristian Giglia
+- s3563242 - Richard Kuoch
+- s3572290 - Tim Novice
+
+### Tutorial
+**Tutor:** Homy Ash (amirhomayoon.ashrafzadeh@rmit.edu.au)
+
+**Time:** Friday 12:30p 012.11.019
+
+### Important Links
+**GitHub:** https://github.com/krismania/se-pt-a1
+
+**Trello:** https://trello.com/b/FCcJDb3Z/extendedclass
+
+**Slack:** https://extendedclass.slack.com/messages/C4DPURVSB/
+
+**Lean Testing:** https://app.leantesting.com/en/projects/extendedclass/23342
 
 ## Project Description
 You are required to design, develop and test an application named "Appointment Booking

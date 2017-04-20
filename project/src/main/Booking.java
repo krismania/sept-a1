@@ -1,28 +1,31 @@
 package main;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.util.Date;
 
 /**
  * Keeps track of an individual booking made by a customer & tied to an employee,
  * a shift and a date.
  * @author krismania
  */
-public class Booking
+public class Booking implements Comparable<Booking>
 {
 	public final int ID;
 	private String customer;
 	private int employeeID;
-	private int shiftID;
 	private Date date;
+	private ShiftTime time;
 	
-	public Booking(int ID, String customer, int employeeID, int shiftID, Date date)
+	public Booking(int ID, String customer, int employeeID, Date date, ShiftTime time)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
 		this.customer = customer;
 		this.employeeID = employeeID;
-		this.shiftID = shiftID;
 		this.date = date;
+		this.time = time;
 	}
 	
 	public String getCustomer()
@@ -35,13 +38,42 @@ public class Booking
 		return employeeID;
 	}
 	
-	public int getShiftID()
-	{
-		return shiftID;
-	}
-	
 	public Date getDate()
 	{
 		return date;
+	}
+	
+	public DayOfWeek getDay()
+	{
+		DateFormat weekdayFormat = new SimpleDateFormat("EEEE");
+		return DayOfWeek.valueOf(weekdayFormat.format(date).toUpperCase());
+	}
+	
+	public ShiftTime getTime()
+	{
+		return time;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Booking: %d, Day: %s, Time: %s, Cust: %s",
+						ID, getDay().toString(), time.toString(), customer);
+	}
+
+	/**
+	 * Sort by date and then by time.
+	 */
+	@Override
+	public int compareTo(Booking b)
+	{
+		int byDate = this.date.compareTo(b.date);
+		
+		if (byDate == 0)
+		{
+			return this.time.getValue() - b.time.getValue();
+		}
+		
+		return byDate;
 	}
 }

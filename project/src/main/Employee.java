@@ -12,7 +12,7 @@ public class Employee implements PersonalDetails
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	
+	//TN Constructor
 	public Employee(int ID, String firstName, String lastName, String email, String phoneNumber)
 	{
 		this.ID = ID;
@@ -44,5 +44,29 @@ public class Employee implements PersonalDetails
 	public String getPhoneNumber()
 	{
 		return phoneNumber;
+	}
+
+	@Override
+	public void setFirstName(String name)
+	{
+		firstName = name;
+	}
+
+	@Override
+	public void setLastName(String name)
+	{
+		lastName = name;
+	}
+
+	@Override
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	@Override
+	public void setPhoneNumber(String phone)
+	{
+		phoneNumber = phone;		
 	}
 }
