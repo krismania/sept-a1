@@ -388,7 +388,7 @@ public class Console
 		}
 		while (!accepted);
 
-		created = c.addCustomer(username, firstName, lastName, email, phoneNumber, password);
+		created = c.addCustomer(username, password, firstName, lastName, email, phoneNumber);
 		
 		//JM Check if customer was created successfully
 		if(created) 
