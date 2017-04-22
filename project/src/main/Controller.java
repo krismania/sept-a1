@@ -216,9 +216,14 @@ public class Controller
 	 */
 	public boolean validateEmail(String input)
 	{
-		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+		//if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+		//	return true;
+		//}
+		
+		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+(.+)$")){
 			return true;
 		}
+		
 		return false;
 	}
 	
