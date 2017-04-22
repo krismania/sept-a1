@@ -188,7 +188,7 @@ public class Controller
 	 */
 	public boolean validateName(String input)
 	{
-		if(!input.isEmpty()){
+		if(!input.isEmpty() && input.matches("[a-zA-Z ,]+")){
 			return true;
 		}
 		
