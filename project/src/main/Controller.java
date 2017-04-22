@@ -183,6 +183,21 @@ public class Controller
 	}
 	
 	/**
+	 * Returns true if a valid username is input.
+	 * @author RK
+	 */
+	
+	public boolean validateUserName(String input)
+	{
+		if(!input.isEmpty()){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	/**
 	 * Returns true if a valid name is input.
 	 * @author RK
 	 */
