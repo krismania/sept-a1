@@ -77,7 +77,7 @@ public class GUILoginPopupController implements Initializable {
         Stage stage;
         Parent root;
         if(event.getSource()==login) {
-        	stage = (Stage) login.getScene().getWindow();
+            stage = (Stage) login.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
             //TN - call a new scene instance
             Scene scene = new Scene(root);
@@ -107,26 +107,23 @@ public class GUILoginPopupController implements Initializable {
         
     }
 
+ 
     private boolean login() {
     	
         String username = tfUsername.getText();
-	    String password = tfPassword.getText();
-		// HashMap for adding employee 
-		
-				//<key, value>
-
-		
-		// Just testing hashMap for employees. Will refine after....
+	String password = tfPassword.getText();
+        // HashMap for adding employee 
+        //<key, value>
 
     	// get the input
     	// put it in a hashmap
-    	HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username",username);
-        map.put("password",password);
+    	//HashMap<String, String> map = new HashMap<String, String>();
+        //map.put("username",username);
+        //map.put("password",password);
     	
     	// call the controller login function and receives a class object
     	// the class object expresses the type of account we have
-    	Class<?> accountType = Controller.getInstance().login(map);
+    	Account accountType = Controller.getInstance().login(username, password);
     	
     	if (accountType.equals(Customer.class))
     	{
@@ -141,8 +138,6 @@ public class GUILoginPopupController implements Initializable {
     	else 
     		// account is invalid
     		return false;
-    	
-
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
