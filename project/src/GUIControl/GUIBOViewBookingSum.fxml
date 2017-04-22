@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUIControl.GUIBOViewBookingSumController">
+   <children>
+      <TableView prefHeight="400.0" prefWidth="605.0">
+         <columns>
+            <TableColumn prefWidth="416.0" text="Appointment Times(Next 2 Weeks)" />
+            <TableColumn minWidth="0.0" prefWidth="174.0">
+               <graphic>
+                  <ComboBox prefWidth="150.0" promptText="Select Employee" />
+               </graphic>
+            </TableColumn>
+         </columns>
+      </TableView>
+      <ScrollBar max="10.0" orientation="VERTICAL" unitIncrement="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+   </children>
+</AnchorPane>
