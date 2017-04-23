@@ -128,9 +128,7 @@ public class GUILoginPopupController implements Initializable {
 	    // call the controller login function and receives a class object
     	// the class object expresses the type of account we have
     	Account accountType = Controller.getInstance().login(username, password);
-
-    	
-    	if (accountType.equals(Customer.class)) {
+    	if (accountType instanceof Customer) {
     	    // user logged in as a customer
     	    return true;
     	}
