@@ -135,12 +135,10 @@ public class GUILoginPopupController implements Initializable {
     	    // user logged in as a customer
     	    return true;
     	}
-    	else 
+    	else {
     	    // account is invalid
     	    return false;	
-    		
-    	//TN test return value
-    	//return true;
+        }
     }
     
     private boolean loginBus() {
@@ -157,12 +155,10 @@ public class GUILoginPopupController implements Initializable {
     	    // user logged in as a b.o.
     	    return true;
     	}
-    	else 
+    	else {
             // account is invalid
     	    return false;	
-    		
-    	//TN test return value
-    	//return true;
+        }	
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
