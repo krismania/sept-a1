@@ -66,7 +66,7 @@ public class GUILoginPopupController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException {
         //login();
-        loop:
+       /* loop:
         do {
     	    GUIAlert.infoBox("Your login is incorrect, please try again", "");	
         	Stage stage = (Stage) exit.getScene().getWindow();
@@ -103,30 +103,34 @@ public class GUILoginPopupController implements Initializable {
             //TN - call a new scene instance
             //Scene scene = new Scene(root);
             //stage.setScene(scene);
-            //stage.show();
+            //stage.show();          
+             
+             */
+       
+        //TN test code please remove before merging.
+        Stage stage;
+        Parent root;
+        if(event.getSource()==login) {
+            stage = (Stage) login.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
+            //TN - call a new scene instance
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            }
         
     }
 
     private boolean login() {
-    	
+    	/*
         String username = tfUsername.getText();
 	    String password = tfPassword.getText();
-		// HashMap for adding employee 
-		
-				//<key, value>
-
-		
-		// Just testing hashMap for employees. Will refine after....
-
-    	// get the input
-    	// put it in a hashmap
-    	HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username",username);
-        map.put("password",password);
     	
-    	// call the controller login function and receives a class object
+	    
+	    // call the controller login function and receives a class object
     	// the class object expresses the type of account we have
-    	Class<?> accountType = Controller.getInstance().login(map);
+    	Account accountType = Controller.getInstance().login(username, password);
+
     	
     	if (accountType.equals(Customer.class))
     	{
@@ -140,9 +144,11 @@ public class GUILoginPopupController implements Initializable {
     	}
     	else 
     		// account is invalid
-    		return false;
-    	
-
+    		return false;	
+    		
+    	*/
+    	//TN test return value
+    	return true;
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

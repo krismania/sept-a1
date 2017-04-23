@@ -26,16 +26,24 @@ import javafx.scene.Scene;
  */
 public class GUIAddTimeController implements Initializable {
 
+
+    @FXML
+    private Button exit;
+
+    @FXML
+    private Button menu;
+
     @FXML
     private Button btRecordAvail;
 
     @FXML
-    private Button exit;
- 
-    @FXML
-    private Button menu;
-    
-    @FXML
+    void handleButtonAction(ActionEvent event) throws IOException {
+
+    }
+	
+	//TN old code
+	   
+  /*  @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
         Stage stage;
         Parent root;
@@ -51,11 +59,11 @@ public class GUIAddTimeController implements Initializable {
         {
             stage=(Stage) menu.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-        }
+        } 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
+    } */
 	
     @FXML
     //TN - Button to close app.
