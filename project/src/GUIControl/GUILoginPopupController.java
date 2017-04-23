@@ -131,23 +131,20 @@ public class GUILoginPopupController implements Initializable {
     	Account accountType = Controller.getInstance().login(username, password);
 
     	
-    	if (accountType.equals(Customer.class))
-    	{
-    		// user logged in as a customer
-    		return true;
+    	if (accountType.equals(Customer.class)) {
+    	    // user logged in as a customer
+    	    return true;
     	}
-    	else 
-    		// account is invalid
-    		return false;	
-    		
-    	//TN test return value
-    	//return true;
+    	else {
+    	    // account is invalid
+    	    return false;	
+	}
     }
     
     private boolean loginBus() {
     	
         String username = tfUsername.getText();
-	    String password = tfPassword.getText();
+	String password = tfPassword.getText();
     	
 	    
 	    // call the controller login function and receives a class object
@@ -155,13 +152,13 @@ public class GUILoginPopupController implements Initializable {
     	Account accountType = Controller.getInstance().login(username, password);
         if (accountType.equals(BusinessOwner.class))
     	{
-    		// user logged in as a b.o.
-    		return true;
+    	    // user logged in as a b.o.
+    	    return true;
     	}
-    	else 
-    		// account is invalid
-    		return false;	
-    		
+    	else {
+    	    // account is invalid
+    	    return false;	
+	}	
     	//TN test return value
     	//return true;
     }
