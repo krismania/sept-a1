@@ -70,7 +70,7 @@ public class GUILoginPopupController implements Initializable {
     	if(event.getSource()==login) {
     		boolean valueBus = loginCust();
         	//TN - present incorrect login error message
-            if (loginCust() == false) {
+            if (valueBus == false) {
                 GUIAlert.infoBox("Your login is incorrect, please try again", "");	
                 Stage alert = (Stage) exit.getScene().getWindow();
             	alert.close();
@@ -124,7 +124,6 @@ public class GUILoginPopupController implements Initializable {
     	
         String username = tfUsername.getText();
 	    String password = tfPassword.getText();
-    	
 	    
 	    // call the controller login function and receives a class object
     	// the class object expresses the type of account we have
