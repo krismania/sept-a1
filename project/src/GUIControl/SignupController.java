@@ -23,6 +23,8 @@ import main.Customer;
 public class SignupController
 {
 	private Controller c = Controller.getInstance();
+	private String storedUsername;
+	private String storedPassword;
 	
 	@FXML private VBox root;
 	@FXML private TextField username;
@@ -47,6 +49,10 @@ public class SignupController
 				// check that confirm password matches
 				if (password.getText().equals(passwordConf.getText()))
 				{
+					// store customer username/password
+					storedUsername = username.getText();
+					storedPassword = password.getText();
+					
 					lblError.setVisible(false);
 					// username and password are accepted, transition to details
 					Scene details = new Scene(FXMLLoader.load(getClass().getResource("Signup-2.fxml")));
@@ -107,6 +113,20 @@ public class SignupController
 	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
-		System.out.println("User signed up");
+		// TODO: verify details
+		
+		// try to sign up
+		if (c.addCustomer(storedUsername, storedPassword,
+						firstName.getText(), lastName.getText(),
+						email.getText(), phone.getText()))
+		{
+			// sign up success
+			System.out.println("Sign up success");
+		}
+		else
+		{
+			// sign up failure
+			System.out.println("Sign up failed");
+		}
 	}
 }
