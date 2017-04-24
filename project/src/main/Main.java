@@ -17,6 +17,7 @@ public class Main extends Application
         Scene scene = new Scene(root); 
          
         stage.setScene(scene); 
+        stage.setTitle("Appointment Booking System");
         stage.show(); 
     } 
  
