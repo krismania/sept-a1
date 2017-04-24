@@ -74,7 +74,7 @@ public class LoginController implements Initializable
 	public void handleSignup(ActionEvent event) throws IOException
 	{
 		// load the scene
-		Scene signup = new Scene(FXMLLoader.load(getClass().getResource("GUISignup.fxml")));
+		Scene signup = new Scene(FXMLLoader.load(getClass().getResource("Signup.fxml")));
 		
 		// get current stage
 		Stage stage = (Stage) root.getScene().getWindow();

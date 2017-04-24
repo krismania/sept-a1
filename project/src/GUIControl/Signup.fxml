@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUISignup">
+<VBox fx:id="root" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.SignupController">
    <children>
       <Label text="Sign Up">
          <font>
@@ -21,37 +21,37 @@
          </padding>
       </Label>
       <Label text="Username" />
-      <TextField fx:id="addNewUserName" onAction="#handleButtonAction">
+      <TextField fx:id="username">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </TextField>
       <Label layoutX="10.0" layoutY="10.0" text="Password" />
-      <TextField fx:id="addNewPassword" onAction="#handleButtonAction">
+      <PasswordField fx:id="password">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
-      </TextField>
+      </PasswordField>
       <Label layoutX="10.0" layoutY="27.0" text="Confirm Password" />
-      <TextField fx:id="addNewPasswordConfirm" layoutX="10.0" layoutY="69.0" onAction="#handleButtonAction">
+      <PasswordField fx:id="passwordConf">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
-      </TextField>
-      <Label text="Error" textFill="RED">
+      </PasswordField>
+      <Label fx:id="lblError" text="Error" textFill="RED" visible="false">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </Label>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
             <Region HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Region>
-            <Button defaultButton="true" mnemonicParsing="false" text="Next" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleNext" text="Next" />
          </children>
       </HBox>
    </children>
