@@ -141,14 +141,19 @@ public class Controller
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
 	{		
-		Employee employee = db.buildEmployee();
-		
-		employee.setFirstName(firstName);
-		employee.setLastName(lastName);
-		employee.setEmail(email);
-		employee.setPhoneNumber(phoneNumber);
-		
-		return db.addEmployee(employee);
+		if(validateName(firstName) && validateName(lastName)
+				&& validateEmail(email) && validatePhoneNumber(phoneNumber)){
+			Employee employee = db.buildEmployee();
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setEmail(email);
+			employee.setPhoneNumber(phoneNumber);
+			
+			return db.addEmployee(employee);
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -188,6 +193,15 @@ public class Controller
 	 */
 	public boolean validateName(String input)
 	{
+		char[] chars = input.toCharArray();
+		
+		for(char letter : chars)
+		{
+			if(!Character.isLetter(letter)){
+				return false;
+			}
+		}
+		
 		if(!input.isEmpty()){
 			return true;
 		}
