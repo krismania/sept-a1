@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -412,7 +413,7 @@ public class Database implements DBInterface {
 				if (rs.next())
 				{
 					String day = rs.getString("Day");
-			        ShiftTime time = ShiftTime.valueOf(rs.getString("Time"));
+			        Timestamp time = rs.getTimestamp("Time");
 			        int empID = rs.getInt("EmpID");
 			        closeConnection();
 			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), time);
@@ -446,9 +447,10 @@ public class Database implements DBInterface {
 			{
 		         //JM Retrieve by column name
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         ShiftTime time = ShiftTime.valueOf(rs.getString("Time"));
+		         Timestamp time = rs.getTimestamp("Time");
 		         int shiftID = rs.getInt("Shift_ID");
 		         
+		         System.out.println(time);
 		         // create shift object. -kg
 		         Shift shift = new Shift(shiftID, EmpID, day, time);
 		         
@@ -757,10 +759,10 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-	private boolean CreateShift(DayOfWeek day, ShiftTime time, int iD, int employeeID) 
+	private boolean CreateShift(DayOfWeek day, Timestamp time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time.name() + "', '" + iD + "'"
+				+ day.name() + "', '" + time.getTime() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -989,7 +991,7 @@ public class Database implements DBInterface {
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 
 		//Shift Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time varchar(10)", "Shift_ID int",
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time TIME", "Shift_ID int",
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		//Booking Table
@@ -1014,16 +1016,16 @@ public class Database implements DBInterface {
 				"0400000000", "2");
 		
 
-		CreateDataEntry("Shift", "MONDAY", "MORNING", "1", "1");
-		CreateDataEntry("Shift", "TUESDAY", "AFTERNOON", "2", "1");
-		CreateDataEntry("Shift", "WEDNESDAY", "EVENING", "3", "1");
-		CreateDataEntry("Shift", "SUNDAY", "AFTERNOON", "4", "2");
+		CreateDataEntry("Shift", "MONDAY", "10:00", "1", "1");
+		CreateDataEntry("Shift", "TUESDAY", "10:30", "2", "1");
+		CreateDataEntry("Shift", "WEDNESDAY", "11:00", "3", "1");
+		CreateDataEntry("Shift", "SUNDAY", "11:30", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "MORNING");
-		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "AFTERNOON");
-		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "AFTERNOON");
-		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "EVENING");
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "AFTERNOON");
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "13:30");
+		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "16:30");
+		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "12:30");
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");
 
 		logger.info("DB created.");
 	}

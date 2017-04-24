@@ -1,8 +1,11 @@
 package main;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -160,10 +163,12 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
+	public boolean addShift(int employeeID, DayOfWeek day, int hour, int minutes)
 	{
 		Shift shift = db.buildShift(employeeID);
 		shift.setDay(day);
+		//shift.setTime(time);
+		Timestamp time = makeTimestamp(hour, minutes);
 		shift.setTime(time);
 		
 		return db.addShift(shift);
@@ -235,5 +240,13 @@ public class Controller
 	{
 		input = input.replaceAll("[ \\-.()]", "");
 		return input.matches("\\+?(\\d{8}|\\d{10,11})");
+	}
+	
+	private Timestamp makeTimestamp(int hour, int minute) {
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minute);
+		
+		return new Timestamp(cal.getTimeInMillis());
 	}
 }

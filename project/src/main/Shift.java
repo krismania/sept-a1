@@ -1,5 +1,7 @@
 package main;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 
 /**
@@ -13,9 +15,9 @@ public class Shift implements Comparable<Shift>
 	public final int employeeID;
 	
 	private DayOfWeek day;
-	private ShiftTime time;
+	private Timestamp time;
 	
-	public Shift(int ID, int employeeID, DayOfWeek day, ShiftTime time)
+	public Shift(int ID, int employeeID, DayOfWeek day, Timestamp time)
 	{
 		this.ID = ID;
 		this.employeeID = employeeID;
@@ -28,7 +30,7 @@ public class Shift implements Comparable<Shift>
 		return day;
 	}
 	
-	public ShiftTime getTime()
+	public Timestamp getTime()
 	{
 		return time;
 	}
@@ -38,7 +40,7 @@ public class Shift implements Comparable<Shift>
 		this.day = day;
 	}
 	
-	public void setTime(ShiftTime time)
+	public void setTime(Timestamp time)
 	{
 		this.time = time;
 	}
