@@ -10,7 +10,7 @@
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOMenuController">
    <children>
       <Button fx:id="addEmp" layoutX="228.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Employee" />
-      <Button fx:id="addShift" layoutX="228.0" layoutY="156.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
+      <Button fx:id="addTime" layoutX="228.0" layoutY="156.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
       <Button fx:id="viewBooking" layoutX="228.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="View Booking" />
       <Button fx:id="exit" layoutX="448.0" layoutY="343.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="114.0" text="Exit" />
       <Label layoutX="196.0" layoutY="25.0" text="Business Administration Menu" />
