@@ -20,20 +20,26 @@
             <Insets bottom="30.0" />
          </padding>
       </Label>
-      <Label text="Username" />
-      <TextField fx:id="addNewUserName" onAction="#handleButtonAction">
+      <Label text="First Name" />
+      <TextField fx:id="firstName" onAction="#handleButtonAction">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </TextField>
-      <Label layoutX="10.0" layoutY="10.0" text="Password" />
-      <TextField fx:id="addNewPassword" onAction="#handleButtonAction">
+      <Label layoutX="10.0" layoutY="10.0" text="Last Name" />
+      <TextField fx:id="lastName" onAction="#handleButtonAction">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </TextField>
-      <Label layoutX="10.0" layoutY="27.0" text="Confirm Password" />
-      <TextField fx:id="addNewPasswordConfirm" layoutX="10.0" layoutY="69.0" onAction="#handleButtonAction">
+      <Label layoutX="10.0" layoutY="27.0" text="Email" />
+      <TextField fx:id="email" onAction="#handleButtonAction">
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </TextField>
+      <Label text="Phone Number" />
+      <TextField fx:id="phone" layoutX="10.0" layoutY="69.0" onAction="#handleButtonAction">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
@@ -45,13 +51,13 @@
       </Label>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Cancel" />
+            <Button mnemonicParsing="false" text="Back" />
             <Region HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Region>
-            <Button defaultButton="true" mnemonicParsing="false" text="Next" />
+            <Button defaultButton="true" mnemonicParsing="false" text="Sign Up" />
          </children>
       </HBox>
    </children>
