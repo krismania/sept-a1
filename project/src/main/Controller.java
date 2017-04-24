@@ -141,14 +141,19 @@ public class Controller
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
 	{		
-		Employee employee = db.buildEmployee();
-		
-		employee.setFirstName(firstName);
-		employee.setLastName(lastName);
-		employee.setEmail(email);
-		employee.setPhoneNumber(phoneNumber);
-		
-		return db.addEmployee(employee);
+		if(validateName(firstName) && validateName(lastName)
+				&& validateEmail(email) && validatePhoneNumber(phoneNumber)){
+			Employee employee = db.buildEmployee();
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setEmail(email);
+			employee.setPhoneNumber(phoneNumber);
+			
+			return db.addEmployee(employee);
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**

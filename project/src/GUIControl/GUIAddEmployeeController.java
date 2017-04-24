@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +31,7 @@ import javafx.scene.control.TextField;
  * @author tn
  */
 public class GUIAddEmployeeController implements Initializable {  
-    @FXML
+	@FXML
     private TextField tfEmpFName;
 
     @FXML
@@ -47,14 +48,29 @@ public class GUIAddEmployeeController implements Initializable {
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
+    	Controller.getInstance().getAllEmployees();
     	
-    	submitNewEmpData.setOnAction(e -> {
+    	submitNewEmpData.setOnMouseClicked(e -> {
+    	
     	if (employee() != true)
     	{
     		GUIAlert.infoBox("You have entered incorrect data please try again", "");
     	}
     	else
     	    GUIAlert.infoBox("New employee is successfully added", "");
+    		// load the scene
+    	try{
+    		Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+    				
+    		// get current stage
+    		Stage stage = (Stage) submitNewEmpData.getScene().getWindow();
+    				
+    		// switch scenes
+    		stage.setScene(boLogin);
+    	}
+    	catch(IOException error) {
+    		error.printStackTrace();
+    	}
     	});
     }
     /*public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
@@ -72,6 +88,7 @@ public class GUIAddEmployeeController implements Initializable {
 
     }*/
     
+    
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
     private boolean employee(){
     	
@@ -83,14 +100,14 @@ public class GUIAddEmployeeController implements Initializable {
 		// HashMap for adding employee 
 		
 				/*<key, value>*/
-		HashMap<String, String> map = new HashMap<String, String>();
+		/*HashMap<String, String> map = new HashMap<String, String>();
 		map.put("firstName",firstName);
 		map.put("lastName", lastName);
 		map.put("email", email);
-		map.put("phoneNumber", phone);
+		map.put("phoneNumber", phone);*/
 		
 		// Just testing hashMap for employees. Will refine after....
-		boolean value = Controller.getInstance().addEmployee(map);
+		boolean value = Controller.getInstance().addEmployee(firstName, lastName, email, phone);
 		return value;
 	} 	
     @Override
