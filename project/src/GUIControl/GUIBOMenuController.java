@@ -51,7 +51,7 @@ public class GUIBOMenuController implements Initializable {
         }
         else if(event.getSource()==addTime) {
         	stage=(Stage) addTime.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
+            root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml"));
         }
         else
         {
