@@ -183,12 +183,27 @@ public class Controller
 	}
 	
 	/**
+	 * Returns true if a valid username is input.
+	 * @author RK
+	 */
+	
+	public boolean validateUserName(String input)
+	{
+		if(!input.isEmpty()){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	/**
 	 * Returns true if a valid name is input.
 	 * @author RK
 	 */
 	public boolean validateName(String input)
 	{
-		if(!input.isEmpty()){
+		if(!input.isEmpty() && input.matches("[a-zA-Z ,]+")){
 			return true;
 		}
 		
@@ -201,9 +216,14 @@ public class Controller
 	 */
 	public boolean validateEmail(String input)
 	{
-		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+		//if(!input.isEmpty() && input.contains("@") && input.contains(".")){
+		//	return true;
+		//}
+		
+		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+(.+)$")){
 			return true;
 		}
+		
 		return false;
 	}
 	
