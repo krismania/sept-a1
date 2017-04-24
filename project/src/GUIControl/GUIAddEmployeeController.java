@@ -48,8 +48,10 @@ public class GUIAddEmployeeController implements Initializable {
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
+    	Controller.getInstance().getAllEmployees();
     	
-    	submitNewEmpData.setOnAction(e -> {
+    	submitNewEmpData.setOnMouseClicked(e -> {
+    	
     	if (employee() != true)
     	{
     		GUIAlert.infoBox("You have entered incorrect data please try again", "");
@@ -85,6 +87,7 @@ public class GUIAddEmployeeController implements Initializable {
         }
 
     }*/
+    
     
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
     private boolean employee(){
