@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +30,7 @@ import javafx.scene.control.TextField;
  * @author tn
  */
 public class GUIAddEmployeeController implements Initializable {  
-	@FXML
+    @FXML
     private TextField tfEmpFName;
 
     @FXML
@@ -56,19 +55,6 @@ public class GUIAddEmployeeController implements Initializable {
     	}
     	else
     	    GUIAlert.infoBox("New employee is successfully added", "");
-    		// load the scene
-    	try{
-    		Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
-    				
-    		// get current stage
-    		Stage stage = (Stage) submitNewEmpData.getScene().getWindow();
-    				
-    		// switch scenes
-    		stage.setScene(boLogin);
-    	}
-    	catch(IOException error) {
-    		error.printStackTrace();
-    	}
     	});
     }
     /*public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
