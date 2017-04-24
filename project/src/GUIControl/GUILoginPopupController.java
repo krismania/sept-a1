@@ -68,21 +68,23 @@ public class GUILoginPopupController implements Initializable {
     	Stage stage;
         Parent rootLogin, rootSignup, rootBO;
     	if(event.getSource()==login) {
-    		boolean valueBus = loginCust();
+    	    boolean valueBus = loginCust();
         	//TN - present incorrect login error message
-            if (valueBus == false) {
-                GUIAlert.infoBox("Your login is incorrect, please try again", "");	
-                Stage alert = (Stage) exit.getScene().getWindow();
+          if (valueBus == false) {
+              
+              GUIAlert.infoBox("Your login is incorrect, please try again", "");	
+              Stage alert = (Stage) exit.getScene().getWindow();
             	alert.close();
-            }
-            //TN - Call Customer Menu
-            else {
+          }
+          //TN - Call Customer Menu
+          else {
         	    stage = (Stage) login.getScene().getWindow();
         	    rootLogin = FXMLLoader.load(getClass().getResource("GUICustMenu.fxml"));
-                //TN - call a new scene instance
-                Scene scene = new Scene(rootLogin);
-                stage.setScene(scene);
-                stage.show();
+              
+              //TN - call a new scene instance
+              Scene scene = new Scene(rootLogin);
+              stage.setScene(scene);
+              stage.show();
             }
         //TN - get reference button stage
         //stage=(Stage) login.getScene().getWindow();
@@ -90,78 +92,74 @@ public class GUILoginPopupController implements Initializable {
     	}
     	//TN - if business owner and staff login button selected go to BO menu
     	else if(event.getSource()==businessOwner) {
-    		boolean valueBus = loginBus();
-    		//TN - present incorrect login error message
-            if (valueBus == false) {
-                GUIAlert.infoBox("Your login is incorrect, please try again", "");	
-                Stage alert = (Stage) exit.getScene().getWindow();
-            	alert.close();
-            }
-            //TN - Call Customer Menu
-            else {
-            stage=(Stage) businessOwner.getScene().getWindow();
-            rootBO = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-            //TN - call a new scene instance
-            Scene scene = new Scene(rootBO);
-            stage.setScene(scene);
-            stage.show();
-            } 
+    	    boolean valueBus = loginBus();
+    	  	//TN - present incorrect login error mes
+          if (valueBus == false) {
+              GUIAlert.infoBox("Your login is incorrect, please try again", "");	
+              Stage alert = (Stage) exit.getScene().getWindow();
+              alert.close();
+          }
+          //TN - Call Customer Menu
+          else {
+              stage=(Stage) businessOwner.getScene().getWindow();
+              rootBO = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
+              //TN - call a new scene instance
+              Scene scene = new Scene(rootBO);
+              stage.setScene(scene);
+              stage.show();
+          } 
     	}
     	//TN - if Signup option selected go to signup menu
-        else {
-            stage=(Stage) signup.getScene().getWindow();
-            rootSignup = FXMLLoader.load(getClass().getResource("GUISignup.fxml")); 	
-            //TN - call a new scene instance
-            Scene scene = new Scene(rootSignup);
-            stage.setScene(scene);
-            stage.show();              
-        }
-        //TN test code please remove before merging.
-     
-    }
+      else {
+          stage=(Stage) signup.getScene().getWindow();
+          rootSignup = FXMLLoader.load(getClass().getResource("GUISignup.fxml")); 	
+          //TN - call a new scene instance
+          Scene scene = new Scene(rootSignup);
+          stage.setScene(scene);
+          stage.show();              
+      }
+ }
 
     private boolean loginCust() {
     	
         String username = tfUsername.getText();
-	    String password = tfPassword.getText();
+	      String password = tfPassword.getText();
 	    
-	    // call the controller login function and receives a class object
-    	// the class object expresses the type of account we have
-    	Account accountType = Controller.getInstance().login(username, password);
-    	if (accountType instanceof Customer) {
-    	    // user logged in as a customer
-    	    return true;
-    	}
-    	else {
-    	    // account is invalid
-    	    return false;	
-	}
+	      // call the controller login function and receives a class object
+    	  // the class object expresses the type of account we have
+    	  Account accountType = Controller.getInstance().login(username, password);
+    	  if (accountType instanceof Customer) {
+            
+    	      // user logged in as a customer
+    	      return true;
+    	  }
+    	  else {
+    	      // account is invalid
+    	      return false;	
+	      }
     }
     
     private boolean loginBus() {
     	
         String username = tfUsername.getText();
-	String password = tfPassword.getText();
-    	
-	    
-	    // call the controller login function and receives a class object
-    	// the class object expresses the type of account we have
-    	Account accountType = Controller.getInstance().login(username, password);
+	      String password = tfPassword.getText();
+	      // call the controller login function and receives a class object
+    	  // the class object expresses the type of account we have
+    	  Account accountType = Controller.getInstance().login(username, password);
         if (accountType.equals(BusinessOwner.class))
-    	{
-    	    // user logged in as a b.o.
-    	    return true;
-    	}
-    	else {
-    	    // account is invalid
-    	    return false;	
-	}	
-    	//TN test return value
-    	//return true;
+    	  {
+    	      // user logged in as a b.o.
+    	      return true;
+    	  }
+    	  else {
+     	      // account is invalid
+    	      return false;	
+	      }	
+    	  //TN test return value
+    	  //return true;
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }  
-    
 }
