@@ -33,8 +33,6 @@ public class LoginController implements Initializable
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException
 	{
-		System.out.println("Log in pressed");
-
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());
 		
@@ -73,9 +71,16 @@ public class LoginController implements Initializable
 	}
 	
 	@FXML
-	public void handleSignup(ActionEvent event)
+	public void handleSignup(ActionEvent event) throws IOException
 	{
-		System.out.println("Sign up pressed pressed");
+		// load the scene
+		Scene signup = new Scene(FXMLLoader.load(getClass().getResource("GUISignup.fxml")));
+		
+		// get current stage
+		Stage stage = (Stage) root.getScene().getWindow();
+		
+		// switch scenes
+		stage.setScene(signup);
 	}
 
 	@Override
