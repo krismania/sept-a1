@@ -97,14 +97,14 @@ public class GUIAddEmployeeController implements Initializable {
 		// HashMap for adding employee 
 		
 				/*<key, value>*/
-		HashMap<String, String> map = new HashMap<String, String>();
+		/*HashMap<String, String> map = new HashMap<String, String>();
 		map.put("firstName",firstName);
 		map.put("lastName", lastName);
 		map.put("email", email);
-		map.put("phoneNumber", phone);
+		map.put("phoneNumber", phone);*/
 		
 		// Just testing hashMap for employees. Will refine after....
-		boolean value = Controller.getInstance().addEmployee(map);
+		boolean value = Controller.getInstance().addEmployee(firstName, lastName, email, phone);
 		return value;
 	} 	
     @Override
