@@ -1,25 +1,19 @@
 package GUIControl;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Account;
-import main.BusinessOwner;
 import main.Controller;
-import main.Customer;
 
 public class SignupController
 {
@@ -43,6 +37,26 @@ public class SignupController
 	{
 		label.setText(text);
 		label.setVisible(true);
+	}
+	
+	private void switchTo(String fxmlName)
+	{
+		try
+		{
+			// load the scene
+			Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
+			
+			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
+			
+			// switch scenes
+			stage.setScene(newScene);
+		}
+		catch (IOException e)
+		{
+			System.out.println("Could not switch scene.");
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean validateAccount()
@@ -140,36 +154,39 @@ public class SignupController
 	@FXML
 	public void handleCancel(ActionEvent event) throws IOException
 	{
-		// load the scene
-		Scene login = new Scene(FXMLLoader.load(getClass().getResource("Login.fxml")));
-		
-		// get current stage
-		Stage stage = (Stage) root.getScene().getWindow();
-		
-		// switch scenes
-		stage.setScene(login);
+		switchTo("Login");
 	}
 	
 	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
 		// TODO: verify details
-		if (validateAccount() && validateDetails())
+		if (validateAccount() & validateDetails())
 		{
-			System.out.println("Sign up");
-//			// try to sign up
-//			if (c.addCustomer(storedUsername, storedPassword,
-//							firstName.getText(), lastName.getText(),
-//							email.getText(), phone.getText()))
-//			{
-//				// sign up success
-//				System.out.println("Sign up success");
-//			}
-//			else
-//			{
-//				// sign up failure
-//				System.out.println("Sign up failed");
-//			}
+			// try to sign up
+			if (c.addCustomer(username.getText(), password.getText(),
+							firstName.getText(), lastName.getText(),
+							email.getText(), phone.getText()))
+			{
+				// sign up success
+				System.out.println("Sign up success");
+				
+				// alert the user
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Account Created!");
+				alert.setHeaderText(null);
+				alert.setContentText("Account was successfully created.");
+				alert.showAndWait();
+				
+				switchTo("Login");
+			}
+			else
+			{
+				// sign up failure
+				System.out.println("Sign up failed");
+				// TODO: more specific errors here
+				setError(lblError2, "Account already exists.");
+			}
 		}
 	}
 }
