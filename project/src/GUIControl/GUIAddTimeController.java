@@ -86,10 +86,10 @@ public class GUIAddTimeController implements Initializable {
     	
     	//TN - initialise shift time slot dropdown menus
     	shiftDropdown.getItems().removeAll(shiftDropdown.getItems());
-        shiftDropdown.getItems().addAll("9am", "9:30am", "10am", "10:30am", 
-        		"11am", "12pm", "12:30pm", "1pm", "1:30pm", "2pm", "2:30pm",
-        		"3pm", "3:30pm", "4pm", "4:30pm", "5pm");
-        shiftDropdown.getSelectionModel().select("9am");
+        shiftDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+        		"11:00 am", "11:30 pm", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
+        		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30pm", "5:00 pm");
+        shiftDropdown.getSelectionModel().select("9:00 am");
         
         //TN - initialise shift duration dropdown menus
         durationDropdown.getItems().removeAll(durationDropdown.getItems());
