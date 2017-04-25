@@ -22,8 +22,8 @@
       <ScrollBar max="10.0" orientation="VERTICAL" unitIncrement="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
       <Pane layoutY="395.0" prefHeight="78.0" prefWidth="605.0">
          <children>
-            <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" text="Menu" />
-            <Button fx:id="Exit" layoutX="503.0" layoutY="26.0" mnemonicParsing="false" text="Close" />
+            <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
+            <Button fx:id="Exit" layoutX="503.0" layoutY="26.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
          </children>
       </Pane>
    </children>

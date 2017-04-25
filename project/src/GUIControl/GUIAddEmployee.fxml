@@ -19,7 +19,7 @@
       <Label layoutX="96.0" layoutY="234.0" text="Enter Employees Phone Number" />
       <TextField fx:id="tfEmpPhNum" layoutX="314.0" layoutY="229.0" />
       <Button fx:id="submitNewEmpData" layoutX="423.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit Input" />
-      <Button fx:id="navMenu" layoutX="38.0" layoutY="22.0" mnemonicParsing="false" onAction="#navMenueButtonAction" text="Return to Menu" />
+      <Button fx:id="navMenu" layoutX="38.0" layoutY="22.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
       <Button fx:id="exit" layoutX="38.0" layoutY="311.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
    </children>
 </AnchorPane>

@@ -84,7 +84,7 @@ public class GUIAddEmployeeController implements Initializable {
         stage.close();
     }
     @FXML
-    private void navMenueButtonAction(ActionEvent event) throws IOException {
+    private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
 		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
