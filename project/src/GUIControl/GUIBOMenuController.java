@@ -42,28 +42,34 @@ public class GUIBOMenuController implements Initializable {
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
-        Parent root;
+        Parent rootAddEmp, rootAddTime, rootViewBooking;
         if(event.getSource()==addEmp) {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
         	//TN - load other scene
-        	root = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
+        	rootAddEmp = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
+            Scene scene = new Scene(rootAddEmp);
+            stage.setScene(scene);
+            stage.show();
         }
         else if(event.getSource()==addTime) {
         	stage=(Stage) addTime.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
+        	rootAddTime = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
+            Scene scene = new Scene(rootAddTime);
+            stage.setScene(scene);
+            stage.show(); 
         }
-        else
+        else //if(event.getSource()==viewBooking)
         {
         	stage=(Stage) viewBooking.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
+        	rootViewBooking = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
+            Scene scene = new Scene(rootViewBooking);
+            stage.setScene(scene);
+            stage.show();
         }
-
+   
         //TN - call a new scene instance
-        
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
     }    
     @FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
