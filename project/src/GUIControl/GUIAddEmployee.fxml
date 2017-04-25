@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIAddEmployeeController">
    <children>
-      <TextField fx:id="tfEmpFName" layoutX="314.0" layoutY="77.0" onAction="#handleButtonAction" />
+      <TextField fx:id="tfEmpFName" layoutX="314.0" layoutY="77.0" />
       <Label layoutX="97.0" layoutY="82.0" text="Enter Employees First Name" />
       <Label layoutX="96.0" layoutY="135.0" text="Enter Employees Last Name" />
       <TextField fx:id="tfEmpLName" layoutX="314.0" layoutY="130.0" />
