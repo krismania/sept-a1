@@ -38,7 +38,7 @@ public class GUIAddTimeController implements Initializable {
     private Button exit;
 
     @FXML
-    private Button menu;
+    private Button navMenu;
 
     @FXML
     private Button btRecordAvail;
@@ -59,6 +59,17 @@ public class GUIAddTimeController implements Initializable {
     	Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
     }
+    
+    @FXML
+    private void navMenueButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) navMenu.getScene().getWindow();
+		// load the scene
+		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+		
+		// switch scenes
+		stage.setScene(boMenu);
+    }
+    
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
 	
@@ -86,7 +97,7 @@ public class GUIAddTimeController implements Initializable {
         		"1 hour 30 minutes", "2 hours");
         durationDropdown.getSelectionModel().select("30 minutes");
     }
-	   
+
     /* @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
     Stage stage;
