@@ -15,7 +15,7 @@
       <Button fx:id="btRecordAvail" layoutX="407.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="140.0" text="Record Availability" />
       <Button fx:id="exit" layoutX="36.0" layoutY="344.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="79.0" text="Exit" />
       <Button fx:id="menu" layoutX="45.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Menu" />
-      <DatePicker layoutX="349.0" layoutY="99.0" promptText="Select Date" showWeekNumbers="true" />
+      <DatePicker fx:id="datePicker" layoutX="349.0" layoutY="99.0" promptText="Select Date" showWeekNumbers="true" />
       <ChoiceBox fx:id="shiftDropdown" layoutX="349.0" layoutY="187.0" prefWidth="150.0" />
       <ChoiceBox fx:id="durationDropdown" layoutX="349.0" layoutY="245.0" prefWidth="150.0" />
       <Label layoutX="51.0" layoutY="249.0" text="Enter Shift Duration:" />

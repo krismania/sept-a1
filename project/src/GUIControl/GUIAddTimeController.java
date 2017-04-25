@@ -7,8 +7,13 @@ package GUIControl;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Account;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 
 /**
  * FXML Controller class
@@ -38,39 +44,14 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
     
     @FXML
+	private DatePicker datePicker;
+    
+    @FXML
     private ChoiceBox<String> shiftDropdown;
     
     @FXML
     private ChoiceBox<String> durationDropdown;
 
-    @FXML
-    void handleButtonAction(ActionEvent event) throws IOException {
-
-    }
-	
-	//TN old code
-	   
-  /*  @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException{
-        Stage stage;
-        Parent root;
-        if(event.getSource()==btRecordAvail) {
-            //TN - Need to implement capture data and send to method
-        	
-            //TN - Directs to confirmation scene
-            stage=(Stage) btRecordAvail.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml"));
-            
-        }
-        else
-        {
-            stage=(Stage) menu.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-        } 
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    } */
 	
     @FXML
     //TN - Button to close app.
@@ -78,19 +59,52 @@ public class GUIAddTimeController implements Initializable {
     	Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
     }
+    @FXML
+    private void handleButtonAction(ActionEvent event) throws IOException{
+	
+    //TN Collect DatePicker data and also timestamp	
+    LocalDate localDate = datePicker.getValue();
+	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+	Date date = (Date) Date.from(instant);
+	//TN Test datepicker output in console
+	System.out.println(localDate + "\n" + instant + "\n" + date);
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //TN - initialise shift time slot dropdown menus
     	
+    	//TN - initialise shift time slot dropdown menus
     	shiftDropdown.getItems().removeAll(shiftDropdown.getItems());
         shiftDropdown.getItems().addAll("9am", "9:30am", "10am", "10:30am", 
         		"11am", "12pm", "12:30pm", "1pm", "1:30pm", "2pm", "2:30pm",
         		"3pm", "3:30pm", "4pm", "4:30pm", "5pm");
         shiftDropdown.getSelectionModel().select("9am");
+        
         //TN - initialise shift duration dropdown menus
         durationDropdown.getItems().removeAll(durationDropdown.getItems());
         durationDropdown.getItems().addAll("30 minutes", "1 hour", 
         		"1 hour 30 minutes", "2 hours");
         durationDropdown.getSelectionModel().select("30 minutes");
     }
+	   
+    /* @FXML
+    private void handleButtonAction(ActionEvent event) throws IOException{
+    Stage stage;
+    Parent root;
+    if(event.getSource()==btRecordAvail) {
+        //TN - Need to implement capture data and send to method
+    	Account account = c.login(shiftDropdown.getText(), durationDropdown.getText());
+        //TN - Directs to confirmation scene
+        stage=(Stage) btRecordAvail.getScene().getWindow();
+        root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml")); 
+     }
+     else
+     {
+         stage=(Stage) menu.getScene().getWindow();
+         root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
+     } 
+     Scene scene = new Scene(root);
+     stage.setScene(scene);
+     stage.show(); 
+ }   */
 }
