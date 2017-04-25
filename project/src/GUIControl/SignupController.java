@@ -24,8 +24,6 @@ import main.Customer;
 public class SignupController
 {
 	private Controller c = Controller.getInstance();
-	private String storedUsername;
-	private String storedPassword;
 	
 	@FXML private BorderPane root;
 	@FXML private TextField username;
@@ -40,7 +38,14 @@ public class SignupController
 	@FXML private Label lblError1;
 	@FXML private Label lblError2;
 	
-	public boolean validateAccount()
+	
+	private void setError(Label label, String text)
+	{
+		label.setText(text);
+		label.setVisible(true);
+	}
+	
+	private boolean validateAccount()
 	{
 		// check the username and password
 		if (c.validateUserName(username.getText()))
@@ -50,18 +55,13 @@ public class SignupController
 				// check that confirm password matches
 				if (password.getText().equals(passwordConf.getText()))
 				{
-					// store customer username/password
-					storedUsername = username.getText();
-					storedPassword = password.getText();
-					
 					lblError1.setVisible(false);
 					// username and password are accepted
 					return true;
 				}
 				else
 				{
-					lblError1.setText("Passwords don't match.");
-					lblError1.setVisible(true);
+					setError(lblError1, "Passwords don't match.");
 
 					passwordConf.clear();
 					passwordConf.requestFocus();
@@ -71,20 +71,68 @@ public class SignupController
 			{
 				// invalid password
 				// TODO: more detailed error
-				lblError1.setText("Invalid Password.");
-				lblError1.setVisible(true);
+				setError(lblError1, "Invalid Password.");
 				
 				password.clear();
+				passwordConf.clear();
 				password.requestFocus();
 			}
 		}
 		else
 		{
 			// invalid username
-			lblError1.setText("Invalid Username.");
-			lblError1.setVisible(true);
+			setError(lblError1, "Invalid Username.");
 			
 			username.requestFocus();
+		}
+		return false;
+	}
+	
+	private boolean validateDetails()
+	{
+		if (c.validateName(firstName.getText()))
+		{
+			if (c.validateName(lastName.getText()))
+			{
+				if (c.validateEmail(email.getText()))
+				{
+					if (c.validatePhoneNumber(phone.getText()))
+					{
+						lblError2.setVisible(false);
+						return true;
+					}
+					else
+					{
+						// invalid last name
+						// TODO: more detailed error
+						setError(lblError2, "Invalid phone number.");
+						
+						phone.requestFocus();
+					}
+				}
+				else
+				{
+					// invalid email address
+					// TODO: more detailed error
+					setError(lblError2, "Invalid email address.");
+					
+					email.requestFocus();
+				}
+			}
+			else
+			{
+				// invalid last name
+				setError(lblError2, "Please enter a last name.");
+				
+				lastName.requestFocus();
+			}
+		}
+		else
+		{
+			// invalid first name
+			setError(lblError2, "Please enter a first name.");
+			
+			firstName.requestFocus();
 		}
 		return false;
 	}
@@ -106,20 +154,22 @@ public class SignupController
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
 		// TODO: verify details
-		validateAccount();
-		
-		// try to sign up
-		if (c.addCustomer(storedUsername, storedPassword,
-						firstName.getText(), lastName.getText(),
-						email.getText(), phone.getText()))
+		if (validateAccount() && validateDetails())
 		{
-			// sign up success
-			System.out.println("Sign up success");
-		}
-		else
-		{
-			// sign up failure
-			System.out.println("Sign up failed");
+			System.out.println("Sign up");
+//			// try to sign up
+//			if (c.addCustomer(storedUsername, storedPassword,
+//							firstName.getText(), lastName.getText(),
+//							email.getText(), phone.getText()))
+//			{
+//				// sign up success
+//				System.out.println("Sign up success");
+//			}
+//			else
+//			{
+//				// sign up failure
+//				System.out.println("Sign up failed");
+//			}
 		}
 	}
 }
