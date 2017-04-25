@@ -38,10 +38,10 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
     
     @FXML
-    private ChoiceBox shiftDropdown;
+    private ChoiceBox<String> shiftDropdown;
     
     @FXML
-    private ChoiceBox durationDropdown;
+    private ChoiceBox<String> durationDropdown;
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
