@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Account;
@@ -26,7 +27,7 @@ public class SignupController
 	private String storedUsername;
 	private String storedPassword;
 	
-	@FXML private VBox root;
+	@FXML private BorderPane root;
 	@FXML private TextField username;
 	@FXML private PasswordField password;
 	@FXML private PasswordField passwordConf;
@@ -36,10 +37,10 @@ public class SignupController
 	@FXML private TextField email;
 	@FXML private TextField phone;
 	
-	@FXML private Label lblError;
+	@FXML private Label lblError1;
+	@FXML private Label lblError2;
 	
-	@FXML
-	public void handleNext(ActionEvent event) throws IOException
+	public boolean validateAccount()
 	{
 		// check the username and password
 		if (c.validateUserName(username.getText()))
@@ -53,16 +54,14 @@ public class SignupController
 					storedUsername = username.getText();
 					storedPassword = password.getText();
 					
-					lblError.setVisible(false);
-					// username and password are accepted, transition to details
-					Scene details = new Scene(FXMLLoader.load(getClass().getResource("Signup-2.fxml")));
-					Stage stage = (Stage) root.getScene().getWindow();
-					stage.setScene(details);
+					lblError1.setVisible(false);
+					// username and password are accepted
+					return true;
 				}
 				else
 				{
-					lblError.setText("Passwords don't match.");
-					lblError.setVisible(true);
+					lblError1.setText("Passwords don't match.");
+					lblError1.setVisible(true);
 
 					passwordConf.clear();
 					passwordConf.requestFocus();
@@ -72,8 +71,8 @@ public class SignupController
 			{
 				// invalid password
 				// TODO: more detailed error
-				lblError.setText("Invalid Password.");
-				lblError.setVisible(true);
+				lblError1.setText("Invalid Password.");
+				lblError1.setVisible(true);
 				
 				password.clear();
 				password.requestFocus();
@@ -82,11 +81,12 @@ public class SignupController
 		else
 		{
 			// invalid username
-			lblError.setText("Invalid Username.");
-			lblError.setVisible(true);
+			lblError1.setText("Invalid Username.");
+			lblError1.setVisible(true);
 			
 			username.requestFocus();
 		}
+		return false;
 	}
 	
 	@FXML
@@ -103,17 +103,10 @@ public class SignupController
 	}
 	
 	@FXML
-	public void handleBack(ActionEvent event) throws IOException
-	{
-		Scene signup = new Scene(FXMLLoader.load(getClass().getResource("Signup.fxml")));
-		Stage stage = (Stage) root.getScene().getWindow();
-		stage.setScene(signup);
-	}
-	
-	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
 		// TODO: verify details
+		validateAccount();
 		
 		// try to sign up
 		if (c.addCustomer(storedUsername, storedPassword,
