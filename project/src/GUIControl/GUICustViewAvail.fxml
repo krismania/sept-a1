@@ -21,7 +21,7 @@
       <TextField fx:id="saturday" layoutX="7.0" layoutY="294.0" onAction="#outputAvail" prefHeight="50.28" prefWidth="589.0" text="Saturday" />
       <TextField fx:id="sunday" layoutX="7.0" layoutY="345.0" onAction="#outputAvail" prefHeight="50.28" prefWidth="589.0" text="Sunday" />
       <Label layoutX="499.0" layoutY="14.0" text="Evening" />
-      <Button fx:id="navMenu" layoutX="30.0" layoutY="409.0" mnemonicParsing="false" text="Menu" />
-      <Button fx:id="exit" layoutX="513.0" layoutY="409.0" mnemonicParsing="false" text="Close" />
+      <Button fx:id="navMenu" layoutX="30.0" layoutY="409.0" mnemonicParsing="false" onAction="#navMenueButtonAction" text="Menu" />
+      <Button fx:id="exit" layoutX="513.0" layoutY="409.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
    </children>
 </AnchorPane>
