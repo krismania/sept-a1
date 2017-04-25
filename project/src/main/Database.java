@@ -194,7 +194,6 @@ public class Database implements DBInterface {
 						String ownerName = boQuery.getString("Name");
 						String address = boQuery.getString("Address");
 						String phone = boQuery.getString("Phone");
-						
 						closeConnection();
 						// create obj and return
 						return new BusinessOwner(usr, businessName, ownerName, address, phone);
@@ -806,7 +805,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			rs = stmt.executeQuery(query);
 			
-			while(rs.next())
+			if(rs.next())
 			{
 				String type = rs.getString("Type");
 				
