@@ -8,12 +8,14 @@ package GUIControl;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Account;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -75,10 +77,14 @@ public class GUIAddTimeController implements Initializable {
 	
     //TN Collect DatePicker data and also timestamp	
     LocalDate localDate = datePicker.getValue();
-	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-	Date date = (Date) Date.from(instant);
 	//TN Test datepicker output in console
-	System.out.println(localDate + "\n" + instant + "\n" + date);
+	System.out.println(localDate);
+	System.out.println(shiftDropdown.getValue());
+	System.out.println(durationDropdown.getValue());
+	
+	boolean added;
+	
+	added = Controller.getInstance().addShift(1, localDate, shiftDropdown.getValue(), durationDropdown.getValue());
     }
     
     @Override
