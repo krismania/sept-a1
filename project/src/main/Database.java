@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -412,10 +413,11 @@ public class Database implements DBInterface {
 				if (rs.next())
 				{
 					String day = rs.getString("Day");
-			        Timestamp time = rs.getTimestamp("Time");
+			        int time = rs.getInt("Time");
 			        int empID = rs.getInt("EmpID");
 			        closeConnection();
-			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), time);
+			        LocalTime convertTime = LocalTime.ofSecondOfDay(time);
+			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), convertTime);
 				}
 			}
 			
@@ -446,12 +448,12 @@ public class Database implements DBInterface {
 			{
 		         //JM Retrieve by column name
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         Timestamp time = rs.getTimestamp("Time");
+		         int time = rs.getInt("Time");
 		         int shiftID = rs.getInt("Shift_ID");
-		         
 		         System.out.println(time);
+		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
 		         // create shift object. -kg
-		         Shift shift = new Shift(shiftID, EmpID, day, time);
+		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
 		         
 		         // add it to the list
 		         Shifts.add(shift);
@@ -563,10 +565,10 @@ public class Database implements DBInterface {
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
 					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
-					ShiftTime time = ShiftTime.valueOf(bookingQuery.getString("Time"));
+					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
 					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, time));
+					bookings.add(new Booking(id, customer, employeeID, date, timer));
 				}
 			}
 			
@@ -758,10 +760,10 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-	private boolean CreateShift(DayOfWeek day, Timestamp time, int iD, int employeeID) 
+	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time.getTime() + "', '" + iD + "'"
+				+ day.name() + "', '" + time + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -990,7 +992,7 @@ public class Database implements DBInterface {
 				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 
 		//Shift Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time TIME", "Shift_ID int",
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time int", "Shift_ID int",
 				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
 		//Booking Table
