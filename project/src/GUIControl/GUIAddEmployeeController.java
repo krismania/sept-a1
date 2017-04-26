@@ -59,37 +59,12 @@ public class GUIAddEmployeeController implements Initializable {
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
-    	Controller.getInstance().getAllEmployees();
-    	
-    submitNewEmpData.setOnAction(e -> 
-    {
+    	//Controller.getInstance().getAllEmployees();
     	String firstName = tfEmpFName.getText();
     	String lastName = tfEmpLName.getText();
     	String email = tfEmpEmailAdd.getText();
     	String phoneNumber = tfEmpPhNum.getText();
-    	
     	employee(firstName, lastName, email, phoneNumber);
-    	
-    	/*if (employee() != true)
-    	{
-    		GUIAlert.infoBox("You have entered incorrect data please try again", "");
-    	}
-    	else
-    	    GUIAlert.infoBox("New employee is successfully added", "");
-    		// load the scene
-    	try{
-    		Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
-    				
-    		// get current stage
-    		Stage stage = (Stage) submitNewEmpData.getScene().getWindow();
-    				
-    		// switch scenes
-    		stage.setScene(boLogin);
-    	}
-    	catch(IOException error) {
-    		error.printStackTrace();
-    	}*/
-    	});
     }
 
     @FXML
@@ -111,39 +86,27 @@ public class GUIAddEmployeeController implements Initializable {
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
   
     private boolean employee(String firstName, String lastName, String email, String phoneNumber){
-
-    	
-    	//TM - Add text field input to Controller addEmployee method
+    	//TN - Add text field input to Controller addEmployee method
     	boolean addEmp = c.addEmployee(firstName, lastName, email, phoneNumber);
     	if(addEmp == false)
         {
+    		//TN - Presents red error message if input is false
     		lblError.setVisible(true);
     		return false;
         }
         else 
     	{
-    		GUIAlert info  = new GUIAlert();
+    		//TN -  If validation is successfull a confirmation popup is presented.
+        	GUIAlert info  = new GUIAlert();
+    		lblError.setVisible(false);
     		info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
-        	return true;
+    		//TN - Fields are cleared following correct input.
+    		tfEmpFName.clear();
+    		tfEmpLName.clear();
+    		tfEmpEmailAdd.clear();
+    		tfEmpPhNum.clear();
+    		return true;
     	}
-  /*	String firstName = tfEmpFName.getText();
-  * 	String lastName = tfEmpLName.getText();
-  * 	String email = tfEmpEmailAdd.getText();
-  *     String phone = tfEmpPhNum.getText();
-  *		
-  *	    // HashMap for adding employee 
-  *	
-  *		//<key, value>
-  *	    HashMap<String, String> map = new HashMap<String, String>();
-  *     map.put("firstName",firstName);
-  *	    map.put("lastName", lastName);
-  *     map.put("email", email);
-  *	    map.put("phoneNumber", phone);
-  *	
-  *     // Just testing hashMap for employees. Will refine after....
-  *     boolean value = Controller.getInstance().addEmployee(map);
-  *     return value;
-  */ 
     } 	
     @Override
     public void initialize(URL url, ResourceBundle rb) {
