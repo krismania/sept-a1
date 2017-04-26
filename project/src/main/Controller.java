@@ -194,7 +194,7 @@ public class Controller
 	
 	public boolean validateUserName(String input)
 	{
-		if(!input.isEmpty()){
+		if(!input.isEmpty() && (input.length()<15) && !input.contains(" ")){
 			return true;
 		}
 		
