@@ -1,6 +1,7 @@
 package main;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -168,13 +169,28 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, int hour, int minutes)
+	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
-		shift.setDay(day);
+		//shift.setDay(day);
 		//shift.setTime(time);
-		Timestamp time = makeTimestamp(hour, minutes);
-		shift.setTime(time);
+		//Timestamp time = makeTimestamp(hour, minutes);
+		//shift.setTime(time);
+		shift.setDay(date.getDayOfWeek());
+		if(time.length() > 7) {
+			int hour = Integer.parseInt(time.substring(0));
+			int minutes = Integer.parseInt(time.substring(3, 5));
+			Timestamp timeStamp = makeTimestamp(hour, minutes);
+			System.out.println(timeStamp.toString());
+		}
+		else
+		{
+			int hour = Integer.parseInt(time.substring(0, 1));
+			int minutes = Integer.parseInt(time.substring(2, 3));
+			Timestamp timeStamp = makeTimestamp(hour, minutes);
+			System.out.println(timeStamp.toString());
+			shift.setTime(timeStamp);
+		}
 		
 		return db.addShift(shift);
 	}
@@ -248,10 +264,9 @@ public class Controller
 	}
 	
 	private Timestamp makeTimestamp(int hour, int minute) {
-		Calendar cal = new GregorianCalendar();
+		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.HOUR_OF_DAY, hour);
 		cal.set(Calendar.MINUTE, minute);
-		
 		return new Timestamp(cal.getTimeInMillis());
 	}
 }
