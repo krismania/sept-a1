@@ -31,12 +31,12 @@ import javafx.scene.control.TextField;
  * @author tn
  */
 public class GUIAddEmployeeController implements Initializable {  
-	Controller c = Controller.getInstance();
+    Controller c = Controller.getInstance();
 	
     @FXML 
     private Label lblError;
     
-	@FXML
+    @FXML
     private TextField tfEmpFName;
 
     @FXML
@@ -75,42 +75,38 @@ public class GUIAddEmployeeController implements Initializable {
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
-		// load the scene
-		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
-		
-		// switch scenes
-		stage.setScene(boMenu);
+        // load the scene
+        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+        // switch scenes
+        stage.setScene(boMenu);
     }
     
-    
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
-  
     private boolean employee(String firstName, String lastName, String email, String phoneNumber){
     	//TN - Add text field input to Controller addEmployee method
     	boolean addEmp = c.addEmployee(firstName, lastName, email, phoneNumber);
     	if(addEmp == false)
         {
-    		//TN - Presents red error message if input is false
-    		lblError.setVisible(true);
-    		return false;
+            //TN - Presents red error message if input is false
+            lblError.setVisible(true);
+            return false;
         }
         else 
     	{
-    		//TN -  If validation is successfull a confirmation popup is presented.
-        	GUIAlert info  = new GUIAlert();
-    		lblError.setVisible(false);
-    		info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
-    		//TN - Fields are cleared following correct input.
-    		tfEmpFName.clear();
-    		tfEmpLName.clear();
-    		tfEmpEmailAdd.clear();
-    		tfEmpPhNum.clear();
-    		return true;
+            //TN -  If validation is successfull a confirmation popup is presented.
+            GUIAlert info  = new GUIAlert();
+            lblError.setVisible(false);
+            info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
+            //TN - Fields are cleared following correct input.
+            tfEmpFName.clear();
+            tfEmpLName.clear(); 
+            tfEmpEmailAdd.clear();
+            tfEmpPhNum.clear();
+            return true;
     	}
     } 	
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
 }
