@@ -67,8 +67,6 @@ public class GUIBOMenuController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-   
-        //TN - call a new scene instance
 
     }    
     @FXML
