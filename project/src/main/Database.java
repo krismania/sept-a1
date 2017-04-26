@@ -995,7 +995,7 @@ public class Database implements DBInterface {
 		
 		//Booking Table
 		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
-				"Date DATE", "Time varchar(10)", "Booking_ID");
+				"Date DATE", "Time int", "Booking_ID");
 	}
 	
 	private void createTestData()
