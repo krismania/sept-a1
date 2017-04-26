@@ -31,6 +31,11 @@ import javafx.scene.control.TextField;
  * @author tn
  */
 public class GUIAddEmployeeController implements Initializable {  
+	Controller c = Controller.getInstance();
+	
+    @FXML 
+    private Label lblError;
+    
 	@FXML
     private TextField tfEmpFName;
 
@@ -58,7 +63,14 @@ public class GUIAddEmployeeController implements Initializable {
     	
     submitNewEmpData.setOnAction(e -> 
     {
-    	if (employee() != true)
+    	String firstName = tfEmpFName.getText();
+    	String lastName = tfEmpLName.getText();
+    	String email = tfEmpEmailAdd.getText();
+    	String phoneNumber = tfEmpPhNum.getText();
+    	
+    	employee(firstName, lastName, email, phoneNumber);
+    	
+    	/*if (employee() != true)
     	{
     		GUIAlert.infoBox("You have entered incorrect data please try again", "");
     	}
@@ -76,23 +88,10 @@ public class GUIAddEmployeeController implements Initializable {
     	}
     	catch(IOException error) {
     		error.printStackTrace();
-    	}
+    	}*/
     	});
     }
-    public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
-    {
-    	if(firstName.equals("tfEmfName"))
-        {
-            System.out.print(true);
-            return true;
-        }
-        else
-        {
-            System.out.print(false);
-            return false;
-        }
 
-    }
     @FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) exit.getScene().getWindow();
@@ -111,9 +110,22 @@ public class GUIAddEmployeeController implements Initializable {
     
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
   
-    private boolean employee(){
-  
-	    return true;
+    private boolean employee(String firstName, String lastName, String email, String phoneNumber){
+
+    	
+    	//TM - Add text field input to Controller addEmployee method
+    	boolean addEmp = c.addEmployee(firstName, lastName, email, phoneNumber);
+    	if(addEmp == false)
+        {
+    		lblError.setVisible(true);
+    		return false;
+        }
+        else 
+    	{
+    		GUIAlert info  = new GUIAlert();
+    		info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
+        	return true;
+    	}
   /*	String firstName = tfEmpFName.getText();
   * 	String lastName = tfEmpLName.getText();
   * 	String email = tfEmpEmailAdd.getText();

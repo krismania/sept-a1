@@ -21,5 +21,6 @@
       <Button fx:id="submitNewEmpData" layoutX="423.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit Input" />
       <Button fx:id="navMenu" layoutX="38.0" layoutY="22.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
       <Button fx:id="exit" layoutX="38.0" layoutY="311.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
+      <Label fx:id="lblError" layoutX="321.0" layoutY="229.0" prefHeight="91.0" prefWidth="158.0" text="Incorrect Form Details" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

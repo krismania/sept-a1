@@ -13,7 +13,7 @@ public class GUIAlert
         infoBox(infoMessage, titleBar, null);
     }
 
-public static void infoBox(String infoMessage, String titleBar, String headerMessage)
+    public static void infoBox(String infoMessage, String titleBar, String headerMessage)
     {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(titleBar);
