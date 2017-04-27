@@ -31,6 +31,12 @@ public class ControllerTest
 	}
 	
 	@Test
+	public void testValidUserName3()
+	{
+		assertTrue(controller.validateUserName("ABCDEFGHIJ12345"));
+	}
+	
+	@Test
 	public void testInvalidUserName()
 	{
 		assertFalse(controller.validateUserName(""));
