@@ -31,7 +31,12 @@ import javafx.scene.control.TextField;
  * @author tn
  */
 public class GUIAddEmployeeController implements Initializable {  
-	@FXML
+    Controller c = Controller.getInstance();
+	
+    @FXML 
+    private Label lblError;
+    
+    @FXML
     private TextField tfEmpFName;
 
     @FXML
@@ -54,45 +59,14 @@ public class GUIAddEmployeeController implements Initializable {
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
-    	Controller.getInstance().getAllEmployees();
-    	
-    submitNewEmpData.setOnAction(e -> 
-    {
-    	if (employee() != true)
-    	{
-    		GUIAlert.infoBox("You have entered incorrect data please try again", "");
-    	}
-    	else
-    	    GUIAlert.infoBox("New employee is successfully added", "");
-    		// load the scene
-    	try{
-    		Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
-    				
-    		// get current stage
-    		Stage stage = (Stage) submitNewEmpData.getScene().getWindow();
-    				
-    		// switch scenes
-    		stage.setScene(boLogin);
-    	}
-    	catch(IOException error) {
-    		error.printStackTrace();
-    	}
-    	});
+    	//Controller.getInstance().getAllEmployees();
+    	String firstName = tfEmpFName.getText();
+    	String lastName = tfEmpLName.getText();
+    	String email = tfEmpEmailAdd.getText();
+    	String phoneNumber = tfEmpPhNum.getText();
+    	employee(firstName, lastName, email, phoneNumber);
     }
-    public boolean textFieldCheck(String firstName, String lastName, String email, String employeeID)
-    {
-    	if(firstName.equals("tfEmfName"))
-        {
-            System.out.print(true);
-            return true;
-        }
-        else
-        {
-            System.out.print(false);
-            return false;
-        }
 
-    }
     @FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) exit.getScene().getWindow();
@@ -101,41 +75,38 @@ public class GUIAddEmployeeController implements Initializable {
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
-		// load the scene
-		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
-		
-		// switch scenes
-		stage.setScene(boMenu);
+        // load the scene
+        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+        // switch scenes
+        stage.setScene(boMenu);
     }
     
-    
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
-  
-    private boolean employee(){
-  
-	    return true;
-  /*	String firstName = tfEmpFName.getText();
-  * 	String lastName = tfEmpLName.getText();
-  * 	String email = tfEmpEmailAdd.getText();
-  *     String phone = tfEmpPhNum.getText();
-  *		
-  *	    // HashMap for adding employee 
-  *	
-  *		//<key, value>
-  *	    HashMap<String, String> map = new HashMap<String, String>();
-  *     map.put("firstName",firstName);
-  *	    map.put("lastName", lastName);
-  *     map.put("email", email);
-  *	    map.put("phoneNumber", phone);
-  *	
-  *     // Just testing hashMap for employees. Will refine after....
-  *     boolean value = Controller.getInstance().addEmployee(map);
-  *     return value;
-  */ 
+    private boolean employee(String firstName, String lastName, String email, String phoneNumber){
+    	//TN - Add text field input to Controller addEmployee method
+    	boolean addEmp = c.addEmployee(firstName, lastName, email, phoneNumber);
+    	if(addEmp == false)
+        {
+            //TN - Presents red error message if input is false
+            lblError.setVisible(true);
+            return false;
+        }
+        else 
+    	{
+            //TN -  If validation is successful a confirmation popup is presented.
+            GUIAlert info  = new GUIAlert();
+            lblError.setVisible(false);
+            info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
+            //TN - Fields are cleared following correct input.
+            tfEmpFName.clear();
+            tfEmpLName.clear(); 
+            tfEmpEmailAdd.clear();
+            tfEmpPhNum.clear();
+            return true;
+    	}
     } 	
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
 }
