@@ -64,7 +64,7 @@ public class SignupController
 		// check the username and password
 		if (c.validateUserName(username.getText()))
 		{
-			if (Account.passwordAccepted(password.getText()))
+			if (c.passwordAccepted(password.getText()))
 			{
 				// check that confirm password matches
 				if (password.getText().equals(passwordConf.getText()))

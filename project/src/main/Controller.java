@@ -1,8 +1,13 @@
 package main;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -165,11 +170,11 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
+	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
-		shift.setDay(day);
-		shift.setTime(time);
+		shift.setTime(convertTime(time));
+		shift.setDay(date.getDayOfWeek());
 		
 		return db.addShift(shift);
 	}
@@ -194,7 +199,7 @@ public class Controller
 	
 	public boolean validateUserName(String input)
 	{
-		if(!input.isEmpty()){
+		if(!input.isEmpty() && (input.length()<15) && !input.contains(" ") && input.matches("[a-zA-Z0-9]+")){
 			return true;
 		}
 		
@@ -240,5 +245,67 @@ public class Controller
 	{
 		input = input.replaceAll("[ \\-.()]", "");
 		return input.matches("\\+?(\\d{8}|\\d{10,11})");
+	}
+	
+	private LocalTime convertTime(String time) {
+		if(time.matches("\\d:\\d\\d am"))
+		{
+			time = "0".concat(time);
+			time = time.replaceAll("\\sam", "");
+		} 
+		else if(time.matches("\\d\\d:\\d\\d am"))
+		{
+			time = time.replaceAll("\\sam", "");
+		}
+		else if(time.matches("\\d:\\d\\d pm"))
+		{
+			int hour = Character.getNumericValue(time.charAt(0));
+			hour = hour + 12;
+			
+			time = time.replaceAll("\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		else if(time.matches("\\d\\d:\\d\\d pm"))
+		{
+			int hour = Integer.parseInt(time.substring(0, 2));
+			if(hour != 12){
+				hour = hour + 12;
+			}
+			time = time.replaceAll("\\d\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		System.out.println(time);
+		LocalTime newTime = LocalTime.parse(time);
+		return newTime;
+  }
+  
+	/**
+	 * Validates account passwords based on some rules
+	 * TODO: document the rules
+	 * @author krismania
+	 */
+	public boolean passwordAccepted(String password)
+	{
+		//check length
+		if (password.length() >= 6 && password.length() < 15 && password.matches("[a-zA-Z0-9]+"))
+		{
+			// loop through each character and check if there is (at least) 1 upper case, 1 lower case and 1 number
+			// the following vars are set to true once an occurrence of each is found. -kg
+			boolean upper = false;
+			boolean lower = false;
+			boolean num = false;
+			
+			for (int i = 0; i < password.length(); i++)
+			{
+				// the surrounding if statements prevent extra checks once criteria have been met. -kg
+				if (!upper) if (Character.isUpperCase(password.charAt(i))) upper = true;
+				if (!lower) if (Character.isLowerCase(password.charAt(i))) lower = true;
+				if (!num) if (Character.isDigit(password.charAt(i))) num = true;
+			}
+			
+			// return true if all criteria are met. -kg
+			return upper && lower && num;
+		}
+		return false;
 	}
 }
