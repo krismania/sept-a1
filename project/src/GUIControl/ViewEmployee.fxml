@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -15,13 +16,48 @@
    <center>
       <BorderPane>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+            <VBox prefWidth="180.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="ID" />
+                  <TextField fx:id="selEmpID" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="First Name" />
+                  <TextField fx:id="selEmpFirstName" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Last Name" />
+                  <TextField fx:id="selEmpLastName" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Email Address" />
+                  <TextField fx:id="selEmpEmail" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Phone Number" />
+                  <TextField fx:id="selEmpPhone" editable="false">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="30.0" />
+               </BorderPane.margin></VBox>
          </center>
          <left>
-            <TableView fx:id="employeeTabe" prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="employeeTable" onMouseClicked="#handleChangeEmployee" prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="employeeID" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" resizable="false" text="ID" />
-                <TableColumn fx:id="EmployeeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Employee" />
+                <TableColumn fx:id="employeeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Employee" />
               </columns>
             </TableView>
          </left>
@@ -43,7 +79,7 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="back" mnemonicParsing="false" text="Back" />
+            <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
