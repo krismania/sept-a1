@@ -29,29 +29,35 @@ public class ControllerTest
 	{
 		assertTrue(controller.validateUserName("Alex123"));
 	}
-	
+	// boundary test. 14 characters
 	@Test
 	public void testValidUserName3()
 	{
 		assertTrue(controller.validateUserName("ABCDEFGH123456"));
 	}
-	
+	// testing for null input
 	@Test
 	public void testInvalidUserName()
 	{
 		assertFalse(controller.validateUserName(""));
 	}
-	
+	// testing for special characters
 	@Test
 	public void testInvalidUserName2()
 	{
 		assertFalse(controller.validateUserName("Abc12@"));
 	}
-	
+	//testing for greater or equal to character limit 15
 	@Test
 	public void testInvalidUserName3()
 	{
 		assertFalse(controller.validateUserName("AbCdEfGh12345A1"));	
+	}
+	// testing for white space
+	@Test
+	public void testInvalidUserName4()
+	{
+		assertFalse(controller.validateUserName("Hello World"));	
 	}
 	
 	// test static validator methods. -kg	
