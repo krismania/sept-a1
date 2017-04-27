@@ -93,7 +93,7 @@ public class GUIAddEmployeeController implements Initializable {
         }
         else 
     	{
-            //TN -  If validation is successfull a confirmation popup is presented.
+            //TN -  If validation is successful a confirmation popup is presented.
             GUIAlert info  = new GUIAlert();
             lblError.setVisible(false);
             info.infoBox("New Employee Successfully Added", "Add Employee Confirmation");
