@@ -30,6 +30,9 @@ public class GUIBOMenuController implements Initializable {
     private Button addEmp;
 
     @FXML
+    private Button viewEmployee;
+    
+    @FXML
     private Button addTime;
 
     @FXML
@@ -42,7 +45,7 @@ public class GUIBOMenuController implements Initializable {
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
-        Parent rootAddEmp, rootAddTime, rootViewBooking;
+        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking;
         if(event.getSource()==addEmp) {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
@@ -51,6 +54,15 @@ public class GUIBOMenuController implements Initializable {
             Scene scene = new Scene(rootAddEmp);
             stage.setScene(scene);
             stage.show();
+        }
+        else if (event.getSource()==viewEmployee)
+        {
+        	// Temp button to get to employees view. -kg
+        	stage = (Stage) viewEmployee.getScene().getWindow();
+        	rootViewEmployee = FXMLLoader.load(getClass().getResource("ViewEmployee.fxml"));
+        	Scene scene = new Scene(rootViewEmployee);
+        	stage.setScene(scene);
+        	stage.show();
         }
         else if(event.getSource()==addTime) {
         	stage=(Stage) addTime.getScene().getWindow();
