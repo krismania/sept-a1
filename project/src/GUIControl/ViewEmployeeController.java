@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,9 +62,20 @@ public class ViewEmployeeController implements Initializable
 			
 		});
 		
-		// employeeID.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("ID"));
-		employeeName.setCellValueFactory(new PropertyValueFactory<Employee, String>("firstName"));
-		
+		employeeName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(
+							CellDataFeatures<Employee, String> param)
+			{
+				StringProperty prop = new SimpleStringProperty();
+				prop.setValue(param.getValue().getFirstName() + " " + param.getValue().getLastName());
+				
+				return prop;
+			}
+			
+		});
+				
 		employeeTable.getItems().setAll(c.getAllEmployees());
 	}
 	

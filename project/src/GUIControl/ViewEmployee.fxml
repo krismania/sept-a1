@@ -57,7 +57,7 @@
             <TableView fx:id="employeeTable" onMouseClicked="#handleChangeEmployee" prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="employeeID" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" resizable="false" text="ID" />
-                <TableColumn fx:id="employeeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="250.0" resizable="false" text="Employee" />
+                <TableColumn fx:id="employeeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="248.0" prefWidth="-1.0" resizable="false" text="Employee" />
               </columns>
             </TableView>
          </left>
