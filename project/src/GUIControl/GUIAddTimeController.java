@@ -14,6 +14,9 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Account;
+import main.Controller;
+import main.DBInterface;
+import main.Employee;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,8 +35,11 @@ import javafx.scene.control.DatePicker;
  * @author tn
  */
 public class GUIAddTimeController implements Initializable {
-
-
+    Controller c = Controller.getInstance();
+    
+    @FXML 
+    private Label lblError;
+    
     @FXML
     private Button exit;
 
@@ -52,7 +58,6 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private ChoiceBox<String> durationDropdown;
 
-	
     @FXML
     //TN - Button to close app.
     private void closeButtonAction(ActionEvent event) throws IOException {
@@ -70,17 +75,45 @@ public class GUIAddTimeController implements Initializable {
 		stage.setScene(boMenu);
     }
     
+    //TN - Collects data from DatePicker and Dropdowns and stores into variables
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
 	
     //TN Collect DatePicker data and also timestamp	
     LocalDate localDate = datePicker.getValue();
 	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+	
+	//TN Collects shift time from dropdown menu
+	String timeString = shiftDropdown.getValue();
+	
+	//TN Collects shift time from dropdown menu
+	String durationString = durationDropdown.getValue();
+	
+	//Tn Date captured in local time
 	Date date = (Date) Date.from(instant);
-	//TN Test datepicker output in console
-	System.out.println(localDate + "\n" + instant + "\n" + date);
+	
+	
+	
     }
     
+    //TN Send data to Controller - not yet implemented
+ /*   private boolean testShiftDate(String dayString, String timeString, int empID){
+    	//TN - Add text field input to Controller addEmployee method
+    	boolean addDate = c.shiftExists(dayString, timeString, empID);
+    	if(addDate == false)
+        {
+            //TN - Presents red error message if input is false
+            lblError.setVisible(true);
+            return false;
+        }
+        else 
+    	{
+            //TN -  If validation is successful a confirmation popup is presented.
+            lblError.setVisible(false);
+
+            return true;
+    	}
+ */     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	
