@@ -33,13 +33,25 @@ public class ControllerTest
 	@Test
 	public void testValidUserName3()
 	{
-		assertTrue(controller.validateUserName("ABCDEFGHIJ12345"));
+		assertTrue(controller.validateUserName("ABCDEFGH123456"));
 	}
 	
 	@Test
 	public void testInvalidUserName()
 	{
 		assertFalse(controller.validateUserName(""));
+	}
+	
+	@Test
+	public void testInvalidUserName2()
+	{
+		assertFalse(controller.validateUserName("Abc12@"));
+	}
+	
+	@Test
+	public void testInvalidUserName3()
+	{
+		assertFalse(controller.validateUserName("AbCdEfGh12345A1"));	
 	}
 	
 	// test static validator methods. -kg	
