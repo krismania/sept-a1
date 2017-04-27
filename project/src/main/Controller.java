@@ -113,6 +113,10 @@ public class Controller
 		return shifts;
 	}
 	
+	public ArrayList<String> getShiftsByEmp(int empID) {
+		
+	}
+	
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = db.getPastBookings();
