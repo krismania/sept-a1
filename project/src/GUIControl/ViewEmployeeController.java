@@ -92,11 +92,14 @@ public class ViewEmployeeController implements Initializable
 		Employee selEmp = employeeTable.getSelectionModel().getSelectedItem();
 		
 		// show employee details in details pane
-		selEmpID.setText(Integer.toString(selEmp.ID));
-		selEmpFirstName.setText(selEmp.getFirstName());
-		selEmpLastName.setText(selEmp.getLastName());
-		selEmpEmail.setText(selEmp.getEmail());
-		selEmpPhone.setText(selEmp.getPhoneNumber());
+		if (selEmp != null)
+		{
+			selEmpID.setText(Integer.toString(selEmp.ID));
+			selEmpFirstName.setText(selEmp.getFirstName());
+			selEmpLastName.setText(selEmp.getLastName());
+			selEmpEmail.setText(selEmp.getEmail());
+			selEmpPhone.setText(selEmp.getPhoneNumber());
+		}
 	}
 	
 	@FXML
