@@ -8,6 +8,7 @@ package GUIControl;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -79,6 +80,10 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
 	
+    	
+       // boolean added;
+    	
+       // added = c.getInstance().addShift(1, dayDropdown.getValue(), timeDropdown.getValue());
         //TN Collect shift day from dropdown menu
         String day = dayDropdown.getValue();
         
@@ -123,32 +128,12 @@ public class GUIAddTimeController implements Initializable {
         		"1 hour 30 minutes", "2 hours");
         durationDropdown.getSelectionModel().select("30 minutes");
         
-        
+        //TN - initialise shift duration dropdown menus
         dayDropdown.getItems().removeAll(dayDropdown.getItems());
         dayDropdown.getItems().addAll("Monday", "Tuesday", 
         		"Wednesday", "Thursday", "Friday", "Saturday");
         dayDropdown.getSelectionModel().select("Monday");  
     
     }
-
-    /* @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException{
-    Stage stage;
-    Parent root;
-    if(event.getSource()==btRecordAvail) {
-        //TN - Need to implement capture data and send to method
-    	Account account = c.login(shiftDropdown.getText(), durationDropdown.getText());
-        //TN - Directs to confirmation scene
-        stage=(Stage) btRecordAvail.getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml")); 
-     }
-     else
-     {
-         stage=(Stage) menu.getScene().getWindow();
-         root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-     } 
-     Scene scene = new Scene(root);
-     stage.setScene(scene);
-     stage.show(); 
- }   */
-}
+    
+}   
