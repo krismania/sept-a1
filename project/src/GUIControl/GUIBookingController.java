@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -82,7 +83,10 @@ public class GUIBookingController {
     
     @FXML
     private void generateTimesByEmp(ActionEvent event) throws IOException{
-    	String emp = employeePicker.getValue();
+    	ArrayList<LocalTime> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
+    	
+    	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
+    	//bookingOptionsDropdown.getItems().addAll(times);
     	
     }
 }

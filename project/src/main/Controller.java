@@ -113,8 +113,18 @@ public class Controller
 		return shifts;
 	}
 	
-	public ArrayList<String> getShiftsByEmp(int empID) {
+	public ArrayList<LocalTime> getShiftsByEmp(String emp, LocalDate date) {
+		int empID = Integer.parseInt(emp);
+		DayOfWeek day = date.getDayOfWeek();
+		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
+		ArrayList<LocalTime> availableTimes = new ArrayList<LocalTime>();
 		
+		for (Shift shift : shifts) {
+			LocalTime time = shift.getTime();
+			System.out.println("Time in shift date: " + time);
+			availableTimes.add(time);
+		}
+		return availableTimes;
 	}
 	
 	public ArrayList<Booking> getPastBookings()
