@@ -204,7 +204,7 @@ public class ControllerTest
 	@Test
 	public void testValidPassword1()
 	{		
-		String password = "SomePassword123";
+		String password = "SomePassword12";
 		assertTrue(controller.passwordAccepted(password));
 	}
 	
