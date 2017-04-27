@@ -100,7 +100,7 @@ public interface DBInterface
 	
 	
 	// TODO: return array of Shifts
-	ArrayList<Shift> getShifts(int EmpID);
+	ArrayList<Shift> getShifts(int EmpID, String Day);
 	
 	
 	public TreeMap<Shift, Booking> getShiftBookings();

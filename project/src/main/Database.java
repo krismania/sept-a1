@@ -472,15 +472,16 @@ public class Database implements DBInterface {
 	}
 	
 	@Override
-	public ArrayList<Shift> getShifts(int EmpID)
+	public ArrayList<Shift> getShifts(int EmpID, String Day)
 	{
 		ArrayList<Shift> Shifts = new ArrayList<Shift>();
 		try
 		{
 			openConnection();
 			stmt = c.createStatement();
+			System.out.println(Day);
 			
-			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s'", EmpID);
+			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
 			
 			rs = stmt.executeQuery(sql);
 			
@@ -490,8 +491,9 @@ public class Database implements DBInterface {
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
 		         int time = rs.getInt("Time");
 		         int shiftID = rs.getInt("Shift_ID");
-		         System.out.println(time);
+		         System.out.println("Database check time: " +time);
 		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
+		         System.out.println("Time: " + convertTime);
 		         // create shift object. -kg
 		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
 		         
@@ -528,7 +530,7 @@ public class Database implements DBInterface {
 		ArrayList<Shift> shifts = new ArrayList<Shift>();
 		for (Employee employee : employees)
 		{
-			shifts.addAll(getShifts(employee.ID));
+			//shifts.addAll(getShifts(employee.ID));
 		}
 		
 		// get the list of bookings in the next 7 days
