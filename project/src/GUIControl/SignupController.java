@@ -85,7 +85,11 @@ public class SignupController
 			{
 				// invalid password
 				// TODO: more detailed error
-				setError(lblError1, "Invalid Password.");
+				setError(lblError1,"Password MUST"
+						+ "\ncontain digit,capital,lower "
+						+ "\nletter & b/w 6 "
+						+ "\n& 14 in length. NO spaces."
+						);
 				
 				password.clear();
 				passwordConf.clear();
