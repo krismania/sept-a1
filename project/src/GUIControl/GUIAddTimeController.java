@@ -8,12 +8,14 @@ package GUIControl;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Account;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,8 +34,11 @@ import javafx.scene.control.DatePicker;
  * @author tn
  */
 public class GUIAddTimeController implements Initializable {
-
-
+    Controller c = Controller.getInstance();
+    
+    @FXML 
+    private Label lblError;
+    
     @FXML
     private Button exit;
 
@@ -44,15 +49,14 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
     
     @FXML
-	private DatePicker datePicker;
+	private ChoiceBox<String> dayDropdown;
     
     @FXML
-    private ChoiceBox<String> shiftDropdown;
+    private ChoiceBox<String> timeDropdown;
     
     @FXML
     private ChoiceBox<String> durationDropdown;
 
-	
     @FXML
     //TN - Button to close app.
     private void closeButtonAction(ActionEvent event) throws IOException {
@@ -70,52 +74,62 @@ public class GUIAddTimeController implements Initializable {
 		stage.setScene(boMenu);
     }
     
+    //TN - Collects data from DatePicker and Dropdowns and stores into variables
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException{
+    private void handleButtonAction(ActionEvent event) throws IOException{    	
+     
+      // added = c.getInstance().addShift(1, dayDropdown.getValue(), timeDropdown.getValue());
+      //TN Collect shift day from dropdown menu
+      String day = dayDropdown.getValue();
+        
+      //TN Collects shift time from dropdown menu
+	    String timeString = timeDropdown.getValue();
 	
-    //TN Collect DatePicker data and also timestamp	
-    LocalDate localDate = datePicker.getValue();
-	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-	Date date = (Date) Date.from(instant);
-	//TN Test datepicker output in console
-	System.out.println(localDate + "\n" + instant + "\n" + date);
+	    //TN Collects shift time from dropdown menu
+	    String durationString = durationDropdown.getValue();
+
     }
     
+    //TN Send data to Controller - not yet implemented
+ /*   private boolean testShiftDate(String dayString, String timeString, int empID){
+    	//TN - Add text field input to Controller addEmployee method
+    	boolean addDate = c.shiftExists(dayString, timeString, empID);
+    	if(addDate == false)
+        {
+            //TN - Presents red error message if input is false
+            lblError.setVisible(true);
+            return false;
+        }
+        else 
+    	{
+            //TN -  If validation is successful a confirmation popup is presented.
+            lblError.setVisible(false);
+
+            return true;
+    	}
+ */     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	
-    	//TN - initialise shift time slot dropdown menus
-    	shiftDropdown.getItems().removeAll(shiftDropdown.getItems());
-        shiftDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+    //TN - initialise shift time slot dropdown menus
+    timeDropdown.getItems().removeAll(timeDropdown.getItems());
+    timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
         		"11:00 am", "11:30 pm", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
         		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30pm", "5:00 pm");
-        shiftDropdown.getSelectionModel().select("9:00 am");
+    timeDropdown.getSelectionModel().select("9:00 am");
         
-        //TN - initialise shift duration dropdown menus
-        durationDropdown.getItems().removeAll(durationDropdown.getItems());
-        durationDropdown.getItems().addAll("30 minutes", "1 hour", 
+    //TN - initialise shift duration dropdown menus
+    durationDropdown.getItems().removeAll(durationDropdown.getItems());
+    durationDropdown.getItems().addAll("30 minutes", "1 hour", 
         		"1 hour 30 minutes", "2 hours");
-        durationDropdown.getSelectionModel().select("30 minutes");
+    durationDropdown.getSelectionModel().select("30 minutes");
+        
+    //TN - initialise shift duration dropdown menus
+    dayDropdown.getItems().removeAll(dayDropdown.getItems());
+    dayDropdown.getItems().addAll("Monday", "Tuesday", 
+        		"Wednesday", "Thursday", "Friday", "Saturday");
+    dayDropdown.getSelectionModel().select("Monday");  
+    
     }
-
-    /* @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException{
-    Stage stage;
-    Parent root;
-    if(event.getSource()==btRecordAvail) {
-        //TN - Need to implement capture data and send to method
-    	Account account = c.login(shiftDropdown.getText(), durationDropdown.getText());
-        //TN - Directs to confirmation scene
-        stage=(Stage) btRecordAvail.getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("GUIAddShift.fxml")); 
-     }
-     else
-     {
-         stage=(Stage) menu.getScene().getWindow();
-         root = FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml"));
-     } 
-     Scene scene = new Scene(root);
-     stage.setScene(scene);
-     stage.show(); 
- }   */
-}
+    
+}   

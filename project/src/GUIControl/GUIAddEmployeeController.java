@@ -64,7 +64,7 @@ public class GUIAddEmployeeController implements Initializable {
     	String lastName = tfEmpLName.getText();
     	String email = tfEmpEmailAdd.getText();
     	String phoneNumber = tfEmpPhNum.getText();
-    	employee(firstName, lastName, email, phoneNumber);
+    	testEmployeeDetails(firstName, lastName, email, phoneNumber);
     }
 
     @FXML
@@ -82,7 +82,7 @@ public class GUIAddEmployeeController implements Initializable {
     }
     
     //TN - Gathers Employee variables and returns a boolean for validation of field processing
-    private boolean employee(String firstName, String lastName, String email, String phoneNumber){
+    private boolean testEmployeeDetails(String firstName, String lastName, String email, String phoneNumber){
     	//TN - Add text field input to Controller addEmployee method
     	boolean addEmp = c.addEmployee(firstName, lastName, email, phoneNumber);
     	if(addEmp == false)

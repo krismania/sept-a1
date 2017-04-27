@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 package GUIControl;
-import java.time.DayOfWeek;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -33,22 +32,21 @@ public class GUIBOViewBookingSumController implements Initializable {
 	
     @FXML
     private TableView<main.Booking> booking;
+
+    @FXML
+    private TableColumn<main.Booking, Integer> ID;
+
+    @FXML
+    private TableColumn<main.Booking, Integer> customer;
     
 	@FXML
-    private TableColumn<main.Booking, Date> date;
-
-    @FXML
-    private TableColumn<main.Booking, String> employeeID;
-
-    @FXML
-    private TableColumn<main.Booking, String> ID;
+    private TableColumn<main.Booking, Date> date; 
 
     @FXML
     private TableColumn<main.Booking, ShiftTime> time;
 
     @FXML
-    private TableColumn<main.Booking, String> customer;
-
+    private TableColumn<main.Booking, String> employeeID;
 	
 	@FXML
     private Button navMenu;
@@ -78,7 +76,7 @@ public class GUIBOViewBookingSumController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	booking.getItems().setAll(c.getPastBookings());
+        booking.getItems().setAll(c.getPastBookings());
         // TODO
     }    
     
