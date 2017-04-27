@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 package GUIControl;
-import java.time.DayOfWeek;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,9 +15,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import main.Booking;
 import main.Controller;
 import main.ShiftTime;
 
@@ -32,23 +33,22 @@ public class GUIBOViewBookingSumController implements Initializable {
 	private Controller c;
 	
     @FXML
-    private TableView<main.Booking> booking;
+    private TableView<ArrayList<Booking>> booking;
+
+    @FXML
+    private TableColumn<ArrayList<Booking>, Integer> ID;
+
+    @FXML
+    private TableColumn<ArrayList<Booking>, Integer> customer;
     
 	@FXML
-    private TableColumn<main.Booking, Date> date;
+    private TableColumn<ArrayList<Booking>, Date> date; 
 
     @FXML
-    private TableColumn<main.Booking, String> employeeID;
+    private TableColumn<ArrayList<Booking>, ShiftTime> time;
 
     @FXML
-    private TableColumn<main.Booking, String> ID;
-
-    @FXML
-    private TableColumn<main.Booking, ShiftTime> time;
-
-    @FXML
-    private TableColumn<main.Booking, String> customer;
-
+    private TableColumn<ArrayList<Booking>, String> employeeID;
 	
 	@FXML
     private Button navMenu;
@@ -78,7 +78,7 @@ public class GUIBOViewBookingSumController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	booking.getItems().setAll(c.getPastBookings());
+        booking.getItems().setAll(c.getPastBookings());
         // TODO
     }    
     
