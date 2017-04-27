@@ -137,6 +137,7 @@ public class ControllerTest
 	@Test
 	public void testInvalidEmail5()
 	{
+		// incorrect format. should be format characters@characters.characters
 		assertFalse(controller.validateEmail("richard@kuoch@"));
 	}
 	
@@ -144,13 +145,15 @@ public class ControllerTest
 	@Test
 	public void testPhoneNumber()
 	{
+		//null input
 		assertFalse(controller.validatePhoneNumber(""));
 	}
 	
 	@Test
 	public void testPhoneNumber2()
 	{
-		assertTrue(controller.validatePhoneNumber("98029744"));
+		//meets 10 numbers
+		assertTrue(controller.validatePhoneNumber("0398029744"));
 	}
 	
 	@Test
@@ -168,6 +171,7 @@ public class ControllerTest
 	@Test
 	public void testPhoneNumber5()
 	{
+		// must be 10 numbers
 		assertFalse(controller.validatePhoneNumber("1234567"));
 	}
 	
