@@ -1,6 +1,9 @@
 package main;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 /**
  * Keeps track of a recurring shift. A shift is associated with an employee,
@@ -13,9 +16,9 @@ public class Shift implements Comparable<Shift>
 	public final int employeeID;
 	
 	private DayOfWeek day;
-	private ShiftTime time;
+	private LocalTime time;
 	
-	public Shift(int ID, int employeeID, DayOfWeek day, ShiftTime time)
+	public Shift(int ID, int employeeID, DayOfWeek day, LocalTime time)
 	{
 		this.ID = ID;
 		this.employeeID = employeeID;
@@ -28,7 +31,7 @@ public class Shift implements Comparable<Shift>
 		return day;
 	}
 	
-	public ShiftTime getTime()
+	public LocalTime getTime()
 	{
 		return time;
 	}
@@ -38,7 +41,7 @@ public class Shift implements Comparable<Shift>
 		this.day = day;
 	}
 	
-	public void setTime(ShiftTime time)
+	public void setTime(LocalTime time)
 	{
 		this.time = time;
 	}

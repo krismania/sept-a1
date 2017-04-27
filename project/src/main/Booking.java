@@ -3,6 +3,7 @@ package main;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -16,9 +17,9 @@ public class Booking implements Comparable<Booking>
 	private String customer;
 	private int employeeID;
 	private Date date;
-	private ShiftTime time;
+	private LocalTime time;
 	
-	public Booking(int ID, String customer, int employeeID, Date date, ShiftTime time)
+	public Booking(int ID, String customer, int employeeID, Date date, LocalTime time)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
@@ -49,7 +50,7 @@ public class Booking implements Comparable<Booking>
 		return DayOfWeek.valueOf(weekdayFormat.format(date).toUpperCase());
 	}
 	
-	public ShiftTime getTime()
+	public LocalTime getTime()
 	{
 		return time;
 	}

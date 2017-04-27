@@ -1,9 +1,13 @@
 package main;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -171,11 +175,11 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
+	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
-		shift.setDay(day);
-		shift.setTime(time);
+		shift.setTime(convertTime(time));
+		shift.setDay(date.getDayOfWeek());
 		
 		return db.addShift(shift);
 	}
@@ -248,6 +252,38 @@ public class Controller
 		return input.matches("\\+?(\\d{8}|\\d{10,11})");
 	}
 	
+	private LocalTime convertTime(String time) {
+		if(time.matches("\\d:\\d\\d am"))
+		{
+			time = "0".concat(time);
+			time = time.replaceAll("\\sam", "");
+		} 
+		else if(time.matches("\\d\\d:\\d\\d am"))
+		{
+			time = time.replaceAll("\\sam", "");
+		}
+		else if(time.matches("\\d:\\d\\d pm"))
+		{
+			int hour = Character.getNumericValue(time.charAt(0));
+			hour = hour + 12;
+			
+			time = time.replaceAll("\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		else if(time.matches("\\d\\d:\\d\\d pm"))
+		{
+			int hour = Integer.parseInt(time.substring(0, 2));
+			if(hour != 12){
+				hour = hour + 12;
+			}
+			time = time.replaceAll("\\d\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		System.out.println(time);
+		LocalTime newTime = LocalTime.parse(time);
+		return newTime;
+  }
+  
 	/**
 	 * Validates account passwords based on some rules
 	 * TODO: document the rules
