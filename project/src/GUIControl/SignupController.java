@@ -99,7 +99,11 @@ public class SignupController
 		else
 		{
 			// invalid username
-			setError(lblError1, "Invalid Username.");
+			setError(lblError1,"Username MUST"
+					+ "\nbe > 0 and < 15"
+					+ "\nin length. NO spaces"
+					+ "\n& special characters."
+					);
 			
 			username.requestFocus();
 		}
