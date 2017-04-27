@@ -72,6 +72,11 @@ public class Controller
 		return db.getAllEmployees();
 	}
 	
+	public ArrayList<String> getEmpByDay(LocalDate day)
+	{
+		return db.getEmployeeWorkingOnDay(day);
+	}
+	
 	/**
 	 * Returns a hash map of shifts and bookings
 	 * @author James
@@ -106,6 +111,20 @@ public class Controller
 //		shifts.sort(byDayAndTime);
 		
 		return shifts;
+	}
+	
+	public ArrayList<LocalTime> getShiftsByEmp(String emp, LocalDate date) {
+		int empID = Integer.parseInt(emp);
+		DayOfWeek day = date.getDayOfWeek();
+		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
+		ArrayList<LocalTime> availableTimes = new ArrayList<LocalTime>();
+		
+		for (Shift shift : shifts) {
+			LocalTime time = shift.getTime();
+			System.out.println("Time in shift date: " + time);
+			availableTimes.add(time);
+		}
+		return availableTimes;
 	}
 	
 	public ArrayList<Booking> getPastBookings()

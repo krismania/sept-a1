@@ -26,6 +26,8 @@ public class Shift implements Comparable<Shift>
 		this.time = time;
 	}
 	
+	public Shift(){employeeID = 0; ID = 0;}
+	
 	public DayOfWeek getDay()
 	{
 		return day;

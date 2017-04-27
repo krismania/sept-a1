@@ -33,6 +33,9 @@ public class GUICustMenuController implements Initializable {
 	@FXML
 	private Button viewAvailCust;
 	
+	@FXML
+	private Button makeBooking;
+	
     @FXML
     private Button exit;
     
@@ -57,6 +60,18 @@ public class GUICustMenuController implements Initializable {
         stage.show();
     }
 
+    @FXML
+    void handleBookingAction(ActionEvent event) throws IOException {
+       	//TN - get reference button stage
+        Stage stage = (Stage) makeBooking.getScene().getWindow();
+       	//TN - load other scene
+        Parent root = FXMLLoader.load(getClass().getResource("GUIBooking.fxml"));
+   
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
