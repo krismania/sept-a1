@@ -125,9 +125,10 @@ public class SignupController
 					}
 					else
 					{
-						// invalid last name
+						// invalid phone number
 						// TODO: more detailed error
-						setError(lblError2, "Invalid phone number.");
+						setError(lblError2,"Phone length be"
+								+" 10 to 11");
 						
 						phone.requestFocus();
 					}
