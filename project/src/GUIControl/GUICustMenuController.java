@@ -33,6 +33,9 @@ public class GUICustMenuController implements Initializable {
 	@FXML
 	private Button viewAvailCust;
 	
+	@FXML
+	private Button makeBooking;
+	
     @FXML
     private Button exit;
     
