@@ -371,7 +371,8 @@ public class Database implements DBInterface {
 	@Override
 	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
 	{
-		String day = date.toString();
+		String day = date.getDayOfWeek().toString();
+		System.out.println("Day Selected: " + day);
 		ArrayList<String> Workers = new ArrayList<String>();
 		
 		try
@@ -801,6 +802,7 @@ public class Database implements DBInterface {
 	
 	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
+		
 		String sql = "INSERT INTO Shift VALUES ('"
 				+ day.name() + "', '" + time + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
@@ -811,6 +813,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			closeConnection();
+			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time, iD, employeeID);
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
