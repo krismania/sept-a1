@@ -37,9 +37,6 @@ public class GUIBookingController {
     private ChoiceBox<String> bookingOptionsDropdown;
     
     @FXML
-    private ChoiceBox<String> durationDropdown;
-    
-    @FXML
     private Button exit;
     
     @FXML
@@ -58,7 +55,9 @@ public class GUIBookingController {
 		stage.setScene(custMenu);
     }
     
-    private void handleBookingAction(ActionEvent event) throws IOException{
+    @FXML
+    private void handleButtonAction(ActionEvent event) throws IOException{
     	//Do stuff
+    	System.out.println("Button doesnt work just yet :D");
     }
 }
