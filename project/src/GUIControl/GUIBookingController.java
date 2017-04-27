@@ -69,8 +69,14 @@ public class GUIBookingController {
     @FXML
     private void generateEmployeesByDate(ActionEvent event) throws IOException{
     	LocalDate day = datePicker.getValue();
-    	
     	employeePicker.getItems().removeAll(employeePicker.getItems());
-    	employeePicker.getItems().addAll(c.getEmpByDay(day));
+    	ArrayList<String> empIDs = c.getEmpByDay(day);
+    	if(empIDs.isEmpty())
+    	{
+    		employeePicker.getItems().addAll("No Employees Working on Selected Date");
+    	}
+    	else {
+    		employeePicker.getItems().addAll(empIDs);
+    	}
     }
 }
