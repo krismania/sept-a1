@@ -7,10 +7,10 @@
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOMenuController">
    <children>
       <Button fx:id="addEmp" layoutX="228.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Employee" />
-      <Button fx:id="addTime" layoutX="228.0" layoutY="156.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
-      <Button fx:id="viewBooking" layoutX="228.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="View Booking" />
+      <Button fx:id="addTime" layoutX="228.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
+      <Button fx:id="viewBooking" layoutX="228.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="View Booking" />
       <Button fx:id="exit" layoutX="448.0" layoutY="343.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="114.0" text="Close" />
       <Label layoutX="196.0" layoutY="25.0" text="Business Administration Menu" />
-      <Button fx:id="viewEmployee" layoutX="357.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleButtonAction" text="View Employees" />
+      <Button fx:id="viewEmployee" layoutX="228.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="114.0" text="View Employees" />
    </children>
 </AnchorPane>
