@@ -16,7 +16,14 @@ public class ControllerTest
 	{
 		controller = Controller.getInstance();
 	}
-
+	
+	//test validation on username -RK
+	@Test
+	public void testInvalidUserName()
+	{
+		assertFalse(controller.validateUserName(""));
+	}
+	
 	// test static validator methods. -kg	
 	@Test
 	public void testValidName()
