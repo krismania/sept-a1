@@ -127,7 +127,7 @@ public class GUIAddTimeController implements Initializable {
         dayDropdown.getItems().removeAll(dayDropdown.getItems());
         dayDropdown.getItems().addAll("Monday", "Tuesday", 
         		"Wednesday", "Thursday", "Friday", "Saturday");
-        dayDropdown.getSelectionModel().select("30 minutes");  
+        dayDropdown.getSelectionModel().select("Monday");  
     
     }
 
