@@ -136,7 +136,9 @@ public class SignupController
 				{
 					// invalid email address
 					// TODO: more detailed error
-					setError(lblError2, "Invalid email address.");
+					setError(lblError2, "Email MUST have"
+							+ " @ then ."
+							);
 					
 					email.requestFocus();
 				}
