@@ -85,11 +85,7 @@ public class SignupController
 			{
 				// invalid password
 				// TODO: more detailed error
-				setError(lblError1,"Password MUST"
-						+ "\ncontain digit,capital,lower "
-						+ "\nletter & b/w 6 "
-						+ "\n& 14 in length. NO spaces."
-						);
+				setError(lblError1, "Invalid Password.");
 				
 				password.clear();
 				passwordConf.clear();
@@ -99,11 +95,7 @@ public class SignupController
 		else
 		{
 			// invalid username
-			setError(lblError1,"Username MUST"
-					+ "\nbe > 0 and < 15"
-					+ "\nin length. NO spaces"
-					+ "\n& special characters."
-					);
+			setError(lblError1, "Invalid Username.");
 			
 			username.requestFocus();
 		}
@@ -125,10 +117,9 @@ public class SignupController
 					}
 					else
 					{
-						// invalid phone number
+						// invalid last name
 						// TODO: more detailed error
-						setError(lblError2,"Phone length be"
-								+" 10 to 11");
+						setError(lblError2, "Invalid phone number.");
 						
 						phone.requestFocus();
 					}
@@ -137,9 +128,7 @@ public class SignupController
 				{
 					// invalid email address
 					// TODO: more detailed error
-					setError(lblError2, "Email MUST have"
-							+ " @ then ."
-							);
+					setError(lblError2, "Invalid email address.");
 					
 					email.requestFocus();
 				}
