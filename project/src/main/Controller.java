@@ -253,13 +253,25 @@ public class Controller
 			time = "0".concat(time);
 			time = time.replaceAll("\\sam", "");
 		} 
+		else if(time.matches("\\d\\d:\\d\\d am"))
+		{
+			time = time.replaceAll("\\sam", "");
+		}
 		else if(time.matches("\\d:\\d\\d pm"))
 		{
 			int hour = Character.getNumericValue(time.charAt(0));
-			if(hour >= 1 && hour <= 9) {
+			hour = hour + 12;
+			
+			time = time.replaceAll("\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		else if(time.matches("\\d\\d:\\d\\d pm"))
+		{
+			int hour = Integer.parseInt(time.substring(0, 2));
+			if(hour != 12){
 				hour = hour + 12;
 			}
-			time = time.replaceAll("\\d:", hour + ":");
+			time = time.replaceAll("\\d\\d:", hour + ":");
 			time = time.replaceAll("\\spm", "");
 		}
 		System.out.println(time);
