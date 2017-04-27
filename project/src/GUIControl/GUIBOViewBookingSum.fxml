@@ -7,23 +7,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
    <children>
-      <TableView prefHeight="400.0" prefWidth="605.0">
+      <TableView fx:id="booking" prefHeight="400.0" prefWidth="575.0">
          <columns>
-            <TableColumn prefWidth="416.0" text="Appointment Times(Next 2 Weeks)" />
-            <TableColumn minWidth="0.0" prefWidth="174.0">
-               <graphic>
-                  <ComboBox prefWidth="150.0" promptText="Select Employee" />
-               </graphic>
-            </TableColumn>
+            <TableColumn fx:id="ID" prefWidth="100.0" text="Customer ID" />
+            <TableColumn fx:id="customer" prefWidth="125.0" text="Customer Name" />
+            <TableColumn fx:id="date" prefWidth="125.0" text="Appointment Date" />
+            <TableColumn fx:id="time" minWidth="0.0" prefWidth="125.0" text="Appointment Time" />
+            <TableColumn fx:id="employeeID" prefWidth="100.0" text="Employee ID" />
          </columns>
       </TableView>
-      <ScrollBar max="10.0" orientation="VERTICAL" unitIncrement="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
-      <Pane layoutY="395.0" prefHeight="78.0" prefWidth="605.0">
+      <ScrollBar layoutX="558.0" layoutY="26.0" max="10.0" orientation="VERTICAL" prefHeight="445.0" prefWidth="17.0" unitIncrement="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="26.0" />
+      <Pane layoutY="395.0" prefHeight="77.0" prefWidth="566.0">
          <children>
             <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
-            <Button fx:id="Exit" layoutX="503.0" layoutY="26.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
+            <Button fx:id="Exit" layoutX="484.0" layoutY="26.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
          </children>
       </Pane>
    </children>
