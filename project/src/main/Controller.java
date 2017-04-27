@@ -113,15 +113,14 @@ public class Controller
 		return shifts;
 	}
 	
-	public ArrayList<LocalTime> getShiftsByEmp(String emp, LocalDate date) {
+	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
 		int empID = Integer.parseInt(emp);
 		DayOfWeek day = date.getDayOfWeek();
 		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
-		ArrayList<LocalTime> availableTimes = new ArrayList<LocalTime>();
+		ArrayList<String> availableTimes = new ArrayList<String>();
 		
 		for (Shift shift : shifts) {
-			LocalTime time = shift.getTime();
-			System.out.println("Time in shift date: " + time);
+			String time = shift.getTime().toString();
 			availableTimes.add(time);
 		}
 		return availableTimes;

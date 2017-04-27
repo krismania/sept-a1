@@ -802,7 +802,6 @@ public class Database implements DBInterface {
 	
 	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
-		
 		String sql = "INSERT INTO Shift VALUES ('"
 				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
