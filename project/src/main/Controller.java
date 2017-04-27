@@ -173,7 +173,8 @@ public class Controller
 	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
-		convertTime(time);
+		shift.setTime(convertTime(time));
+		shift.setDay(date.getDayOfWeek());
 		
 		return db.addShift(shift);
 	}
