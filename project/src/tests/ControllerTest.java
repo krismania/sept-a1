@@ -19,6 +19,12 @@ public class ControllerTest
 	
 	//test validation on username -RK
 	@Test
+	public void testValidUserName()
+	{
+		assertTrue(controller.validateUserName("Richard"));
+	}
+	
+	@Test
 	public void testInvalidUserName()
 	{
 		assertFalse(controller.validateUserName(""));
