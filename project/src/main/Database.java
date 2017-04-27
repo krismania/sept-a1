@@ -491,9 +491,7 @@ public class Database implements DBInterface {
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
 		         int time = rs.getInt("Time");
 		         int shiftID = rs.getInt("Shift_ID");
-		         System.out.println("Database check time: " +time);
 		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
-		         System.out.println("Time: " + convertTime);
 		         // create shift object. -kg
 		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
 		         
@@ -806,7 +804,7 @@ public class Database implements DBInterface {
 	{
 		
 		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time + "', '" + iD + "'"
+				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -815,7 +813,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			closeConnection();
-			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time, iD, employeeID);
+			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time.toSecondOfDay(), iD, employeeID);
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
