@@ -171,12 +171,15 @@ public class ControllerTest
 		assertTrue(controller.passwordAccepted(password));
 	}
 	
+	// test emails -RK
+	
 	@Test
-	public void testValidPassword2()
-	{		
-		String password = "5ApwWith5omeNumb3rs!";
-		assertTrue(controller.passwordAccepted(password));
+	public void testInvalidEmail2()
+	{
+		// no characters between @ and .
+		assertFalse(controller.validateEmail("emailwithout@."));
 	}
+	
 	
 	@Test
 	public void testValidPassword3()
