@@ -83,10 +83,10 @@ public class GUIBookingController {
     
     @FXML
     private void generateTimesByEmp(ActionEvent event) throws IOException{
-    	ArrayList<LocalTime> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
+    	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
-    	//bookingOptionsDropdown.getItems().addAll(times);
+    	bookingOptionsDropdown.getItems().addAll(times);
     	
     }
 }
