@@ -8,12 +8,14 @@ package GUIControl;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Account;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -75,10 +77,14 @@ public class GUIAddTimeController implements Initializable {
 	
     //TN Collect DatePicker data and also timestamp	
     LocalDate localDate = datePicker.getValue();
-	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-	Date date = (Date) Date.from(instant);
 	//TN Test datepicker output in console
-	System.out.println(localDate + "\n" + instant + "\n" + date);
+	System.out.println(localDate);
+	System.out.println(shiftDropdown.getValue());
+	System.out.println(durationDropdown.getValue());
+	
+	boolean added;
+	
+	added = Controller.getInstance().addShift(1, localDate, shiftDropdown.getValue(), durationDropdown.getValue());
     }
     
     @Override
@@ -87,7 +93,7 @@ public class GUIAddTimeController implements Initializable {
     	//TN - initialise shift time slot dropdown menus
     	shiftDropdown.getItems().removeAll(shiftDropdown.getItems());
         shiftDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
-        		"11:00 am", "11:30 pm", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
+        		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
         		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30pm", "5:00 pm");
         shiftDropdown.getSelectionModel().select("9:00 am");
         
