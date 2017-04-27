@@ -13,3 +13,6 @@ hs_err_pid*
 
 # SQLite database files
 *.db
+
+# FX Build
+/project/build/
