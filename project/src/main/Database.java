@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -364,6 +365,45 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		return roster;
+	}
+	
+	@Override
+	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
+	{
+		String day = date.toString();
+		ArrayList<String> Workers = new ArrayList<String>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+		         //JM Retrieve by column name
+		         
+				String empID = Integer.toString(rs.getInt("EmpID"));
+		         
+		         // add it to the list
+		         Workers.add(empID);
+		    }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+			logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return Workers;
 	}
 	
 	/**

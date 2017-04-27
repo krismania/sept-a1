@@ -6,10 +6,13 @@ import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +24,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 public class GUIBookingController {
+	Controller c = Controller.getInstance();
+	
 	@FXML
     private Button navMenu;
 
@@ -59,5 +64,13 @@ public class GUIBookingController {
     private void handleButtonAction(ActionEvent event) throws IOException{
     	//Do stuff
     	System.out.println("Button doesnt work just yet :D");
+    }
+    
+    @FXML
+    private void generateEmployeesByDate(ActionEvent event) throws IOException{
+    	LocalDate day = datePicker.getValue();
+    	
+    	employeePicker.getItems().removeAll(employeePicker.getItems());
+    	employeePicker.getItems().addAll(c.getEmpByDay(day));
     }
 }

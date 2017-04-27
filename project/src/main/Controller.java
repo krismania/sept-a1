@@ -1,5 +1,6 @@
 package main;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -65,6 +66,11 @@ public class Controller
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
+	}
+	
+	public ArrayList<String> getEmpByDay(LocalDate day)
+	{
+		return db.getEmployeeWorkingOnDay(day);
 	}
 	
 	/**
