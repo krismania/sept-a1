@@ -2,6 +2,10 @@ package GUIControl;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -18,9 +22,6 @@ import javafx.scene.Scene;
 
 public class GUIBookingController {
 	@FXML
-    private Button exit;
-
-    @FXML
     private Button navMenu;
 
     @FXML
@@ -30,10 +31,16 @@ public class GUIBookingController {
 	private DatePicker datePicker;
     
     @FXML
+    private ChoiceBox<String> employeePicker;
+    
+    @FXML
     private ChoiceBox<String> bookingOptionsDropdown;
     
     @FXML
     private ChoiceBox<String> durationDropdown;
+    
+    @FXML
+    private Button exit;
     
     @FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
@@ -49,5 +56,9 @@ public class GUIBookingController {
 		
 		// switch scenes
 		stage.setScene(custMenu);
+    }
+    
+    private void handleBookingAction(ActionEvent event) throws IOException{
+    	//Do stuff
     }
 }
