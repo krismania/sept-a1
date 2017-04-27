@@ -79,21 +79,18 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
 	
-    //TN Collect DatePicker data and also timestamp	
-    LocalDate localDate = datePicker.getValue();
-	Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        //TN Collect DatePicker data and also timestamp	
+        LocalDate localDate = datePicker.getValue();
+	    Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
 	
-	//TN Collects shift time from dropdown menu
-	String timeString = shiftDropdown.getValue();
+        //TN Collects shift time from dropdown menu
+	    String timeString = shiftDropdown.getValue();
 	
-	//TN Collects shift time from dropdown menu
-	String durationString = durationDropdown.getValue();
+	    //TN Collects shift time from dropdown menu
+	    String durationString = durationDropdown.getValue();
 	
-	//Tn Date captured in local time
-	Date date = (Date) Date.from(instant);
-	
-	
-	
+        //Tn Date captured in local time
+	    Date date = (Date) Date.from(instant);
     }
     
     //TN Send data to Controller - not yet implemented
