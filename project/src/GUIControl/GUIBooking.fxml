@@ -16,7 +16,7 @@
    	  <Button fx:id="navMenu" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
       <Button fx:id="exit" layoutX="448.0" layoutY="343.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="114.0" text="Close" />
       <Button fx:id="submitBooking" layoutX="209.0" layoutY="260.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="140.0" text="Make Booking!" />
-      <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="142.0" prefWidth="150.0" onAction=""/>
+      <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="142.0" prefWidth="150.0" onAction="#generateTimesByEmp"/>
       <ChoiceBox fx:id="bookingOptionsDropdown" layoutX="349.0" layoutY="182.0" prefWidth="150.0" />
       
     
