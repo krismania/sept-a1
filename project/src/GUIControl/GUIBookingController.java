@@ -34,4 +34,20 @@ public class GUIBookingController {
     
     @FXML
     private ChoiceBox<String> durationDropdown;
+    
+    @FXML
+    private void closeButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) exit.getScene().getWindow();
+        stage.close();
+    }
+    
+    @FXML
+    private void navMenuButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) navMenu.getScene().getWindow();
+		// load the scene
+		Scene custMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+		
+		// switch scenes
+		stage.setScene(custMenu);
+    }
 }
