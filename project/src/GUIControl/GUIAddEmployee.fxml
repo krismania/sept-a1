@@ -15,7 +15,7 @@
       <TextField fx:id="tfEmpEmailAdd" layoutX="314.0" layoutY="179.0" />
       <Label layoutX="96.0" layoutY="234.0" text="Enter Employees Phone Number" />
       <TextField fx:id="tfEmpPhNum" layoutX="314.0" layoutY="229.0" />
-      <Button fx:id="submitNewEmpData" layoutX="455.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit Input" />
+      <Button fx:id="submitNewEmpData" defaultButton="true" layoutX="455.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit Input" />
       <Button fx:id="navMenu" layoutX="38.0" layoutY="22.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
       <Button fx:id="exit" layoutX="38.0" layoutY="338.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
       <Label fx:id="lblError" layoutX="313.0" layoutY="253.0" prefHeight="83.0" prefWidth="171.0" text="Incorrect Form Details - please check the format of your details and try again." textFill="RED" visible="false" wrapText="true" />
