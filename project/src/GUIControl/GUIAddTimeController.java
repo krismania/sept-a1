@@ -50,10 +50,10 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
     
     @FXML
-	private DatePicker datePicker;
+	private ChoiceBox<String> dayDropdown;
     
     @FXML
-    private ChoiceBox<String> shiftDropdown;
+    private ChoiceBox<String> timeDropdown;
     
     @FXML
     private ChoiceBox<String> durationDropdown;
@@ -79,18 +79,14 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
 	
-        //TN Collect DatePicker data and also timestamp	
-        LocalDate localDate = datePicker.getValue();
-	    Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-	
+        //TN Collect shift day from dropdown menu
+        String day = dayDropdown.getValue();
+        
         //TN Collects shift time from dropdown menu
-	    String timeString = shiftDropdown.getValue();
+	    String timeString = timeDropdown.getValue();
 	
 	    //TN Collects shift time from dropdown menu
 	    String durationString = durationDropdown.getValue();
-	
-        //Tn Date captured in local time
-	    Date date = (Date) Date.from(instant);
     }
     
     //TN Send data to Controller - not yet implemented
@@ -115,17 +111,24 @@ public class GUIAddTimeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     	
     	//TN - initialise shift time slot dropdown menus
-    	shiftDropdown.getItems().removeAll(shiftDropdown.getItems());
-        shiftDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+    	timeDropdown.getItems().removeAll(timeDropdown.getItems());
+        timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
         		"11:00 am", "11:30 pm", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
         		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30pm", "5:00 pm");
-        shiftDropdown.getSelectionModel().select("9:00 am");
+        timeDropdown.getSelectionModel().select("9:00 am");
         
         //TN - initialise shift duration dropdown menus
         durationDropdown.getItems().removeAll(durationDropdown.getItems());
         durationDropdown.getItems().addAll("30 minutes", "1 hour", 
         		"1 hour 30 minutes", "2 hours");
         durationDropdown.getSelectionModel().select("30 minutes");
+        
+        
+        dayDropdown.getItems().removeAll(dayDropdown.getItems());
+        dayDropdown.getItems().addAll("Monday", "Tuesday", 
+        		"Wednesday", "Thursday", "Friday", "Saturday");
+        dayDropdown.getSelectionModel().select("30 minutes");  
+    
     }
 
     /* @FXML
