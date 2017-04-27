@@ -79,4 +79,10 @@ public class GUIBookingController {
     		employeePicker.getItems().addAll(empIDs);
     	}
     }
+    
+    @FXML
+    private void generateTimesByEmp(ActionEvent event) throws IOException{
+    	String emp = employeePicker.getValue();
+    	
+    }
 }
