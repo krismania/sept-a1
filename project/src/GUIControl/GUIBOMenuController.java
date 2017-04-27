@@ -47,7 +47,7 @@ public class GUIBOMenuController implements Initializable {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
         	//TN - load other scene
-        	rootAddEmp = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
+        	rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
             Scene scene = new Scene(rootAddEmp);
             stage.setScene(scene);
             stage.show();

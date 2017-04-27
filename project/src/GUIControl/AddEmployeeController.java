@@ -30,7 +30,7 @@ import javafx.scene.control.TextField;
  *
  * @author tn
  */
-public class GUIAddEmployeeController implements Initializable {  
+public class AddEmployeeController implements Initializable {  
     Controller c = Controller.getInstance();
 	
     @FXML 
