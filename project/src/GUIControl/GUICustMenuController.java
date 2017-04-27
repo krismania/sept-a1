@@ -36,6 +36,9 @@ public class GUICustMenuController implements Initializable {
     @FXML
     private Button exit;
     
+    @FXML
+    private Button logout;
+    
 	@FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) exit.getScene().getWindow();
@@ -52,6 +55,17 @@ public class GUICustMenuController implements Initializable {
        	//TN - load other scene
         Parent root = FXMLLoader.load(getClass().getResource("GUICustViewAvail.fxml"));
    
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    private void logoutButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) logout.getScene().getWindow();
+    	
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	   
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
