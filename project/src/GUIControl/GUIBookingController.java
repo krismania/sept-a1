@@ -71,13 +71,22 @@ public class GUIBookingController {
     private void generateEmployeesByDate(ActionEvent event) throws IOException{
     	LocalDate day = datePicker.getValue();
     	employeePicker.getItems().removeAll(employeePicker.getItems());
-    	ArrayList<String> empIDs = c.getEmpByDay(day);
-    	if(empIDs.isEmpty())
-    	{
-    		employeePicker.getItems().addAll("No Employees Working on Selected Date");
+    	
+    	if(day.isBefore(LocalDate.now())) {
+    		System.out.println("Date has passed.");
+    		employeePicker.getItems().addAll("Please select today or a date in the future");
     	}
-    	else {
-    		employeePicker.getItems().addAll(empIDs);
+    	
+    	else 
+    	{
+	    	ArrayList<String> empIDs = c.getEmpByDay(day);
+	    	if(empIDs.isEmpty())
+	    	{
+	    		employeePicker.getItems().addAll("No employees working on selected date");
+	    	}
+	    	else {
+	    		employeePicker.getItems().addAll(empIDs);
+	    	}
     	}
     }
     
@@ -87,6 +96,5 @@ public class GUIBookingController {
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
-    	
     }
 }
