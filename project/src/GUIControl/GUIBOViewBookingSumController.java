@@ -171,12 +171,12 @@ public class GUIBOViewBookingSumController implements Initializable {
 			
             // switch scenes
             stage.setScene(newScene);
-            }
-                catch (IOException e)
-                {
-                    System.out.println("Could not switch scene.");
-                    e.printStackTrace();
-                }
-       }
+        }
+        catch (IOException e)
+        {
+            System.out.println("Could not switch scene.");
+            e.printStackTrace();
+        }
+    }
 }
 
