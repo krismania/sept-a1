@@ -105,7 +105,6 @@ public class GUICustMenuController implements Initializable {
     	
     	Scene scene = new Scene(root);
     	stage.setScene(scene);
-    	System.out.println("Viewing customer details");
     }
     
     @Override

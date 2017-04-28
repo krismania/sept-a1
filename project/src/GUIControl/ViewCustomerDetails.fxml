@@ -19,7 +19,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="firstName">
+            <TextField fx:id="firstName" editable="false">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -29,7 +29,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="lastName">
+            <TextField fx:id="lastName" editable="false">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -39,7 +39,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="email">
+            <TextField fx:id="email" editable="false">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -49,7 +49,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="phone">
+            <TextField fx:id="phone" editable="false">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin>

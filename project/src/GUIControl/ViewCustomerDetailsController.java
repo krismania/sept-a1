@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Controller;
+import main.Customer;
 
 /**
  * Displays the logged in customer's details.
@@ -60,10 +61,14 @@ public class ViewCustomerDetailsController implements Initializable
 	public void initialize(URL location, ResourceBundle resources)
 	{
 		// get user's account objects
-		//c.getCustomer(c.loggedUser);
+		Customer customer = c.getCustomer(c.loggedUser);
 		
 		// populate the fields
-		username.setText("MyUsername");
+		username.setText(customer.username);
+		firstName.setText(customer.getFirstName());
+		lastName.setText(customer.getLastName());
+		email.setText(customer.getEmail());
+		phone.setText(customer.getPhoneNumber());
 	}
 	
 	@FXML
