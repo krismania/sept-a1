@@ -194,6 +194,16 @@ public class Controller
 		return loggedAccount;
 	}
 	
+	/**
+	 * Sets the logged user to null
+	 * @author krismania
+	 */
+	public void logout()
+	{
+		logger.info("Logged out user: " + loggedUser);
+		loggedUser = null;
+	}
+	
 	public boolean shiftExists(String dayString, String timeString, int empID)
 	{
 		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
