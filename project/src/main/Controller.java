@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +73,11 @@ public class Controller
 		return db.getAllEmployees();
 	}
 	
+	public ArrayList<String> getEmpByDay(LocalDate day)
+	{
+		return db.getEmployeeWorkingOnDay(day);
+	}
+	
 	/**
 	 * Returns a hash map of shifts and bookings
 	 * @author James
@@ -105,11 +114,29 @@ public class Controller
 		return shifts;
 	}
 	
+	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
+		int empID = Integer.parseInt(emp);
+		DayOfWeek day = date.getDayOfWeek();
+		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
+		ArrayList<String> availableTimes = new ArrayList<String>();
+		
+		for (Shift shift : shifts) {
+			String time = shift.getTime().toString();
+			availableTimes.add(time);
+		}
+		return availableTimes;
+	}
+	
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = db.getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
+		}
 		
 		return bookings;
 	}
@@ -119,6 +146,11 @@ public class Controller
 		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
+		}
 		
 		return bookings;
 	}
@@ -167,13 +199,24 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
+	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
 		shift.setTime(convertTime(time));
-		shift.setDay(date.getDayOfWeek());
+		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return db.addShift(shift);
+	}
+	
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
+	{
+		Booking booking = db.buildBooking();
+		booking.setCustomer(loggedUser);
+		booking.setDate(localDate);
+		booking.setEmployee(empID);
+		booking.setTime(time);
+		
+		return db.addBooking(booking);
 	}
 	
 	/**

@@ -78,16 +78,15 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{    	
      
-      // added = c.getInstance().addShift(1, dayDropdown.getValue(), timeDropdown.getValue());
-      //TN Collect shift day from dropdown menu
-      String day = dayDropdown.getValue();
-        
-      //TN Collects shift time from dropdown menu
-	    String timeString = timeDropdown.getValue();
-	
-	    //TN Collects shift time from dropdown menu
-	    String durationString = durationDropdown.getValue();
-
+      boolean added = c.addShift(1, dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
+      if(added)
+      {
+    	  System.out.println("Shift Added!");
+      }
+      else
+      {
+    	  System.out.println("Unable to add shift!");
+      }
     }
     
     //TN Send data to Controller - not yet implemented
@@ -110,26 +109,24 @@ public class GUIAddTimeController implements Initializable {
  */     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	
-    //TN - initialise shift time slot dropdown menus
-    timeDropdown.getItems().removeAll(timeDropdown.getItems());
-    timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
-        		"11:00 am", "11:30 pm", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
-        		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30pm", "5:00 pm");
-    timeDropdown.getSelectionModel().select("9:00 am");
+        //TN - initialise shift time slot dropdown menus
+    	timeDropdown.getItems().removeAll(timeDropdown.getItems());
+    	timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+        		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
+        		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm");
+    	timeDropdown.getSelectionModel().select("9:00 am");
         
-    //TN - initialise shift duration dropdown menus
-    durationDropdown.getItems().removeAll(durationDropdown.getItems());
-    durationDropdown.getItems().addAll("30 minutes", "1 hour", 
+        //TN - initialise shift duration dropdown menus
+        durationDropdown.getItems().removeAll(durationDropdown.getItems());
+        durationDropdown.getItems().addAll("30 minutes", "1 hour", 
         		"1 hour 30 minutes", "2 hours");
-    durationDropdown.getSelectionModel().select("30 minutes");
+        durationDropdown.getSelectionModel().select("30 minutes");
         
-    //TN - initialise shift duration dropdown menus
-    dayDropdown.getItems().removeAll(dayDropdown.getItems());
-    dayDropdown.getItems().addAll("Monday", "Tuesday", 
+        //TN - initialise shift duration dropdown menus
+        dayDropdown.getItems().removeAll(dayDropdown.getItems());
+        dayDropdown.getItems().addAll("Monday", "Tuesday", 
         		"Wednesday", "Thursday", "Friday", "Saturday");
-    dayDropdown.getSelectionModel().select("Monday");  
-    
+        dayDropdown.getSelectionModel().select("Monday"); 
     }
     
 }   

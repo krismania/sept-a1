@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -132,10 +132,46 @@ public class Database implements DBInterface {
 		return new Shift(id, employeeID, null, null);
 	}
 	
+	public Booking buildBooking() {
+		// find the highest ID
+		int currentHighestID = 0;
+
+		try {
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
+				if (rs.next()) {
+					currentHighestID = rs.getInt("id");
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+
+		// create the object and return it
+		int id = currentHighestID + 1;
+
+		return new Booking(id, null, 0, null, null);
+	}
+	
 	@Override
 	public boolean addShift(Shift shift)
 	{
 		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+				Integer.toString(booking.getEmployeeID()),
+				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
 		{
 			return true;
 		}
@@ -368,6 +404,46 @@ public class Database implements DBInterface {
 		return roster;
 	}
 	
+	@Override
+	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
+	{
+		String day = date.getDayOfWeek().toString();
+		System.out.println("Day Selected: " + day);
+		ArrayList<String> Workers = new ArrayList<String>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+		         //JM Retrieve by column name
+		         
+				String empID = Integer.toString(rs.getInt("EmpID"));
+		         
+		         // add it to the list
+		         Workers.add(empID);
+		    }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+			logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return Workers;
+	}
+	
 	/**
 	 * @author James
 	 */
@@ -432,15 +508,16 @@ public class Database implements DBInterface {
 	}
 	
 	@Override
-	public ArrayList<Shift> getShifts(int EmpID)
+	public ArrayList<Shift> getShifts(int EmpID, String Day)
 	{
 		ArrayList<Shift> Shifts = new ArrayList<Shift>();
 		try
 		{
 			openConnection();
 			stmt = c.createStatement();
+			System.out.println(Day);
 			
-			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s'", EmpID);
+			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
 			
 			rs = stmt.executeQuery(sql);
 			
@@ -450,7 +527,6 @@ public class Database implements DBInterface {
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
 		         int time = rs.getInt("Time");
 		         int shiftID = rs.getInt("Shift_ID");
-		         System.out.println(time);
 		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
 		         // create shift object. -kg
 		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
@@ -488,7 +564,7 @@ public class Database implements DBInterface {
 		ArrayList<Shift> shifts = new ArrayList<Shift>();
 		for (Employee employee : employees)
 		{
-			shifts.addAll(getShifts(employee.ID));
+			//shifts.addAll(getShifts(employee.ID));
 		}
 		
 		// get the list of bookings in the next 7 days
@@ -564,7 +640,7 @@ public class Database implements DBInterface {
 					int id = bookingQuery.getInt("Booking_ID");
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
-					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
+					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
 					
 					// construct the object & add to list. -kg
@@ -576,10 +652,6 @@ public class Database implements DBInterface {
 			closeConnection();
 		}
 		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-		catch (ParseException e)
 		{
 			logger.warning(e.toString());
 		}
@@ -763,7 +835,7 @@ public class Database implements DBInterface {
 	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time + "', '" + iD + "'"
+				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -772,6 +844,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			closeConnection();
+			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time.toSecondOfDay(), iD, employeeID);
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -1022,11 +1095,11 @@ public class Database implements DBInterface {
 		CreateDataEntry("Shift", "WEDNESDAY", "11:00", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "11:30", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
+		/*CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
 		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "13:30");
 		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "16:30");
 		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "12:30");
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");*/
 
 		logger.info("DB created.");
 	}
