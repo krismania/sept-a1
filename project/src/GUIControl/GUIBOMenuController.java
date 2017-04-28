@@ -30,6 +30,9 @@ public class GUIBOMenuController implements Initializable {
     private Button addEmp;
 
     @FXML
+    private Button viewEmployee;
+    
+    @FXML
     private Button addTime;
 
     @FXML
@@ -38,19 +41,31 @@ public class GUIBOMenuController implements Initializable {
     @FXML
     private Button exit;
     
+    @FXML
+    private Button logout;
+    
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
-        Parent rootAddEmp, rootAddTime, rootViewBooking;
+        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking;
         if(event.getSource()==addEmp) {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
         	//TN - load other scene
-        	rootAddEmp = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
+        	rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
             Scene scene = new Scene(rootAddEmp);
             stage.setScene(scene);
             stage.show();
+        }
+        else if (event.getSource()==viewEmployee)
+        {
+        	// Temp button to get to employees view. -kg
+        	stage = (Stage) viewEmployee.getScene().getWindow();
+        	rootViewEmployee = FXMLLoader.load(getClass().getResource("ViewEmployee.fxml"));
+        	Scene scene = new Scene(rootViewEmployee);
+        	stage.setScene(scene);
+        	stage.show();
         }
         else if(event.getSource()==addTime) {
         	stage=(Stage) addTime.getScene().getWindow();
@@ -73,6 +88,17 @@ public class GUIBOMenuController implements Initializable {
     private void closeButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
+    }
+    
+    @FXML
+    private void logoutButtonAction(ActionEvent event) throws IOException {
+    	Stage stage = (Stage) logout.getScene().getWindow();
+    	
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	   
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 
