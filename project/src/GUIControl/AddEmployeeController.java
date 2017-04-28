@@ -88,7 +88,7 @@ public class AddEmployeeController
     @FXML
     public void handleBack(ActionEvent event)
     {
-    	switchTo("GUIBOMenu.fxml");
+    	switchTo("GUIBOMenu");
     }
     
     /**
