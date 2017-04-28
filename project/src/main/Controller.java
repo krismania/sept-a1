@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,6 +110,10 @@ public class Controller
 //		
 //		logger.info("Sorting shift list");
 //		shifts.sort(byDayAndTime);
+		
+		for (Entry<Shift, Booking> entry : shifts.entrySet()) {
+		     System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
+		}
 		
 		return shifts;
 	}
