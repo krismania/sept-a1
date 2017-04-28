@@ -199,11 +199,11 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
+	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
 		shift.setTime(convertTime(time));
-		shift.setDay(date.getDayOfWeek());
+		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return db.addShift(shift);
 	}
