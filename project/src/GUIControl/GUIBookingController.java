@@ -63,9 +63,18 @@ public class GUIBookingController {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
-    	//Do stuff
-    	System.out.println("Button doesnt work just yet :D");
-    	c.addBooking("James", datePicker.getValue(), bookingOptionsDropdown.getValue(), employeePicker.getValue());
+    	boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
+    			Integer.parseInt(employeePicker.getValue()));
+    	
+    	if(booked)
+    	{
+    		System.out.println("Booked in!");
+    	}
+    	else 
+    	{
+    		System.out.println("Booking has gone wrong!");
+    	}
+    	
     }
     
     @FXML
