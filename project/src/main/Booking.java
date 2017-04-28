@@ -3,6 +3,7 @@ package main;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -53,6 +54,25 @@ public class Booking implements Comparable<Booking>
 	public LocalTime getTime()
 	{
 		return time;
+	}
+	public void setCustomer(String customer) 
+	{
+		this.customer = customer;
+	}
+	
+	public void setEmployee(int id)
+	{
+		this.employeeID = id;
+	}
+	
+	public void setDate(LocalDate localDate)
+	{
+		this.date = localDate;
+	}
+	
+	public void setTime(LocalTime time) 
+	{
+		this.time = time;
 	}
 	
 	@Override
