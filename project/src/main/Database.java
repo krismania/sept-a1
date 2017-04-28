@@ -132,10 +132,46 @@ public class Database implements DBInterface {
 		return new Shift(id, employeeID, null, null);
 	}
 	
+	public Booking buildBooking() {
+		// find the highest ID
+		int currentHighestID = 0;
+
+		try {
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
+				if (rs.next()) {
+					currentHighestID = rs.getInt("id");
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+
+		// create the object and return it
+		int id = currentHighestID + 1;
+
+		return new Booking(id, null, 0, null, null);
+	}
+	
 	@Override
 	public boolean addShift(Shift shift)
 	{
 		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+				Integer.toString(booking.getEmployeeID()),
+				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
 		{
 			return true;
 		}
@@ -491,9 +527,7 @@ public class Database implements DBInterface {
 		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
 		         int time = rs.getInt("Time");
 		         int shiftID = rs.getInt("Shift_ID");
-		         System.out.println("Database check time: " +time);
 		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
-		         System.out.println("Time: " + convertTime);
 		         // create shift object. -kg
 		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
 		         
@@ -606,7 +640,7 @@ public class Database implements DBInterface {
 					int id = bookingQuery.getInt("Booking_ID");
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
-					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
+					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
 					
 					// construct the object & add to list. -kg
@@ -618,10 +652,6 @@ public class Database implements DBInterface {
 			closeConnection();
 		}
 		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-		catch (ParseException e)
 		{
 			logger.warning(e.toString());
 		}
@@ -804,9 +834,8 @@ public class Database implements DBInterface {
 	
 	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
-		
 		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time + "', '" + iD + "'"
+				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
 						+ ", '" + employeeID + "')";
 		
 		try
@@ -815,7 +844,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			closeConnection();
-			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time, iD, employeeID);
+			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time.toSecondOfDay(), iD, employeeID);
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -1066,11 +1095,11 @@ public class Database implements DBInterface {
 		CreateDataEntry("Shift", "WEDNESDAY", "11:00", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "11:30", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
+		/*CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
 		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "13:30");
 		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "16:30");
 		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "12:30");
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");*/
 
 		logger.info("DB created.");
 	}

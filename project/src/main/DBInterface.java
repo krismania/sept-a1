@@ -126,4 +126,8 @@ public interface DBInterface
 	
 	ArrayList<String> getEmployeeWorkingOnDay(LocalDate day);
 
+	boolean addBooking(Booking booking);
+	
+	Booking buildBooking();
+
 }

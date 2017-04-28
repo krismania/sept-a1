@@ -1,14 +1,13 @@
 package main;
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +21,8 @@ public class Controller
 	
 	private Logger logger;
 	private DBInterface db;
+	
+	public String loggedUser = null;
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
@@ -50,6 +51,24 @@ public class Controller
 			instance = new Controller();
 		}
 		return instance;
+	}
+	
+	/**
+	 * Returns customer object based on supplied username, or null if none
+	 * is found
+	 * @author krismania
+	 */
+	public Customer getCustomer(String username)
+	{
+		Account account = db.getAccount(username);
+		if (account instanceof Customer)
+		{
+			return (Customer) account;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public ArrayList<Customer> getAllCustomers()
@@ -113,15 +132,14 @@ public class Controller
 		return shifts;
 	}
 	
-	public ArrayList<LocalTime> getShiftsByEmp(String emp, LocalDate date) {
+	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
 		int empID = Integer.parseInt(emp);
 		DayOfWeek day = date.getDayOfWeek();
 		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
-		ArrayList<LocalTime> availableTimes = new ArrayList<LocalTime>();
+		ArrayList<String> availableTimes = new ArrayList<String>();
 		
 		for (Shift shift : shifts) {
-			LocalTime time = shift.getTime();
-			System.out.println("Time in shift date: " + time);
+			String time = shift.getTime().toString();
 			availableTimes.add(time);
 		}
 		return availableTimes;
@@ -133,6 +151,11 @@ public class Controller
 		
 		bookings.sort(Comparator.reverseOrder());
 		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
+		}
+		
 		return bookings;
 	}
 	
@@ -141,6 +164,11 @@ public class Controller
 		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
+		}
 		
 		return bookings;
 	}
@@ -189,18 +217,52 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, LocalDate date, String time, String duration)
+	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
 		shift.setTime(convertTime(time));
-		shift.setDay(date.getDayOfWeek());
+		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return db.addShift(shift);
 	}
 	
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
+	{
+		Booking booking = db.buildBooking();
+		booking.setCustomer(loggedUser);
+		booking.setDate(localDate);
+		booking.setEmployee(empID);
+		booking.setTime(time);
+		
+		return db.addBooking(booking);
+	}
+	
+	/**
+	 * Validates a username & password, and if valid, returns the account
+	 * object & also sets the loggedUser property.
+	 * @author krismania
+	 */
 	public Account login(String username, String password)
 	{
-		return db.login(username, password);
+		Account loggedAccount = db.login(username, password);
+		if (loggedAccount != null)
+		{
+			loggedUser = loggedAccount.username;
+		}
+		
+		logger.info("Logged in user: " + loggedUser);
+		
+		return loggedAccount;
+	}
+	
+	/**
+	 * Sets the logged user to null
+	 * @author krismania
+	 */
+	public void logout()
+	{
+		logger.info("Logged out user: " + loggedUser);
+		loggedUser = null;
 	}
 	
 	public boolean shiftExists(String dayString, String timeString, int empID)
@@ -249,7 +311,7 @@ public class Controller
 		//	return true;
 		//}
 		
-		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+(.+)$")){
+		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+[.]+[a-z]+$")){
 			return true;
 		}
 		

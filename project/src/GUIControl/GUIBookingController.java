@@ -63,30 +63,50 @@ public class GUIBookingController {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
-    	//Do stuff
-    	System.out.println("Button doesnt work just yet :D");
+    	boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
+    			Integer.parseInt(employeePicker.getValue()));
+    	
+    	if(booked)
+    	{
+    		System.out.println("Booked in!");
+    		c.getPastBookings();
+    		c.getFutureBookings();
+    	}
+    	else 
+    	{
+    		System.out.println("Booking has gone wrong!");
+    	}
+    	
     }
     
     @FXML
     private void generateEmployeesByDate(ActionEvent event) throws IOException{
     	LocalDate day = datePicker.getValue();
     	employeePicker.getItems().removeAll(employeePicker.getItems());
-    	ArrayList<String> empIDs = c.getEmpByDay(day);
-    	if(empIDs.isEmpty())
-    	{
-    		employeePicker.getItems().addAll("No Employees Working on Selected Date");
+    	
+    	if(day.isBefore(LocalDate.now())) {
+    		System.out.println("Date has passed.");
+    		employeePicker.getItems().addAll("Please select today or a date in the future");
     	}
-    	else {
-    		employeePicker.getItems().addAll(empIDs);
+    	
+    	else 
+    	{
+	    	ArrayList<String> empIDs = c.getEmpByDay(day);
+	    	if(empIDs.isEmpty())
+	    	{
+	    		employeePicker.getItems().addAll("No employees working on selected date");
+	    	}
+	    	else {
+	    		employeePicker.getItems().addAll(empIDs);
+	    	}
     	}
     }
     
     @FXML
     private void generateTimesByEmp(ActionEvent event) throws IOException{
-    	ArrayList<LocalTime> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
+    	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
-    	//bookingOptionsDropdown.getItems().addAll(times);
-    	
+    	bookingOptionsDropdown.getItems().addAll(times);
     }
 }

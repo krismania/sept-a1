@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Controller;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,8 @@ import javafx.scene.control.TextField;
  */
 public class GUICustMenuController implements Initializable {
 
+	private Controller c = Controller.getInstance();
+	
 	@FXML
 	private Button viewAvailCust;
 	
@@ -38,6 +42,9 @@ public class GUICustMenuController implements Initializable {
 	
     @FXML
     private Button exit;
+    
+    @FXML
+    private Button logout;
     
 	@FXML
     private void closeButtonAction(ActionEvent event) throws IOException {
@@ -59,6 +66,19 @@ public class GUICustMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    
+    @FXML
+    private void logoutButtonAction(ActionEvent event) throws IOException {
+    	c.logout();
+    	
+    	Stage stage = (Stage) logout.getScene().getWindow();
+    	
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	   
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @FXML
     void handleBookingAction(ActionEvent event) throws IOException {
@@ -70,6 +90,21 @@ public class GUICustMenuController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+    
+    /**
+     * Opens the ViewCustomerDetails screen
+     * @author krismania
+     */
+    @FXML
+    public void handleViewDetails(ActionEvent event) throws IOException
+    {
+    	Node source = (Node) event.getSource();
+    	Stage stage = (Stage) source.getScene().getWindow();
+    	Parent root = FXMLLoader.load(getClass().getResource("ViewCustomerDetails.fxml"));
+    	
+    	Scene scene = new Scene(root);
+    	stage.setScene(scene);
     }
     
     @Override
