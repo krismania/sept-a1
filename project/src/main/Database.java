@@ -132,10 +132,46 @@ public class Database implements DBInterface {
 		return new Shift(id, employeeID, null, null);
 	}
 	
+	public Booking buildBooking() {
+		// find the highest ID
+		int currentHighestID = 0;
+
+		try {
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
+				if (rs.next()) {
+					currentHighestID = rs.getInt("id");
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+
+		// create the object and return it
+		int id = currentHighestID + 1;
+
+		return new Booking(id, null, 0, null, null);
+	}
+	
 	@Override
 	public boolean addShift(Shift shift)
 	{
 		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+				Integer.toString(booking.getEmployeeID()),
+				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
 		{
 			return true;
 		}
