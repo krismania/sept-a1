@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,8 @@ import javafx.scene.control.TextField;
  */
 public class GUICustMenuController implements Initializable {
 
+	private Controller c = Controller.getInstance();
+	
 	@FXML
 	private Button viewAvailCust;
 	
@@ -62,6 +65,8 @@ public class GUICustMenuController implements Initializable {
     
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
+    	c.logout();
+    	
     	Stage stage = (Stage) logout.getScene().getWindow();
     	
     	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
