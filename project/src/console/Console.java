@@ -21,9 +21,10 @@ import main.*;
  * Handles the applications interaction with the console. Any input
  * collected from the user, as well as any output printed to them, should go
  * through this class.
+ * @deprecated Moved to the GUI, console is no longer maintained.
  * @author krismania
  */
-
+@Deprecated
 public class Console
 {
 	private Scanner sc;
@@ -271,7 +272,7 @@ public class Console
 		
 		// try/catch to prevent NumberFormatException. -kg
 		try { employeeID = Integer.parseInt(shiftInfo.get("employeeID")); }
-		catch (NumberFormatException e) { /* TODO: log this */ };
+		catch (NumberFormatException e) { /* log this */ };
 		
 		//TN - ternary expression to validate input lengths  prior to acceptance
 		testAddDay = String.valueOf(shiftInfo.get("shiftDay").toUpperCase());
