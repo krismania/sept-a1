@@ -69,7 +69,8 @@ public class GUIBookingController {
     	if(booked)
     	{
     		System.out.println("Booked in!");
-    		c.getShiftBookings();
+    		c.getPastBookings();
+    		c.getFutureBookings();
     	}
     	else 
     	{
