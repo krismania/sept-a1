@@ -90,9 +90,10 @@ public class Booking implements Comparable<Booking>
 	{
 		int byDate = this.date.compareTo(b.date);
 		
+		//TODO added .toSecondOfDay() in order to fix error - not sure if correct though.
 		if (byDate == 0)
 		{
-			return this.time.getValue() - b.time.getValue();
+			return this.time.toSecondOfDay() - b.time.toSecondOfDay();
 		}
 		
 		return byDate;
