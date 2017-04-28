@@ -16,10 +16,10 @@ public class Booking implements Comparable<Booking>
 	public final int ID;
 	private String customer;
 	private int employeeID;
-	private Date date;
+	private LocalDate date;
 	private LocalTime time;
 	
-	public Booking(int ID, String customer, int employeeID, Date date, LocalTime time)
+	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime time)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
@@ -39,7 +39,7 @@ public class Booking implements Comparable<Booking>
 		return employeeID;
 	}
 	
-	public Date getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}

@@ -640,7 +640,7 @@ public class Database implements DBInterface {
 					int id = bookingQuery.getInt("Booking_ID");
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
-					java.util.Date date = dateFormat.parse(bookingQuery.getString("Date"));
+					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
 					
 					// construct the object & add to list. -kg
@@ -652,10 +652,6 @@ public class Database implements DBInterface {
 			closeConnection();
 		}
 		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-		catch (ParseException e)
 		{
 			logger.warning(e.toString());
 		}
