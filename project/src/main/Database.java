@@ -1095,11 +1095,11 @@ public class Database implements DBInterface {
 		CreateDataEntry("Shift", "WEDNESDAY", "11:00", "3", "1");
 		CreateDataEntry("Shift", "SUNDAY", "11:30", "4", "2");
 
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
+		/*CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
 		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "13:30");
 		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "16:30");
 		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "12:30");
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");*/
 
 		logger.info("DB created.");
 	}
