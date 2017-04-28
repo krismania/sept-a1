@@ -1090,16 +1090,16 @@ public class Database implements DBInterface {
 				"0400000000", "2");
 		
 
-		CreateDataEntry("Shift", "MONDAY", "10:00", "1", "1");
-		CreateDataEntry("Shift", "TUESDAY", "10:30", "2", "1");
-		CreateDataEntry("Shift", "WEDNESDAY", "11:00", "3", "1");
-		CreateDataEntry("Shift", "SUNDAY", "11:30", "4", "2");
+		CreateDataEntry("Shift", "MONDAY", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()), "1", "1");
+		CreateDataEntry("Shift", "TUESDAY", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()), "2", "1");
+		CreateDataEntry("Shift", "WEDNESDAY",Integer.toString(LocalTime.parse("12:00").toSecondOfDay()), "3", "1");
+		CreateDataEntry("Shift", "SUNDAY", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()), "4", "2");
 
-		/*CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-04-03", "10:30");
-		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-04-02", "13:30");
-		CreateDataEntry("Booking", "3", "krismania", "2", "2017-04-10", "16:30");
-		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", "12:30");
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", "09:30");*/
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-05-03", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-05-02", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "3", "krismania", "2", "2017-05-10", Integer.toString(LocalTime.parse("12:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", Integer.toString(LocalTime.parse("14:00").toSecondOfDay()));
 
 		logger.info("DB created.");
 	}
