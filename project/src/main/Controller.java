@@ -23,6 +23,7 @@ public class Controller
 	private DBInterface db;
 	
 	public String loggedUser = null;
+	public Account loggedType = null;
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
@@ -230,9 +231,11 @@ public class Controller
 		if (loggedAccount != null)
 		{
 			loggedUser = loggedAccount.username;
+			loggedType = loggedAccount;
 		}
 		
 		logger.info("Logged in user: " + loggedUser);
+		logger.info("User type: " + loggedType.getClass().toString().replaceAll("class main.", ""));
 		
 		return loggedAccount;
 	}
@@ -245,6 +248,7 @@ public class Controller
 	{
 		logger.info("Logged out user: " + loggedUser);
 		loggedUser = null;
+		loggedType = null;
 	}
 	
 	public boolean shiftExists(String dayString, String timeString, int empID)
