@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -197,11 +198,15 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
-	public boolean addBooking() 
+	public boolean addBooking(String customer, LocalDate localDate, LocalTime time, int empID) 
 	{
 		Booking booking = db.buildBooking();
-		booking.
-		return false;
+		booking.setCustomer(customer);
+		booking.setDate(localDate);
+		booking.setEmployee(empID);
+		booking.setTime(time);
+		
+		return db.addBooking(booking);
 	}
 	
 	public Account login(String username, String password)
