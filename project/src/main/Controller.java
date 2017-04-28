@@ -1,11 +1,8 @@
 package main;
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,6 +20,8 @@ public class Controller
 	
 	private Logger logger;
 	private DBInterface db;
+	
+	public String loggedUser = null;
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
@@ -209,9 +208,32 @@ public class Controller
 		return db.addBooking(booking);
 	}
 	
+	/**
+	 * Validates a username & password, and if valid, returns the account
+	 * object & also sets the loggedUser property.
+	 * @author krismania
+	 */
 	public Account login(String username, String password)
 	{
-		return db.login(username, password);
+		Account loggedAccount = db.login(username, password);
+		if (loggedAccount != null)
+		{
+			loggedUser = loggedAccount.username;
+		}
+		
+		logger.info("Logged in user: " + loggedUser);
+		
+		return loggedAccount;
+	}
+	
+	/**
+	 * Sets the logged user to null
+	 * @author krismania
+	 */
+	public void logout()
+	{
+		logger.info("Logged out user: " + loggedUser);
+		loggedUser = null;
 	}
 	
 	public boolean shiftExists(String dayString, String timeString, int empID)
@@ -260,7 +282,7 @@ public class Controller
 		//	return true;
 		//}
 		
-		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+(.+)$")){
+		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+[.]+[a-z]+$")){
 			return true;
 		}
 		

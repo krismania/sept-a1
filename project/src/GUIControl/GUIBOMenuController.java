@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -26,6 +27,8 @@ import javafx.scene.Scene;
  */
 public class GUIBOMenuController implements Initializable {
 
+	private Controller c = Controller.getInstance();
+	
     @FXML
     private Button addEmp;
 
@@ -41,6 +44,9 @@ public class GUIBOMenuController implements Initializable {
     @FXML
     private Button exit;
     
+    @FXML
+    private Button logout;
+    
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
@@ -50,7 +56,7 @@ public class GUIBOMenuController implements Initializable {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
         	//TN - load other scene
-        	rootAddEmp = FXMLLoader.load(getClass().getResource("GUIAddEmployee.fxml"));
+        	rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
             Scene scene = new Scene(rootAddEmp);
             stage.setScene(scene);
             stage.show();
@@ -85,6 +91,18 @@ public class GUIBOMenuController implements Initializable {
     private void closeButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
+    }
+    
+    @FXML
+    private void logoutButtonAction(ActionEvent event) throws IOException {
+    	c.logout();
+    	Stage stage = (Stage) logout.getScene().getWindow();
+    	
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	   
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 
