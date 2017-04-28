@@ -111,10 +111,6 @@ public class Controller
 //		logger.info("Sorting shift list");
 //		shifts.sort(byDayAndTime);
 		
-		for (Entry<Shift, Booking> entry : shifts.entrySet()) {
-		     System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
-		}
-		
 		return shifts;
 	}
 	
