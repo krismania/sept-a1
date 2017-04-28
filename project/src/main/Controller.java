@@ -202,10 +202,10 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
-	public boolean addBooking(String customer, LocalDate localDate, LocalTime time, int empID) 
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
 	{
 		Booking booking = db.buildBooking();
-		booking.setCustomer(customer);
+		booking.setCustomer(loggedUser);
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
 		booking.setTime(time);
