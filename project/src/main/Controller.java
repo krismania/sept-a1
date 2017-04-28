@@ -197,6 +197,13 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
+	public boolean addBooking() 
+	{
+		Booking booking = db.buildBooking();
+		booking.
+		return false;
+	}
+	
 	public Account login(String username, String password)
 	{
 		return db.login(username, password);
