@@ -78,16 +78,15 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{    	
      
-      // added = c.getInstance().addShift(1, dayDropdown.getValue(), timeDropdown.getValue());
-      //TN Collect shift day from dropdown menu
-      String day = dayDropdown.getValue();
-        
-      //TN Collects shift time from dropdown menu
-	    String timeString = timeDropdown.getValue();
-	
-	    //TN Collects shift time from dropdown menu
-	    String durationString = durationDropdown.getValue();
-
+      boolean added = c.addShift(1, dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
+      if(added)
+      {
+    	  System.out.println("Shift Added!");
+      }
+      else
+      {
+    	  System.out.println("Unable to add shift!");
+      }
     }
     
     //TN Send data to Controller - not yet implemented
