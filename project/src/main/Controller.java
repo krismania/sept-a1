@@ -137,6 +137,11 @@ public class Controller
 		
 		bookings.sort(Comparator.reverseOrder());
 		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
+		}
+		
 		return bookings;
 	}
 	
@@ -145,6 +150,11 @@ public class Controller
 		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
+		}
 		
 		return bookings;
 	}
