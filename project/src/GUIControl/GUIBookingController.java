@@ -10,7 +10,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import main.BusinessOwner;
 import main.Controller;
+import main.Customer;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -21,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
@@ -32,6 +35,9 @@ public class GUIBookingController {
 
     @FXML
     private Button submitBooking;
+    
+    @FXML 
+    private TextField customerName;
     
     @FXML
 	private DatePicker datePicker;
@@ -55,10 +61,18 @@ public class GUIBookingController {
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
-		Scene custMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	Scene accountMenu;
+    	if(c.loggedType instanceof Customer)
+    	{
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	}
+    	else
+    	{
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+    	}
 		
 		// switch scenes
-		stage.setScene(custMenu);
+		stage.setScene(accountMenu);
     }
     
     @FXML
@@ -109,4 +123,24 @@ public class GUIBookingController {
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
     }
+    
+    @FXML
+    private void selectCustomer(ActionEvent event) throws IOException{
+    	if(c.loggedType instanceof BusinessOwner)
+    	{
+    		Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	}
+    }
+    
+    public void initialize(URL url, ResourceBundle rb)
+	{
+    	if(c.loggedType instanceof BusinessOwner)
+    	{
+    		customerName.setVisible(true);
+    	}
+    	else
+    	{
+    		customerName.setVisible(false);
+    	}
+	}
 }
