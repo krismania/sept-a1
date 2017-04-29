@@ -6,7 +6,6 @@
 package GUIControl;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.IntegerProperty;
@@ -23,12 +22,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
-import main.Employee;
 import main.ShiftTime;
 import main.Booking;
 
