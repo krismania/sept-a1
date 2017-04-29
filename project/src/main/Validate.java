@@ -17,7 +17,7 @@ public final class Validate
 	 */
 	public static boolean username(String input)
 	{
-		if(!input.isEmpty() && (input.length()<15) && !input.contains(" ") && input.matches("[a-zA-Z0-9]+")){
+		if(!input.isEmpty() && !input.contains(" ") && input.matches("[a-zA-Z]+[a-zA-Z0-9]+")){
 			return true;
 		}
 		
