@@ -117,7 +117,7 @@ public class GUIBOViewBookingSumController implements Initializable {
             {	
                 StringProperty prop = new SimpleStringProperty();
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                String strProp = df.format(param.getValue().getDate());
+                String strProp = param.getValue().getDate().toString();
                 prop.setValue(strProp);
                 return prop;
             }	
@@ -131,8 +131,8 @@ public class GUIBOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String t = tToStr.format(param.getValue().getTime());
-                prop.setValue(t);
+                String timeToStr = param.getValue().getTime().toString();
+                prop.setValue(timeToStr);
                 return prop;
             }	
         });
@@ -151,7 +151,7 @@ public class GUIBOViewBookingSumController implements Initializable {
  
         //TN instantiates all Booking class objects
         booking.getItems().setAll(c.getPastBookings());
-        System.out.println("Bookings displayed successfully");
+        System.out.println("Bookings displayed successfully" + c.getPastBookings());
     }    
 	//Switches scenes
     private void switchTo(String fxmlName)
