@@ -45,10 +45,10 @@ import main.Booking;
  */
 public class GUIBOViewBookingSumController implements Initializable {
     
-    private Controller c;
+    private Controller c = Controller.getInstance();
 	
     @FXML 
-    private BorderPane root;
+    private AnchorPane root;
 	
     @FXML
     private TableView<Booking> booking;
@@ -70,22 +70,15 @@ public class GUIBOViewBookingSumController implements Initializable {
 	
     @FXML
     private Button navMenu;
-    
-    @FXML
-    private Button exit;
 	
     @FXML
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
-    @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) navMenu.getScene().getWindow();
+    	//Stage stage = (Stage) navMenu.getScene().getWindow();
         // load the scene
-        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu")));
         // switch scenes
-        stage.setScene(boMenu);
+        //stage.setScene(boMenu);
+        switchTo("GUIBOMenu");
     }
     
     @Override
@@ -157,8 +150,9 @@ public class GUIBOViewBookingSumController implements Initializable {
  
         //TN instantiates all Booking class objects
         booking.getItems().setAll(c.getPastBookings());
+        System.out.println("Bookings displayed successfully");
     }    
-	
+	//Switches scenes
     private void switchTo(String fxmlName)
     {
         try
