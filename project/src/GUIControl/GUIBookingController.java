@@ -81,14 +81,25 @@ public class GUIBookingController {
     			Integer.parseInt(employeePicker.getValue()));
     	
     	if(booked)
+    	if(c.loggedType instanceof BusinessOwner && customerName.getText().isEmpty())
     	{
-    		System.out.println("Booked in!");
-    		c.getPastBookings();
-    		c.getFutureBookings();
+    		System.out.println("Cannot process a booking without customer name");
     	}
-    	else 
+    	else
     	{
-    		System.out.println("Booking has gone wrong!");
+    		boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
+    				Integer.parseInt(employeePicker.getValue()), customerName.getText());
+    	
+    		if(booked)
+	    	{
+	    		System.out.println("Booked in!");
+	    		c.getPastBookings();
+	    		c.getFutureBookings();
+	    	}
+	    	else 
+	    	{
+	    		System.out.println("Booking has gone wrong!");
+	    	}
     	}
     	
     }
