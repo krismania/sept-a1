@@ -22,7 +22,12 @@ public class Database implements DBInterface {
 	
 	private Logger logger;
 	
-	//JM Constructor, reads the name of the database file to work with.
+	/**
+	 * Instantiates the database, which will read to and from the .db file with
+	 * the given name. If the database doesn't exist, it is created and seeded.
+	 * @author James
+	 * @author krismania
+	 */
 	public Database(String nameOfDatabase)
 	{
 		// get the logger & set level
@@ -38,6 +43,9 @@ public class Database implements DBInterface {
 
 //***PUBLIC API***
 
+	/**
+	 * @author James
+	 */
 	@Override
 	public boolean addAccount(Account account, String password)
 	{
@@ -59,6 +67,9 @@ public class Database implements DBInterface {
 		return false;
 	}
 
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public Employee buildEmployee()
 	{
@@ -90,6 +101,9 @@ public class Database implements DBInterface {
 		return new Employee(id,"", "", "", "");
 	}
   
+	/**
+	 * @author James
+	 */
 	@Override
 	public boolean addEmployee(Employee employee)
 	{
@@ -101,6 +115,9 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public Shift buildShift(int employeeID)
 	{
@@ -132,6 +149,9 @@ public class Database implements DBInterface {
 		return new Shift(id, employeeID, null, null);
 	}
 	
+	/**
+	 * @author James
+	 */
 	public Booking buildBooking() {
 		// find the highest ID
 		int currentHighestID = 0;
@@ -156,6 +176,9 @@ public class Database implements DBInterface {
 		return new Booking(id, null, 0, null, null);
 	}
 	
+	/**
+	 * @author James
+	 */
 	@Override
 	public boolean addShift(Shift shift)
 	{
@@ -166,6 +189,9 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
+	/**
+	 * @author James
+	 */
 	@Override
 	public boolean addBooking(Booking booking)
 	{
@@ -178,12 +204,18 @@ public class Database implements DBInterface {
 		return false;
 	}
 
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public boolean accountExists(String username)
 	{
 		return validateUsername(username) != null;
 	}
 
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public Account getAccount(String username)
 	{		
@@ -338,6 +370,9 @@ public class Database implements DBInterface {
 		return businessOwners;
 	}
 	
+	/**
+	 * @author krismania
+	 */
 	@Override
 	public Employee getEmployee(int id)
 	{
@@ -370,6 +405,10 @@ public class Database implements DBInterface {
 		return null;
   }
   
+	/**
+	 * @author James
+	 * @author krismania
+	 */
 	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
@@ -447,7 +486,6 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 */
-	
 	@Override
 	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
 	{
@@ -659,6 +697,10 @@ public class Database implements DBInterface {
 		return bookings;
 	}
 
+	/**
+	 * Joint login function, may return either a Customer or BusinessOwner.
+	 * @author krismania
+	 */
 	@Override
 	public Account login(String username, String password)
 	{
@@ -679,7 +721,13 @@ public class Database implements DBInterface {
 	}
 
 	
-	//***CREATE METHODS***JM
+	//***CREATE METHODS***
+	
+	/**
+	 * Create the database
+	 * TODO: better documentation
+	 * @author James
+	 */
 	private void CreateDatabase()
 	{
 		//JM Initialize a connection
@@ -714,8 +762,12 @@ public class Database implements DBInterface {
 	}
 	
 	
-	//JM CreateDatabaseTable() will create a table within the database.
-	//JM Param = Variable number of Strings (Array)
+	/**
+	 * Creates a table within the database
+	 * TODO: better documentation
+	 * @param strings a variable number of strings
+	 * @author James
+	 */
 	private void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
@@ -784,7 +836,10 @@ public class Database implements DBInterface {
 		
 	}
 	
-	//JM Insert data into database.
+	/**
+	 * Insert data into the database
+	 * @author James
+	 */
 	private boolean CreateDataEntry(String...strings) 
 	{
 
@@ -832,6 +887,10 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
+	/**
+	 * TODO: better documentation
+	 * @author James
+	 */
 	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
 	{
 		String sql = "INSERT INTO Shift VALUES ('"
@@ -857,7 +916,7 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-//***VALIDATION METHODS***JM
+//***VALIDATION METHODS***
 
 	/**
 	 * Returns a class object describing which type of user {@code username} is,
@@ -906,6 +965,11 @@ public class Database implements DBInterface {
 		return null;
 	}
 	
+	/**
+	 * returns true if the username & password match in the given table.
+	 * @author krismania
+	 * @author James
+	 */
 	private boolean validatePassword(String username, String password, String tableName)
 	{
 		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
@@ -930,8 +994,7 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-//***RETRIEVE METHODS***JM
-	
+//***RETRIEVE METHODS***
 	
 	/**
 	 * Temp method to find the highest ID
@@ -1005,7 +1068,12 @@ public class Database implements DBInterface {
 		return id;
 	}
 	
-	//***CONNECTION METHODS***JM
+	//***CONNECTION METHODS***
+	
+	/**
+	 * TODO: document this
+	 * @author James
+	 */
 	private boolean openConnection() throws SQLException {
 		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 		if(c != null) 
@@ -1015,6 +1083,10 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
+	/**
+	 * TODO: document this
+	 * @author James
+	 */
 	private boolean closeConnection() throws SQLException {
 		
 		if(stmt != null)
@@ -1039,7 +1111,7 @@ public class Database implements DBInterface {
 		}
 	}
 
-//***SCRIPT METHODS***JM
+//***SCRIPT METHODS***
 	
 	/**
 	 * Attempt to create the required DB tables
@@ -1073,6 +1145,10 @@ public class Database implements DBInterface {
 				"Date DATE", "Time int", "Booking_ID");
 	}
 	
+	/**
+	 * Seeds the database.
+	 * @author James
+	 */
 	private void createTestData()
 	{
 		logger.info("Creating DB test data...");
