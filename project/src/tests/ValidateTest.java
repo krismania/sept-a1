@@ -235,7 +235,7 @@ public class ValidateTest
 	@Test
 	public void testValidPassword3()
 	{
-		String password = "1234aB";
+		String password = "1234aBcd";
 		assertTrue(Validate.password(password));
 	}
 	
@@ -243,7 +243,7 @@ public class ValidateTest
 	@Test
 	public void testValidPassword4()
 	{
-		String password = "Aaaaa9";
+		String password = "Aaaaaaa9";
 		assertTrue(Validate.password(password));
 	}
 	
