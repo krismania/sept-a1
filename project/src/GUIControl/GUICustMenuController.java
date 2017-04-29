@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Controller;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -83,6 +84,21 @@ public class GUICustMenuController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+    
+    /**
+     * Opens the ViewCustomerDetails screen
+     * @author krismania
+     */
+    @FXML
+    public void handleViewDetails(ActionEvent event) throws IOException
+    {
+    	Node source = (Node) event.getSource();
+    	Stage stage = (Stage) source.getScene().getWindow();
+    	Parent root = FXMLLoader.load(getClass().getResource("ViewCustomerDetails.fxml"));
+    	
+    	Scene scene = new Scene(root);
+    	stage.setScene(scene);
     }
     
     @Override

@@ -65,6 +65,24 @@ public class Controller
 		
 		logger.info("Instantiated Controller");
 	}
+	
+	/**
+	 * Returns customer object based on supplied username, or null if none
+	 * is found
+	 * @author krismania
+	 */
+	public Customer getCustomer(String username)
+	{
+		Account account = db.getAccount(username);
+		if (account instanceof Customer)
+		{
+			return (Customer) account;
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	/**
 	 * @see DBInterface#getAllCustomers()
