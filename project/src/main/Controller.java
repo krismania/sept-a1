@@ -52,6 +52,24 @@ public class Controller
 		}
 		return instance;
 	}
+	
+	/**
+	 * Returns customer object based on supplied username, or null if none
+	 * is found
+	 * @author krismania
+	 */
+	public Customer getCustomer(String username)
+	{
+		Account account = db.getAccount(username);
+		if (account instanceof Customer)
+		{
+			return (Customer) account;
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public ArrayList<Customer> getAllCustomers()
 	{
