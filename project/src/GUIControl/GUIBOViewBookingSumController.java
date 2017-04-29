@@ -34,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
+import main.DBInterface;
 import main.Employee;
 import main.ShiftTime;
 import main.Booking;
@@ -44,7 +45,7 @@ import main.Booking;
  * @author tn
  */
 public class GUIBOViewBookingSumController implements Initializable {
-    
+	
     private Controller c = Controller.getInstance();
 	
     @FXML 
@@ -115,7 +116,7 @@ public class GUIBOViewBookingSumController implements Initializable {
             public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
             {	
                 StringProperty prop = new SimpleStringProperty();
-                DateFormat df = new SimpleDateFormat("");//MM/dd/yyyy HH:mm:ss");
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 String strProp = df.format(param.getValue().getDate());
                 prop.setValue(strProp);
                 return prop;
@@ -129,7 +130,7 @@ public class GUIBOViewBookingSumController implements Initializable {
              public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
              {
                 StringProperty prop = new SimpleStringProperty();
-                DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("");//HH:mm:ss");
+                DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
                 String t = tToStr.format(param.getValue().getTime());
                 prop.setValue(t);
                 return prop;
