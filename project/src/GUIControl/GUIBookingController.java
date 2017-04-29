@@ -87,9 +87,12 @@ public class GUIBookingController {
 	    	if(empIDs.isEmpty())
 	    	{
 	    		employeePicker.getItems().addAll("No employees working on selected date");
+			submitBooking.setDisable(true);
 	    	}
 	    	else {
 	    		employeePicker.getItems().addAll(empIDs);
+			submitBooking.setDisable(false);
+			
 	    	}
     	}
     }
