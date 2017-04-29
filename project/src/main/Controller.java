@@ -209,10 +209,17 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
-	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID, String customerUsername) 
 	{
 		Booking booking = db.buildBooking();
-		booking.setCustomer(loggedUser);
+		if(customerUsername.isEmpty())
+		{
+			booking.setCustomer(loggedUser);
+		}
+		else
+		{
+			booking.setCustomer(customerUsername);
+		}
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
 		booking.setTime(time);
