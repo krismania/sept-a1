@@ -25,12 +25,20 @@ public class Controller
 	 */
 	public static boolean debugDB = false;
 	
+	/**
+	 * Singleton instance of the Controller
+	 */
 	private static Controller instance = null;
 	
 	private Logger logger;
 	private DBInterface db;
 	
+	/**
+	 * Username of the currently logged in user. If no user is logged in, this
+	 * will be {@code null}.
+	 */
 	public String loggedUser = null;
+	
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -337,6 +345,10 @@ public class Controller
 		return input.matches("\\+?(\\d{8}|\\d{10,11})");
 	}
 	
+	/**
+	 * TODO: document this
+	 * @author James
+	 */
 	private LocalTime convertTime(String time) {
 		if(time.matches("\\d:\\d\\d am"))
 		{
