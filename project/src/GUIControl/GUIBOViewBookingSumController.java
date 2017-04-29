@@ -115,7 +115,7 @@ public class GUIBOViewBookingSumController implements Initializable {
             public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
             {	
                 StringProperty prop = new SimpleStringProperty();
-                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                DateFormat df = new SimpleDateFormat("");//MM/dd/yyyy HH:mm:ss");
                 String strProp = df.format(param.getValue().getDate());
                 prop.setValue(strProp);
                 return prop;
@@ -129,7 +129,7 @@ public class GUIBOViewBookingSumController implements Initializable {
              public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
              {
                 StringProperty prop = new SimpleStringProperty();
-                DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
+                DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("");//HH:mm:ss");
                 String t = tToStr.format(param.getValue().getTime());
                 prop.setValue(t);
                 return prop;
