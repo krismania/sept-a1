@@ -29,8 +29,6 @@ import javafx.scene.control.TextField;
  */
 public class GUICustViewAvailController implements Initializable {
 
-
-
     @FXML
     private TextField sunday;
 
@@ -56,18 +54,10 @@ public class GUICustViewAvailController implements Initializable {
     private Button navMenu;
     
     @FXML
-    private Button exit;
-    
-    @FXML
     void outputAvail(ActionEvent event) {
 
     }
 
-    @FXML
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();

@@ -42,9 +42,6 @@ public class GUIBOMenuController implements Initializable {
     private Button viewBooking;
     
     @FXML
-    private Button exit;
-    
-    @FXML
     private Button logout;
     
 
@@ -87,11 +84,6 @@ public class GUIBOMenuController implements Initializable {
         }
 
     }    
-    @FXML
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
     
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
