@@ -12,9 +12,17 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Controller class, which drives interaction between the UI and the database.
+ * This class is a singleton, and can be accessed via {@code Controller.getInstance()}
+ */
 public class Controller
 {
-	// if true, use DummyDB instead of real db connection
+	/**
+	 * Decides whether or not the debug database is used. Defaults to {@code False}.
+	 * If the debug DB should be used, this value must be set before any calls to
+	 * {@code Controller.getInstance()}.
+	 */
 	public static boolean debugDB = false;
 	
 	private static Controller instance = null;
@@ -23,22 +31,6 @@ public class Controller
 	private DBInterface db;
 	
 	public String loggedUser = null;
-	
-	/**
-	 * Creates an instance of the controller class & opens the database.
-	 */
-	private Controller()
-	{
-		// get the logger
-		logger = Logger.getLogger(getClass().getName());
-		logger.setLevel(Level.ALL);
-		
-		// instantiate DB
-		if (debugDB) db = new DummyDatabase();
-		else db = new Database("awesomeSauce");
-		
-		logger.info("Instantiated Controller");
-	}
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -52,68 +44,75 @@ public class Controller
 		}
 		return instance;
 	}
+	
+	/**
+	 * Creates an instance of the controller class & opens the database.
+	 * @author krismania
+	 */
+	private Controller()
+	{
+		// get the logger
+		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		// instantiate DB
+		if (debugDB) db = new DummyDatabase();
+		else db = new Database("awesomeSauce");
+		
+		logger.info("Instantiated Controller");
+	}
 
+	/**
+	 * @see DBInterface#getAllCustomers()
+	 */
 	public ArrayList<Customer> getAllCustomers()
 	{
 		return db.getAllCustomers();
 	}
 	
+	/**
+	 * @see DBInterface#getAllBusinessOwners()
+	 */
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		return db.getAllBusinessOwners();
 	}
 	
+	/**
+	 * @see DBInterface#getEmployee(int)
+	 */
 	public Employee getEmployee(int id)
 	{
 		return db.getEmployee(id);
 	}
 	
+	/**
+	 * @see DBInterface#getAllEmployees()
+	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
 	}
 	
+	/**
+	 * @see DBInterface#getEmployeeWorkingOnDay(LocalDate)
+	 */
 	public ArrayList<String> getEmpByDay(LocalDate day)
 	{
 		return db.getEmployeeWorkingOnDay(day);
 	}
 	
 	/**
-	 * Returns a hash map of shifts and bookings
-	 * @author James
-	 * @author krismania
+	 * @see DBInterface#getShiftBookings()
 	 */
 	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		TreeMap<Shift, Booking> shifts = db.getShiftBookings();
-		
-//		// comparator to sort based on day and time
-//		Comparator<Shift> byDayAndTime = new Comparator<Shift>()
-//		{
-//			@Override
-//			public int compare(Shift s1, Shift s2)
-//			{
-//				// sort on day
-//				int byDay = s1.getDay().getValue() - s2.getDay().getValue();
-//				
-//				// if same day, compare time
-//				if (byDay == 0)
-//				{
-//					return s1.getTime().getValue() - s2.getTime().getValue();
-//				}
-//				else
-//				{
-//					return byDay;
-//				}
-//			}
-//		};
-//		
-//		logger.info("Sorting shift list");
-//		shifts.sort(byDayAndTime);
-		
-		return shifts;
+		return db.getShiftBookings();
 	}
 	
+	/**
+	 * TODO: document this
+	 */
 	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
 		int empID = Integer.parseInt(emp);
 		DayOfWeek day = date.getDayOfWeek();
@@ -127,6 +126,12 @@ public class Controller
 		return availableTimes;
 	}
 	
+	/**
+	 * Returns a sorted list of past bookings. Does not include bookings
+	 * on the current date.
+	 * @see DBInterface#getPastBookings()
+	 * @author krismania
+	 */
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = db.getPastBookings();
@@ -135,12 +140,19 @@ public class Controller
 		
 		for(Booking booked : bookings) 
 		{
+			// TODO: remove print statement
 			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
 		}
 		
 		return bookings;
 	}
 	
+	/**
+	 * Returns a sorted list of future bookings. Includes bookings on the
+	 * current date.
+	 * @see DBInterface#getFutureBookings()
+	 * @author krismania
+	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
 		ArrayList<Booking> bookings = db.getFutureBookings();
@@ -149,6 +161,7 @@ public class Controller
 		
 		for(Booking booked : bookings) 
 		{
+			// TODO: remove print statement
 			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
 		}
 		
@@ -157,6 +170,7 @@ public class Controller
 	
 	/**
 	 * Add a customer to the database.
+	 * @see DBInterface#addAccount(Account, String)
 	 * @author krismania
 	 */
 	public boolean addCustomer(String username, String password, String firstName,
@@ -171,6 +185,7 @@ public class Controller
 	
 	/**
 	 * Create an employee in the database.
+	 * @see DBInterface#addEmployee(Employee)
 	 * @author krismania
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
@@ -199,6 +214,12 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
+	/**
+	 * Add a shift to the DB.
+	 * @see DBInterface#addShift(Shift)
+	 * @author TN
+	 * @author krismania
+	 */
 	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
@@ -208,6 +229,9 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
+	/** Add a booking to the DB.
+	 * @author James
+	 */
 	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
 	{
 		Booking booking = db.buildBooking();
@@ -247,6 +271,9 @@ public class Controller
 		loggedUser = null;
 	}
 	
+	/**
+	 * @see DBInterface#shiftExists(DayOfWeek, ShiftTime, int)
+	 */
 	public boolean shiftExists(String dayString, String timeString, int empID)
 	{
 		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
