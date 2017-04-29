@@ -3,6 +3,7 @@ package GUIControl;
 import java.io.IOException;
 import javafx.stage.Stage;
 import main.Controller;
+import main.Validate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -108,13 +109,13 @@ public class AddEmployeeController
      */
     private boolean validateEmployee()
     {
-    	if (c.validateName(tfEmpFName.getText()))
+    	if (Validate.name(tfEmpFName.getText()))
     	{
-    		if (c.validateName(tfEmpLName.getText()))
+    		if (Validate.name(tfEmpLName.getText()))
     		{
-    			if (c.validateEmail(tfEmpEmailAdd.getText()))
+    			if (Validate.email(tfEmpEmailAdd.getText()))
     			{
-    				if (c.validatePhoneNumber(tfEmpPhNum.getText()))
+    				if (Validate.phone(tfEmpPhNum.getText()))
     				{
     					lblError.setVisible(false);
     					return true;
