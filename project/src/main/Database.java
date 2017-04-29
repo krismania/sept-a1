@@ -1000,7 +1000,9 @@ public class Database implements DBInterface {
 	 * Temp method to find the highest ID
 	 * TODO: this may need to be removed
 	 * @author krismania
+	 * @deprecated
 	 */
+	@Deprecated
 	private String getLastEmployeeID()
 	{
 		String id = "E000"; // if no employee is found, E000 will be returned
@@ -1036,7 +1038,9 @@ public class Database implements DBInterface {
 	 * Temp method to find the highest ID
 	 * TODO: this WILL need to be removed
 	 * @author krismania
+	 * @deprecated
 	 */
+	@Deprecated
 	private String getLastShiftID()
 	{
 		String id = "S000"; // if no employee is found, E000 will be returned
