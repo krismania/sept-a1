@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 
 public class GUIBookingController {
 	Controller c = Controller.getInstance();
+	private String customerUsername = null;
 	
 	@FXML
     private Button navMenu;
@@ -38,6 +39,9 @@ public class GUIBookingController {
     
     @FXML 
     private TextField customerName;
+    
+    @FXML
+    private Label customerLabel;
     
     @FXML
 	private DatePicker datePicker;
@@ -77,10 +81,6 @@ public class GUIBookingController {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
-    	boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
-    			Integer.parseInt(employeePicker.getValue()));
-    	
-    	if(booked)
     	if(c.loggedType instanceof BusinessOwner && customerName.getText().isEmpty())
     	{
     		System.out.println("Cannot process a booking without customer name");
@@ -106,6 +106,7 @@ public class GUIBookingController {
     
     @FXML
     private void generateEmployeesByDate(ActionEvent event) throws IOException{
+    	setCustomerVisbility(event);
     	LocalDate day = datePicker.getValue();
     	employeePicker.getItems().removeAll(employeePicker.getItems());
     	
@@ -135,23 +136,24 @@ public class GUIBookingController {
     	bookingOptionsDropdown.getItems().addAll(times);
     }
     
-    @FXML
+    /*@FXML
     private void selectCustomer(ActionEvent event) throws IOException{
+    	
+    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	
+    }*/
+   
+    public void setCustomerVisbility(ActionEvent event) throws IOException {
     	if(c.loggedType instanceof BusinessOwner)
     	{
-    		Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    		System.out.println("Displaying Customer Name!");
+    		customerName.setVisible(true);
+    		customerLabel.setVisible(true);
     	}
     }
     
     public void initialize(URL url, ResourceBundle rb)
 	{
-    	if(c.loggedType instanceof BusinessOwner)
-    	{
-    		customerName.setVisible(true);
-    	}
-    	else
-    	{
-    		customerName.setVisible(false);
-    	}
+    	
 	}
 }
