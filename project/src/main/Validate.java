@@ -76,7 +76,7 @@ public final class Validate
 	public static boolean password(String password)
 	{
 		//check length
-		if (password.length() >= 6 && password.length() < 15 && password.matches("[a-zA-Z0-9]+"))
+		if (password.length() >= 8 && password.matches("[a-zA-Z0-9]+"))
 		{
 			// loop through each character and check if there is (at least) 1 upper case, 1 lower case and 1 number
 			// the following vars are set to true once an occurrence of each is found. -kg
