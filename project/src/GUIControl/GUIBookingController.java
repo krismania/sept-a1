@@ -53,15 +53,6 @@ public class GUIBookingController {
     private ChoiceBox<String> bookingOptionsDropdown;
     
     @FXML
-    private Button exit;
-    
-    @FXML
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
-    
-    @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene

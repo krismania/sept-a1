@@ -20,7 +20,5 @@
       <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="102.0" prefWidth="150.0" onAction="#generateTimesByEmp"/>
       <ChoiceBox fx:id="bookingOptionsDropdown" layoutX="349.0" layoutY="142.0" prefWidth="150.0" />
       <TextField fx:id="customerName" layoutX="349.0" layoutY="182.0" visible="false"></TextField>
-      
-    
    </children>
 </AnchorPane>

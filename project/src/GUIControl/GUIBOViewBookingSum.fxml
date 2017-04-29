@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="471.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
    <children>
       <TableView fx:id="booking" prefHeight="400.0" prefWidth="575.0">
          <columns>
@@ -22,7 +22,6 @@
       <Pane layoutY="395.0" prefHeight="77.0" prefWidth="566.0">
          <children>
             <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
-            <Button fx:id="Exit" layoutX="484.0" layoutY="26.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close" />
          </children>
       </Pane>
    </children>
