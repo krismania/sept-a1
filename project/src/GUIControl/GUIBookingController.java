@@ -78,6 +78,7 @@ public class GUIBookingController {
     	if(day.isBefore(LocalDate.now())) {
     		System.out.println("Date has passed.");
     		employeePicker.getItems().addAll("Please select today or a date in the future");
+		submitBooking.setDisable(true);
     	}
     	
     	else 
