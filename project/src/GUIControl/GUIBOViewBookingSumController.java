@@ -116,8 +116,8 @@ public class GUIBOViewBookingSumController implements Initializable {
             public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
             {	
                 StringProperty prop = new SimpleStringProperty();
-                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                String strProp = param.getValue().getDate().toString();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String strProp = dateFormatter.format(param.getValue().getDate());
                 prop.setValue(strProp);
                 return prop;
             }	
@@ -131,8 +131,8 @@ public class GUIBOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String timeToStr = param.getValue().getTime().toString();
-                prop.setValue(timeToStr);
+                String tProp = tToStr.format(param.getValue().getTime());
+                prop.setValue(tProp);
                 return prop;
             }	
         });
@@ -151,7 +151,8 @@ public class GUIBOViewBookingSumController implements Initializable {
  
         //TN instantiates all Booking class objects
         booking.getItems().setAll(c.getPastBookings());
-        System.out.println("Bookings displayed successfully" + c.getPastBookings());
+        System.out.println("Past Bookings display Output of booking.getItems().setAll(c.getPastBookings()) = "
+        + booking.getItems().setAll(c.getPastBookings()));
     }    
 	//Switches scenes
     private void switchTo(String fxmlName)
