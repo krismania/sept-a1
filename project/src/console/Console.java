@@ -3,6 +3,7 @@ package console;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Date;
@@ -388,7 +389,7 @@ public class Console
 		}
 		while (!accepted);
 
-		created = c.addCustomer(username, firstName, lastName, email, phoneNumber, password);
+		created = c.addCustomer(username, password, firstName, lastName, email, phoneNumber);
 		
 		//JM Check if customer was created successfully
 		if(created) 
@@ -456,7 +457,7 @@ public class Console
 		
 		// print the bookings in a table
 		String formatString = "%-12s %-10s %3s   %-20s %-25s\n";
-		Date currentDate = null; // store the date we're up to
+		LocalDate currentDate = null; // store the date we're up to
 		
 		// print header
 		printHeader(formatString, "Date", "Time", "ID", "Employee", "Customer");

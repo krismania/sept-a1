@@ -1,6 +1,7 @@
 package main;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -99,7 +100,7 @@ public interface DBInterface
 	
 	
 	// TODO: return array of Shifts
-	ArrayList<Shift> getShifts(int EmpID);
+	ArrayList<Shift> getShifts(int EmpID, String Day);
 	
 	
 	public TreeMap<Shift, Booking> getShiftBookings();
@@ -122,5 +123,11 @@ public interface DBInterface
 	 * @author krismania
 	 */
 	Account login(String username, String password);
+	
+	ArrayList<String> getEmployeeWorkingOnDay(LocalDate day);
+
+	boolean addBooking(Booking booking);
+	
+	Booking buildBooking();
 
 }

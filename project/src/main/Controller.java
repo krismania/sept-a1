@@ -1,9 +1,13 @@
 package main;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +21,8 @@ public class Controller
 	
 	private Logger logger;
 	private DBInterface db;
+	
+	public String loggedUser = null;
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
@@ -46,6 +52,24 @@ public class Controller
 		}
 		return instance;
 	}
+	
+	/**
+	 * Returns customer object based on supplied username, or null if none
+	 * is found
+	 * @author krismania
+	 */
+	public Customer getCustomer(String username)
+	{
+		Account account = db.getAccount(username);
+		if (account instanceof Customer)
+		{
+			return (Customer) account;
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public ArrayList<Customer> getAllCustomers()
 	{
@@ -65,6 +89,11 @@ public class Controller
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
+	}
+	
+	public ArrayList<String> getEmpByDay(LocalDate day)
+	{
+		return db.getEmployeeWorkingOnDay(day);
 	}
 	
 	/**
@@ -103,11 +132,29 @@ public class Controller
 		return shifts;
 	}
 	
+	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
+		int empID = Integer.parseInt(emp);
+		DayOfWeek day = date.getDayOfWeek();
+		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
+		ArrayList<String> availableTimes = new ArrayList<String>();
+		
+		for (Shift shift : shifts) {
+			String time = shift.getTime().toString();
+			availableTimes.add(time);
+		}
+		return availableTimes;
+	}
+	
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = db.getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
+		}
 		
 		return bookings;
 	}
@@ -117,6 +164,11 @@ public class Controller
 		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
+		
+		for(Booking booked : bookings) 
+		{
+			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
+		}
 		
 		return bookings;
 	}
@@ -141,14 +193,19 @@ public class Controller
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
 	{		
-		Employee employee = db.buildEmployee();
-		
-		employee.setFirstName(firstName);
-		employee.setLastName(lastName);
-		employee.setEmail(email);
-		employee.setPhoneNumber(phoneNumber);
-		
-		return db.addEmployee(employee);
+		if(Validate.name(firstName) && Validate.name(lastName)
+				&& Validate.email(email) && Validate.phone(phoneNumber)){
+			Employee employee = db.buildEmployee();
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setEmail(email);
+			employee.setPhoneNumber(phoneNumber);
+			
+			return db.addEmployee(employee);
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -160,18 +217,52 @@ public class Controller
 		return db.getEmployee(id) == null;
 	}
 	
-	public boolean addShift(int employeeID, DayOfWeek day, ShiftTime time)
+	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
 		Shift shift = db.buildShift(employeeID);
-		shift.setDay(day);
-		shift.setTime(time);
+		shift.setTime(convertTime(time));
+		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return db.addShift(shift);
 	}
 	
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
+	{
+		Booking booking = db.buildBooking();
+		booking.setCustomer(loggedUser);
+		booking.setDate(localDate);
+		booking.setEmployee(empID);
+		booking.setTime(time);
+		
+		return db.addBooking(booking);
+	}
+	
+	/**
+	 * Validates a username & password, and if valid, returns the account
+	 * object & also sets the loggedUser property.
+	 * @author krismania
+	 */
 	public Account login(String username, String password)
 	{
-		return db.login(username, password);
+		Account loggedAccount = db.login(username, password);
+		if (loggedAccount != null)
+		{
+			loggedUser = loggedAccount.username;
+		}
+		
+		logger.info("Logged in user: " + loggedUser);
+		
+		return loggedAccount;
+	}
+	
+	/**
+	 * Sets the logged user to null
+	 * @author krismania
+	 */
+	public void logout()
+	{
+		logger.info("Logged out user: " + loggedUser);
+		loggedUser = null;
 	}
 	
 	public boolean shiftExists(String dayString, String timeString, int empID)
@@ -183,37 +274,38 @@ public class Controller
 	}
 	
 	/**
-	 * Returns true if a valid name is input.
-	 * @author RK
+	 * TODO: document this
+	 * @author James
 	 */
-	public boolean validateName(String input)
-	{
-		if(!input.isEmpty()){
-			return true;
+	private LocalTime convertTime(String time) {
+		if(time.matches("\\d:\\d\\d am"))
+		{
+			time = "0".concat(time);
+			time = time.replaceAll("\\sam", "");
+		} 
+		else if(time.matches("\\d\\d:\\d\\d am"))
+		{
+			time = time.replaceAll("\\sam", "");
 		}
-		
-		return false;
-	}
-	
-	/**
-	 * Check that email is valid and return true if it is.
-	 * @author RK
-	 */
-	public boolean validateEmail(String input)
-	{
-		if(!input.isEmpty() && input.contains("@") && input.contains(".")){
-			return true;
+		else if(time.matches("\\d:\\d\\d pm"))
+		{
+			int hour = Character.getNumericValue(time.charAt(0));
+			hour = hour + 12;
+			
+			time = time.replaceAll("\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
 		}
-		return false;
-	}
-	
-	/**
-	 * Check that phone number is valid and return true if it is.
-	 * @author RK
-	 */
-	public boolean validatePhoneNumber(String input)
-	{
-		input = input.replaceAll("[ \\-.()]", "");
-		return input.matches("\\+?(\\d{8}|\\d{10,11})");
-	}
+		else if(time.matches("\\d\\d:\\d\\d pm"))
+		{
+			int hour = Integer.parseInt(time.substring(0, 2));
+			if(hour != 12){
+				hour = hour + 12;
+			}
+			time = time.replaceAll("\\d\\d:", hour + ":");
+			time = time.replaceAll("\\spm", "");
+		}
+		System.out.println(time);
+		LocalTime newTime = LocalTime.parse(time);
+		return newTime;
+  }
 }

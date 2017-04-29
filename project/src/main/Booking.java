@@ -3,6 +3,8 @@ package main;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -15,10 +17,10 @@ public class Booking implements Comparable<Booking>
 	public final int ID;
 	private String customer;
 	private int employeeID;
-	private Date date;
-	private ShiftTime time;
+	private LocalDate date;
+	private LocalTime time;
 	
-	public Booking(int ID, String customer, int employeeID, Date date, ShiftTime time)
+	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime time)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
@@ -38,7 +40,7 @@ public class Booking implements Comparable<Booking>
 		return employeeID;
 	}
 	
-	public Date getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}
@@ -49,9 +51,28 @@ public class Booking implements Comparable<Booking>
 		return DayOfWeek.valueOf(weekdayFormat.format(date).toUpperCase());
 	}
 	
-	public ShiftTime getTime()
+	public LocalTime getTime()
 	{
 		return time;
+	}
+	public void setCustomer(String customer) 
+	{
+		this.customer = customer;
+	}
+	
+	public void setEmployee(int id)
+	{
+		this.employeeID = id;
+	}
+	
+	public void setDate(LocalDate localDate)
+	{
+		this.date = localDate;
+	}
+	
+	public void setTime(LocalTime time) 
+	{
+		this.time = time;
 	}
 	
 	@Override
@@ -69,9 +90,10 @@ public class Booking implements Comparable<Booking>
 	{
 		int byDate = this.date.compareTo(b.date);
 		
+		//TODO added .toSecondOfDay() in order to fix error - not sure if correct though.
 		if (byDate == 0)
 		{
-			return this.time.getValue() - b.time.getValue();
+			return this.time.toSecondOfDay() - b.time.toSecondOfDay();
 		}
 		
 		return byDate;
