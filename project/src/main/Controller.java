@@ -175,8 +175,8 @@ public class Controller
 	 */
 	public boolean addEmployee(String firstName, String lastName, String email, String phoneNumber)
 	{		
-		if(validateName(firstName) && validateName(lastName)
-				&& validateEmail(email) && validatePhoneNumber(phoneNumber)){
+		if(Validate.name(firstName) && Validate.name(lastName)
+				&& Validate.email(email) && Validate.phone(phoneNumber)){
 			Employee employee = db.buildEmployee();
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
