@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * Defines getters and setters for several personal details, such as name and
+ * phone number.
+ * @author krismania
+ */
 public interface PersonalDetails
 {
 	public String getFirstName();
