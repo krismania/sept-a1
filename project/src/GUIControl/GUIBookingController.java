@@ -41,6 +41,11 @@ public class GUIBookingController {
     
     @FXML
     private ChoiceBox<String> bookingOptionsDropdown;
+	
+    @FXML
+    private void initializeSubmitButton(){
+    	submitBooking.setDisable(true);
+    }
     
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
@@ -78,7 +83,6 @@ public class GUIBookingController {
     	if(day.isBefore(LocalDate.now())) {
     		System.out.println("Date has passed.");
     		employeePicker.getItems().addAll("Please select today or a date in the future");
-		submitBooking.setDisable(true);
     	}
     	
     	else 
@@ -87,12 +91,9 @@ public class GUIBookingController {
 	    	if(empIDs.isEmpty())
 	    	{
 	    		employeePicker.getItems().addAll("No employees working on selected date");
-			submitBooking.setDisable(true);
 	    	}
 	    	else {
 	    		employeePicker.getItems().addAll(empIDs);
-			submitBooking.setDisable(false);
-			
 	    	}
     	}
     }
