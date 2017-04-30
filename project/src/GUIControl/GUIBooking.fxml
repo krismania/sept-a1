@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBookingController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBookingController">
    <children>
       <Label layoutX="50.0" layoutY="102.0" text="Enter Booking Date: " />
       <Label layoutX="50.0" layoutY="142.0" text="Select Staff Member: " />
       <Label layoutX="50.0" layoutY="182.0" text="Select Time: " />
-   	  <DatePicker fx:id="datePicker" layoutX="349.0" layoutY="102.0" onAction="#generateEmployeesByDate" promptText="Select Date" showWeekNumbers="true" />	
-   	  <Button fx:id="navMenu" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
-      <Button fx:id="submitBooking" layoutX="403.0" layoutY="319.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="140.0" text="Make Booking!" />
-      <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="142.0" onAction="#generateTimesByEmp" prefWidth="150.0" />
-      <ChoiceBox fx:id="bookingOptionsDropdown" layoutX="349.0" layoutY="182.0" prefWidth="150.0" />
-      
-    
+   	  <DatePicker fx:id="datePicker" layoutX="349.0" layoutY="102.0" onAction="#handleDateChange" promptText="Select Date" showWeekNumbers="true" />
+   	  <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="142.0" onAction="#handleEmployeeChange" prefWidth="150.0" />
+      <ChoiceBox fx:id="bookingOptionsDropdown" layoutX="349.0" layoutY="182.0" onAction="#handleTimeChange" prefWidth="150.0" />
+   	  <Button fx:id="navMenu" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleBack" text="Return to Menu" />
+      <Button fx:id="submitBooking" disable="true" layoutX="403.0" layoutY="319.0" mnemonicParsing="false" onAction="#handleBook" prefHeight="48.0" prefWidth="140.0" text="Make Booking!" />
    </children>
 </AnchorPane>

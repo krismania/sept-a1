@@ -658,9 +658,6 @@ public class Database implements DBInterface {
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		
-		// date formatter used to parse dates from the db
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
 		try
 		{
 			openConnection();
