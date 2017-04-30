@@ -22,8 +22,7 @@ public class Controller
 	private Logger logger;
 	private DBInterface db;
 	
-	public String loggedUser = null;
-	public Account loggedType = null;
+	private Account loggedUser = null;
 	
 	/**
 	 * Creates an instance of the controller class & opens the database.
@@ -232,7 +231,7 @@ public class Controller
 		Booking booking = db.buildBooking();
 		if(customerUsername.isEmpty())
 		{
-			booking.setCustomer(loggedUser);
+			booking.setCustomer(loggedUser.username);
 		}
 		else
 		{
@@ -252,17 +251,15 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		Account loggedAccount = db.login(username, password);
-		if (loggedAccount != null)
+		loggedUser = db.login(username, password);
+		
+		if (loggedUser != null)
 		{
-			loggedUser = loggedAccount.username;
-			loggedType = loggedAccount;
+			logger.info("Logged in user: " + loggedUser.username);
+			logger.info("User type: " + loggedUser.getClass().toString().replaceAll("class main.", ""));
 		}
 		
-		logger.info("Logged in user: " + loggedUser);
-		logger.info("User type: " + loggedType.getClass().toString().replaceAll("class main.", ""));
-		
-		return loggedAccount;
+		return loggedUser;
 	}
 	
 	/**
@@ -271,9 +268,17 @@ public class Controller
 	 */
 	public void logout()
 	{
-		logger.info("Logged out user: " + loggedUser);
+		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
-		loggedType = null;
+	}
+	
+	/**
+	 * Returns the currently logged in user's {@link Account} object.
+	 * @author krismania
+	 */
+	public Account getLoggedUser()
+	{
+		return loggedUser;
 	}
 	
 	public boolean shiftExists(String dayString, String timeString, int empID)

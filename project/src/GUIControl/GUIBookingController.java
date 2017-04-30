@@ -57,7 +57,7 @@ public class GUIBookingController {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
     	Scene accountMenu;
-    	if(c.loggedType instanceof Customer)
+    	if(c.getLoggedUser() instanceof Customer)
     	{
     		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
     	}
@@ -72,7 +72,7 @@ public class GUIBookingController {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{
-    	if(c.loggedType instanceof BusinessOwner && customerName.getText().isEmpty())
+    	if(c.getLoggedUser() instanceof BusinessOwner && customerName.getText().isEmpty())
     	{
     		System.out.println("Cannot process a booking without customer name");
     	}
@@ -135,7 +135,7 @@ public class GUIBookingController {
     }*/
    
     public void setCustomerVisbility(ActionEvent event) throws IOException {
-    	if(c.loggedType instanceof BusinessOwner)
+    	if(c.getLoggedUser() instanceof BusinessOwner)
     	{
     		System.out.println("Displaying Customer Name!");
     		customerName.setVisible(true);
