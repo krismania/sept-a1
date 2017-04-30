@@ -55,7 +55,6 @@ public class SignupController
 		}
 		catch (IOException e)
 		{
-			System.out.println("Could not switch scene.");
 			e.printStackTrace();
 		}
 	}
@@ -169,8 +168,6 @@ public class SignupController
 							firstName.getText(), lastName.getText(),
 							email.getText(), phone.getText()))
 			{
-				// sign up success
-				System.out.println("Sign up success");
 				
 				// alert the user
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -183,8 +180,7 @@ public class SignupController
 			}
 			else
 			{
-				// sign up failure
-				System.out.println("Sign up failed");
+				
 				// TODO: more specific errors here
 				setError(lblError2, "Account already exists.");
 			}

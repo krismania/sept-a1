@@ -78,7 +78,7 @@ public class GUIBookingController
     private void handleBook(ActionEvent event) throws IOException{
     	if(c.getLoggedUser() instanceof BusinessOwner && customerUser.getText().isEmpty())
     	{
-    		System.out.println("Cannot process a booking without customer name");
+    		GUIAlert.infoBox("Cannot process a booking without customer name", "Booking Error");
     	}
     	else
     	{
@@ -91,7 +91,7 @@ public class GUIBookingController
 	    	}
 	    	else 
 	    	{
-	    		GUIAlert.infoBox("Booking was not successful. Please ensure you have not already booked this date.", "Booking Confirmation");
+	    		GUIAlert.infoBox("Booking was not successful. Please ensure you have not already booked this date.", "Booking Error");
 	    	}
     	}
     }
@@ -167,7 +167,6 @@ public class GUIBookingController
     	employeePicker.getItems().removeAll(employeePicker.getItems());
     	
     	if(day.isBefore(LocalDate.now())) {
-    		System.out.println("Date has passed.");
     		employeePicker.getItems().addAll("Please select today or a date in the future");
     	}
     	
