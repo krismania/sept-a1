@@ -62,31 +62,22 @@ public class AddTimeController implements Initializable {
     }
     
     //TN - Collects data from DatePicker and Dropdowns and stores into variables
-    @FXML
+    @FXML	
     private void handleButtonAction(ActionEvent event) throws IOException{    	
-     
-      boolean added = c.addShift((int) empIDDropdown.getValue(), 
+        
+        boolean added = c.addShift((int) empIDDropdown.getValue(), 
     		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
-    }
-    
-    //TN Send data to Controller - not yet implemented
- /*   private boolean testShiftDate(String dayString, String timeString, int empID){
-    	//TN - Add text field input to Controller addEmployee method
-    	boolean addDate = c.shiftExists(dayString, timeString, empID);
-    	if(addDate == false)
+        if(added)
         {
-            //TN - Presents red error message if input is false
-            lblError.setVisible(true);
-            return false;
+            GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
+            System.out.println("Shift Added!");
         }
-        else 
-    	{
-            //TN -  If validation is successful a confirmation popup is presented.
-            lblError.setVisible(false);
-
-            return true;
-    	}
- */     
+        else
+        {
+            System.out.println("Unable to add shift!");
+        }
+    }
+      
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
