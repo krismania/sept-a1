@@ -23,7 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
-import model.Employee;
+import main.Employee;
 
 public class ViewEmployeeController implements Initializable
 {

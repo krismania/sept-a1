@@ -14,10 +14,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import main.Account;
+import main.BusinessOwner;
 import main.Controller;
-import model.Account;
-import model.BusinessOwner;
-import model.Customer;
+import main.Customer;
 
 public class LoginController implements Initializable
 {

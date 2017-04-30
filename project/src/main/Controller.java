@@ -9,17 +9,6 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import database.DBInterface;
-import database.Database;
-import database.DummyDatabase;
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
-import model.ShiftTime;
-
 /**
  * Controller class, which drives interaction between the UI and the database.
  * This class is a singleton, and can be accessed via {@code Controller.getInstance()}

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.stage.Stage;
+import main.Account;
+import main.BusinessOwner;
 import main.Controller;
+import main.Customer;
 import main.Validate;
-import model.Account;
-import model.BusinessOwner;
-import model.Customer;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

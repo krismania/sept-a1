@@ -1,4 +1,4 @@
-package database;
+package main;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,14 +9,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
-import model.ShiftTime;
 
 public class Database implements DBInterface {
 	Connection c = null;

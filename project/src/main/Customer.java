@@ -1,27 +1,27 @@
-package model;
+package main;
 
 /**
- * An employee in the system. Each employee is identified by their ID and has
- * personal information as specified in {@link PersonalDetails}
+ * A Customer in the system. Customer is an {@link Account} that also implements
+ * {@link PersonalDetails}.
  * @author krismania
  */
-public class Employee implements PersonalDetails
+public class Customer extends Account implements PersonalDetails
 {
-	public final int ID;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	//TN Constructor
-	public Employee(int ID, String firstName, String lastName, String email, String phoneNumber)
+	
+	public Customer(String username, String firstName, String lastName, String email, String phoneNumber)
 	{
-		this.ID = ID;
+		super(username);
+
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
-
+	
 	@Override
 	public String getFirstName()
 	{
@@ -39,13 +39,13 @@ public class Employee implements PersonalDetails
 	{
 		return email;
 	}
-
+	
 	@Override
 	public String getPhoneNumber()
 	{
 		return phoneNumber;
 	}
-
+	
 	@Override
 	public void setFirstName(String name)
 	{
@@ -68,5 +68,12 @@ public class Employee implements PersonalDetails
 	public void setPhoneNumber(String phone)
 	{
 		phoneNumber = phone;		
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Customer: %s, Name: %s %s, Email: %s, Phone: %s",
+						username, firstName, lastName, email, phoneNumber);
 	}
 }

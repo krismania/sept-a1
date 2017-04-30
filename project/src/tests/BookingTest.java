@@ -11,8 +11,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Booking;
-import model.ShiftTime;
+import main.Booking;
+import main.ShiftTime;
 
 public class BookingTest
 {

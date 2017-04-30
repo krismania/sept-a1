@@ -1,17 +1,9 @@
-package database;
+package main;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.TreeMap;
-
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
-import model.ShiftTime;
 
 
 public interface DBInterface

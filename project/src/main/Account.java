@@ -1,4 +1,4 @@
-package model;
+package main;
 
 /*
  * Abstract account class; serves as a base for the different types of accounts

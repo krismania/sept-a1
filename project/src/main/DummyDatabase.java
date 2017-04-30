@@ -1,4 +1,4 @@
-package database;
+package main;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,14 +9,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
-
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
-import model.ShiftTime;
 
 public class DummyDatabase implements DBInterface
 {
