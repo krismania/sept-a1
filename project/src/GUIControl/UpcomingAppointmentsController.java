@@ -110,7 +110,6 @@ public class UpcomingAppointmentsController implements Initializable
 		}
 		catch (IOException e)
 		{
-			System.out.println("Could not switch scene.");
 			e.printStackTrace();
 		}
 	}
