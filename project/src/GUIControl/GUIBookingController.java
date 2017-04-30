@@ -91,7 +91,7 @@ public class GUIBookingController
 	    	}
 	    	else 
 	    	{
-	    		System.out.println("Booking has gone wrong!");
+	    		GUIAlert.infoBox("Booking was not successful. Please ensure you have not already booked this date.", "Booking Confirmation");
 	    	}
     	}
     }
