@@ -25,7 +25,7 @@ import javafx.scene.control.ChoiceBox;
  * @author tn
  */
 public class GUIAddTimeController implements Initializable {
-    Controller c = Controller.getInstance();
+    Controller c = Controller.getInstance();   
     
     @FXML 
     private Label lblError;
@@ -44,6 +44,9 @@ public class GUIAddTimeController implements Initializable {
     
     @FXML
     private ChoiceBox<String> durationDropdown;
+
+    @FXML
+    private ChoiceBox<Number> empIDDropdown;
     
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
@@ -59,7 +62,8 @@ public class GUIAddTimeController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{    	
      
-      boolean added = c.addShift(1, dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
+      boolean added = c.addShift((int) empIDDropdown.getValue(), 
+    		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
       if(added)
       {
     	  System.out.println("Shift Added!");
@@ -90,7 +94,12 @@ public class GUIAddTimeController implements Initializable {
  */     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //TN - initialise shift time slot dropdown menus
+        
+    	empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
+    	empIDDropdown.getItems().addAll(1, 2, 3, 4);
+    	empIDDropdown.getSelectionModel().select(0);
+    	
+    	//TN - initialise shift time slot dropdown menus
     	timeDropdown.getItems().removeAll(timeDropdown.getItems());
     	timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
         		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
