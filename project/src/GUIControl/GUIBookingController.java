@@ -1,9 +1,12 @@
 package GUIControl;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+
 import javafx.stage.Stage;
 import main.BusinessOwner;
 import main.Controller;
@@ -29,7 +32,7 @@ public class GUIBookingController
   
     @FXML private TextField customerName;
     @FXML private Label customerLabel;
-	  @FXML private Button navMenu;
+	@FXML private Button navMenu;
     @FXML private Button submitBooking;
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<String> employeePicker;
@@ -63,7 +66,7 @@ public class GUIBookingController
     
     @FXML
 
-    private void handleButtonAction(ActionEvent event) throws IOException{
+    private void handleBook(ActionEvent event) throws IOException{
     	if(c.getLoggedUser() instanceof BusinessOwner && customerName.getText().isEmpty())
     	{
     		System.out.println("Cannot process a booking without customer name");
@@ -92,6 +95,11 @@ public class GUIBookingController
     	employeePicker.getSelectionModel().clearSelection();
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateEmployeesByDate();
+    	if(c.getLoggedUser() instanceof BusinessOwner)
+    	{
+    		customerLabel.setVisible(true);
+    		customerName.setVisible(true);
+    	}
     }
     
     @FXML
