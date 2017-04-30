@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +24,7 @@ import javafx.scene.Scene;
  *
  * @author tn
  */
-public class GUICustMenuController implements Initializable {
+public class CustMenuController implements Initializable {
 
 	private Controller c = Controller.getInstance();
 	
@@ -70,7 +70,7 @@ public class GUICustMenuController implements Initializable {
        	//TN - get reference button stage
         Stage stage = (Stage) makeBooking.getScene().getWindow();
        	//TN - load other scene
-        Parent root = FXMLLoader.load(getClass().getResource("GUIBooking.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Booking.fxml"));
    
         Scene scene = new Scene(root);
         stage.setScene(scene);

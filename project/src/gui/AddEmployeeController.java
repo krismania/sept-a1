@@ -1,4 +1,4 @@
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import javafx.stage.Stage;
@@ -88,7 +88,7 @@ public class AddEmployeeController
     @FXML
     public void handleBack(ActionEvent event)
     {
-    	switchTo("GUIBOMenu");
+    	switchTo("BOMenu");
     }
     
     /**
@@ -102,7 +102,7 @@ public class AddEmployeeController
     
     /**
      * Returns true if all fields are valid, otherwise returns false and displays
-     * a message in the GUI.
+     * a message in the .
      * TODO: this looks kind of gross, fix it
      * @author krismania
      */

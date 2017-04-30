@@ -1,4 +1,4 @@
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -116,6 +116,6 @@ public class ViewEmployeeController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUIBOMenu");
+		switchTo("BOMenu");
 	}
 }

@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import main.Validate;
@@ -51,6 +52,7 @@ public class ValidateTest
 	
 	// testing for greater or equal to character limit 15
 	@Test
+	@Ignore("No longer applicable")
 	public void testInvalidUserName3()
 	{
 		assertFalse(Validate.username("AbCdEfGh12345A1"));

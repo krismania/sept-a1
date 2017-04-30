@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +27,7 @@ import javafx.scene.control.ChoiceBox;
  *
  * @author tn
  */
-public class GUIAddTimeController implements Initializable {
+public class AddTimeController implements Initializable {
     Controller c = Controller.getInstance();   
     
     @FXML 
@@ -55,7 +55,7 @@ public class GUIAddTimeController implements Initializable {
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
-		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 		
 		// switch scenes
 		stage.setScene(boMenu);

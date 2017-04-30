@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUIControl;
+package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -34,7 +34,7 @@ import model.Booking;
  *
  * @author tn
  */
-public class GUIBOViewBookingSumController implements Initializable {
+public class BOViewBookingSumController implements Initializable {
 	//Initialise field Variables.
     private Controller c = Controller.getInstance();
 	
@@ -90,10 +90,10 @@ public class GUIBOViewBookingSumController implements Initializable {
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	//Stage stage = (Stage) navMenu.getScene().getWindow();
         // load the scene
-        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu")));
+        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu")));
         // switch scenes
         //stage.setScene(boMenu);
-        switchTo("GUIBOMenu");
+        switchTo("BOMenu");
     }
     
     @Override

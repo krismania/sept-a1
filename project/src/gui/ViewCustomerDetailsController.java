@@ -1,4 +1,4 @@
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,7 +73,7 @@ public class ViewCustomerDetailsController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUICustMenu");
+		switchTo("CustMenu");
 	}
 	
 }

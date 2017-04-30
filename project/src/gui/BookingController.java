@@ -1,4 +1,4 @@
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
-public class GUIBookingController
+public class BookingController
 {
 	Controller c = Controller.getInstance();
 	private String customerUsername = null;
@@ -62,11 +62,11 @@ public class GUIBookingController
     	Scene accountMenu;
     	if(c.getLoggedUser() instanceof Customer)
     	{
-    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
     	}
     	else
     	{
-    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
     	}
 		
 		// switch scenes
@@ -194,7 +194,7 @@ public class GUIBookingController
     /*@FXML
     private void selectCustomer(ActionEvent event) throws IOException{
     	
-    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
     	
     }*/
     
