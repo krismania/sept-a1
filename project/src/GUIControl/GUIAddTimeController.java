@@ -29,9 +29,6 @@ public class GUIAddTimeController implements Initializable {
     
     @FXML 
     private Label lblError;
-    
-    @FXML
-    private Button exit;
 
     @FXML
     private Button navMenu;
@@ -47,13 +44,6 @@ public class GUIAddTimeController implements Initializable {
     
     @FXML
     private ChoiceBox<String> durationDropdown;
-
-    @FXML
-    //TN - Button to close app.
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
     
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {

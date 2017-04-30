@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.Controller;
+import main.Validate;
 
 public class SignupController
 {
@@ -62,9 +63,9 @@ public class SignupController
 	private boolean validateAccount()
 	{
 		// check the username and password
-		if (c.validateUserName(username.getText()))
+		if (Validate.username(username.getText()))
 		{
-			if (c.passwordAccepted(password.getText()))
+			if (Validate.password((password.getText())))
 			{
 				// check that confirm password matches
 				if (password.getText().equals(passwordConf.getText()))
@@ -104,13 +105,13 @@ public class SignupController
 	
 	private boolean validateDetails()
 	{
-		if (c.validateName(firstName.getText()))
+		if (Validate.name(firstName.getText()))
 		{
-			if (c.validateName(lastName.getText()))
+			if (Validate.name(lastName.getText()))
 			{
-				if (c.validateEmail(email.getText()))
+				if (Validate.email(email.getText()))
 				{
-					if (c.validatePhoneNumber(phone.getText()))
+					if (Validate.phone(phone.getText()))
 					{
 						lblError2.setVisible(false);
 						return true;

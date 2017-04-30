@@ -33,18 +33,9 @@ public class GUICustMenuController implements Initializable {
 	
 	@FXML
 	private Button makeBooking;
-	
-    @FXML
-    private Button exit;
     
     @FXML
     private Button logout;
-    
-	@FXML
-    private void closeButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
-    }
     /**
      * Initializes the controller class.
      */

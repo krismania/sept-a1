@@ -14,8 +14,7 @@
       <Label layoutX="100.0" layoutY="126.0" text="Enter Shift Day: " />
       <Label layoutX="99.0" layoutY="192.0" text="Enter Shift Start Time:" />
       <Button fx:id="btRecordAvail" layoutX="407.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="140.0" text="Record Availability" />
-      <Button fx:id="exit" layoutX="36.0" layoutY="344.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="79.0" text="Close" />
-      <Button fx:id="navMenu" layoutX="45.0" layoutY="21.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
+      <Button fx:id="navMenu" layoutX="49.0" layoutY="320.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
       <ChoiceBox fx:id="timeDropdown" layoutX="349.0" layoutY="187.0" prefWidth="150.0" />
       <ChoiceBox fx:id="durationDropdown" layoutX="349.0" layoutY="245.0" prefWidth="150.0" />
       <Label layoutX="99.0" layoutY="250.0" text="Enter Shift Duration:" />
