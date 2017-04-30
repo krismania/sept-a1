@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -185,6 +186,28 @@ public class Controller
 		{
 			// TODO: remove print statement
 			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
+		}
+		
+		return bookings;
+	}
+	
+	/**
+	 * Returns a sorted list of future bookings filtered by the
+	 * customer's username.
+	 * @see #getFutureBookings
+	 * @author krismania
+	 */
+	public ArrayList<Booking> getFutureBookings(String username)
+	{
+		ArrayList<Booking> bookings = getFutureBookings();
+		
+		Iterator<Booking> i = bookings.iterator();
+		while (i.hasNext())
+		{
+			if (!i.next().getCustomer().equals(username))
+			{
+				i.remove();
+			}
 		}
 		
 		return bookings;
