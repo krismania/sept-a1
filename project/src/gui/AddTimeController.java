@@ -24,7 +24,7 @@ import javafx.scene.control.ChoiceBox;
 
 /**
  * FXML Controller class
- *
+ * Implements form to add employee availability times
  * @author tn
  */
 public class AddTimeController implements Initializable {
@@ -50,7 +50,7 @@ public class AddTimeController implements Initializable {
 
     @FXML
     private ChoiceBox<Number> empIDDropdown;
-    
+    //Implements back button navigation - redirects to Business Owner Main menu
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
@@ -77,7 +77,7 @@ public class AddTimeController implements Initializable {
             System.out.println("Unable to add shift!");
         }
     }
-      
+    //Constructs dropdown menus for booking availability time/day/duration selection  
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         

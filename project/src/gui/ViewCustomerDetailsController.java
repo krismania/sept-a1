@@ -35,6 +35,7 @@ public class ViewCustomerDetailsController implements Initializable
 	
 	/**
      * Switches to a specified scene
+     * Implements Generic helper method for switching between scenes
      * @author krismania
      */
     private void switchTo(String fxmlName)
@@ -55,7 +56,7 @@ public class ViewCustomerDetailsController implements Initializable
 			e.printStackTrace();
 		}
 	}
-	
+	//Initialise data to populate fields
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
@@ -69,7 +70,7 @@ public class ViewCustomerDetailsController implements Initializable
 		email.setText(customer.getEmail());
 		phone.setText(customer.getPhoneNumber());
 	}
-	
+	//Implements back button reverting to Customer Main menu scene
 	@FXML
 	public void handleBack(ActionEvent event)
 	{

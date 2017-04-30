@@ -15,7 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.Controller;
 import main.Validate;
-
+//Implements Signup form for people without existing login details
 public class SignupController
 {
 	private Controller c = Controller.getInstance();
@@ -33,13 +33,13 @@ public class SignupController
 	@FXML private Label lblError1;
 	@FXML private Label lblError2;
 	
-	
+	//Helper method for triggering error output
 	private void setError(Label label, String text)
 	{
 		label.setText(text);
 		label.setVisible(true);
 	}
-	
+	//Implements Generic helper method for switching between scenes
 	private void switchTo(String fxmlName)
 	{
 		try
@@ -58,7 +58,7 @@ public class SignupController
 			e.printStackTrace();
 		}
 	}
-	
+	//Implements validation for new account data such as Password length and complexity
 	private boolean validateAccount()
 	{
 		// check the username and password
@@ -101,7 +101,7 @@ public class SignupController
 		}
 		return false;
 	}
-	
+	//Implements validation for new account data such as email address fields etc
 	private boolean validateDetails()
 	{
 		if (Validate.name(firstName.getText()))
@@ -150,13 +150,13 @@ public class SignupController
 		}
 		return false;
 	}
-	
+	//Implements back button reverting to Login scene
 	@FXML
 	public void handleCancel(ActionEvent event) throws IOException
 	{
 		switchTo("Login");
 	}
-	
+	//Accepts data input from fields and inserts them into db via controller class
 	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{

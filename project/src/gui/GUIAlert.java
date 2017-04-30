@@ -2,7 +2,8 @@ package gui;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-
+//Helper class which constructs a GUI Alert Box allowing for single lines of code
+//to deliver popup alerts and responses as feedback
 public class GUIAlert
 {
 

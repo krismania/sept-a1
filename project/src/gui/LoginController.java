@@ -18,7 +18,7 @@ import main.Controller;
 import model.Account;
 import model.BusinessOwner;
 import model.Customer;
-
+//Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {
 	Controller c = Controller.getInstance();
@@ -28,7 +28,9 @@ public class LoginController implements Initializable
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
     
-    
+    //implements button action and decision logic for determining the users 
+    //access level based on login information Forwards data to controller 
+    //for validation then progresses to the appropriate menu based on return from controller
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException
 	{
@@ -68,7 +70,7 @@ public class LoginController implements Initializable
 			tfPassword.clear();
 		}
 	}
-	
+	//Implements button to direct new customers to the signup form
 	@FXML
 	public void handleSignup(ActionEvent event) throws IOException
 	{

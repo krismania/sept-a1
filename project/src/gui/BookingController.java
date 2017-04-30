@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-
+//Implements form for creating bookings
 public class BookingController
 {
 	Controller c = Controller.getInstance();
@@ -53,7 +53,8 @@ public class BookingController
     {
     	// init
     }
-    
+    //Implements on select button action for returning to main menu - 
+    //selection of menu based on account type - Business Owner or Customer
     @FXML 
     public void handleBack(ActionEvent event) throws IOException
     {
@@ -72,9 +73,8 @@ public class BookingController
 		// switch scenes
 		stage.setScene(accountMenu);
     }
-    
+    //Implement Calander Selection for appointment date selection
     @FXML
-
     private void handleBook(ActionEvent event) throws IOException{
     	if(c.getLoggedUser() instanceof BusinessOwner && customerUser.getText().isEmpty())
     	{
@@ -95,7 +95,7 @@ public class BookingController
 	    	}
     	}
     }
-    
+    //Implement context sensitive staff selector
     @FXML
     public void handleDateChange(ActionEvent event)
     {
@@ -112,14 +112,14 @@ public class BookingController
     	    Name.setVisible(true);
     	}
     }
-    
+    //Implements context sensitive booking time selector
     @FXML
     public void handleEmployeeChange(ActionEvent event)
     {
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateTimesByEmp();
     }
-    
+    //Changes time selection based on staff availability
     @FXML
     public void handleTimeChange(ActionEvent event)
     {
@@ -135,7 +135,7 @@ public class BookingController
         	}
     	}
     }
-    
+    //Shows context data and or error message responses
     @FXML
     private void generateCustomerList()
     {
@@ -160,7 +160,7 @@ public class BookingController
     		customerPhone.setVisible(false);
     	}
     }
-    
+    //Generates employee availability based on date selection and availability
     private void generateEmployeesByDate()
     {
     	LocalDate day = datePicker.getValue();
@@ -182,7 +182,7 @@ public class BookingController
 	    	}
     	}
     }
-    
+    //Generates available times based on selected staff
     private void generateTimesByEmp()
     {
     	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
@@ -190,16 +190,10 @@ public class BookingController
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
     }
-    
-    /*@FXML
-    private void selectCustomer(ActionEvent event) throws IOException{
-    	
-    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
-    	
-    }*/
+
     
     public void initialize(URL url, ResourceBundle rb)
 	{
-    	
+    	//INIT
 	}
 }
