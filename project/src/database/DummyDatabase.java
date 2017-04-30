@@ -1,12 +1,22 @@
-package main;
+package database;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
+
+import model.Account;
+import model.Booking;
+import model.BusinessOwner;
+import model.Customer;
+import model.Employee;
+import model.Shift;
+import model.ShiftTime;
 
 public class DummyDatabase implements DBInterface
 {
@@ -130,7 +140,7 @@ public class DummyDatabase implements DBInterface
 	@Override
 	public Shift getShift(int shiftID)
 	{
-		return new Shift(shiftID, 3, DayOfWeek.WEDNESDAY, ShiftTime.AFTERNOON);
+		return new Shift(shiftID, 3, DayOfWeek.WEDNESDAY, LocalTime.of(10, 30));
 	}
 	
 	public TreeMap<Shift, Booking> getShiftBookings()
@@ -141,72 +151,15 @@ public class DummyDatabase implements DBInterface
 	
 	
 	@Override
-	public ArrayList<Shift> getShifts(int EmpID)
-	{
-		ArrayList<Shift> shifts = new ArrayList<Shift>();
-		
-		shifts.add(new Shift(1, 3, DayOfWeek.MONDAY, ShiftTime.AFTERNOON));
-		shifts.add(new Shift(2, 4, DayOfWeek.MONDAY, ShiftTime.AFTERNOON));
-		shifts.add(new Shift(3, 1, DayOfWeek.MONDAY, ShiftTime.EVENING));
-		
-		shifts.add(new Shift(4, 4, DayOfWeek.TUESDAY, ShiftTime.MORNING));
-		shifts.add(new Shift(5, 4, DayOfWeek.TUESDAY, ShiftTime.AFTERNOON));
-		
-		shifts.add(new Shift(6, 2, DayOfWeek.THURSDAY, ShiftTime.EVENING));
-		
-		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, ShiftTime.MORNING));
-		shifts.add(new Shift(8, 4, DayOfWeek.FRIDAY, ShiftTime.EVENING));
-		
-		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
-		
-		// shuffle the list (the DB doesn't guarantee the order
-		Collections.shuffle(shifts);
-		
-		return shifts;
-	}
-	
-	
-//	@Override
-//	public ArrayList<Shift> getShiftsNotBooked()
-//	{
-//		ArrayList<Shift> shifts = new ArrayList<Shift>();
-//		
-//		shifts.add(new Shift(1, 3, DayOfWeek.MONDAY, ShiftTime.AFTERNOON));
-//		
-//		shifts.add(new Shift(4, 4, DayOfWeek.TUESDAY, ShiftTime.MORNING));
-//		shifts.add(new Shift(5, 4, DayOfWeek.TUESDAY, ShiftTime.AFTERNOON));
-//		
-//		shifts.add(new Shift(6, 2, DayOfWeek.THURSDAY, ShiftTime.EVENING));
-//		
-//		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, ShiftTime.MORNING));
-//		
-//		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, ShiftTime.AFTERNOON));
-//		
-//		// shuffle the list (the DB doesn't guarantee the order
-//		Collections.shuffle(shifts);
-//		
-//		return shifts;
-//	}
-	
-	
-	@Override
 	public ArrayList<Booking> getPastBookings()
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
-		try
-		{
-			bookings.add(new Booking(1, "someuser", 3, dateFormat.parse("22.03.2017"), ShiftTime.AFTERNOON));
-			bookings.add(new Booking(2, "someOtherUser", 4, dateFormat.parse("22.03.2017"), ShiftTime.MORNING));
-			bookings.add(new Booking(3, "someuser", 5, dateFormat.parse("22.03.2017"), ShiftTime.EVENING));
-			bookings.add(new Booking(4, "krismania", 2, dateFormat.parse("24.03.2017"), ShiftTime.MORNING));
-			bookings.add(new Booking(5, "idk", 2, dateFormat.parse("25.03.2017"), ShiftTime.AFTERNOON));
-		}
-		catch (ParseException e)
-		{
-			throw new RuntimeException("DateTime parse exception");
-		}
+		bookings.add(new Booking(1, "someuser", 3, LocalDate.of(2017, 3, 22), LocalTime.of(15, 00)));
+		bookings.add(new Booking(2, "someOtherUser", 4, LocalDate.of(2017, 3, 22), LocalTime.of(9, 30)));
+		bookings.add(new Booking(3, "someuser", 5, LocalDate.of(2017, 3, 22), LocalTime.of(17, 45)));
+		bookings.add(new Booking(4, "krismania", 2, LocalDate.of(2017, 3, 24), LocalTime.of(9, 30)));
+		bookings.add(new Booking(5, "idk", 2, LocalDate.of(2017, 3, 25), LocalTime.of(15, 00)));
 		
 		Collections.shuffle(bookings);
 		
@@ -218,20 +171,12 @@ public class DummyDatabase implements DBInterface
 	public ArrayList<Booking> getFutureBookings()
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
-		try
-		{
-			bookings.add(new Booking(1, "someuser", 3, dateFormat.parse("22.03.2017"), ShiftTime.AFTERNOON));
-			bookings.add(new Booking(2, "someOtherUser", 4, dateFormat.parse("22.03.2017"), ShiftTime.MORNING));
-			bookings.add(new Booking(3, "someuser", 5, dateFormat.parse("22.03.2017"), ShiftTime.EVENING));
-			bookings.add(new Booking(4, "krismania", 2, dateFormat.parse("24.03.2017"), ShiftTime.MORNING));
-			bookings.add(new Booking(5, "idk", 2, dateFormat.parse("25.03.2017"), ShiftTime.AFTERNOON));
-		}
-		catch (ParseException e)
-		{
-			throw new RuntimeException("DateTime parse exception");
-		}
+		bookings.add(new Booking(1, "someuser", 3, LocalDate.of(2017, 3, 22), LocalTime.of(15, 00)));
+		bookings.add(new Booking(2, "someOtherUser", 4, LocalDate.of(2017, 3, 22), LocalTime.of(9, 30)));
+		bookings.add(new Booking(3, "someuser", 5, LocalDate.of(2017, 3, 22), LocalTime.of(17, 45)));
+		bookings.add(new Booking(4, "krismania", 2, LocalDate.of(2017, 3, 24), LocalTime.of(9, 30)));
+		bookings.add(new Booking(5, "idk", 2, LocalDate.of(2017, 3, 25), LocalTime.of(15, 00)));
 		
 		Collections.shuffle(bookings);
 		
@@ -243,6 +188,56 @@ public class DummyDatabase implements DBInterface
 	public Account login(String username, String password)
 	{
 		return getAccount(username);
+	}
+
+
+	@Override
+	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate day)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ArrayList<Shift> getShifts(int EmpID, String Day)
+	{
+		ArrayList<Shift> shifts = new ArrayList<Shift>();
+		
+		shifts.add(new Shift(1, 3, DayOfWeek.MONDAY, LocalTime.of(15, 00)));
+		shifts.add(new Shift(2, 4, DayOfWeek.MONDAY, LocalTime.of(15, 00)));
+		shifts.add(new Shift(3, 1, DayOfWeek.MONDAY, LocalTime.of(17, 45)));
+		
+		shifts.add(new Shift(4, 4, DayOfWeek.TUESDAY, LocalTime.of(9, 30)));
+		shifts.add(new Shift(5, 4, DayOfWeek.TUESDAY, LocalTime.of(15, 00)));
+		
+		shifts.add(new Shift(6, 2, DayOfWeek.THURSDAY, LocalTime.of(17, 45)));
+		
+		shifts.add(new Shift(7, 2, DayOfWeek.FRIDAY, LocalTime.of(9, 30)));
+		shifts.add(new Shift(8, 4, DayOfWeek.FRIDAY, LocalTime.of(17, 45)));
+		
+		shifts.add(new Shift(9, 5, DayOfWeek.SATURDAY, LocalTime.of(15, 00)));
+		
+		// shuffle the list (the DB doesn't guarantee the order
+		Collections.shuffle(shifts);
+		
+		return shifts;
+	}
+
+
+	@Override
+	public Booking buildBooking()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

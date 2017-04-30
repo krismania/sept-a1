@@ -1,5 +1,11 @@
-package main;
+package model;
 
+/**
+ * Enumeration that describes the possible shift times
+ * @author krismania
+ * @deprecated
+ */
+@Deprecated
 public enum ShiftTime
 {
 	MORNING(0), AFTERNOON(1), EVENING(2);

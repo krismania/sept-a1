@@ -1,20 +1,27 @@
 package main;
-import java.util.Scanner;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import console.Console;
-
-public class Main
+public class Main extends Application
 {  
-	
-	public static void main(String[] args)
-	{
-		if (args.length == 1 && args[0].equals("-debugDB"))
-		{
-			Controller.debugDB = true;
-		}
-		Scanner sc = new Scanner(System.in);
-		Console console = new Console(sc);
-		
-		console.start();
-	}
+    @Override 
+    public void start(Stage stage) throws Exception
+    { 
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml")); 
+         
+        Scene scene = new Scene(root); 
+         
+        stage.setResizable(false); //TODO: support resizing
+        stage.setScene(scene); 
+        stage.setTitle("Appointment Booking System");
+        stage.show(); 
+    }
+    
+    public static void main(String[] args)
+    { 
+        launch(args); 
+    }
 }

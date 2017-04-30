@@ -11,8 +11,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.Booking;
-import main.ShiftTime;
+import model.Booking;
+import model.ShiftTime;
 
 public class BookingTest
 {
@@ -20,7 +20,7 @@ public class BookingTest
 	public Booking booking1, booking2, booking3, booking4;
 	
 	@Before
-	public void setUp() throws ParseException
+	/*public void setUp() throws ParseException
 	{
 		dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		
@@ -64,6 +64,7 @@ public class BookingTest
 		
 		booking4 = new Booking(bookingID, customer, employeeID, date, time);
 	}
+	*/
 	
 	
 	@Test

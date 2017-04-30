@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BOMenuController">
+   <children>
+      <Button fx:id="addEmp" layoutX="228.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Employee" />
+      <Button fx:id="viewEmployee" layoutX="228.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="114.0" text="View Employees" />
+      <Button fx:id="addTime" layoutX="228.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
+      <Button fx:id="viewBooking" layoutX="228.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="View Booking" />
+      <Button fx:id="makeBooking" layoutX="228.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Make a Booking" />
+      <Button fx:id="logout" layoutX="52.0" layoutY="343.0" mnemonicParsing="false" onAction="#logoutButtonAction" prefHeight="26.0" prefWidth="114.0" text="Logout" />    
+      <Label layoutX="196.0" layoutY="25.0" text="Business Administration Menu" />
+   </children>
+</AnchorPane>
