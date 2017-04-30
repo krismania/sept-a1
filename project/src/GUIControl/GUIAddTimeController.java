@@ -7,17 +7,9 @@ package GUIControl;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
-import main.Account;
 import main.Controller;
-import javafx.scene.Parent;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 
 /**
  * FXML Controller class

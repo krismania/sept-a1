@@ -1,7 +1,5 @@
 package main;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 

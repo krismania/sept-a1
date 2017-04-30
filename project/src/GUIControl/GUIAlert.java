@@ -2,7 +2,6 @@ package GUIControl;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.application.Platform;
 
 public class GUIAlert
 {
