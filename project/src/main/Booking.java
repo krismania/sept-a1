@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 /**
  * Keeps track of an individual booking made by a customer & tied to an employee,

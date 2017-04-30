@@ -2,11 +2,13 @@ package console;
 
 import java.util.Scanner;
 
-/*
+/**
  * Generic menu class, used to encapsulate menus and make
  * the rest of our solution easier. -kg
+ * @depreciated Use GUI code instead.
+ * @author krismania
  */
-
+@Deprecated
 public class Menu
 {
 	private String header;
