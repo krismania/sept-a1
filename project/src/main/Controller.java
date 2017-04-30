@@ -29,13 +29,12 @@ public class Controller
 	
 	private Logger logger;
 	private DBInterface db;
-	
+  
 	/**
 	 * Username of the currently logged in user. If no user is logged in, this
 	 * will be {@code null}.
 	 */
-	public String loggedUser = null;
-	
+	public Account loggedUser = null;
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -274,13 +273,20 @@ public class Controller
 		return db.addShift(shift);
 	}
 	
-	/** Add a booking to the DB.
+  /** Add a booking to the DB.
 	 * @author James
 	 */
-	public boolean addBooking(LocalDate localDate, LocalTime time, int empID) 
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID, String customerUsername) 
 	{
 		Booking booking = db.buildBooking();
-		booking.setCustomer(loggedUser);
+		if(customerUsername.isEmpty())
+		{
+			booking.setCustomer(loggedUser.username);
+		}
+		else
+		{
+			booking.setCustomer(customerUsername);
+		}
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
 		booking.setTime(time);
@@ -295,15 +301,15 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		Account loggedAccount = db.login(username, password);
-		if (loggedAccount != null)
+		loggedUser = db.login(username, password);
+		
+		if (loggedUser != null)
 		{
-			loggedUser = loggedAccount.username;
+			logger.info("Logged in user: " + loggedUser.username);
+			logger.info("User type: " + loggedUser.getClass().toString().replaceAll("class main.", ""));
 		}
 		
-		logger.info("Logged in user: " + loggedUser);
-		
-		return loggedAccount;
+		return loggedUser;
 	}
 	
 	/**
@@ -312,13 +318,19 @@ public class Controller
 	 */
 	public void logout()
 	{
-		logger.info("Logged out user: " + loggedUser);
+		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
 	}
 	
 	/**
-	 * @see DBInterface#shiftExists(DayOfWeek, ShiftTime, int)
+	 * Returns the currently logged in user's {@link Account} object.
+	 * @author krismania
 	 */
+	public Account getLoggedUser()
+	{
+		return loggedUser;
+	}
+	
 	public boolean shiftExists(String dayString, String timeString, int empID)
 	{
 		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());

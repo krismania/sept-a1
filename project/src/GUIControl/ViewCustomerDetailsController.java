@@ -61,7 +61,7 @@ public class ViewCustomerDetailsController implements Initializable
 	public void initialize(URL location, ResourceBundle resources)
 	{
 		// get user's account objects
-		Customer customer = c.getCustomer(c.loggedUser);
+		Customer customer = (Customer) c.getLoggedUser();
 		
 		// populate the fields
 		username.setText(customer.username);

@@ -40,13 +40,19 @@ public class GUIBOMenuController implements Initializable {
     private Button viewBooking;
     
     @FXML
+    private Button makeBooking;
+    
+    @FXML
+    private Button exit;
+    
+    @FXML
     private Button logout;
     
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
-        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking;
+        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking, rootMakeBooking;
         if(event.getSource()==addEmp) {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
@@ -72,7 +78,7 @@ public class GUIBOMenuController implements Initializable {
             stage.setScene(scene);
             stage.show(); 
         }
-        else //if(event.getSource()==viewBooking)
+        else if(event.getSource()==viewBooking)
         {
         	stage=(Stage) viewBooking.getScene().getWindow();
         	rootViewBooking = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
@@ -80,6 +86,15 @@ public class GUIBOMenuController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
+        else //if(event.getSource()==makeBookingForCustomer)
+        {
+        	stage=(Stage) makeBooking.getScene().getWindow();
+        	rootMakeBooking = FXMLLoader.load(getClass().getResource("GUIBooking.fxml"));
+            Scene scene = new Scene(rootMakeBooking);
+            stage.setScene(scene);
+            stage.show();
+        }
+        
 
     }    
     

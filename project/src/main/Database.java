@@ -191,13 +191,55 @@ public class Database implements DBInterface {
 	@Override
 	public boolean addBooking(Booking booking)
 	{
-		if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+		boolean noDuplicate = false;
+		LocalTime timer;
+		try {
+			System.out.println("Check Duplicate Booking!");
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
+				while (rs.next()) {
+					System.out.println("Date Matches Booking Date Requested!");
+					if(rs.getString("customerID").equals(booking.getCustomer()))
+					{
+						System.out.println("Customer matches");
+						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
+						if(timer.equals(booking.getTime()))
+						{
+							System.out.println("Duplicate Booking!");
+							noDuplicate = false;
+							break;
+						}
+						else
+						{
+							System.out.println("Not a duplicate Booking!");
+							noDuplicate = true;
+						}
+					}
+					else
+					{
+						System.out.println("Customer does not match!");
+						noDuplicate = true;
+					}
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+		
+		if(noDuplicate)
+		{
+			if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
 				Integer.toString(booking.getEmployeeID()),
 				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
-		{
-			return true;
+			{
+				return true;
+			}
 		}
 		return false;
+		
 	}
 
 	/**
