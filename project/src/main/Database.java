@@ -191,7 +191,7 @@ public class Database implements DBInterface {
 	@Override
 	public boolean addBooking(Booking booking)
 	{
-		boolean noDuplicate = false;
+		boolean noDuplicate = true;
 		LocalTime timer;
 		try {
 			System.out.println("Check Duplicate Booking!");
