@@ -171,12 +171,6 @@ public class Controller
 		
 		bookings.sort(Comparator.reverseOrder());
 		
-		for(Booking booked : bookings) 
-		{
-			// TODO: remove print statement
-			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());	
-		}
-		
 		return bookings;
 	}
 	
@@ -191,13 +185,6 @@ public class Controller
 		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
-		
-		for(Booking booked : bookings) 
-		{
-			// TODO: remove print statement
-			System.out.println("Booking: " + booked.ID + ", Time: " + booked.getTime() + ", Date: " + booked.getDate().toString() + ", Customer: " + booked.getCustomer());		
-		}
-		
 		return bookings;
 	}
 	
@@ -381,7 +368,6 @@ public class Controller
 			time = time.replaceAll("\\d\\d:", hour + ":");
 			time = time.replaceAll("\\spm", "");
 		}
-		System.out.println(time);
 		LocalTime newTime = LocalTime.parse(time);
 		return newTime;
   }

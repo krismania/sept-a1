@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -31,11 +31,11 @@ import model.Booking;
 
 /**
  * FXML Controller class
- * Allows Business Owner  to view past and future Bookings summaries
+ *
  * @author tn
  */
-public class BOBookingSummary implements Initializable {
-    //Initialise field Variables.
+public class BOViewBookingSumController implements Initializable {
+	//Initialise field Variables.
     private Controller c = Controller.getInstance();
 	
     @FXML 
@@ -86,18 +86,21 @@ public class BOBookingSummary implements Initializable {
     @FXML
     private Button navMenu;
 	
-    //TN - Implements Back to menu navigation button
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
+    	//Stage stage = (Stage) navMenu.getScene().getWindow();
+        // load the scene
+        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu")));
+        // switch scenes
+        //stage.setScene(boMenu);
         switchTo("BOMenu");
     }
-    //TN - Employee Factory and Observer Patterns To observer relevant objects 
-    // and then create Cells to populate data as appropriate
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //TN - Uses ***Observer & Factory Patterns***
-        //Populate Cells for Past Appointments
-        //Collects Appointment ID from Booking class and returns as a Number
+    	//Populate Cells for Past Appointments
+    	//Collects Appointment ID from Booking class and returns as a Number
         IDP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
 
@@ -107,8 +110,8 @@ public class BOBookingSummary implements Initializable {
                 prop.setValue(param.getValue().ID);
                 return prop;
             }
-        });
-        //Collects customer from Booking class and returns as a String
+    	});
+    	//Collects customer from Booking class and returns as a String
         customerP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, 
         		ObservableValue<String>>() {
 
@@ -163,7 +166,7 @@ public class BOBookingSummary implements Initializable {
  
         //TN - Uses ***Observer & Factory Patterns***
         //Populate Cells for Future Appointments
-        //Collects Appointment ID from Booking class and returns as a Number
+    	//Collects Appointment ID from Booking class and returns as a Number
         IDF.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
 
@@ -173,8 +176,8 @@ public class BOBookingSummary implements Initializable {
                 prop.setValue(param.getValue().ID);
                 return prop;
             }
-        });
-        //Collects customer from Booking class and returns as a String
+    	});
+    	//Collects customer from Booking class and returns as a String
         customerF.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, 
         		ObservableValue<String>>() {
 
@@ -225,13 +228,14 @@ public class BOBookingSummary implements Initializable {
                 prop.setValue(param.getValue().getEmployeeID());
                 return prop;
             }	
-         });        
+         });
+        
         //TN instantiates all Booking class objects to populate cells - 
         // includes past and future bookings
         bookingP.getItems().setAll(c.getPastBookings());
         bookingF.getItems().setAll(c.getFutureBookings());
     }    
-    //TN - Generic Helper method for Switching scenes
+	//Switches scenes
     private void switchTo(String fxmlName)
     {
         try
@@ -247,7 +251,6 @@ public class BOBookingSummary implements Initializable {
         }
         catch (IOException e)
         {
-            System.out.println("Could not switch scene.");
             e.printStackTrace();
         }
     }

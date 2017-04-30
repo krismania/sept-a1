@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,24 +21,25 @@ import javafx.scene.Scene;
 
 /**
  * FXML Controller class
- * Initialises customer main menu   
+ *
  * @author tn
  */
-public class CustMenuDisplay implements Initializable {
+public class CustMenuController implements Initializable {
 
-    private Controller c = Controller.getInstance();
+	private Controller c = Controller.getInstance();
 	
-    @FXML
-    private Button viewAvailCust;
+	@FXML
+	private Button viewAvailCust;
 	
-    @FXML
-    private Button makeBooking;
+	@FXML
+	private Button makeBooking;
     
     @FXML
     private Button logout;
-
-    //TN - Initializes button menu actions
-    // Redirects to Upcomming appointments form.
+    /**
+     * Initializes the controller class.
+     */
+  
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
        	//TN - get reference button stage
@@ -50,20 +51,20 @@ public class CustMenuDisplay implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    // Redirects to Login - is a logout button
+    
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
-        c.logout();
+    	c.logout();
     	
-        Stage stage = (Stage) logout.getScene().getWindow();
+    	Stage stage = (Stage) logout.getScene().getWindow();
     	
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
     	   
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-    // Redirects to the make a booking form
+
     @FXML
     void handleBookingAction(ActionEvent event) throws IOException {
        	//TN - get reference button stage
@@ -83,12 +84,12 @@ public class CustMenuDisplay implements Initializable {
     @FXML
     public void handleViewDetails(ActionEvent event) throws IOException
     {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("CustDetails.fxml"));
+    	Node source = (Node) event.getSource();
+    	Stage stage = (Stage) source.getScene().getWindow();
+    	Parent root = FXMLLoader.load(getClass().getResource("ViewCustomerDetails.fxml"));
     	
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    	Scene scene = new Scene(root);
+    	stage.setScene(scene);
     }
     
     @Override

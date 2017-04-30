@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.sun.media.jfxmedia.logging.Logger;
+
 import javafx.stage.Stage;
 import main.Controller;
 import javafx.event.ActionEvent;
@@ -24,7 +27,7 @@ import javafx.scene.control.ChoiceBox;
  *
  * @author tn
  */
-public class AddTimeForm implements Initializable {
+public class AddTimeController implements Initializable {
     Controller c = Controller.getInstance();   
     
     @FXML 
@@ -37,7 +40,7 @@ public class AddTimeForm implements Initializable {
     private Button btRecordAvail;
     
     @FXML
-    private ChoiceBox<String> dayDropdown;
+	private ChoiceBox<String> dayDropdown;
     
     @FXML
     private ChoiceBox<String> timeDropdown;
@@ -50,16 +53,16 @@ public class AddTimeForm implements Initializable {
     
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
-        Stage stage = (Stage) navMenu.getScene().getWindow();
-        // load the scene
-        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
+    	Stage stage = (Stage) navMenu.getScene().getWindow();
+		// load the scene
+		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 		
-        // switch scenes
-        stage.setScene(boMenu);
+		// switch scenes
+		stage.setScene(boMenu);
     }
     
     //TN - Collects data from DatePicker and Dropdowns and stores into variables
-    @FXML
+    @FXML	
     private void handleButtonAction(ActionEvent event) throws IOException{    	
         
         boolean added = c.addShift((int) empIDDropdown.getValue(), 
@@ -74,21 +77,20 @@ public class AddTimeForm implements Initializable {
             System.out.println("Unable to add shift!");
         }
     }
-    
-    //TN - Initialises and fills table fields
+      
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
-        empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
-        empIDDropdown.getItems().addAll(1, 2, 3, 4);
-        empIDDropdown.getSelectionModel().select(0);
+    	empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
+    	empIDDropdown.getItems().addAll(1, 2, 3, 4);
+    	empIDDropdown.getSelectionModel().select(0);
     	
-        //TN - initialise shift time slot dropdown menus
-        timeDropdown.getItems().removeAll(timeDropdown.getItems());
-        timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+    	//TN - initialise shift time slot dropdown menus
+    	timeDropdown.getItems().removeAll(timeDropdown.getItems());
+    	timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
         		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
         		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm");
-        timeDropdown.getSelectionModel().select("9:00 am");
+    	timeDropdown.getSelectionModel().select("9:00 am");
         
         //TN - initialise shift duration dropdown menus
         durationDropdown.getItems().removeAll(durationDropdown.getItems());
@@ -101,5 +103,6 @@ public class AddTimeForm implements Initializable {
         dayDropdown.getItems().addAll("Monday", "Tuesday", 
         		"Wednesday", "Thursday", "Friday", "Saturday");
         dayDropdown.getSelectionModel().select("Monday"); 
-    }    
+    }
+    
 }   

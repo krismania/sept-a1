@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
  *
  * @author tn
  */
-public class CustAvailabilitySummary implements Initializable {
+public class CustViewAvailController implements Initializable {
 
     @FXML
     private TextField sunday;
@@ -49,17 +49,17 @@ public class CustAvailabilitySummary implements Initializable {
     
     @FXML
     void outputAvail(ActionEvent event) {
-        //Not yet implemented
+
     }
 
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
-        Stage stage = (Stage) navMenu.getScene().getWindow();
-	    // load the scene
-        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
+    	Stage stage = (Stage) navMenu.getScene().getWindow();
+		// load the scene
+		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
 		
-        // switch scenes
-        stage.setScene(boMenu);
+		// switch scenes
+		stage.setScene(boMenu);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

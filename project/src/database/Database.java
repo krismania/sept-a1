@@ -202,31 +202,26 @@ public class Database implements DBInterface {
 		boolean noDuplicate = true;
 		LocalTime timer;
 		try {
-			System.out.println("Check Duplicate Booking!");
 			openConnection();
 			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
 				while (rs.next()) {
-					System.out.println("Date Matches Booking Date Requested!");
 					if(rs.getString("customerID").equals(booking.getCustomer()))
 					{
-						System.out.println("Customer matches");
 						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
 						if(timer.equals(booking.getTime()))
 						{
-							System.out.println("Duplicate Booking!");
+							logger.info("Duplicate booking found.");
 							noDuplicate = false;
 							break;
 						}
 						else
 						{
-							System.out.println("Not a duplicate Booking!");
 							noDuplicate = true;
 						}
 					}
 					else
 					{
-						System.out.println("Customer does not match!");
 						noDuplicate = true;
 					}
 				}
@@ -493,7 +488,6 @@ public class Database implements DBInterface {
 	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
 	{
 		String day = date.getDayOfWeek().toString();
-		System.out.println("Day Selected: " + day);
 		ArrayList<String> Workers = new ArrayList<String>();
 		
 		try
@@ -599,7 +593,6 @@ public class Database implements DBInterface {
 		{
 			openConnection();
 			stmt = c.createStatement();
-			System.out.println(Day);
 			
 			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
 			
@@ -946,7 +939,7 @@ public class Database implements DBInterface {
 			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
 			closeConnection();
-			System.out.printf("Shift Created - Day: %s, Time: %s, ID: %s, EmpID: %s", day, time.toSecondOfDay(), iD, employeeID);
+			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -1226,51 +1219,4 @@ public class Database implements DBInterface {
 
 		logger.info("DB created.");
 	}
-	
-//*** Future Dev Requirements. No longer needed***
-	
-
-	/**Update data entry
-	 * @author James
-	 */
-	/*private boolean updateDataEntry(String table, String userName, String dataToInput, String valueToUpdate)
-	{
-		String sql = String.format("UPDATE " + table + " SET " + valueToUpdate 
-				+ "='%s' WHERE Username='%s'", dataToInput, userName);
-		
-		boolean exists = false;
-		
-		try
-		{
-			if(userName != null)
-			{
-				exists = accountExists(userName);
-			}
-			
-			if(exists)
-			{
-				openConnection();
-				stmt = c.createStatement();
-				stmt.executeUpdate(sql);
-				System.out.println("Value has been updated for: " + userName);
-				closeConnection();
-				return true;
-			}
-			else 
-			{
-				closeConnection();
-				return false;
-			}
-			
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (NullPointerException s)
-		{
-			s.printStackTrace();
-		}
-		return false;
-	}*/
 }
