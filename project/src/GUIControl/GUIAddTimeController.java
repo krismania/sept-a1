@@ -8,6 +8,9 @@ package GUIControl;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.sun.media.jfxmedia.logging.Logger;
+
 import javafx.stage.Stage;
 import main.Controller;
 import javafx.event.ActionEvent;
@@ -64,14 +67,6 @@ public class GUIAddTimeController implements Initializable {
      
       boolean added = c.addShift((int) empIDDropdown.getValue(), 
     		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
-      if(added)
-      {
-    	  System.out.println("Shift Added!");
-      }
-      else
-      {
-    	  System.out.println("Unable to add shift!");
-      }
     }
     
     //TN Send data to Controller - not yet implemented
