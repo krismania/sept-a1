@@ -66,8 +66,8 @@ public class AddTimeForm implements Initializable {
     		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
         if(added)
         {
-        	GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
-        	System.out.println("Shift Added!");
+            GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
+            System.out.println("Shift Added!");
         }
         else
         {
@@ -101,6 +101,5 @@ public class AddTimeForm implements Initializable {
         dayDropdown.getItems().addAll("Monday", "Tuesday", 
         		"Wednesday", "Thursday", "Friday", "Saturday");
         dayDropdown.getSelectionModel().select("Monday"); 
-    }
-    
+    }    
 }   

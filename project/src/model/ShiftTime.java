@@ -1,4 +1,4 @@
-package main;
+package model;
 
 /**
  * Enumeration that describes the possible shift times

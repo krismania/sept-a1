@@ -26,8 +26,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.Booking;
 import main.Controller;
+import model.Booking;
 
 /**
  * FXML Controller class
@@ -35,7 +35,7 @@ import main.Controller;
  * @author tn
  */
 public class BOBookingSummary implements Initializable {
-	//Initialise field Variables.
+    //Initialise field Variables.
     private Controller c = Controller.getInstance();
 	
     @FXML 

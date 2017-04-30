@@ -18,9 +18,9 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.Booking;
 import main.Controller;
-import main.Employee;
+import model.Booking;
+import model.Employee;
 
 /**
  * Customer screen to view their upcoming bookings
@@ -28,90 +28,98 @@ import main.Employee;
  */
 public class UpcomingAppointmentsSummary implements Initializable
 {
-	private Controller c = Controller.getInstance();
+    private Controller c = Controller.getInstance();
 	
-	@FXML private Node root;
+    @FXML 
+    private Node root;
 	
-	@FXML private TableView<Booking> appointmentsTable;
-	@FXML private TableColumn<Booking, String> date;
-	@FXML private TableColumn<Booking, String> time;
-	@FXML private TableColumn<Booking, String> employee;
+    @FXML 
+    private TableView<Booking> appointmentsTable;
+  
+    @FXML 
+    private TableColumn<Booking, String> date;
 	
+    @FXML 
+    private TableColumn<Booking, String> time;
+	
+    @FXML 
+    private TableColumn<Booking, String> employee;
+	
+    //TN - Implements Factory Pattern to build cell content
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        // set cell value factories
+        date.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, 
+        		ObservableValue<String>>() {
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources)
-	{
-		// set cell value factories
-		date.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
-
-			@Override
-			public ObservableValue<String> call(
-							CellDataFeatures<Booking, String> param)
-			{
-				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getDate().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy")));
-				return prop;
-			}
-		});
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
+            {
+                SimpleStringProperty prop = new SimpleStringProperty();
+                prop.setValue(param.getValue().getDate().format(DateTimeFormatter.
+                		ofPattern("EEEE dd/MM/yyyy")));
+                return prop;
+            }
+        });
 		
-		time.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
+        time.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, 
+        		ObservableValue<String>>() {
 
-			@Override
-			public ObservableValue<String> call(
-							CellDataFeatures<Booking, String> param)
-			{
-				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
-				return prop;
-			}
-		});
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
+            {
+                SimpleStringProperty prop = new SimpleStringProperty();
+                prop.setValue(param.getValue().getTime().format(DateTimeFormatter.
+						ofPattern("hh:mm a")));
+                return prop;
+            }
+        });
 		
-		employee.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
+        employee.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
 
-			@Override
-			public ObservableValue<String> call(
-							CellDataFeatures<Booking, String> param)
-			{
-				// get the employee object by their ID in booking
-				Employee employee = c.getEmployee(param.getValue().getEmployeeID());
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Booking, String> param)
+            {
+                // get the employee object by their ID in booking
+                Employee employee = c.getEmployee(param.getValue().getEmployeeID());
 				
-				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(employee.getFirstName() + " " + employee.getLastName());
-				return prop;
-			}
-		});
-		
-		// get the booking objects
-		
-		appointmentsTable.getItems().setAll(c.getFutureBookings(c.getLoggedUser().username));
-	}
-	
-	@FXML
-	public void handleBack(ActionEvent event)
-	{
-		switchTo("CustMenu");
-	}
+                SimpleStringProperty prop = new SimpleStringProperty();
+                prop.setValue(employee.getFirstName() + " " + employee.getLastName());
+                return prop;
+            }
+        });
+        // get the booking objects
+        appointmentsTable.getItems().setAll(c.getFutureBookings(c.getLoggedUser().username));
+    }
+	//TN - Switches scene to Customer main menu
+    @FXML
+    public void handleBack(ActionEvent event)
+    {
+        switchTo("CustMenu");
+    }
 	
 	/**
 	 * @author krismania
+	 * Helper method for scene switching
 	 */
-	private void switchTo(String fxmlName)
-	{
-		try
-		{
-			// load the scene
-			Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
+    private void switchTo(String fxmlName)
+    {
+        try
+        {
+            // load the scene
+            Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
 			
-			// get current stage
-			Stage stage = (Stage) root.getScene().getWindow();
+            // get current stage
+            Stage stage = (Stage) root.getScene().getWindow();
 			
-			// switch scenes
-			stage.setScene(newScene);
-		}
-		catch (IOException e)
-		{
-			System.out.println("Could not switch scene.");
-			e.printStackTrace();
-		}
-	}
+            // switch scenes
+            stage.setScene(newScene);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Could not switch scene.");
+            e.printStackTrace();
+        }
+    }
 }

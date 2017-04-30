@@ -20,7 +20,7 @@ import javafx.scene.Scene;
 
 /**
  * FXML Controller class
- *
+ * Implements Business Owner Main menu
  * @author tn
  */
 public class BOMenuDisplay implements Initializable {
@@ -88,8 +88,8 @@ public class BOMenuDisplay implements Initializable {
         }
         else 
         {
-        	stage=(Stage) makeBooking.getScene().getWindow();
-        	rootMakeBooking = FXMLLoader.load(getClass().getResource("Booking.fxml"));
+            stage=(Stage) makeBooking.getScene().getWindow();
+            rootMakeBooking = FXMLLoader.load(getClass().getResource("Booking.fxml"));
             Scene scene = new Scene(rootMakeBooking);
             stage.setScene(scene);
             stage.show();

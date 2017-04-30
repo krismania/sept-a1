@@ -14,11 +14,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import main.Account;
-import main.BusinessOwner;
 import main.Controller;
-import main.Customer;
-
+import model.Account;
+import model.BusinessOwner;
+import model.Customer;
+//TN - Login class and Application entry point
 public class LoginController implements Initializable
 {
 	Controller c = Controller.getInstance();
@@ -28,63 +28,63 @@ public class LoginController implements Initializable
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
     
-    
-	@FXML
-	public void handleLogin(ActionEvent event) throws IOException
-	{
-		// attempt login
-		Account account = c.login(tfUsername.getText(), tfPassword.getText());
+    //TN - Handles login even capturing input and sending to controller class
+    // to determine if the user exists and what level of access they should have. 
+    @FXML
+    public void handleLogin(ActionEvent event) throws IOException
+    {
+        // attempt login
+        Account account = c.login(tfUsername.getText(), tfPassword.getText());
 		
-		if (account instanceof Customer)
-		{
-			lblError.setVisible(false);
+        if (account instanceof Customer)
+        {
+            lblError.setVisible(false);
 			
-			// load the scene
-			Scene customerLogin = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
+            // load the scene
+            Scene customerLogin = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
 			
-			// get current stage
-			Stage stage = (Stage) root.getScene().getWindow();
+            // get current stage
+            Stage stage = (Stage) root.getScene().getWindow();
 			
-			// switch scenes
-			stage.setScene(customerLogin);
-		}
-		else if (account instanceof BusinessOwner)
-		{
-			lblError.setVisible(false);
+            // switch scenes
+            stage.setScene(customerLogin);
+        }
+        else if (account instanceof BusinessOwner)
+        {
+            lblError.setVisible(false);
 			
-			// load the scene
-			Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
+            // load the scene
+            Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 			
-			// get current stage
-			Stage stage = (Stage) root.getScene().getWindow();
+            // get current stage
+            Stage stage = (Stage) root.getScene().getWindow();
 			
-			// switch scenes
-			stage.setScene(boLogin);
-		}
-		else
-		{
-			// if account isn't an instance of either account type, login failed.
-			lblError.setVisible(true);
-			tfPassword.clear();
-		}
-	}
-	
-	@FXML
-	public void handleSignup(ActionEvent event) throws IOException
-	{
-		// load the scene
-		Scene signup = new Scene(FXMLLoader.load(getClass().getResource("Signup.fxml")));
+            // switch scenes
+            stage.setScene(boLogin);
+        }
+        else
+        {
+            // if account isn't an instance of either account type, login failed.
+            lblError.setVisible(true);
+            tfPassword.clear();
+        }
+    }
+    //TN - Implements Signup button for people who haven't got a registered login
+    @FXML
+    public void handleSignup(ActionEvent event) throws IOException
+    {
+        // load the scene
+        Scene signup = new Scene(FXMLLoader.load(getClass().getResource("Signup.fxml")));
 		
-		// get current stage
-		Stage stage = (Stage) root.getScene().getWindow();
+        // get current stage
+        Stage stage = (Stage) root.getScene().getWindow();
 		
-		// switch scenes
-		stage.setScene(signup);
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle rb)
-	{
+        // switch scenes
+        stage.setScene(signup);
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
 		// init
-	}
+    }
 }

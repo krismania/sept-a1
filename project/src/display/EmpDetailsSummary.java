@@ -23,100 +23,110 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
-import main.Employee;
-
+import model.Employee;
+//TN - Displays summary of Employee Details
 public class EmpDetailsSummary implements Initializable
 {
-	private Controller c = Controller.getInstance();
+    private Controller c = Controller.getInstance();
 	
-	@FXML private BorderPane root;
+    @FXML 
+    private BorderPane root;
 	
-	@FXML private TableView<Employee> employeeTable;
-	@FXML private TableColumn<Employee, Number> employeeID;
-	@FXML private TableColumn<Employee, String> employeeName;
+    @FXML 
+    private TableView<Employee> employeeTable;
+	
+    @FXML 
+    private TableColumn<Employee, Number> employeeID;
+	
+    @FXML 
+    private TableColumn<Employee, String> employeeName;
+    
+    @FXML 
+    private TextField selEmpID;
+    
+    @FXML 
+    private TextField selEmpFirstName;
+    
+    @FXML 
+    private TextField selEmpLastName;
+	
+    @FXML 
+    private TextField selEmpEmail;
 
-	@FXML private TextField selEmpID;
-	@FXML private TextField selEmpFirstName;
-	@FXML private TextField selEmpLastName;
-	@FXML private TextField selEmpEmail;
-	@FXML private TextField selEmpPhone;
+    @FXML 
+    private TextField selEmpPhone;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources)
-	{
-		// observe changes to selection
-		
-		// populate employee list
-		employeeID.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, Number>, ObservableValue<Number>>() {
+    //TN - Factory Pattern to construct Cell data
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // observe changes to selection
+        // populate employee list
+        employeeID.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, 
+        		Number>, ObservableValue<Number>>() {
 
-			@Override
-			public ObservableValue<Number> call(
-							CellDataFeatures<Employee, Number> param)
-			{
-				IntegerProperty prop = new SimpleIntegerProperty();
-				prop.setValue(param.getValue().ID);
+            @Override
+            public ObservableValue<Number> call(CellDataFeatures<Employee, Number> param)
+            {
+                IntegerProperty prop = new SimpleIntegerProperty();
+                prop.setValue(param.getValue().ID);
 				
-				return prop;
-			}
-			
-		});
-		
-		employeeName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+                return prop;
+            }
+        });
+        employeeName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures
+        		<Employee, String>, ObservableValue<String>>() {
 
-			@Override
-			public ObservableValue<String> call(
-							CellDataFeatures<Employee, String> param)
-			{
-				StringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getFirstName() + " " + param.getValue().getLastName());
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Employee, String> param)
+            {
+                StringProperty prop = new SimpleStringProperty();
+                prop.setValue(param.getValue().getFirstName() + " " + param.getValue().getLastName());
 				
-				return prop;
-			}
+                return prop;
+            }
+        });		
+        employeeTable.getItems().setAll(c.getAllEmployees());
+    }
+	//TN - Helper Method for Switching scenes
+    private void switchTo(String fxmlName)
+    {
+        try
+        {
+            // load the scene
+            Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
 			
-		});
-				
-		employeeTable.getItems().setAll(c.getAllEmployees());
-	}
-	
-	private void switchTo(String fxmlName)
-	{
-		try
-		{
-			// load the scene
-			Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
+            // get current stage
+            Stage stage = (Stage) root.getScene().getWindow();
 			
-			// get current stage
-			Stage stage = (Stage) root.getScene().getWindow();
-			
-			// switch scenes
-			stage.setScene(newScene);
-		}
-		catch (IOException e)
-		{
-			System.out.println("Could not switch scene.");
-			e.printStackTrace();
-		}
-	}
-	
-	@FXML
-	public void handleChangeEmployee(MouseEvent event)
-	{
-		Employee selEmp = employeeTable.getSelectionModel().getSelectedItem();
+            // switch scenes
+            stage.setScene(newScene);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Could not switch scene.");
+            e.printStackTrace();
+        }
+    }
+	//TN - Mouse select action to change Employee context data
+    @FXML
+    public void handleChangeEmployee(MouseEvent event)
+    {
+        Employee selEmp = employeeTable.getSelectionModel().getSelectedItem();
 		
-		// show employee details in details pane
-		if (selEmp != null)
-		{
-			selEmpID.setText(Integer.toString(selEmp.ID));
-			selEmpFirstName.setText(selEmp.getFirstName());
-			selEmpLastName.setText(selEmp.getLastName());
-			selEmpEmail.setText(selEmp.getEmail());
-			selEmpPhone.setText(selEmp.getPhoneNumber());
-		}
-	}
-	
-	@FXML
-	public void handleBack(ActionEvent event)
-	{
-		switchTo("BOMenu");
-	}
+        // show employee details in details pane
+        if (selEmp != null)
+        {
+            selEmpID.setText(Integer.toString(selEmp.ID));
+            selEmpFirstName.setText(selEmp.getFirstName());
+            selEmpLastName.setText(selEmp.getLastName());
+            selEmpEmail.setText(selEmp.getEmail());
+            selEmpPhone.setText(selEmp.getPhoneNumber());
+        }
+    }
+	//TN - Button action to switch to Business Owner Main menu
+    @FXML
+    public void handleBack(ActionEvent event)
+    { 
+        switchTo("BOMenu");
+    }
 }
