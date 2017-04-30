@@ -109,7 +109,8 @@ public class GUIBOViewBookingSumController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TN - Populate Cells for Past Appointments
+        //TN - Uses ***Observer & Factory Patterns***
+    	//Populate Cells for Past Appointments
     	//Collects ID from Booking class and returns as a Number
         IDP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
@@ -239,7 +240,7 @@ public class GUIBOViewBookingSumController implements Initializable {
             }	
          });
         
-        //TN instantiates all Booking class objects
+        //TN instantiates all Booking class objects to populate cells
         bookingP.getItems().setAll(c.getPastBookings());
         bookingF.getItems().setAll(c.getFutureBookings());
     }    
