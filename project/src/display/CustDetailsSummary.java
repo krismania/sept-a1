@@ -1,4 +1,4 @@
-package GUIControl;
+package display;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +20,7 @@ import main.Customer;
  * Displays the logged in customer's details.
  * @author krismania
  */
-public class ViewCustomerDetailsController implements Initializable
+public class CustDetailsSummary implements Initializable
 {
 	private Controller c = Controller.getInstance();
 	
@@ -74,7 +74,7 @@ public class ViewCustomerDetailsController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUICustMenu");
+		switchTo("CustMenu");
 	}
 	
 }

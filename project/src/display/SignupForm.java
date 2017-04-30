@@ -1,4 +1,4 @@
-package GUIControl;
+package display;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import main.Controller;
 import main.Validate;
 
-public class SignupController
+public class SignupForm
 {
 	private Controller c = Controller.getInstance();
 	

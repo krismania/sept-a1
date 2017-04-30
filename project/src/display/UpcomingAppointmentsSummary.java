@@ -1,4 +1,4 @@
-package GUIControl;
+package display;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import main.Employee;
  * Customer screen to view their upcoming bookings
  * @author krismania
  */
-public class UpcomingAppointmentsController implements Initializable
+public class UpcomingAppointmentsSummary implements Initializable
 {
 	private Controller c = Controller.getInstance();
 	
@@ -89,7 +89,7 @@ public class UpcomingAppointmentsController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUICustMenu");
+		switchTo("CustMenu");
 	}
 	
 	/**

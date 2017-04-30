@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUIControl;
+package display;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +24,7 @@ import javafx.scene.control.ChoiceBox;
  *
  * @author tn
  */
-public class GUIAddTimeController implements Initializable {
+public class AddTimeForm implements Initializable {
     Controller c = Controller.getInstance();   
     
     @FXML 
@@ -37,7 +37,7 @@ public class GUIAddTimeController implements Initializable {
     private Button btRecordAvail;
     
     @FXML
-	private ChoiceBox<String> dayDropdown;
+    private ChoiceBox<String> dayDropdown;
     
     @FXML
     private ChoiceBox<String> timeDropdown;
@@ -50,61 +50,44 @@ public class GUIAddTimeController implements Initializable {
     
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) navMenu.getScene().getWindow();
-		// load the scene
-		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+        Stage stage = (Stage) navMenu.getScene().getWindow();
+        // load the scene
+        Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 		
-		// switch scenes
-		stage.setScene(boMenu);
+        // switch scenes
+        stage.setScene(boMenu);
     }
     
     //TN - Collects data from DatePicker and Dropdowns and stores into variables
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException{    	
-     
-      boolean added = c.addShift((int) empIDDropdown.getValue(), 
+        
+        boolean added = c.addShift((int) empIDDropdown.getValue(), 
     		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
-      if(added)
-      {
-    	  System.out.println("Shift Added!");
-      }
-      else
-      {
-    	  System.out.println("Unable to add shift!");
-      }
+        if(added)
+        {
+            System.out.println("Shift Added!");
+        }
+        else
+        {
+            System.out.println("Unable to add shift!");
+        }
     }
     
-    //TN Send data to Controller - not yet implemented
- /*   private boolean testShiftDate(String dayString, String timeString, int empID){
-    	//TN - Add text field input to Controller addEmployee method
-    	boolean addDate = c.shiftExists(dayString, timeString, empID);
-    	if(addDate == false)
-        {
-            //TN - Presents red error message if input is false
-            lblError.setVisible(true);
-            return false;
-        }
-        else 
-    	{
-            //TN -  If validation is successful a confirmation popup is presented.
-            lblError.setVisible(false);
-
-            return true;
-    	}
- */     
+    //TN - Initialises and fills table fields
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
-    	empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
-    	empIDDropdown.getItems().addAll(1, 2, 3, 4);
-    	empIDDropdown.getSelectionModel().select(0);
+        empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
+        empIDDropdown.getItems().addAll(1, 2, 3, 4);
+        empIDDropdown.getSelectionModel().select(0);
     	
-    	//TN - initialise shift time slot dropdown menus
-    	timeDropdown.getItems().removeAll(timeDropdown.getItems());
-    	timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
+        //TN - initialise shift time slot dropdown menus
+        timeDropdown.getItems().removeAll(timeDropdown.getItems());
+        timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
         		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
         		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm");
-    	timeDropdown.getSelectionModel().select("9:00 am");
+        timeDropdown.getSelectionModel().select("9:00 am");
         
         //TN - initialise shift duration dropdown menus
         durationDropdown.getItems().removeAll(durationDropdown.getItems());
@@ -118,5 +101,4 @@ public class GUIAddTimeController implements Initializable {
         		"Wednesday", "Thursday", "Friday", "Saturday");
         dayDropdown.getSelectionModel().select("Monday"); 
     }
-    
 }   

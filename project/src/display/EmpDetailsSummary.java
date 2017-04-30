@@ -1,4 +1,4 @@
-package GUIControl;
+package display;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +25,7 @@ import javafx.util.Callback;
 import main.Controller;
 import main.Employee;
 
-public class ViewEmployeeController implements Initializable
+public class EmpDetailsSummary implements Initializable
 {
 	private Controller c = Controller.getInstance();
 	
@@ -117,6 +117,6 @@ public class ViewEmployeeController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUIBOMenu");
+		switchTo("BOMenu");
 	}
 }

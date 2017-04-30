@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="display.BOBookingSummary">
    <children>
       <TabPane layoutY="-2.0" prefHeight="402.0" prefWidth="592.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
