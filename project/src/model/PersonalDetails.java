@@ -1,4 +1,4 @@
-package main;
+package model;
 
 /**
  * Defines getters and setters for several personal details, such as name and

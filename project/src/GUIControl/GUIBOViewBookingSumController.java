@@ -26,8 +26,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.Booking;
 import main.Controller;
+import model.Booking;
 
 /**
  * FXML Controller class

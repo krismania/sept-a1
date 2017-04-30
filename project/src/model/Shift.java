@@ -1,4 +1,4 @@
-package main;
+package model;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;

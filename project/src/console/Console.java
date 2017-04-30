@@ -17,6 +17,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.*;
+import model.Account;
+import model.Booking;
+import model.BusinessOwner;
+import model.Customer;
+import model.Employee;
+import model.Shift;
+import model.ShiftTime;
 
 /**
  * Handles the applications interaction with the console. Any input
