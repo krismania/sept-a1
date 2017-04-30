@@ -103,5 +103,8 @@ public class GUIBookingController {
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
+	if(!times.isEmpty()){
+    		submitBooking.setDisable(false);
+    	}
     }
 }
