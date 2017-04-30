@@ -46,7 +46,7 @@ import main.Booking;
  * @author tn
  */
 public class GUIBOViewBookingSumController implements Initializable {
-	
+	//Initialise field Variables.
     private Controller c = Controller.getInstance();
 	
     @FXML 

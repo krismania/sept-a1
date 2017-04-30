@@ -11,7 +11,7 @@
    <children>
       <TabPane prefHeight="400.0" prefWidth="579.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="pastBookings" text="Past Bookings">
+          <Tab fx:id="pastBookings" text="Booking History">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="547.0">
                      <children>
@@ -28,7 +28,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="futureBookings" text="Future Bookings">
+          <Tab fx:id="futureBookings" text="Scheduled Upcoming Bookings">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
