@@ -241,7 +241,8 @@ public class GUIBOViewBookingSumController implements Initializable {
             }	
          });
         
-        //TN instantiates all Booking class objects to populate cells
+        //TN instantiates all Booking class objects to populate cells - 
+        // includes past and future bookings
         bookingP.getItems().setAll(c.getPastBookings());
         bookingF.getItems().setAll(c.getFutureBookings());
     }    

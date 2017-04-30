@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
    <children>
       <TabPane prefHeight="400.0" prefWidth="579.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -21,7 +21,7 @@
                               <TableColumn fx:id="customerP" prefWidth="115.0" text="Customer Name" />
                               <TableColumn fx:id="dateP" prefWidth="125.0" text="Appointment Date" />
                               <TableColumn fx:id="timeP" minWidth="0.0" prefWidth="125.0" text="Appointment Time" />
-                              <TableColumn fx:id="employeeIDP" prefWidth="100.0" text="Employee ID" />
+                              <TableColumn fx:id="employeeIDP" prefWidth="103.0" text="Employee ID" />
                            </columns>
                         </TableView>
                      </children>
@@ -38,7 +38,7 @@
                               <TableColumn fx:id="customerF" prefWidth="115.0" text="Customer Name" />
                               <TableColumn fx:id="dateF" prefWidth="125.0" text="Appointment Date" />
                               <TableColumn fx:id="timeF" minWidth="0.0" prefWidth="125.0" text="Appointment Time" />
-                              <TableColumn fx:id="employeeIDF" prefWidth="100.0" text="Employee ID" />
+                              <TableColumn fx:id="employeeIDF" prefWidth="103.0" text="Employee ID" />
                            </columns>
                         </TableView>
                      </children>
@@ -47,7 +47,7 @@
           </Tab>
         </tabs>
       </TabPane>
-      <ScrollBar layoutX="558.0" layoutY="26.0" max="10.0" orientation="VERTICAL" prefHeight="445.0" prefWidth="17.0" unitIncrement="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="26.0" />
+      <ScrollBar layoutX="579.0" max="10.0" orientation="VERTICAL" prefHeight="476.0" prefWidth="17.0" unitIncrement="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Pane layoutY="395.0" prefHeight="77.0" prefWidth="566.0">
          <children>
             <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
