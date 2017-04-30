@@ -175,7 +175,8 @@ public class GUIBOViewBookingSumController implements Initializable {
             }	
          });
  
-        //TN - Populate Cells for Past Appointments
+        //TN - Uses ***Observer & Factory Patterns***
+        //Populate Cells for Future Appointments
     	//Collects ID from Booking class and returns as a Number
         IDF.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
