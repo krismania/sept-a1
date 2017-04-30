@@ -33,7 +33,7 @@ public class Controller
 	 * Username of the currently logged in user. If no user is logged in, this
 	 * will be {@code null}.
 	 */
-	public String loggedUser = null;
+	public Account loggedUser = null;
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
