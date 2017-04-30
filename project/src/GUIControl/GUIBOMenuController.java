@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package GUIControl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,12 +20,12 @@ import javafx.scene.Scene;
 
 /**
  * FXML Controller class
- * Implements Business Owner Main menu
+ *
  * @author tn
  */
-public class BOMenuDisplay implements Initializable {
+public class GUIBOMenuController implements Initializable {
 
-    private Controller c = Controller.getInstance();
+	private Controller c = Controller.getInstance();
 	
     @FXML
     private Button addEmp;
@@ -48,66 +48,72 @@ public class BOMenuDisplay implements Initializable {
     @FXML
     private Button logout;
     
-    //TN - Handle button action input provide decision logic for menu options choices
+
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
         Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking, rootMakeBooking;
         if(event.getSource()==addEmp) {
-            //TN - get reference button stage
-            stage=(Stage) addEmp.getScene().getWindow();
-            //TN - load other scene
-            rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmp.fxml"));
+        	//TN - get reference button stage
+        	stage=(Stage) addEmp.getScene().getWindow();
+        	//TN - load other scene
+        	rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
             Scene scene = new Scene(rootAddEmp);
             stage.setScene(scene);
             stage.show();
         }
         else if (event.getSource()==viewEmployee)
         {
-            // Temp button to get to employees view. -kg
-            stage = (Stage) viewEmployee.getScene().getWindow();
-            rootViewEmployee = FXMLLoader.load(getClass().getResource("EmpDetails.fxml"));
-            Scene scene = new Scene(rootViewEmployee);
-            stage.setScene(scene);
-            stage.show();
+        	// Temp button to get to employees view. -kg
+        	stage = (Stage) viewEmployee.getScene().getWindow();
+        	rootViewEmployee = FXMLLoader.load(getClass().getResource("ViewEmployee.fxml"));
+        	Scene scene = new Scene(rootViewEmployee);
+        	stage.setScene(scene);
+        	stage.show();
         }
         else if(event.getSource()==addTime) {
-            stage=(Stage) addTime.getScene().getWindow();
-            rootAddTime = FXMLLoader.load(getClass().getResource("AddTime.fxml"));
+        	stage=(Stage) addTime.getScene().getWindow();
+        	rootAddTime = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
             Scene scene = new Scene(rootAddTime);
             stage.setScene(scene);
             stage.show(); 
         }
         else if(event.getSource()==viewBooking)
         {
-            stage=(Stage) viewBooking.getScene().getWindow();
-            rootViewBooking = FXMLLoader.load(getClass().getResource("BOBookingSummary.fxml"));
+        	stage=(Stage) viewBooking.getScene().getWindow();
+        	rootViewBooking = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
             Scene scene = new Scene(rootViewBooking);
             stage.setScene(scene);
             stage.show();
         }
-        else 
+        else //if(event.getSource()==makeBookingForCustomer)
         {
-            stage=(Stage) makeBooking.getScene().getWindow();
-            rootMakeBooking = FXMLLoader.load(getClass().getResource("Booking.fxml"));
+        	stage=(Stage) makeBooking.getScene().getWindow();
+        	rootMakeBooking = FXMLLoader.load(getClass().getResource("GUIBooking.fxml"));
             Scene scene = new Scene(rootMakeBooking);
             stage.setScene(scene);
             stage.show();
-        } 
+        }
+        
+
     }    
-    //TN - Implements a Logout button action
+    
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
-        c.logout();
-        Stage stage = (Stage) logout.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));   
+    	c.logout();
+    	Stage stage = (Stage) logout.getScene().getWindow();
+    	
+    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	   
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TN - Not required - here for later implementation of output if required
-    }        
+        // TODO
+    }    
+    
 }

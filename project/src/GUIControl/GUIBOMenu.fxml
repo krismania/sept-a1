@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="display.BOMenuDisplay">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOMenuController">
    <children>
       <Button fx:id="addEmp" layoutX="228.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Employee" />
       <Button fx:id="viewEmployee" layoutX="228.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="114.0" text="View Employees" />

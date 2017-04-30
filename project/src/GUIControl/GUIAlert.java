@@ -1,10 +1,11 @@
-package display;
+package GUIControl;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-//TN - Helper Class to instantiate alert boxes for GUI button actions
+
 public class GUIAlert
 {
+
     public static void infoBox(String infoMessage, String titleBar)
     {
         //TN - Info Dialogue 
