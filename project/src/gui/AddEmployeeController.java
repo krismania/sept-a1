@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
+ * Form for adding new employees
  *
  * @author tn, krismania
  */
@@ -34,7 +34,7 @@ public class AddEmployeeController
     @FXML private Button exit;
     
     /**
-     * Switches to a specified scene
+     * Generic Helper Method for Switching to specified scenes
      * @author krismania
      */
     private void switchTo(String fxmlName)
@@ -55,7 +55,7 @@ public class AddEmployeeController
 			e.printStackTrace();
 		}
 	}
-
+    //Implements button to gather input dta from fields and forward to controller class
     @FXML
     public void handleAddEmployee(ActionEvent event)
     {
@@ -84,7 +84,7 @@ public class AddEmployeeController
     		}
     	}
     }
-    
+    //Implements Back button reverting to Business Owner Menu
     @FXML
     public void handleBack(ActionEvent event)
     {

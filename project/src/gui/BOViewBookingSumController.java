@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
+ * 
  */
 package gui;
 import java.io.IOException;
@@ -30,8 +29,7 @@ import main.Controller;
 import model.Booking;
 
 /**
- * FXML Controller class
- *
+ * Implements Business owner form to view Past and Future Bookings
  * @author tn
  */
 public class BOViewBookingSumController implements Initializable {
@@ -95,7 +93,7 @@ public class BOViewBookingSumController implements Initializable {
         //stage.setScene(boMenu);
         switchTo("BOMenu");
     }
-    
+    //Implements Factory patter to construct cells for appointment information display
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //TN - Uses ***Observer & Factory Patterns***
@@ -235,7 +233,7 @@ public class BOViewBookingSumController implements Initializable {
         bookingP.getItems().setAll(c.getPastBookings());
         bookingF.getItems().setAll(c.getFutureBookings());
     }    
-	//Switches scenes
+	//Generic Helper method to implement Switching scenes
     private void switchTo(String fxmlName)
     {
         try

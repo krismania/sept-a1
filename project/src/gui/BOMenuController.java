@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package gui;
 
@@ -19,7 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
- * FXML Controller class
+ * Implements Business Owner Main Menu options selections
  *
  * @author tn
  */
@@ -48,7 +46,7 @@ public class BOMenuController implements Initializable {
     @FXML
     private Button logout;
     
-
+    //Implements on button action and directs to appropriate form based on selection
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
@@ -97,7 +95,7 @@ public class BOMenuController implements Initializable {
         
 
     }    
-    
+    //Implements logout button redirecting to login scene
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
     	c.logout();
@@ -113,7 +111,7 @@ public class BOMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // INIT
     }    
     
 }

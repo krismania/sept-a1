@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
 import model.Employee;
-
+//Implements scene for viewing Employee records
 public class ViewEmployeeController implements Initializable
 {
 	private Controller c = Controller.getInstance();
@@ -40,7 +40,8 @@ public class ViewEmployeeController implements Initializable
 	@FXML private TextField selEmpLastName;
 	@FXML private TextField selEmpEmail;
 	@FXML private TextField selEmpPhone;
-
+	
+    //Initialise scene implementing observer pattern and using Factory pattern to construct Cells
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
@@ -77,7 +78,7 @@ public class ViewEmployeeController implements Initializable
 				
 		employeeTable.getItems().setAll(c.getAllEmployees());
 	}
-	
+	//Implements Generic helper method for switching between scenes
 	private void switchTo(String fxmlName)
 	{
 		try
@@ -96,7 +97,7 @@ public class ViewEmployeeController implements Initializable
 			e.printStackTrace();
 		}
 	}
-	
+	//Implements context sensitive details on mouse select action
 	@FXML
 	public void handleChangeEmployee(MouseEvent event)
 	{
@@ -112,7 +113,7 @@ public class ViewEmployeeController implements Initializable
 			selEmpPhone.setText(selEmp.getPhoneNumber());
 		}
 	}
-	
+	//Implements back button reverting to Business Owner Main menu scene
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
