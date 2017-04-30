@@ -47,8 +47,21 @@ public class GUIBookingController {
     @FXML
     public void initialize()
     {
-    	bookingOptionsDropdown.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
-    	{
+    	// event listener for employee selection change
+    	employeePicker.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+							String oldValue, String newValue)
+			{
+				// reset the time dropdown when employee changes
+				bookingOptionsDropdown.getSelectionModel().clearSelection();
+			}
+    		
+    	});
+    	// event listener for time selection change
+    	bookingOptionsDropdown.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+    		
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 							String oldValue, String newValue)
