@@ -14,26 +14,26 @@ import javafx.scene.control.DatePicker;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
-public class GUIBookingController {
+public class GUIBookingController
+{
 	Controller c = Controller.getInstance();
 	
-	@FXML
-    private Button navMenu;
-
-    @FXML
-    private Button submitBooking;
+	@FXML private Button navMenu;
+    @FXML private Button submitBooking;
+    @FXML private DatePicker datePicker;
+    @FXML private ChoiceBox<String> employeePicker;
+    @FXML private ChoiceBox<String> bookingOptionsDropdown;
+    
     
     @FXML
-	private DatePicker datePicker;
+    public void initialize()
+    {
+    	// init
+    }
     
-    @FXML
-    private ChoiceBox<String> employeePicker;
-    
-    @FXML
-    private ChoiceBox<String> bookingOptionsDropdown;
-    
-    @FXML
-    private void navMenuButtonAction(ActionEvent event) throws IOException {
+    @FXML 
+    public void handleBack(ActionEvent event) throws IOException
+    {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
 		Scene custMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
@@ -43,9 +43,10 @@ public class GUIBookingController {
     }
     
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException{
+    public void handleBook(ActionEvent event)
+    {
     	boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
-    			Integer.parseInt(employeePicker.getValue()));
+    	    			Integer.parseInt(employeePicker.getValue()));
     	
     	if(booked)
     	{
@@ -57,11 +58,38 @@ public class GUIBookingController {
     	{
     		System.out.println("Booking has gone wrong!");
     	}
-    	
     }
     
     @FXML
-    private void generateEmployeesByDate(ActionEvent event) throws IOException{
+    public void handleDateChange(ActionEvent event)
+    {
+    	employeePicker.getSelectionModel().clearSelection();
+    	bookingOptionsDropdown.getSelectionModel().clearSelection();
+    	generateEmployeesByDate();
+    }
+    
+    @FXML
+    public void handleEmployeeChange(ActionEvent event)
+    {
+    	bookingOptionsDropdown.getSelectionModel().clearSelection();
+    	generateTimesByEmp();
+    }
+    
+    @FXML
+    public void handleTimeChange(ActionEvent event)
+    {
+    	if (bookingOptionsDropdown.getSelectionModel().getSelectedItem() != null)
+    	{
+    		submitBooking.setDisable(false);
+    	}
+    	else
+    	{
+    		submitBooking.setDisable(true);
+    	}
+    }
+    
+    private void generateEmployeesByDate()
+    {
     	LocalDate day = datePicker.getValue();
     	employeePicker.getItems().removeAll(employeePicker.getItems());
     	
@@ -83,8 +111,8 @@ public class GUIBookingController {
     	}
     }
     
-    @FXML
-    private void generateTimesByEmp(ActionEvent event) throws IOException{
+    private void generateTimesByEmp()
+    {
     	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
