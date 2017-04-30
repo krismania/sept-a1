@@ -52,7 +52,6 @@ public class AddEmployeeController
 		}
 		catch (IOException e)
 		{
-			System.out.println("Could not switch scene.");
 			e.printStackTrace();
 		}
 	}
