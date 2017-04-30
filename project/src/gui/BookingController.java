@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
-public class GUIBookingController
+public class BookingController
 {
 	Controller c = Controller.getInstance();
 	private String customerUsername = null;

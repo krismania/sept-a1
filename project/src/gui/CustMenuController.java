@@ -24,7 +24,7 @@ import javafx.scene.Scene;
  *
  * @author tn
  */
-public class GUICustMenuController implements Initializable {
+public class CustMenuController implements Initializable {
 
 	private Controller c = Controller.getInstance();
 	

@@ -27,7 +27,7 @@ import javafx.scene.control.ChoiceBox;
  *
  * @author tn
  */
-public class GUIAddTimeController implements Initializable {
+public class AddTimeController implements Initializable {
     Controller c = Controller.getInstance();   
     
     @FXML 

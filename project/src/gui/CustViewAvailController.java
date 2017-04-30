@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
  *
  * @author tn
  */
-public class GUICustViewAvailController implements Initializable {
+public class CustViewAvailController implements Initializable {
 
     @FXML
     private TextField sunday;

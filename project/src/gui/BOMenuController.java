@@ -23,7 +23,7 @@ import javafx.scene.Scene;
  *
  * @author tn
  */
-public class GUIBOMenuController implements Initializable {
+public class BOMenuController implements Initializable {
 
 	private Controller c = Controller.getInstance();
 	

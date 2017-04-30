@@ -34,7 +34,7 @@ import model.Booking;
  *
  * @author tn
  */
-public class GUIBOViewBookingSumController implements Initializable {
+public class BOViewBookingSumController implements Initializable {
 	//Initialise field Variables.
     private Controller c = Controller.getInstance();
 	
