@@ -13,7 +13,6 @@
       <Button fx:id="addTime" layoutX="228.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Add Shift Time" />
       <Button fx:id="viewBooking" layoutX="228.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="View Booking" />
       <Button fx:id="makeBooking" layoutX="228.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="114.0" text="Make a Booking" />
-      <Button fx:id="exit" layoutX="448.0" layoutY="343.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="114.0" text="Close" />
       <Button fx:id="logout" layoutX="52.0" layoutY="343.0" mnemonicParsing="false" onAction="#logoutButtonAction" prefHeight="26.0" prefWidth="114.0" text="Logout" />    
       <Label layoutX="196.0" layoutY="25.0" text="Business Administration Menu" />
       <Button fx:id="viewEmployee" layoutX="228.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="114.0" text="View Employees" />
