@@ -40,13 +40,13 @@ public class GUIBookingController
     @FXML private ChoiceBox<String> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
     
+    @FXML private Label TitleOfDetails;
     @FXML private Label Email;
     @FXML private Label Phone;
     @FXML private Label Name;
     @FXML private Label customerEmail;
     @FXML private Label customerPhone;
     @FXML private Label customerName;
-    
     
     @FXML
     public void initialize()
@@ -87,9 +87,7 @@ public class GUIBookingController
     	
     		if(booked)
 	    	{
-	    		System.out.println("Booked in!");
-	    		c.getPastBookings();
-	    		c.getFutureBookings();
+    			GUIAlert.infoBox("Booking Successful", "Booking Confirmation");
 	    	}
 	    	else 
 	    	{
@@ -108,6 +106,10 @@ public class GUIBookingController
     	{
     		customerLabel.setVisible(true);
     		customerUser.setVisible(true);
+    		TitleOfDetails.setVisible(true);
+    	    Email.setVisible(true);
+    	    Phone.setVisible(true);
+    	    Name.setVisible(true);
     	}
     }
     

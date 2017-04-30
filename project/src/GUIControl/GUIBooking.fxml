@@ -21,10 +21,10 @@
    	  <Button fx:id="navMenu" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleBack" text="Return to Menu" />
       <Button fx:id="submitBooking" disable="true" layoutX="403.0" layoutY="319.0" mnemonicParsing="false" onAction="#handleBook" prefHeight="48.0" prefWidth="140.0" text="Make Booking!" />
    
-   	  <Label text="Customer Details" layoutX="50.0" layoutY="212.0"/>
-   	  <Label fx:id="Name" text="Customer Name: " layoutX="50.0" layoutY="232.0"/>
-   	  <Label fx:id="Email" text="Customer Email: " layoutX="50.0" layoutY="252.0"/>
-   	  <Label fx:id="Phone" text="Customer Phone: " layoutX="50.0" layoutY="272.0"/>
+   	  <Label fx:id="TitleOfDetails" text="Customer Details" visible="false" layoutX="50.0" layoutY="212.0"/>
+   	  <Label fx:id="Name" text="Customer Name: " visible="false" layoutX="50.0" layoutY="232.0"/>
+   	  <Label fx:id="Email" text="Customer Email: " visible="false" layoutX="50.0" layoutY="252.0"/>
+   	  <Label fx:id="Phone" text="Customer Phone: " visible="false" layoutX="50.0" layoutY="272.0"/>
    	  <Label fx:id="customerName" text="" visible="false" layoutX="349.0" layoutY="232.0"/>
    	  <Label fx:id="customerEmail" text="" visible="false" layoutX="349.0" layoutY="252.0"/>
    	  <Label fx:id="customerPhone" text="" visible="false" layoutX="349.0" layoutY="272.0"/>
