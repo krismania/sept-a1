@@ -43,8 +43,9 @@ public class GUIBookingController {
     private ChoiceBox<String> bookingOptionsDropdown;
 	
     @FXML
-    public void initialize(){
-    	submitBooking.setDisable(true);
+    public void initialize()
+    {
+    	// init code
     }
     
     @FXML
