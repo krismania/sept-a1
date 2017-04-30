@@ -73,7 +73,7 @@ public class ViewCustomerDetailsController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUICustMenu");
+		switchTo("CustMenu");
 	}
 	
 }

@@ -62,11 +62,11 @@ public class BookingController
     	Scene accountMenu;
     	if(c.getLoggedUser() instanceof Customer)
     	{
-    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
     	}
     	else
     	{
-    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+    		accountMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
     	}
 		
 		// switch scenes
@@ -194,7 +194,7 @@ public class BookingController
     /*@FXML
     private void selectCustomer(ActionEvent event) throws IOException{
     	
-    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+    	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
     	
     }*/
     

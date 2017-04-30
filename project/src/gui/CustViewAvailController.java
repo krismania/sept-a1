@@ -56,7 +56,7 @@ public class CustViewAvailController implements Initializable {
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
-		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
 		
 		// switch scenes
 		stage.setScene(boMenu);

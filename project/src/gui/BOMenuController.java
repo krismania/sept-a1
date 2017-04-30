@@ -73,7 +73,7 @@ public class BOMenuController implements Initializable {
         }
         else if(event.getSource()==addTime) {
         	stage=(Stage) addTime.getScene().getWindow();
-        	rootAddTime = FXMLLoader.load(getClass().getResource("GUIAddTime.fxml"));
+        	rootAddTime = FXMLLoader.load(getClass().getResource("AddTime.fxml"));
             Scene scene = new Scene(rootAddTime);
             stage.setScene(scene);
             stage.show(); 
@@ -81,7 +81,7 @@ public class BOMenuController implements Initializable {
         else if(event.getSource()==viewBooking)
         {
         	stage=(Stage) viewBooking.getScene().getWindow();
-        	rootViewBooking = FXMLLoader.load(getClass().getResource("GUIBOViewBookingSum.fxml"));
+        	rootViewBooking = FXMLLoader.load(getClass().getResource("BOViewBookingSum.fxml"));
             Scene scene = new Scene(rootViewBooking);
             stage.setScene(scene);
             stage.show();
@@ -89,7 +89,7 @@ public class BOMenuController implements Initializable {
         else //if(event.getSource()==makeBookingForCustomer)
         {
         	stage=(Stage) makeBooking.getScene().getWindow();
-        	rootMakeBooking = FXMLLoader.load(getClass().getResource("GUIBooking.fxml"));
+        	rootMakeBooking = FXMLLoader.load(getClass().getResource("Booking.fxml"));
             Scene scene = new Scene(rootMakeBooking);
             stage.setScene(scene);
             stage.show();

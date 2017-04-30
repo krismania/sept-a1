@@ -89,7 +89,7 @@ public class UpcomingAppointmentsController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUICustMenu");
+		switchTo("CustMenu");
 	}
 	
 	/**

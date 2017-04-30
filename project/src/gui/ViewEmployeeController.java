@@ -116,6 +116,6 @@ public class ViewEmployeeController implements Initializable
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
-		switchTo("GUIBOMenu");
+		switchTo("BOMenu");
 	}
 }

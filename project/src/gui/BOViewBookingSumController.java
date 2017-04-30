@@ -90,10 +90,10 @@ public class BOViewBookingSumController implements Initializable {
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	//Stage stage = (Stage) navMenu.getScene().getWindow();
         // load the scene
-        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu")));
+        //Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu")));
         // switch scenes
         //stage.setScene(boMenu);
-        switchTo("GUIBOMenu");
+        switchTo("BOMenu");
     }
     
     @Override

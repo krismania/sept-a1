@@ -40,7 +40,7 @@ public class LoginController implements Initializable
 			lblError.setVisible(false);
 			
 			// load the scene
-			Scene customerLogin = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
+			Scene customerLogin = new Scene(FXMLLoader.load(getClass().getResource("CustMenu.fxml")));
 			
 			// get current stage
 			Stage stage = (Stage) root.getScene().getWindow();
@@ -53,7 +53,7 @@ public class LoginController implements Initializable
 			lblError.setVisible(false);
 			
 			// load the scene
-			Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("GUIBOMenu.fxml")));
+			Scene boLogin = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 			
 			// get current stage
 			Stage stage = (Stage) root.getScene().getWindow();
