@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import main.Controller;
 import javafx.scene.Parent;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,7 +47,24 @@ public class GUIBookingController {
     @FXML
     public void initialize()
     {
-    	// init code
+    	bookingOptionsDropdown.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
+    	{
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+							String oldValue, String newValue)
+			{
+				if (newValue == null)
+				{
+					// disable booking button if no time is selected. -kg
+					submitBooking.setDisable(true);
+				}
+				else
+				{
+					// else enable it. -kg
+					submitBooking.setDisable(false);
+				}
+			}
+    	});
     }
     
     @FXML
@@ -84,7 +103,6 @@ public class GUIBookingController {
     	if(day.isBefore(LocalDate.now())) {
     		System.out.println("Date has passed.");
     		employeePicker.getItems().addAll("Please select today or a date in the future");
-		submitBooking.setDisable(true);
     	}
     	
     	else 
@@ -93,7 +111,6 @@ public class GUIBookingController {
 	    	if(empIDs.isEmpty())
 	    	{
 	    		employeePicker.getItems().addAll("No employees working on selected date");
-			submitBooking.setDisable(true);
 	    	}
 	    	else {
 	    		employeePicker.getItems().addAll(empIDs);
@@ -107,8 +124,5 @@ public class GUIBookingController {
     	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
-	if(!times.isEmpty()){
-    		submitBooking.setDisable(false);
-    	}
     }
 }
