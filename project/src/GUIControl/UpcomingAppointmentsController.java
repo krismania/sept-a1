@@ -83,7 +83,7 @@ public class UpcomingAppointmentsController implements Initializable
 		
 		// get the booking objects
 		
-		appointmentsTable.getItems().setAll(c.getFutureBookings(c.loggedUser));
+		appointmentsTable.getItems().setAll(c.getFutureBookings(c.getLoggedUser().username));
 	}
 	
 	@FXML
