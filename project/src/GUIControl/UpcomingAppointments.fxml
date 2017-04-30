@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.UpcomingAppointmentsController">
    <top>
       <Label text="Upcoming Appointments" BorderPane.alignment="CENTER_LEFT">
          <font>
@@ -28,9 +27,9 @@
    <center>
       <TableView prefHeight="300.0" prefWidth="400.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn maxWidth="-1.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Date" />
-          <TableColumn maxWidth="-1.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Time" />
-            <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="Staff Member" />
+          <TableColumn fx:id="date" maxWidth="-1.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Date" />
+          <TableColumn fx:id="time" maxWidth="-1.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Time" />
+            <TableColumn fx:id="employee" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="Staff Member" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -40,7 +39,7 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Back" />
+            <Button mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region HBox.hgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
