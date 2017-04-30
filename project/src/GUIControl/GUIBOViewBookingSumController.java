@@ -111,7 +111,7 @@ public class GUIBOViewBookingSumController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //TN - Uses ***Observer & Factory Patterns***
     	//Populate Cells for Past Appointments
-    	//Collects ID from Booking class and returns as a Number
+    	//Collects Appointment ID from Booking class and returns as a Number
         IDP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
 
@@ -177,7 +177,7 @@ public class GUIBOViewBookingSumController implements Initializable {
  
         //TN - Uses ***Observer & Factory Patterns***
         //Populate Cells for Future Appointments
-    	//Collects ID from Booking class and returns as a Number
+    	//Collects Appointment ID from Booking class and returns as a Number
         IDF.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, Number>, 
     			ObservableValue<Number>>() {
 
