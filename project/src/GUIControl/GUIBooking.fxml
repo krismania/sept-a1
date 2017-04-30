@@ -12,7 +12,7 @@
       <Label layoutX="50.0" layoutY="62.0" text="Enter Booking Date: " />
       <Label layoutX="50.0" layoutY="102.0" text="Select Staff Member: " />
       <Label layoutX="50.0" layoutY="142.0" text="Select Time: " />
-      <Label fx:id="customerLabel" layoutX="50.0" layoutY="182.0" text="Search Customer: " visible="false"/>
+      <Label fx:id="customerLabel" layoutX="50.0" layoutY="182.0" text="Search Customer Username: " visible="false"/>
    	  <DatePicker fx:id="datePicker" layoutX="349.0" layoutY="62.0" onAction="#handleDateChange" promptText="Select Date" showWeekNumbers="true" />
    	  <ChoiceBox fx:id="employeePicker" layoutX="349.0" layoutY="102.0" onAction="#handleEmployeeChange" prefWidth="150.0" />
       <ChoiceBox fx:id="bookingOptionsDropdown" layoutX="349.0" layoutY="142.0" onAction="#handleTimeChange" prefWidth="150.0" />
