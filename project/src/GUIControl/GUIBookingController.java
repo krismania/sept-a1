@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.stage.Stage;
+import main.Account;
 import main.BusinessOwner;
 import main.Controller;
 import main.Customer;
+import main.Validate;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -29,14 +31,21 @@ public class GUIBookingController
 	Controller c = Controller.getInstance();
 	private String customerUsername = null;
 	
-  
-    @FXML private TextField customerName;
+	@FXML private Label lblError;
     @FXML private Label customerLabel;
+    @FXML private TextField customerUser;
 	@FXML private Button navMenu;
     @FXML private Button submitBooking;
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<String> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
+    
+    @FXML private Label Email;
+    @FXML private Label Phone;
+    @FXML private Label Name;
+    @FXML private Label customerEmail;
+    @FXML private Label customerPhone;
+    @FXML private Label customerName;
     
     
     @FXML
@@ -67,14 +76,14 @@ public class GUIBookingController
     @FXML
 
     private void handleBook(ActionEvent event) throws IOException{
-    	if(c.getLoggedUser() instanceof BusinessOwner && customerName.getText().isEmpty())
+    	if(c.getLoggedUser() instanceof BusinessOwner && customerUser.getText().isEmpty())
     	{
     		System.out.println("Cannot process a booking without customer name");
     	}
     	else
     	{
     		boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
-    				Integer.parseInt(employeePicker.getValue()), customerName.getText());
+    				Integer.parseInt(employeePicker.getValue()), customerUser.getText());
     	
     		if(booked)
 	    	{
@@ -98,7 +107,7 @@ public class GUIBookingController
     	if(c.getLoggedUser() instanceof BusinessOwner)
     	{
     		customerLabel.setVisible(true);
-    		customerName.setVisible(true);
+    		customerUser.setVisible(true);
     	}
     }
     
@@ -112,13 +121,41 @@ public class GUIBookingController
     @FXML
     public void handleTimeChange(ActionEvent event)
     {
-    	if (bookingOptionsDropdown.getSelectionModel().getSelectedItem() != null)
+    	if(c.loggedUser instanceof Customer)
+    	{
+    		if (bookingOptionsDropdown.getSelectionModel().getSelectedItem() != null)
+        	{
+        		submitBooking.setDisable(false);
+        	}
+        	else
+        	{
+        		submitBooking.setDisable(true);
+        	}
+    	}
+    }
+    
+    @FXML
+    private void generateCustomerList()
+    {
+    	Customer customer = c.getCustomer(customerUser.getText());
+    	if (customer != null)
     	{
     		submitBooking.setDisable(false);
+    		lblError.setVisible(false);
+    		customerName.setVisible(true);
+    		customerName.setText(customer.getFirstName() + " " + customer.getLastName());
+    		customerEmail.setVisible(true);
+    		customerEmail.setText(customer.getEmail());
+    		customerPhone.setVisible(true);
+    		customerPhone.setText(customer.getPhoneNumber());
     	}
     	else
     	{
     		submitBooking.setDisable(true);
+    		lblError.setVisible(true);
+    		customerName.setVisible(false);
+    		customerEmail.setVisible(false);
+    		customerPhone.setVisible(false);
     	}
     }
     
@@ -159,15 +196,6 @@ public class GUIBookingController
     	Scene accountMenu = new Scene(FXMLLoader.load(getClass().getResource("GUICustMenu.fxml")));
     	
     }*/
-   
-    public void setCustomerVisbility(ActionEvent event) throws IOException {
-    	if(c.getLoggedUser() instanceof BusinessOwner)
-    	{
-    		System.out.println("Displaying Customer Name!");
-    		customerName.setVisible(true);
-    		customerLabel.setVisible(true);
-    	}
-    }
     
     public void initialize(URL url, ResourceBundle rb)
 	{
