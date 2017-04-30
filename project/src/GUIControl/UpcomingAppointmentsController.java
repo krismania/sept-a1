@@ -1,27 +1,90 @@
 package GUIControl;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import main.Booking;
+import main.Controller;
+import main.Employee;
 
 /**
  * Customer screen to view their upcoming bookings
  * @author krismania
  */
-public class UpcomingAppointmentsController
+public class UpcomingAppointmentsController implements Initializable
 {
-	@FXML Node root;
+	private Controller c = Controller.getInstance();
 	
-	@FXML TableColumn<Booking, String> date;
-	@FXML TableColumn<Booking, String> time;
-	@FXML TableColumn<Booking, String> employee;
+	@FXML private Node root;
+	
+	@FXML private TableView<Booking> appointmentsTable;
+	@FXML private TableColumn<Booking, String> date;
+	@FXML private TableColumn<Booking, String> time;
+	@FXML private TableColumn<Booking, String> employee;
+	
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
+	{
+		// set cell value factories
+		date.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(
+							CellDataFeatures<Booking, String> param)
+			{
+				SimpleStringProperty prop = new SimpleStringProperty();
+				prop.setValue(param.getValue().getDate().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy")));
+				return prop;
+			}
+		});
+		
+		time.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(
+							CellDataFeatures<Booking, String> param)
+			{
+				SimpleStringProperty prop = new SimpleStringProperty();
+				prop.setValue(param.getValue().getTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+				return prop;
+			}
+		});
+		
+		employee.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Booking, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(
+							CellDataFeatures<Booking, String> param)
+			{
+				// get the employee object by their ID in booking
+				Employee employee = c.getEmployee(param.getValue().getEmployeeID());
+				
+				SimpleStringProperty prop = new SimpleStringProperty();
+				prop.setValue(employee.getFirstName() + " " + employee.getLastName());
+				return prop;
+			}
+		});
+		
+		// get the booking objects
+		
+		appointmentsTable.getItems().setAll(c.getFutureBookings(c.loggedUser));
+	}
 	
 	@FXML
 	public void handleBack(ActionEvent event)
