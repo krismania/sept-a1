@@ -18,9 +18,9 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.Booking;
 import main.Controller;
-import main.Employee;
+import model.Booking;
+import model.Employee;
 
 /**
  * Customer screen to view their upcoming bookings
