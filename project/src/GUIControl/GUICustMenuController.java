@@ -45,7 +45,7 @@ public class GUICustMenuController implements Initializable {
        	//TN - get reference button stage
         Stage stage = (Stage) viewAvailCust.getScene().getWindow();
        	//TN - load other scene
-        Parent root = FXMLLoader.load(getClass().getResource("GUICustViewAvail.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("UpcomingAppointments.fxml"));
    
         Scene scene = new Scene(root);
         stage.setScene(scene);
