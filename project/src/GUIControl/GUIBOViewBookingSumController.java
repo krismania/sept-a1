@@ -59,6 +59,12 @@ public class GUIBOViewBookingSumController implements Initializable {
     private Tab futureBookings;
     
     @FXML
+    private TableView<Booking> scrollBarP;
+    
+    @FXML
+    private TableView<Booking> scrollBarF;
+    
+    @FXML
     private TableView<Booking> bookingP;
     
     @FXML

@@ -7,23 +7,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="476.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIControl.GUIBOViewBookingSumController">
    <children>
-      <TabPane prefHeight="400.0" prefWidth="579.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="-2.0" prefHeight="402.0" prefWidth="592.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="pastBookings" text="Booking History">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="547.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="607.0" snapToPixel="false">
                      <children>
-                        <TableView fx:id="bookingP" layoutY="-3.0" prefHeight="375.0" prefWidth="579.0">
+                        <TableView fx:id="bookingP" layoutY="-3.0" prefHeight="375.0" prefWidth="578.0">
                            <columns>
                               <TableColumn fx:id="IDP" prefWidth="110.0" text="Appointment ID" />
                               <TableColumn fx:id="customerP" prefWidth="115.0" text="Customer Name" />
                               <TableColumn fx:id="dateP" prefWidth="125.0" text="Appointment Date" />
-                              <TableColumn fx:id="timeP" minWidth="0.0" prefWidth="125.0" text="Appointment Time" />
                               <TableColumn fx:id="employeeIDP" prefWidth="103.0" text="Employee ID" />
+                              <TableColumn fx:id="timeP" minWidth="0.0" prefWidth="125.0" text="Appointment Time" />
                            </columns>
                         </TableView>
+                        <ScrollBar fx:id="scrollBarP" layoutX="576.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="371.0" prefWidth="17.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -41,13 +42,13 @@
                               <TableColumn fx:id="employeeIDF" prefWidth="103.0" text="Employee ID" />
                            </columns>
                         </TableView>
+                        <ScrollBar fx:id="scrollBarF" layoutX="576.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="372.0" prefWidth="17.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
-      <ScrollBar layoutX="579.0" max="10.0" orientation="VERTICAL" prefHeight="476.0" prefWidth="17.0" unitIncrement="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Pane layoutY="395.0" prefHeight="77.0" prefWidth="566.0">
          <children>
             <Button fx:id="navMenu" layoutX="24.0" layoutY="26.0" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Return to Menu" />
