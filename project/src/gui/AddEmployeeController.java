@@ -1,4 +1,4 @@
-package GUIControl;
+package gui;
 
 import java.io.IOException;
 import javafx.stage.Stage;
