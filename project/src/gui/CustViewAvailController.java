@@ -1,7 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
  */
 package gui;
 
@@ -17,8 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 /**
- * FXML Controller class
- *
+ * Implements a Form for viewing appointment sessions available to customers
+ * 
  * @author tn
  */
 public class CustViewAvailController implements Initializable {
@@ -51,7 +48,7 @@ public class CustViewAvailController implements Initializable {
     void outputAvail(ActionEvent event) {
 
     }
-
+    //Implements back button to navigate back to Customer Menu
     @FXML
     private void navMenuButtonAction(ActionEvent event) throws IOException {
     	Stage stage = (Stage) navMenu.getScene().getWindow();

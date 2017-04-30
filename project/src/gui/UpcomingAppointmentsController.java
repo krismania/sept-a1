@@ -37,7 +37,7 @@ public class UpcomingAppointmentsController implements Initializable
 	@FXML private TableColumn<Booking, String> time;
 	@FXML private TableColumn<Booking, String> employee;
 	
-
+	//Initialise scene implementing observer pattern and using Factory pattern to construct Cells
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
@@ -82,10 +82,9 @@ public class UpcomingAppointmentsController implements Initializable
 		});
 		
 		// get the booking objects
-		
 		appointmentsTable.getItems().setAll(c.getFutureBookings(c.getLoggedUser().username));
 	}
-	
+	//Implements back button reverting to Business Owner Main menu scene
 	@FXML
 	public void handleBack(ActionEvent event)
 	{
@@ -94,6 +93,7 @@ public class UpcomingAppointmentsController implements Initializable
 	
 	/**
 	 * @author krismania
+	 * Implements Generic helper method for switching between scenes
 	 */
 	private void switchTo(String fxmlName)
 	{

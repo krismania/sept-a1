@@ -20,7 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
- * FXML Controller class
+ * Implements main menu for Customer access level options
  *
  * @author tn
  */
@@ -39,7 +39,7 @@ public class CustMenuController implements Initializable {
     /**
      * Initializes the controller class.
      */
-  
+    //Implements on button action to proceed to Upcomming Appointments form
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
        	//TN - get reference button stage
@@ -51,7 +51,7 @@ public class CustMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+    //Implements logout button to exit to login
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
     	c.logout();
@@ -64,7 +64,7 @@ public class CustMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    //Implements On select button action navigating to bookings form
     @FXML
     void handleBookingAction(ActionEvent event) throws IOException {
        	//TN - get reference button stage
@@ -94,6 +94,6 @@ public class CustMenuController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // INIT
     }
 }
