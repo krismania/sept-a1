@@ -242,10 +242,6 @@ public class GUIBOViewBookingSumController implements Initializable {
         //TN instantiates all Booking class objects
         bookingP.getItems().setAll(c.getPastBookings());
         bookingF.getItems().setAll(c.getFutureBookings());
-        System.out.println("Past Bookings display Output of "
-        		+ "booking.getItems().setAll(c.getPastBookings()) = "
-        + bookingP.getItems().setAll(c.getPastBookings()) + "\n" 
-        + bookingF.getItems().setAll(c.getFutureBookings()));
     }    
 	//Switches scenes
     private void switchTo(String fxmlName)
