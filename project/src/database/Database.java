@@ -186,6 +186,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 */
+	/** 
+	 * TODO: Refactor SQL to check all details rather than doing if/else's
+	 */
 	@Override
 	public boolean addBooking(Booking booking)
 	{
@@ -232,7 +235,6 @@ public class Database implements DBInterface {
 			}
 		}
 		return false;
-		
 	}
 
 	/**
@@ -314,6 +316,9 @@ public class Database implements DBInterface {
 	 * @author James
 	 * @author krismania
 	 */
+	/**
+	 * TODO: Check if method is used or depreciated. 
+	 */
 	@Override
 	public ArrayList<Customer> getAllCustomers()
 	{
@@ -358,6 +363,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 * @author krismania
+	 */
+	/**
+	 * TODO: Check if method is used or depreciated. 
 	 */
 	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
@@ -516,6 +524,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 */
+	/**
+	 * TODO: Check if method is used or depreciated. 
+	 */
 	@Override
 	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
 	{
@@ -618,6 +629,9 @@ public class Database implements DBInterface {
 
 	/**
 	 * @author krismania
+	 */
+	/**
+	 * TODO: Check if method is used or depreciated. 
 	 */
 	@Override
 	public TreeMap<Shift, Booking> getShiftBookings()
