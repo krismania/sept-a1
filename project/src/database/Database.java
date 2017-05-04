@@ -76,7 +76,7 @@ public class Database implements DBInterface {
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
-		int currentHighestID = 0;
+		int maxID = 0;
 		
 		try
 		{
@@ -86,7 +86,7 @@ public class Database implements DBInterface {
 			{
 				if (rs.next())
 				{
-					currentHighestID =  rs.getInt("id");
+					maxID =  rs.getInt("id");
 				}
 			}
 			
@@ -97,10 +97,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		// create the object and return it
-		int id = currentHighestID + 1;
-		
-		return new Employee(id,"", "", "", "");
+		return new Employee(maxID+1,"", "", "", "");
 	}
   
 	/**
@@ -124,7 +121,7 @@ public class Database implements DBInterface {
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
-		int currentHighestID = 0;
+		int maxID = 0;
 		
 		try
 		{
@@ -134,7 +131,7 @@ public class Database implements DBInterface {
 			{
 				if (rs.next())
 				{
-					currentHighestID =  rs.getInt("id");
+					maxID =  rs.getInt("id");
 				}
 			}
 			
@@ -145,10 +142,8 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		// create the object and return it
-		int id = currentHighestID + 1;
 		
-		return new Shift(id, employeeID, null, null);
+		return new Shift(maxID+1, employeeID, null, null);
 	}
 	
 	/**
@@ -156,14 +151,14 @@ public class Database implements DBInterface {
 	 */
 	public Booking buildBooking() {
 		// find the highest ID
-		int currentHighestID = 0;
+		int maxID = 0;
 
 		try {
 			openConnection();
 			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
 				if (rs.next()) {
-					currentHighestID = rs.getInt("id");
+					maxID = rs.getInt("id");
 				}
 			}
 
@@ -172,10 +167,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 
-		// create the object and return it
-		int id = currentHighestID + 1;
-
-		return new Booking(id, null, 0, null, null);
+		return new Booking(maxID + 1, null, 0, null, null);
 	}
 	
 	/**
