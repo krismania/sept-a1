@@ -46,6 +46,7 @@ public class Controller
 	 * will be {@code null}.
 	 */
 	public Account loggedUser = null;
+	public String currentDB;
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
