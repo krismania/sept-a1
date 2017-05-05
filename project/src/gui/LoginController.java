@@ -18,6 +18,8 @@ import main.Controller;
 import model.Account;
 import model.BusinessOwner;
 import model.Customer;
+import model.Admin;
+
 //Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {
