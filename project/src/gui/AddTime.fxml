@@ -10,14 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AddTimeController">
    <center>
       <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="Hairdresser (ID):">
+                  <Label text="Employee (ID)">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
