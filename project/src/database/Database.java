@@ -785,7 +785,8 @@ public class Database implements DBInterface {
 			{
 				// if DB is empty, create the required tables and test data
 				createTables();
-				createTestData();
+				
+				//createTestData();
 			}
 			
 			closeConnection();
