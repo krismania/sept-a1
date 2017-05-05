@@ -62,7 +62,7 @@ public class Controller
 	}
 	
 	/**
-	 * Creates an instance of the controller class & opens the database.
+	 * Creates an instance of the controller class
 	 * @author krismania
 	 */
 	private Controller()
