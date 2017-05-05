@@ -167,6 +167,11 @@ public class SignupController implements Initializable
 	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
+		//Disconnect from master DB
+		c.disconnectDB();
+		//Load selected DB. JM
+		c.loadDatabase(businessPicker.getValue());
+		
 		// TODO: verify details
 		if (validateAccount() & validateDetails())
 		{
@@ -175,7 +180,10 @@ public class SignupController implements Initializable
 							firstName.getText(), lastName.getText(),
 							email.getText(), phone.getText()))
 			{
-				
+				//Disconnect from DB in Controller.JM
+				c.disconnectDB();
+				//reconnect to master DB.JM
+				c.loadDatabase("master");
 				// alert the user
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Account Created!");
@@ -184,9 +192,14 @@ public class SignupController implements Initializable
 				alert.showAndWait();
 				
 				switchTo("Login");
+				
 			}
 			else
 			{
+				//Disconnect from DB in Controller.JM
+				c.disconnectDB();
+				//reconnect to master DB.JM
+				c.loadDatabase("master");
 				
 				// TODO: more specific errors here
 				setError(lblError2, "Account already exists.");
