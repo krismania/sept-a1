@@ -63,7 +63,9 @@ public class Database implements DBInterface {
 		{
 			BusinessOwner bo = (BusinessOwner) account;
 			
-			return CreateDataEntry("BusinessOwner", bo.username, password, "BusinessOwner");
+			return insert("BusinessOwner", bo.username, bo.getBusinessName(),
+							bo.getName(), bo.getAddress(), bo.getPhoneNumber(),
+							password, "BusinessOwner");
 		}
 
 		return false;
