@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.Controller;
@@ -27,6 +28,7 @@ public class LoginController implements Initializable
 	@FXML private TextField tfUsername;
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
+    @FXML private ChoiceBox<String> businessPicker;
     
     //implements button action and decision logic for determining the users 
     //access level based on login information Forwards data to controller 
@@ -96,6 +98,7 @@ public class LoginController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		// init
+		businessPicker.getItems().removeAll(businessPicker.getItems());
+		businessPicker.getItems().addAll(c.getAllBusinessNames());
 	}
 }
