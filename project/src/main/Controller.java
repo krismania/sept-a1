@@ -70,7 +70,10 @@ public class Controller
 		// get the logger
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
-		
+		//TODO: Add a checker for creating master DB on run.
+		db = new Database("master");
+		logger.info("Instantiated Controller");
+	}
 		// instantiate DB
 		if (debugDB) db = new DummyDatabase();
 		else db = new Database("awesomeSauce");
