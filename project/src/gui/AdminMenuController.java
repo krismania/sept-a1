@@ -28,6 +28,14 @@ public class AdminMenuController implements Initializable
 	@FXML
     	private Button createBusiness;
 	
+	// Implements button redirecting to create business scene
+	void handleCreateBusinessAction(ActionEvent event) throws IOException
+	{
+	
+	// to be continued...
+	
+	}
+	
 	@FXML
     	private Button logout;
 	
