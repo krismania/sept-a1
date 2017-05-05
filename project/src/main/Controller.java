@@ -228,6 +228,15 @@ public class Controller
 	}
 	
 	/**
+	 * Query Master DB for All Business Names
+	 * @author James
+	 * @return ArrayList of Strings
+	 */
+	public ArrayList<String> getAllBusinessNames()
+	{
+		return db.getAllBusinesses();
+	}
+	/**
 	 * Add a customer to the database.
 	 * @see DBInterface#addAccount(Account, String)
 	 * @author krismania
