@@ -68,12 +68,13 @@ public class LoginController implements Initializable
 			lblError.setVisible(false);
 			
 			// load the scene
+			Scene adminLogin = new Scene(FXMLLoader.load(getClass().getResource("AdminMenu.fxml")));
 			
 			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
 			
 			// switch scenes
-			
-			
+			stage.setScene(adminLogin);
 		}
 		else
 		{
