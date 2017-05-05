@@ -34,6 +34,11 @@ public class LoginController implements Initializable
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException
 	{
+		//Disconnect from master DB
+		c.disconnectDB();
+		//Load selected DB. JM
+		c.loadDatabase(businessPicker.getValue());
+		
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());
 		
@@ -67,6 +72,10 @@ public class LoginController implements Initializable
 		{
 			// if account isn't an instance of either account type, login failed.
 			lblError.setVisible(true);
+			//Remove attempted DB connect from memory in Controller.JM
+			c.disconnectDB();
+			//reconnect to master DB
+			c.loadDatabase("master");
 			tfPassword.clear();
 		}
 	}
