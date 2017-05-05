@@ -63,6 +63,18 @@ public class LoginController implements Initializable
 			// switch scenes
 			stage.setScene(boLogin);
 		}
+		else if (account instanceof Admin)
+		{
+			lblError.setVisible(false);
+			
+			// load the scene
+			
+			// get current stage
+			
+			// switch scenes
+			
+			
+		}
 		else
 		{
 			// if account isn't an instance of either account type, login failed.
