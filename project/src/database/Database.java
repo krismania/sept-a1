@@ -366,6 +366,46 @@ public class Database implements DBInterface {
 	}
 	
 	/**
+	 * Returns an arrayList of all businessNames
+	 * Used for master DB
+	 * @author James
+	 */
+	public ArrayList<String> getAllBusinesses()
+	{
+		ArrayList<String> businessNames = new ArrayList<String>();
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM Businesses";
+			
+			rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+		        //Retrieve by column name         
+	         	String name = rs.getString("BusinessName");
+
+				// build obj and add to list. -kg
+	         	businessNames.add(name);
+			}
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return businessNames;
+	}
+	/**
 	 * @author James
 	 * @author krismania
 	 */
