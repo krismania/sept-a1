@@ -139,4 +139,7 @@ public interface DBInterface
 	 */
 	Account login(String username, String password);
 
+
+	ArrayList<String> getAllBusinesses();
+
 }
