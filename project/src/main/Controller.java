@@ -74,11 +74,24 @@ public class Controller
 		db = new Database("master");
 		logger.info("Instantiated Controller");
 	}
+	
+	/**
+	 * Abstracted out of constructor. 
+	 * Required to be public for reconnection back to master @signup and @login fail.
+	 * @author James
+	 * @param dbName
+	 */
+	public void loadDatabase(String dbName) 
+	{
+		currentDB = dbName;
 		// instantiate DB
 		if (debugDB) db = new DummyDatabase();
-		else db = new Database("awesomeSauce");
-		
-		logger.info("Instantiated Controller");
+		else db = new Database(dbName);
+	}
+	
+	public void disconnectDB()
+	{
+		db = null;
 	}
 	
 	/**
