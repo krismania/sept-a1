@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -31,6 +32,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
+         <ChoiceBox fx:id="businessPicker" layoutX="349.0" layoutY="102.0" prefWidth="150.0" />
             <VBox minWidth="-Infinity" prefWidth="170.0">
                <children>
                   <Label text="Account">

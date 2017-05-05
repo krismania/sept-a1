@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -60,6 +61,7 @@
          <center>
             <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="170.0" BorderPane.alignment="CENTER">
                <children>
+               <ChoiceBox fx:id="businessPicker" layoutX="349.0" layoutY="102.0" prefWidth="150.0" />
                   <Label text="Username" />
                   <TextField fx:id="tfUsername">
                      <opaqueInsets>
