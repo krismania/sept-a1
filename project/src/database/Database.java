@@ -43,7 +43,7 @@ public class Database implements DBInterface {
 		CreateDatabase();
 	}
 
-//***PUBLIC API***
+	//***PUBLIC API***
 
 	/**
 	 * @author James
@@ -317,7 +317,7 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 */
 	/**
-	 * TODO: Check if method is used or depreciated. 
+	 * Controller method has been @Deprecated.  
 	 */
 	@Override
 	public ArrayList<Customer> getAllCustomers()
@@ -365,7 +365,7 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 */
 	/**
-	 * TODO: Check if method is used or depreciated. 
+	 * Controller has been Deprecated
 	 */
 	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
@@ -419,7 +419,7 @@ public class Database implements DBInterface {
 		{
 			openConnection();
 			stmt = c.createStatement();
-			// TODO: use int IDs instead of strings
+			
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
 			{
@@ -525,7 +525,7 @@ public class Database implements DBInterface {
 	 * @author James
 	 */
 	/**
-	 * TODO: Check if method is used or depreciated. 
+	 * TODO: Update method to remove ShiftTime
 	 */
 	@Override
 	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
