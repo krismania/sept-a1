@@ -1155,6 +1155,7 @@ public class Database implements DBInterface {
 	
 	/**
 	 * Attempt to create the required DB tables
+	 * Checks if master DB
 	 * @author krismania
 	 * @author James
 	 */
@@ -1162,27 +1163,37 @@ public class Database implements DBInterface {
 	{
 		logger.info("Creating database tables...");
 				
-		//Customer Table
-		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)","Type varchar(13)", "Username");
-		
-		//BusinessOwner Table
-		CreateDatabaseTable("BusinessOwner", "Username varchar(15)", "BusinessName varchar(30)",
-				"Name varchar(255)", "Address varchar(255)", "Phone varchar(10)",
-				"Password varchar(15)", "Type varchar(13)", "Username");
-		
-		//Employee Table
-		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
-
-		//Shift Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time int", "Shift_ID int",
-				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
-		
-		//Booking Table
-		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
-				"Date DATE", "Time int", "Booking_ID");
+		if(!dbName.equals("master"))
+		{
+			//Customer Table
+			CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
+					"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+					"Password varchar(15)","Type varchar(13)", "Username");
+			
+			//BusinessOwner Table
+			CreateDatabaseTable("BusinessOwner", "Username varchar(15)", "BusinessName varchar(30)",
+					"Name varchar(255)", "Address varchar(255)", "Phone varchar(10)",
+					"Password varchar(15)", "Type varchar(13)", "Username");
+			
+			//Employee Table
+			CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
+					"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
+	
+			//Shift Table
+			CreateDatabaseTable("Shift", "Day varchar(9)", "Time int", "Shift_ID int",
+					"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
+			
+			//Booking Table
+			CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
+					"Date DATE", "Time int", "Booking_ID");
+		}
+		else
+		{
+			//Master Table
+			CreateDatabaseTable("Businesses", "BusinessName varchar(255)", "BusinessName");
+			//Insert Business
+			CreateDataEntry("Businesses", "awesomeSauce");
+		}
 	}
 	
 	/**
@@ -1195,6 +1206,7 @@ public class Database implements DBInterface {
 		
 		CreateDataEntry("Customer", "sept", "customer", "sept@customer.test", 
 				"0400000000", "septC", "septCust1", "Customer");
+		
 		
 		CreateDataEntry("BusinessOwner", "septB", "SomeBusiness", "John S.",
 						"10 Some St, Some Town", "(03) 5555 5555", "septBus1", "BusinessOwner");
