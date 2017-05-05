@@ -344,6 +344,7 @@ public class Controller
 	{
 		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
+		db = null;
 	}
 	
 	/**
