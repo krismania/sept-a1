@@ -21,8 +21,12 @@ import javafx.scene.Scene;
  */
 public class AdminMenuController implements Initializable 
 {
+
 	
 	private Controller c = Controller.getInstance();
+	
+	@FXML
+    	private Button createBusiness;
 	
 	@FXML
     	private Button logout;
@@ -31,7 +35,6 @@ public class AdminMenuController implements Initializable
     	@FXML
     	private void logoutButtonAction(ActionEvent event) throws IOException
 	{
-	
     	   c.logout();
     	   Stage stage = (Stage) logout.getScene().getWindow();
     	
