@@ -94,10 +94,10 @@ public class Controller
 			return null;
 		}
 	}
-
 	/**
 	 * @see DBInterface#getAllCustomers()
 	 */
+	@Deprecated
 	public ArrayList<Customer> getAllCustomers()
 	{
 		return db.getAllCustomers();
@@ -106,6 +106,7 @@ public class Controller
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
 	 */
+	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		return db.getAllBusinessOwners();
@@ -138,6 +139,7 @@ public class Controller
 	/**
 	 * @see DBInterface#getShiftBookings()
 	 */
+	@Deprecated
 	public TreeMap<Shift, Booking> getShiftBookings()
 	{
 		return db.getShiftBookings();

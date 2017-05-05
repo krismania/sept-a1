@@ -1,7 +1,5 @@
 package database;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -45,7 +43,7 @@ public class Database implements DBInterface {
 		CreateDatabase();
 	}
 
-//***PUBLIC API***
+	//***PUBLIC API***
 
 	/**
 	 * @author James
@@ -78,7 +76,7 @@ public class Database implements DBInterface {
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
-		int currentHighestID = 0;
+		int maxID = 0;
 		
 		try
 		{
@@ -88,7 +86,7 @@ public class Database implements DBInterface {
 			{
 				if (rs.next())
 				{
-					currentHighestID =  rs.getInt("id");
+					maxID =  rs.getInt("id");
 				}
 			}
 			
@@ -99,10 +97,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		// create the object and return it
-		int id = currentHighestID + 1;
-		
-		return new Employee(id,"", "", "", "");
+		return new Employee(maxID+1,"", "", "", "");
 	}
   
 	/**
@@ -126,7 +121,7 @@ public class Database implements DBInterface {
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
-		int currentHighestID = 0;
+		int maxID = 0;
 		
 		try
 		{
@@ -136,7 +131,7 @@ public class Database implements DBInterface {
 			{
 				if (rs.next())
 				{
-					currentHighestID =  rs.getInt("id");
+					maxID =  rs.getInt("id");
 				}
 			}
 			
@@ -147,10 +142,8 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		// create the object and return it
-		int id = currentHighestID + 1;
 		
-		return new Shift(id, employeeID, null, null);
+		return new Shift(maxID+1, employeeID, null, null);
 	}
 	
 	/**
@@ -158,14 +151,14 @@ public class Database implements DBInterface {
 	 */
 	public Booking buildBooking() {
 		// find the highest ID
-		int currentHighestID = 0;
+		int maxID = 0;
 
 		try {
 			openConnection();
 			stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
 				if (rs.next()) {
-					currentHighestID = rs.getInt("id");
+					maxID = rs.getInt("id");
 				}
 			}
 
@@ -174,10 +167,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 
-		// create the object and return it
-		int id = currentHighestID + 1;
-
-		return new Booking(id, null, 0, null, null);
+		return new Booking(maxID + 1, null, 0, null, null);
 	}
 	
 	/**
@@ -195,6 +185,9 @@ public class Database implements DBInterface {
 	
 	/**
 	 * @author James
+	 */
+	/** 
+	 * TODO: Refactor SQL to check all details rather than doing if/else's
 	 */
 	@Override
 	public boolean addBooking(Booking booking)
@@ -242,7 +235,6 @@ public class Database implements DBInterface {
 			}
 		}
 		return false;
-		
 	}
 
 	/**
@@ -324,6 +316,9 @@ public class Database implements DBInterface {
 	 * @author James
 	 * @author krismania
 	 */
+	/**
+	 * Controller method has been @Deprecated.  
+	 */
 	@Override
 	public ArrayList<Customer> getAllCustomers()
 	{
@@ -368,6 +363,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 * @author krismania
+	 */
+	/**
+	 * Controller has been Deprecated
 	 */
 	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
@@ -421,7 +419,7 @@ public class Database implements DBInterface {
 		{
 			openConnection();
 			stmt = c.createStatement();
-			// TODO: use int IDs instead of strings
+			
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
 			{
@@ -526,6 +524,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 */
+	/**
+	 * TODO: Update method to remove ShiftTime
+	 */
 	@Override
 	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
 	{
@@ -628,6 +629,9 @@ public class Database implements DBInterface {
 
 	/**
 	 * @author krismania
+	 */
+	/**
+	 * TODO: Check if method is used or depreciated. 
 	 */
 	@Override
 	public TreeMap<Shift, Booking> getShiftBookings()
