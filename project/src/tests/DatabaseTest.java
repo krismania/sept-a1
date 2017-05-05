@@ -13,6 +13,10 @@ import model.Customer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Tests on the Database class.
+ * @author krismania
+ */
 public class DatabaseTest
 {
 	private static String dbName;
@@ -37,23 +41,47 @@ public class DatabaseTest
 	}
 	
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception
+	@Test
+	public void testCustomerAccountData()
 	{
-		// TODO: implement
+		Customer c = new Customer("bobby-tables", "Robert", "Table", "drop@table.star", "12345678");
+		Customer dbResult = (Customer) db.getAccount(c.username);
+		
+		assertEquals(dbResult.username, c.username);
+		assertEquals(dbResult.getFirstName(), c.getFirstName());
+		assertEquals(dbResult.getLastName(), c.getLastName());
+		assertEquals(dbResult.getEmail(), c.getEmail());
+		assertEquals(dbResult.getPhoneNumber(), c.getPhoneNumber());
 	}
-	
 	
 	@Test
-	public void testCustomerAccountExists()
+	public void testBOAccountData()
 	{
-		assertEquals(db.getAccount("bobby-tables").username, "bobby-tables");
+		BusinessOwner bo = new BusinessOwner("owner", "Some Business", "Ava Gordy", "123 Some St", "1300 123 456");
+		BusinessOwner dbResult = (BusinessOwner) db.getAccount(bo.username);
+		
+		assertEquals(dbResult.username, bo.username);
+		assertEquals(dbResult.getBusinessName(), bo.getBusinessName());
+		assertEquals(dbResult.getName(), bo.getName());
+		assertEquals(dbResult.getAddress(), bo.getAddress());
+		assertEquals(dbResult.getPhoneNumber(), bo.getPhoneNumber());
 	}
 	
 	@Test
-	public void testBusinessAccountExists()
+	public void testAccountExists1()
 	{
-		assertEquals(db.getAccount("owner").username, "owner");
+		assertTrue(db.accountExists("bobby-tables"));
 	}
 	
+	@Test
+	public void testAccountExists2()
+	{
+		assertTrue(db.accountExists("owner"));
+	}
+	
+	@Test
+	public void testAccountNotExists()
+	{
+		assertFalse(db.accountExists("notauser"));
+	}
 }
