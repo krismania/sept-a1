@@ -877,9 +877,49 @@ public class Database implements DBInterface {
 	}
 	
 	/**
+	 * Insert the given values into the specified table.
+	 * @param table The database table to insert into
+	 * @param values Values to insert
+	 * @author krismania
+	 */
+	private boolean insert(String table, String...values)
+	{
+		// prepare values
+		for (int i = 0; i < values.length; i++)
+		{
+			// double up existing single quotes to escape them
+			values[i] = values[i].replaceAll("'", "''");
+			// add single quotes around each value
+			values[i] = "'" + values[i] + "'";
+		}
+		
+		// create value string
+		String valueString = String.join(",", values);
+		
+		// create the query
+		String query = "INSERT INTO " + table + " VALUES(" + valueString + ")";
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			stmt.execute(query);
+			closeConnection();
+			return true;
+		}
+		catch (SQLException e)
+		{
+			logger.warning("SQL Exception: " + e.toString());
+			return false;
+		}
+	}
+	
+	/**
 	 * Insert data into the database
 	 * @author James
+	 * @deprecated Use {@link #insert(String, String...)} instead.
 	 */
+	@Deprecated
 	private boolean CreateDataEntry(String...strings) 
 	{
 
