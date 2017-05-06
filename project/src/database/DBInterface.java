@@ -139,4 +139,9 @@ public interface DBInterface
 	 */
 	Account login(String username, String password);
 
+	/**
+	 * Close the database connection in preparation for closing or switching
+	 */
+	public void close();
+
 }

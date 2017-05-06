@@ -17,10 +17,16 @@ import model.Shift;
 import model.ShiftTime;
 
 public class Database implements DBInterface {
-	Connection c = null;
-	Statement stmt = null;
-	ResultSet rs = null;
-	String dbName;
+	
+	/**
+	 * DB Connection object
+	 */
+	private Connection c = null;
+
+	/**
+	 * The name of the DB file, excluding it's extension
+	 */
+	private String dbName;
 	
 	private Logger logger;
 	
@@ -30,17 +36,28 @@ public class Database implements DBInterface {
 	 * @author James
 	 * @author krismania
 	 */
-	public Database(String nameOfDatabase)
+	public Database(String dbName)
 	{
 		// get the logger & set level
 		logger = Logger.getLogger(getClass().getName());
-		logger.setLevel(Level.ALL);
-		
-		logger.info("Instantiated DB");
 		
 		// set up db
-		dbName = nameOfDatabase;
+		this.dbName = dbName;
+		openConnection();
+		
 		CreateDatabase();
+
+		logger.info("Instantiated DB");
+	}
+	
+	/**
+	 * Close the DB Connection.
+	 * @author krismania
+	 */
+	@Override
+	public void close()
+	{
+		closeConnection();
 	}
 
 	//***PUBLIC API***
@@ -83,7 +100,7 @@ public class Database implements DBInterface {
 		try
 		{
 			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
 			{
 				if (rs.next())
@@ -92,7 +109,6 @@ public class Database implements DBInterface {
 				}
 			}
 			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -127,8 +143,7 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Shift_ID) AS id FROM Shift"))
 			{
 				if (rs.next())
@@ -137,7 +152,6 @@ public class Database implements DBInterface {
 				}
 			}
 			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -156,15 +170,13 @@ public class Database implements DBInterface {
 		int maxID = 0;
 
 		try {
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
 				if (rs.next()) {
 					maxID = rs.getInt("id");
 				}
 			}
 
-			closeConnection();
 		} catch (SQLException e) {
 			logger.warning(e.toString());
 		}
@@ -197,8 +209,7 @@ public class Database implements DBInterface {
 		boolean noDuplicate = true;
 		LocalTime timer;
 		try {
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
 				while (rs.next()) {
 					if(rs.getString("customerID").equals(booking.getCustomer()))
@@ -222,7 +233,6 @@ public class Database implements DBInterface {
 				}
 			}
 
-			closeConnection();
 		} catch (SQLException e) {
 			logger.warning(e.toString());
 		}
@@ -264,8 +274,7 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			if (type.equals(Customer.class))
 			{
 				try (ResultSet customerQuery = stmt.executeQuery(
@@ -279,7 +288,7 @@ public class Database implements DBInterface {
 				        String email = customerQuery.getString("Email");
 				        String phone = customerQuery.getString("Phone");
 				        String usr = customerQuery.getString("Username");
-				        closeConnection();
+				        
 				        // create customer obj and return it
 				        return new Customer(usr, first, last, email, phone);
 					}
@@ -298,13 +307,12 @@ public class Database implements DBInterface {
 						String ownerName = boQuery.getString("Name");
 						String address = boQuery.getString("Address");
 						String phone = boQuery.getString("Phone");
-						closeConnection();
+						
 						// create obj and return
 						return new BusinessOwner(usr, businessName, ownerName, address, phone);
 					}
 				}
 			}
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -328,13 +336,12 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT * FROM Customer";
 			
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()){
 		         //Retrieve by column name
 		         String first = rs.getString("Firstname");
@@ -346,7 +353,6 @@ public class Database implements DBInterface {
 		         // create Customer object & add to list. -kg
 		         customers.add(new Customer(Username, first, last, email, phone));
 		      }
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -376,13 +382,12 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT * FROM BusinessOwner";
 			
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next())
 			{
 		        //Retrieve by column name         
@@ -395,7 +400,6 @@ public class Database implements DBInterface {
 				// build obj and add to list. -kg
 				businessOwners.add(new BusinessOwner(usr, businessName, ownerName, address, phone));
 			}
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -419,8 +423,7 @@ public class Database implements DBInterface {
 	{
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
@@ -431,12 +434,10 @@ public class Database implements DBInterface {
 			        String last = rs.getString("Lastname");
 			        String email = rs.getString("Email");
 			        String phone = rs.getString("Phone");
-			        closeConnection();
+			        
 			        return new Employee(id, first, last, email, phone);
 				}
 			}
-			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -457,8 +458,7 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
 			{
 				while(rs.next())
@@ -475,7 +475,6 @@ public class Database implements DBInterface {
 				}
 			}
 			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -492,12 +491,11 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
 			
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next())
 			{
@@ -508,7 +506,6 @@ public class Database implements DBInterface {
 		         // add it to the list
 		         Workers.add(empID);
 		    }
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -535,8 +532,7 @@ public class Database implements DBInterface {
 		boolean shiftExists = false;
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
 							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
 									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
@@ -548,7 +544,6 @@ public class Database implements DBInterface {
 				}
 			}
 			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -562,23 +557,21 @@ public class Database implements DBInterface {
 	{
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
-							String.format("SELECT * FROM Shift NATURAL JOIN Schedule WHERE Shift_ID = '%s'", shiftID)))
+							String.format("SELECT * FROM Shift WHERE Shift_ID = '%s'", shiftID)))
 			{
 				if (rs.next())
 				{
 					String day = rs.getString("Day");
 			        int time = rs.getInt("Time");
 			        int empID = rs.getInt("EmpID");
-			        closeConnection();
+
 			        LocalTime convertTime = LocalTime.ofSecondOfDay(time);
 			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), convertTime);
 				}
 			}
 			
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -594,12 +587,11 @@ public class Database implements DBInterface {
 		ArrayList<Shift> Shifts = new ArrayList<Shift>();
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
 			
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next())
 			{
@@ -614,7 +606,6 @@ public class Database implements DBInterface {
 		         // add it to the list
 		         Shifts.add(shift);
 		    }
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -709,8 +700,7 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			try (ResultSet bookingQuery = stmt.executeQuery(
 							"SELECT * FROM Booking WHERE " + constraint))
@@ -729,7 +719,6 @@ public class Database implements DBInterface {
 			}
 			
 			stmt.close();
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -775,14 +764,11 @@ public class Database implements DBInterface {
 		//JM Initialize a connection
 		try
 		{
-			Class.forName("org.sqlite.JDBC");
-			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
-			openConnection();
-			
+
 			// test if the db is empty. -kg
 			boolean empty;
-			stmt = c.createStatement();
-			rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
 			rs.next();
 			empty = (rs.getInt(1) == 0);
 			rs.close();
@@ -795,7 +781,6 @@ public class Database implements DBInterface {
 				// createTestData();
 			}
 			
-			closeConnection();
 		}
 		catch (Exception e)
 		{
@@ -863,10 +848,8 @@ public class Database implements DBInterface {
 		
 		try 
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			closeConnection();
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -904,10 +887,8 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			stmt.execute(query);
-			closeConnection();
 			return true;
 		}
 		catch (SQLException e)
@@ -954,10 +935,8 @@ public class Database implements DBInterface {
 		String sql = strBuilder.toString();
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			closeConnection();
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -982,10 +961,9 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			stmt.executeUpdate(sql);
-			closeConnection();
+
 			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
 			return true;
 		} catch(SQLException e) {
@@ -1018,9 +996,8 @@ public class Database implements DBInterface {
 		
 		try 
 		{
-			openConnection();
-			stmt = c.createStatement();
-			rs = stmt.executeQuery(query);
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
 			
 			if(rs.next())
 			{
@@ -1034,9 +1011,7 @@ public class Database implements DBInterface {
 				{
 					return Customer.class;
 				}
-			}
-			closeConnection();
-			
+			}			
 			
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -1059,15 +1034,12 @@ public class Database implements DBInterface {
 		
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
-			rs = stmt.executeQuery(sql);
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			if (rs.getString(1).equals(password)) {
-				closeConnection();
 				return true;
 			}
-			closeConnection();
 		}
 		catch (SQLException e)
 		{
@@ -1091,17 +1063,15 @@ public class Database implements DBInterface {
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID DESC";
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
 			rs.next();
 			id = rs.getString("EmpID");
 			
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -1129,17 +1099,15 @@ public class Database implements DBInterface {
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try
 		{
-			openConnection();
-			stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			String sql = "SELECT Shift_ID FROM Schedule ORDER BY Shift_ID DESC";
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
 			rs.next();
 			id = rs.getString("Shift_ID");
 			
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
