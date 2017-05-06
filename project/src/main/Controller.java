@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -112,9 +113,7 @@ public class Controller
 	
 	/**
 	 * @see DBInterface#getAllEmployees()
-	 * @deprecated
 	 */
-	@Deprecated
 	public ArrayList<Employee> getAllEmployees()
 	{
 		return db.getAllEmployees();
@@ -132,6 +131,29 @@ public class Controller
 	}
 	
 	/**
+	 * Returns a list of employees that are working on a given date.
+	 * @author krismania
+	 */
+	public ArrayList<Employee> getEmployeesWorkingOn(LocalDate date)
+	{
+		ArrayList<Shift> shifts = getShiftsByDate(date);
+		ArrayList<Employee> employees = new ArrayList<Employee>();
+		HashSet<Integer> empIds = new HashSet<Integer>();
+		
+		for (Shift shift : shifts)
+		{
+			empIds.add(shift.employeeID);
+		}
+		
+		for (Integer empId : empIds)
+		{
+			employees.add(db.getEmployee(empId));
+		}
+		
+		return employees;
+	}
+	
+	/**
 	 * @see DBInterface#getShiftBookings()
 	 */
 	@Deprecated
@@ -141,21 +163,36 @@ public class Controller
 		return new TreeMap<Shift, Booking>();
 	}
 	
-//	/**
-//	 * TODO: document this
-//	 */
-//	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
-//		int empID = Integer.parseInt(emp);
-//		DayOfWeek day = date.getDayOfWeek();
-//		ArrayList<Shift> shifts = db.getShifts(day);
-//		ArrayList<String> availableTimes = new ArrayList<String>();
-//		
-//		for (Shift shift : shifts) {
-//			String time = shift.getTime().toString();
-//			availableTimes.add(time);
-//		}
-//		return availableTimes;
-//	}
+	/**
+	 * Gets a list of all shifts occurring on a given date
+	 * @author krismania
+	 */
+	public ArrayList<Shift> getShiftsByDate(LocalDate date)
+	{
+		return db.getShifts(date.getDayOfWeek());
+	}
+	
+	/**
+	 * Gets a list of all shifts, filtered by the desired employee ID.
+	 * @author krismania
+	 */
+	public ArrayList<Shift> getShiftsByDate(LocalDate date, int employeeID)
+	{
+		ArrayList<Shift> shifts = getShiftsByDate(date);
+		
+		// filter based on employee id
+		Iterator<Shift> shiftIterator = shifts.iterator();
+		while (shiftIterator.hasNext())
+		{
+			if (shiftIterator.next().ID != employeeID)
+			{
+				// if ID doesn't match our desired ID, remove this shift
+				shiftIterator.remove();
+			}
+		}
+		
+		return shifts;
+	}
 	
 	/**
 	 * Returns a sorted list of past bookings. Does not include bookings
@@ -260,10 +297,11 @@ public class Controller
 	 * @author TN
 	 * @author krismania
 	 */
-	public boolean addShift(int employeeID, String day, String time, String duration)
+	public boolean addShift(int employeeID, String day, String start, String end)
 	{
 		Shift shift = db.buildShift(employeeID);
-		shift.setTime(convertTime(time));
+		shift.setStart(convertTime(start));
+		shift.setEnd(convertTime(end));
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return db.addShift(shift);
