@@ -155,7 +155,7 @@ public class DatabaseTest
 	@Test
 	public void testBuildShift()
 	{
-		assertEquals(db.buildShift(1).ID, 5);
+		assertEquals(db.buildShift(1).ID, 6);
 	}
 	
 	@Test
