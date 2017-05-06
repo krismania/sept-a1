@@ -1,10 +1,6 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -127,19 +123,19 @@ public class DatabaseTest
 	@Test
 	public void testAccountExists1()
 	{
-		assertTrue(db.accountExists("bobby-tables"));
+		assertNotNull(db.getAccount("bobby-tables"));
 	}
 	
 	@Test
 	public void testAccountExists2()
 	{
-		assertTrue(db.accountExists("owner"));
+		assertNotNull(db.getAccount("owner"));
 	}
 	
 	@Test
 	public void testAccountNotExists()
 	{
-		assertFalse(db.accountExists("notauser"));
+		assertNull(db.getAccount("notauser"));
 	}
 	
 	@Test
@@ -167,22 +163,6 @@ public class DatabaseTest
 	}
 	
 	@Test
-	public void testGetAllBusinessOwners()
-	{
-		ArrayList<BusinessOwner> owners = db.getAllBusinessOwners();
-		
-		assertEquals(owners.size(), 1);
-	}
-	
-	@Test
-	public void testGetAllCustomers()
-	{
-		ArrayList<Customer> customers = db.getAllCustomers();
-		
-		assertEquals(customers.size(), 3);
-	}
-	
-	@Test
 	public void testGetAllEmployees()
 	{
 		ArrayList<Employee> employees = db.getAllEmployees();
@@ -205,12 +185,6 @@ public class DatabaseTest
 	}
 	
 	@Test
-	public void testGetEmployeeByDate()
-	{
-		assertEquals(db.getEmployeeWorkingOnDay(LocalDate.parse("2017-05-01")).size(), 2);
-	}
-	
-	@Test
 	public void testGetShiftByID()
 	{
 		Shift s = new Shift(1, 1, DayOfWeek.MONDAY, LocalTime.parse("10:30"));
@@ -223,17 +197,9 @@ public class DatabaseTest
 	}
 	
 	@Test
-	public void testGetShiftBookings()
-	{
-		// TODO: Write test
-		fail("test not prepared");
-	}
-	
-	@Test
 	public void testGetShifts()
 	{
-		// TODO: Write test
-		fail("test not prepared");
+		assertEquals(db.getShifts(DayOfWeek.MONDAY).size(), 4);
 	}
 	
 	@Test
