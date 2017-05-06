@@ -1156,16 +1156,25 @@ public class Database implements DBInterface {
 	}
 	
 	//***CONNECTION METHODS***
-	
+
 	/**
 	 * TODO: document this
 	 * @author James
 	 */
-	private boolean openConnection() throws SQLException {
-		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
-		if(c != null) 
+	private boolean openConnection()
+	{
+		// added try-catch to capture sqlException here. -kg
+		try
 		{
-			return true;
+			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
+			if(c != null) 
+			{
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.severe("DB Could not open: SQLException");
 		}
 		return false;
 	}
@@ -1174,28 +1183,23 @@ public class Database implements DBInterface {
 	 * TODO: document this
 	 * @author James
 	 */
-	private boolean closeConnection() throws SQLException {
-		
-		if(stmt != null)
+	private boolean closeConnection()
+	{
+		try
 		{
-			stmt.close();
-			stmt = null;
+			if(c != null)
+			{
+				c.close();
+				c = null;
+				logger.info("Closed connection");
+			}
 		}
-		if(rs != null)
-		{
-			rs.close();
-			rs = null;
-		}
-		if(c != null) {
-			c.close();
-			c = null;
-			return true;
-		}
-		else
+		catch (SQLException e)
 		{
 			logger.warning("DB Connection failed to close");
 			return false;
 		}
+		return true;
 	}
 
 //***SCRIPT METHODS***
