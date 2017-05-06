@@ -49,7 +49,7 @@ public final class Validate
 		//	return true;
 		//}
 		
-		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9]+[.]+[a-z]+$")){
+		if(!input.isEmpty() && input.matches("^[A-Za-z0-9+_.-]+@+[A-Za-z0-9.]+[.]+[a-z]+$")){
 			return true;
 		}
 		
