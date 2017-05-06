@@ -37,7 +37,6 @@ public class DatabaseTest
 	{
 		if (db != null)
 		{
-			System.out.println("Closing DB");
 			db.close();
 			db = null;
 		}
@@ -80,10 +79,11 @@ public class DatabaseTest
 		assertTrue(db.addEmployee(new Employee(2, "Steven", "Suptic", "another@email.com", "12345678")));
 		assertTrue(db.addEmployee(new Employee(3, "Woolington", "Madden", "yet-another@email.com", "55555555")));
 		
-		assertTrue(db.addShift(new Shift(1, 1, DayOfWeek.MONDAY, LocalTime.parse("10:30"))));
-		assertTrue(db.addShift(new Shift(2, 1, DayOfWeek.MONDAY, LocalTime.parse("12:30"))));
-		assertTrue(db.addShift(new Shift(3, 1, DayOfWeek.MONDAY, LocalTime.parse("15:30"))));
-		assertTrue(db.addShift(new Shift(4, 3, DayOfWeek.MONDAY, LocalTime.parse("10:30"))));
+		assertTrue(db.addShift(new Shift(1, 1, DayOfWeek.MONDAY, LocalTime.of(10, 30), LocalTime.of(18, 00))));
+		assertTrue(db.addShift(new Shift(2, 1, DayOfWeek.WEDNESDAY, LocalTime.of(10, 30), LocalTime.of(18, 00))));
+		assertTrue(db.addShift(new Shift(3, 1, DayOfWeek.FRIDAY, LocalTime.of(10, 30), LocalTime.of(16, 00))));
+		assertTrue(db.addShift(new Shift(4, 3, DayOfWeek.MONDAY, LocalTime.of(8, 45), LocalTime.of(11, 30))));
+		assertTrue(db.addShift(new Shift(5, 3, DayOfWeek.MONDAY, LocalTime.of(12, 00), LocalTime.of(16, 00))));
 		
 		assertTrue(db.addBooking(new Booking(1, "krismania", 1, LocalDate.parse("2017-05-01"), LocalTime.parse("12:30"))));
 		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.parse("12:30"))));
@@ -92,7 +92,6 @@ public class DatabaseTest
 	@After
 	public void tearDown() throws Exception
 	{
-		System.out.println("Teardown db test...");
 		removeDB();
 	}
 	
@@ -190,13 +189,14 @@ public class DatabaseTest
 	@Test
 	public void testGetShiftByID()
 	{
-		Shift s = new Shift(1, 1, DayOfWeek.MONDAY, LocalTime.parse("10:30"));
-		Shift dbResult = db.getShift(1);
+		Shift s = new Shift(4, 3, DayOfWeek.MONDAY, LocalTime.of(8, 45), LocalTime.of(11, 30));
+		Shift dbResult = db.getShift(s.ID);
 		
 		assertEquals(dbResult.ID, s.ID);
 		assertEquals(dbResult.employeeID, s.employeeID);
 		assertEquals(dbResult.getDay(), s.getDay());
-		assertEquals(dbResult.getTime(), s.getTime());
+		assertEquals(dbResult.getStart(), s.getStart());
+		assertEquals(dbResult.getEnd(), s.getEnd());
 	}
 	
 	@Test
@@ -233,5 +233,53 @@ public class DatabaseTest
 	public void testLoginFail2()
 	{
 		assertNull(db.login("badaccount", "correcthorsebatterystaple"));
+	}
+	
+	@Test
+	public void testDuplicateShift1()
+	{
+		// same start/end
+		Shift s = db.buildShift(1);
+		s.setDay(DayOfWeek.MONDAY);
+		s.setStart(LocalTime.of(10, 30));
+		s.setEnd(LocalTime.of(18, 00));
+		
+		assertFalse(db.addShift(s));
+	}
+	
+	@Test
+	public void testDuplicateShift2()
+	{
+		// starts before another shift ends
+		Shift s = db.buildShift(1);
+		s.setDay(DayOfWeek.MONDAY);
+		s.setStart(LocalTime.of(17, 00));
+		s.setEnd(LocalTime.of(18, 00));
+		
+		assertFalse(db.addShift(s));
+	}
+	
+	@Test
+	public void testDuplicateShift3()
+	{
+		// ends after another shift starts
+		Shift s = db.buildShift(1);
+		s.setDay(DayOfWeek.MONDAY);
+		s.setStart(LocalTime.of(8, 15));
+		s.setEnd(LocalTime.of(10, 45));
+		
+		assertFalse(db.addShift(s));
+	}
+	
+	@Test
+	public void testDuplicateBooking()
+	{
+		Booking b = db.buildBooking();
+		b.setCustomer("krismania");
+		b.setEmployee(1);
+		b.setDate(LocalDate.of(2017, 5, 1));
+		b.setTime(LocalTime.of(12, 30));
+		
+		assertFalse(db.addBooking(b));
 	}
 }

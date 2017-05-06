@@ -1,39 +1,56 @@
 package model;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
 
 /**
- * Keeps track of a recurring shift. A shift is associated with an employee,
- * a day of the week and a time.
+ * Keeps track of a recurring shift. A shift is associated with an employee &
+ * a day of the week, and also has start/end times.
  * @author krismania
  */
-public class Shift implements Comparable<Shift>
+public class Shift // implements Comparable<Shift>
 {
 	public final int ID;
 	public final int employeeID;
 	
 	private DayOfWeek day;
-	private LocalTime time;
+	private LocalTime start;
+	private LocalTime end;
 	
-	public Shift(int ID, int employeeID, DayOfWeek day, LocalTime time)
+	public Shift(int ID, int employeeID, DayOfWeek day, LocalTime start, LocalTime end)
 	{
 		this.ID = ID;
 		this.employeeID = employeeID;
 		this.day = day;
-		this.time = time;
+		this.start = start;
+		this.end = end;
 	}
 	
-	public Shift(){employeeID = 0; ID = 0;}
+	// public Shift() {employeeID = 0; ID = 0;}
 	
 	public DayOfWeek getDay()
 	{
 		return day;
 	}
 	
-	public LocalTime getTime()
+	public LocalTime getStart()
 	{
-		return time;
+		return start;
+	}
+	
+	public LocalTime getEnd()
+	{
+		return end;
+	}
+	
+	/**
+	 * Return the duration of the shift
+	 * @author krismania
+	 */
+	public Duration getDuration()
+	{
+		return Duration.between(start, end);
 	}
 	
 	public void setDay(DayOfWeek day)
@@ -41,28 +58,37 @@ public class Shift implements Comparable<Shift>
 		this.day = day;
 	}
 	
-	public void setTime(LocalTime time)
+	public void setStart(LocalTime time)
 	{
-		this.time = time;
+		this.start = time;
+	}
+	
+	public void setEnd(LocalTime time)
+	{
+		this.end = time;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("ID: %s, EmployeeID: %s, Day: %s, Time: %s",
-						ID, employeeID, day.toString(), time.toString());
+		return String.format("ID: %s, EmployeeID: %s, Day: %s, Time: %s to %s (%s)",
+						ID, employeeID, day.toString(), start.toString(), end.toString(), 
+						getDuration().toString());
 	}
 
-	@Override
-	public int compareTo(Shift s)
-	{
-		int byDay = day.compareTo(s.day);
-		
-		if (byDay == 0)
-		{
-			return time.compareTo(s.time);
-		}
-		
-		return byDay;
-	}
+	/**
+	 * Commenting out comparable implementation -kg
+	 */
+//	@Override
+//	public int compareTo(Shift s)
+//	{
+//		int byDay = day.compareTo(s.day);
+//		
+//		if (byDay == 0)
+//		{
+//			return time.compareTo(s.time);
+//		}
+//		
+//		return byDay;
+//	}
 }

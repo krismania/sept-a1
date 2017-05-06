@@ -201,7 +201,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		return new Shift(maxID+1, employeeID, null, null);
+		return new Shift(maxID+1, employeeID, null, null, null);
 	}
 	
 	/**
@@ -529,11 +529,11 @@ public class Database implements DBInterface {
 				if (rs.next())
 				{
 					String day = rs.getString("Day");
-			        int time = rs.getInt("Time");
-			        int empID = rs.getInt("EmpID");
-
-			        LocalTime convertTime = LocalTime.ofSecondOfDay(time);
-			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), convertTime);
+			        int empId = rs.getInt("EmpID");
+			        LocalTime start = LocalTime.ofSecondOfDay(rs.getInt("Start"));
+			        LocalTime end = LocalTime.ofSecondOfDay(rs.getInt("End"));
+			        
+			        return new Shift(shiftID, empId, DayOfWeek.valueOf(day), start, end);
 				}
 			}
 			
@@ -642,19 +642,23 @@ public class Database implements DBInterface {
 	
 	
 	@Override
-	public ArrayList<Shift> getShifts(DayOfWeek day)
+	public ArrayList<Shift> getShifts(DayOfWeek onDay)
 	{
 		ArrayList<Shift> shifts= new ArrayList<Shift>();
 		
 		try (Statement stmt = c.createStatement())
 		{
-			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Shift WHERE Day = '" + day + "'"))
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Shift WHERE Day = '" + onDay + "'"))
 			{
 				while (rs.next())
 				{
-					Shift shift = new Shift(rs.getInt("ShiftID"), rs.getInt("EmpID"), 
-									DayOfWeek.valueOf(rs.getString("Day")), 
-									LocalTime.ofSecondOfDay(rs.getInt("Time")));
+					int id = rs.getInt("ShiftID");
+					int empId = rs.getInt("EmpID");
+					DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day"));
+					LocalTime start = LocalTime.ofSecondOfDay(rs.getInt("Start"));
+					LocalTime end = LocalTime.ofSecondOfDay(rs.getInt("End"));
+					
+					Shift shift = new Shift(id, empId, day, start, end);
 					shifts.add(shift);
 				}
 			}
@@ -935,7 +939,8 @@ public class Database implements DBInterface {
 	{
 		return insert("Shift", Integer.toString(s.ID), 
 						Integer.toString(s.employeeID), s.getDay().toString(), 
-						Integer.toString(s.getTime().toSecondOfDay()));
+						Integer.toString(s.getStart().toSecondOfDay()),
+						Integer.toString(s.getEnd().toSecondOfDay()));
 	}
 	
 	/**
@@ -1264,7 +1269,8 @@ public class Database implements DBInterface {
 		shift.addColumn("ShiftID", "int");
 		shift.addColumn("EmpID", "int");
 		shift.addColumn("Day", "varchar(9)");
-		shift.addColumn("Time", "int");
+		shift.addColumn("Start", "int");
+		shift.addColumn("End", "int");
 		shift.setPrimary("ShiftID");
 		shift.addForeignKey("EmpID", "Employee(EmpID)");
 		
