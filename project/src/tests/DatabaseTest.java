@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import database.Database;
@@ -28,25 +28,28 @@ import model.Shift;
  */
 public class DatabaseTest
 {
-	private static String dbName;
-	private static Database db;
+	private static int COUNTER = 1;
 	
-	private static void removeDB() throws Exception
+	private String dbName;
+	private Database db;
+	
+	private void removeDB() throws Exception
 	{
 		if (db != null)
 		{
 			System.out.println("Closing DB");
 			db.close();
+			db = null;
 		}
 		
-		Path dbPath = Paths.get("test.db");
+		Path dbPath = Paths.get(dbName + ".db");
 		
 		if (Files.exists(dbPath))
 		{
 			try
 			{
 				Files.delete(dbPath);
-				System.out.println("Deleted db file");
+				System.out.println("Deleted db file " + dbPath.toAbsolutePath());
 			}
 			catch (IOException e)
 			{
@@ -56,14 +59,14 @@ public class DatabaseTest
 
 	}
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
+		// set db name
+		dbName = "test" + COUNTER++;
+		
 		// delete test db if it already exists
 		removeDB();
-		
-		// set db name
-		dbName = "test";
 		
 		// Create a new test database, and populate it with data
 		db = new Database(dbName);
@@ -86,11 +89,11 @@ public class DatabaseTest
 		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.parse("12:30"))));
 	}
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception
+	@After
+	public void tearDown() throws Exception
 	{
 		System.out.println("Teardown db test...");
-		db.close();
+		removeDB();
 	}
 	
 	
