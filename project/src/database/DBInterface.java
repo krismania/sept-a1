@@ -1,5 +1,6 @@
 package database;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import model.Account;
 import model.Booking;
@@ -104,7 +105,7 @@ public interface DBInterface
 	/**
 	 * Returns an ArrayList of shifts for a given day
 	 */
-	ArrayList<Shift> getShifts(String Day);
+	ArrayList<Shift> getShifts(DayOfWeek day);
 	
 	
 	/**

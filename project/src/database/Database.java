@@ -4,8 +4,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.TreeMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.Account;
@@ -14,7 +12,6 @@ import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
 import model.Shift;
-import model.ShiftTime;
 
 public class Database implements DBInterface {
 	
@@ -63,29 +60,92 @@ public class Database implements DBInterface {
 	//***PUBLIC API***
 
 	/**
+	 * Write an account to the DB - appropriately decides which table to write to.
 	 * @author James
+	 * @author krismania
 	 */
 	@Override
 	public boolean addAccount(Account account, String password)
 	{
-		if(account instanceof Customer)
+		// first, check the username
+		if (getAccount(account.username) == null)
 		{
-			Customer c = (Customer) account;
-			
-			return CreateDataEntry("Customer", c.getFirstName(),
-							c.getLastName(), c.getEmail(), c.getPhoneNumber(),
-							c.username, password, "Customer");
-		}
-		else if(account instanceof BusinessOwner)
-		{
-			BusinessOwner bo = (BusinessOwner) account;
-			
-			return insert("BusinessOwner", bo.username, bo.getBusinessName(),
-							bo.getName(), bo.getAddress(), bo.getPhoneNumber(),
-							password, "BusinessOwner");
+			// if it doesn't exist, add it.
+			if(account instanceof Customer)
+			{			
+				return insert((Customer) account, password);
+			}
+			else if(account instanceof BusinessOwner)
+			{
+				return insert((BusinessOwner) account, password);
+			}
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean addEmployee(Employee employee)
+	{
+		return insert(employee);
+	}
+
+	@Override
+	public boolean addShift(Shift shift)
+	{
+		return insert(shift);
+	}
+
+	/**
+	 * @author James
+	 * TODO: Refactor SQL to check all details rather than doing if/else's
+	 */
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		return insert(booking);
+		
+//		boolean noDuplicate = true;
+//		LocalTime timer;
+//		try {
+//			Statement stmt = c.createStatement();
+//			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
+//				while (rs.next()) {
+//					if(rs.getString("customerID").equals(booking.getCustomer()))
+//					{
+//						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
+//						if(timer.equals(booking.getTime()))
+//						{
+//							logger.info("Duplicate booking found.");
+//							noDuplicate = false;
+//							break;
+//						}
+//						else
+//						{
+//							noDuplicate = true;
+//						}
+//					}
+//					else
+//					{
+//						noDuplicate = true;
+//					}
+//				}
+//			}
+//	
+//		} catch (SQLException e) {
+//			logger.warning(e.toString());
+//		}
+//		
+//		if(noDuplicate)
+//		{
+//			if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+//				Integer.toString(booking.getEmployeeID()),
+//				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
+//			{
+//				return true;
+//			}
+//		}
+//		return false;
 	}
 
 	/**
@@ -97,10 +157,8 @@ public class Database implements DBInterface {
 		// find the highest current ID
 		int maxID = 0;
 		
-		try
+		try (Statement stmt = c.createStatement())
 		{
-			openConnection();
-			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
 			{
 				if (rs.next())
@@ -117,21 +175,7 @@ public class Database implements DBInterface {
 		
 		return new Employee(maxID+1,"", "", "", "");
 	}
-  
-	/**
-	 * @author James
-	 */
-	@Override
-	public boolean addEmployee(Employee employee)
-	{
-		if(CreateDataEntry("Employee", employee.getFirstName(), employee.getLastName(), employee.getEmail(), 
-				employee.getPhoneNumber(), Integer.toString(employee.ID)))
-		{
-			return true;
-		}
-		return false;
-	}
-	
+
 	/**
 	 * @author krismania
 	 */
@@ -141,10 +185,9 @@ public class Database implements DBInterface {
 		// find the highest ID
 		int maxID = 0;
 		
-		try
+		try (Statement stmt = c.createStatement())
 		{
-			Statement stmt = c.createStatement();
-			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Shift_ID) AS id FROM Shift"))
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(ShiftID) AS id FROM Shift"))
 			{
 				if (rs.next())
 				{
@@ -158,7 +201,6 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 		
-		
 		return new Shift(maxID+1, employeeID, null, null);
 	}
 	
@@ -171,7 +213,7 @@ public class Database implements DBInterface {
 
 		try {
 			Statement stmt = c.createStatement();
-			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(BookingID) AS id FROM Booking")) {
 				if (rs.next()) {
 					maxID = rs.getInt("id");
 				}
@@ -184,80 +226,6 @@ public class Database implements DBInterface {
 		return new Booking(maxID + 1, null, 0, null, null);
 	}
 	
-	/**
-	 * @author James
-	 */
-	@Override
-	public boolean addShift(Shift shift)
-	{
-		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * @author James
-	 */
-	/** 
-	 * TODO: Refactor SQL to check all details rather than doing if/else's
-	 */
-	@Override
-	public boolean addBooking(Booking booking)
-	{
-		boolean noDuplicate = true;
-		LocalTime timer;
-		try {
-			Statement stmt = c.createStatement();
-			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
-				while (rs.next()) {
-					if(rs.getString("customerID").equals(booking.getCustomer()))
-					{
-						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
-						if(timer.equals(booking.getTime()))
-						{
-							logger.info("Duplicate booking found.");
-							noDuplicate = false;
-							break;
-						}
-						else
-						{
-							noDuplicate = true;
-						}
-					}
-					else
-					{
-						noDuplicate = true;
-					}
-				}
-			}
-
-		} catch (SQLException e) {
-			logger.warning(e.toString());
-		}
-		
-		if(noDuplicate)
-		{
-			if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
-				Integer.toString(booking.getEmployeeID()),
-				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @author krismania
-	 */
-	@Override
-	public boolean accountExists(String username)
-	{
-		return validateUsername(username) != null;
-	}
-
 	/**
 	 * @author krismania
 	 */
@@ -323,13 +291,43 @@ public class Database implements DBInterface {
 	}
 	
 	/**
+		 * @author krismania
+		 */
+		@Override
+		public Employee getEmployee(int id)
+		{
+			try
+			{
+				Statement stmt = c.createStatement();
+				
+				try (ResultSet rs = stmt.executeQuery(
+								String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
+				{
+					if (rs.next())
+					{
+						String first = rs.getString("Firstname");
+				        String last = rs.getString("Lastname");
+				        String email = rs.getString("Email");
+				        String phone = rs.getString("Phone");
+				        
+				        return new Employee(id, first, last, email, phone);
+					}
+				}
+			}
+			catch (SQLException e)
+			{
+				logger.warning(e.toString());
+			}
+			
+			return null;
+	  }
+
+	/**
 	 * @author James
 	 * @author krismania
+	 * @deprecated Controller method has been deprecated.
 	 */
-	/**
-	 * Controller method has been @Deprecated.  
-	 */
-	@Override
+	@Override @Deprecated
 	public ArrayList<Customer> getAllCustomers()
 	{
 		ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -371,11 +369,9 @@ public class Database implements DBInterface {
 	/**
 	 * @author James
 	 * @author krismania
+	 * @deprecated Controller has been deprecated
 	 */
-	/**
-	 * Controller has been Deprecated
-	 */
-	@Override
+	@Override @Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
@@ -416,38 +412,6 @@ public class Database implements DBInterface {
 	}
 	
 	/**
-	 * @author krismania
-	 */
-	@Override
-	public Employee getEmployee(int id)
-	{
-		try
-		{
-			Statement stmt = c.createStatement();
-			
-			try (ResultSet rs = stmt.executeQuery(
-							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
-			{
-				if (rs.next())
-				{
-					String first = rs.getString("Firstname");
-			        String last = rs.getString("Lastname");
-			        String email = rs.getString("Email");
-			        String phone = rs.getString("Phone");
-			        
-			        return new Employee(id, first, last, email, phone);
-				}
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-		
-		return null;
-  }
-  
-	/**
 	 * @author James
 	 * @author krismania
 	 */
@@ -456,9 +420,8 @@ public class Database implements DBInterface {
 	{
 		ArrayList<Employee> roster = new ArrayList<Employee>();
 		
-		try
+		try (Statement stmt = c.createStatement())
 		{
-			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
 			{
 				while(rs.next())
@@ -482,84 +445,86 @@ public class Database implements DBInterface {
 		}
 		return roster;
 	}
+
+//	TODO: remove this -kg
+//	@Override
+//	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
+//	{
+//		String day = date.getDayOfWeek().toString();
+//		ArrayList<String> Workers = new ArrayList<String>();
+//		
+//		try
+//		{
+//			Statement stmt = c.createStatement();
+//			
+//			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
+//			
+//			ResultSet rs = stmt.executeQuery(sql);
+//			
+//			while(rs.next())
+//			{
+//		         //JM Retrieve by column name
+//		         
+//				String empID = Integer.toString(rs.getInt("EmpID"));
+//		         
+//		         // add it to the list
+//		         Workers.add(empID);
+//		    }
+//		}
+//		catch(SQLException e)
+//		{
+//			//JM Handle errors for JDBC
+//			logger.warning(e.toString());
+//		}
+//		catch(Exception e)
+//		{
+//		    //JM Handle errors for Class.forName
+//			logger.warning(e.toString());
+//		}
+//		return Workers;
+//	}
 	
-	@Override
-	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
-	{
-		String day = date.getDayOfWeek().toString();
-		ArrayList<String> Workers = new ArrayList<String>();
-		
-		try
-		{
-			Statement stmt = c.createStatement();
-			
-			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			
-			while(rs.next())
-			{
-		         //JM Retrieve by column name
-		         
-				String empID = Integer.toString(rs.getInt("EmpID"));
-		         
-		         // add it to the list
-		         Workers.add(empID);
-		    }
-		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-			logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
-		return Workers;
-	}
+//	/**
+//	 * @author James
+//	 * TODO: Remove this -kg
+//	 */
+//	@Override
+//	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
+//	{
+//		boolean shiftExists = false;
+//		try
+//		{
+//			Statement stmt = c.createStatement();
+//			try (ResultSet rs = stmt.executeQuery(
+//							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
+//									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
+//									time.toString().toUpperCase())))
+//			{
+//				while (rs.next())
+//				{
+//					shiftExists = true;
+//				}
+//			}
+//			
+//		}
+//		catch (SQLException e)
+//		{
+//			logger.warning(e.toString());
+//		}
+//		return shiftExists;
+//	}
 	
 	/**
-	 * @author James
+	 * Returns a shift by it's ID
+	 * @author krismania
 	 */
-	/**
-	 * TODO: Update method to remove ShiftTime
-	 */
-	@Override
-	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
-	{
-		boolean shiftExists = false;
-		try
-		{
-			Statement stmt = c.createStatement();
-			try (ResultSet rs = stmt.executeQuery(
-							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
-									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
-									time.toString().toUpperCase())))
-			{
-				while (rs.next())
-				{
-					shiftExists = true;
-				}
-			}
-			
-		}
-		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-		return shiftExists;
-	}
-	
 	@Override
 	public Shift getShift(int shiftID)
 	{
-		try
+		try (Statement stmt = c.createStatement())
 		{
-			Statement stmt = c.createStatement();
 			try (ResultSet rs = stmt.executeQuery(
-							String.format("SELECT * FROM Shift WHERE Shift_ID = '%s'", shiftID)))
+							String.format("SELECT * FROM Shift WHERE ShiftID = '%s'", shiftID)))
 			{
 				if (rs.next())
 				{
@@ -580,114 +545,128 @@ public class Database implements DBInterface {
 		
 		return null;
 	}
+
+//	TODO: remove this -kg
+//	@Override
+//	public ArrayList<Shift> getShifts(int EmpID, String Day)
+//	{
+//		ArrayList<Shift> Shifts = new ArrayList<Shift>();
+//		try
+//		{
+//			Statement stmt = c.createStatement();
+//			
+//			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
+//			
+//			ResultSet rs = stmt.executeQuery(sql);
+//			
+//			while(rs.next())
+//			{
+//		         //JM Retrieve by column name
+//		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
+//		         int time = rs.getInt("Time");
+//		         int shiftID = rs.getInt("Shift_ID");
+//		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
+//		         // create shift object. -kg
+//		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
+//		         
+//		         // add it to the list
+//		         Shifts.add(shift);
+//		    }
+//		}
+//		catch(SQLException e)
+//		{
+//			//JM Handle errors for JDBC
+//			logger.warning(e.toString());
+//		}
+//		catch(Exception e)
+//		{
+//		    //JM Handle errors for Class.forName
+//			logger.warning(e.toString());
+//		}
+//		return Shifts;
+//	}
+
+//	/**
+//	 * @author krismania
+//	 * TODO: Check if method is used or depreciated. 
+//	 * TODO: Remove this -kg
+//	 */
+//	@Override
+//	public TreeMap<Shift, Booking> getShiftBookings()
+//	{
+//		// get the list of employees
+//		logger.info("getting employees");
+//		ArrayList<Employee> employees = getAllEmployees();
+//		
+//		// build the list of all shifts
+//		logger.info("getting shifts");
+//		ArrayList<Shift> shifts = new ArrayList<Shift>();
+//		for (Employee employee : employees)
+//		{
+//			//shifts.addAll(getShifts(employee.ID));
+//		}
+//		
+//		// get the list of bookings in the next 7 days
+//		logger.info("getting upcoming bookings");
+//		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
+//		
+//		// create hashmap to decide which shifts are booked within the next 7 days
+//		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
+//		
+//		// iterate over each shift and decide if it's been booked
+//		for (Shift shift : shifts)
+//		{
+//			logger.fine("looping shift " + shift.ID);
+//			// find a booking with matching details
+//			boolean found = false;
+//			for (Booking booking : bookings)
+//			{
+//				logger.fine(shift.toString() + " | " + booking.toString());
+//				// figure out weekday of booking
+//				if (booking.getDay() == shift.getDay() && booking.getTime() == shift.getTime() &&
+//								booking.getEmployeeID() == shift.employeeID)
+//				{
+//					// booking and shift match, to hash map
+//					shiftBookings.put(shift, booking);
+//					found = true;
+//					break;
+//				}
+//			}
+//			// otherwise, enter null as the booking
+//			if (!found) shiftBookings.put(shift, null);
+//			logger.fine("found match: " + found);
+//		}
+//		
+//		return shiftBookings;
+//	}
+	
 	
 	@Override
-	public ArrayList<Shift> getShifts(int EmpID, String Day)
+	public ArrayList<Shift> getShifts(DayOfWeek day)
 	{
-		ArrayList<Shift> Shifts = new ArrayList<Shift>();
-		try
+		ArrayList<Shift> shifts= new ArrayList<Shift>();
+		
+		try (Statement stmt = c.createStatement())
 		{
-			Statement stmt = c.createStatement();
-			
-			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			
-			while(rs.next())
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Shift WHERE Day = '" + day + "'"))
 			{
-		         //JM Retrieve by column name
-		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-		         int time = rs.getInt("Time");
-		         int shiftID = rs.getInt("Shift_ID");
-		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
-		         // create shift object. -kg
-		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
-		         
-		         // add it to the list
-		         Shifts.add(shift);
-		    }
-		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-			logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
-		return Shifts;
-	}
-
-	/**
-	 * @author krismania
-	 */
-	/**
-	 * TODO: Check if method is used or depreciated. 
-	 */
-	@Override
-	public TreeMap<Shift, Booking> getShiftBookings()
-	{
-		// get the list of employees
-		logger.info("getting employees");
-		ArrayList<Employee> employees = getAllEmployees();
-		
-		// build the list of all shifts
-		logger.info("getting shifts");
-		ArrayList<Shift> shifts = new ArrayList<Shift>();
-		for (Employee employee : employees)
-		{
-			//shifts.addAll(getShifts(employee.ID));
-		}
-		
-		// get the list of bookings in the next 7 days
-		logger.info("getting upcoming bookings");
-		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
-		
-		// create hashmap to decide which shifts are booked within the next 7 days
-		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
-		
-		// iterate over each shift and decide if it's been booked
-		for (Shift shift : shifts)
-		{
-			logger.fine("looping shift " + shift.ID);
-			// find a booking with matching details
-			boolean found = false;
-			for (Booking booking : bookings)
-			{
-				logger.fine(shift.toString() + " | " + booking.toString());
-				// figure out weekday of booking
-				if (booking.getDay() == shift.getDay() && booking.getTime() == shift.getTime() &&
-								booking.getEmployeeID() == shift.employeeID)
+				while (rs.next())
 				{
-					// booking and shift match, to hash map
-					shiftBookings.put(shift, booking);
-					found = true;
-					break;
+					Shift shift = new Shift(rs.getInt("ShiftID"), rs.getInt("EmpID"), 
+									DayOfWeek.valueOf(rs.getString("Day")), 
+									LocalTime.ofSecondOfDay(rs.getInt("Time")));
+					shifts.add(shift);
 				}
 			}
-			// otherwise, enter null as the booking
-			if (!found) shiftBookings.put(shift, null);
-			logger.fine("found match: " + found);
+		}
+		catch (SQLException e)
+		{
+			logger.warning("SQL Exception in getShifts: " + e);
 		}
 		
-		return shiftBookings;
+		return shifts;
 	}
-	
-	
-	@Override
-	public ArrayList<Booking> getPastBookings()
-	{
-		return getBookings("Date < DATE('now')");
-	}
-	
-	@Override
-	public ArrayList<Booking> getFutureBookings()
-	{
-		return getBookings("Date >= DATE('now')");
-	}
-	
+
 	/**
 	 * Returns an ArrayList of bookings in the database, restricted by the given
 	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
@@ -698,10 +677,8 @@ public class Database implements DBInterface {
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		
-		try
+		try (Statement stmt = c.createStatement())
 		{
-			Statement stmt = c.createStatement();
-			
 			try (ResultSet bookingQuery = stmt.executeQuery(
 							"SELECT * FROM Booking WHERE " + constraint))
 			{
@@ -728,6 +705,18 @@ public class Database implements DBInterface {
 		return bookings;
 	}
 
+	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		return getBookings("Date < DATE('now')");
+	}
+	
+	@Override
+	public ArrayList<Booking> getFutureBookings()
+	{
+		return getBookings("Date >= DATE('now')");
+	}
+	
 	/**
 	 * Joint login function, may return either a Customer or BusinessOwner.
 	 * @author krismania
@@ -758,6 +747,7 @@ public class Database implements DBInterface {
 	 * Create the database
 	 * TODO: better documentation
 	 * @author James
+	 * @author krismania
 	 */
 	private void CreateDatabase()
 	{
@@ -795,7 +785,9 @@ public class Database implements DBInterface {
 	 * TODO: better documentation
 	 * @param strings a variable number of strings
 	 * @author James
+	 * @deprecated Method too complicated, use native SQL table creation instead. -kg
 	 */
+	@Deprecated
 	private void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
@@ -885,6 +877,8 @@ public class Database implements DBInterface {
 		// create the query
 		String query = "INSERT INTO " + table + " VALUES(" + valueString + ")";
 		
+		logger.fine("Executing query: " + query);
+		
 		try
 		{
 			Statement stmt = c.createStatement();
@@ -896,6 +890,63 @@ public class Database implements DBInterface {
 			logger.warning("SQL Exception: " + e.toString());
 			return false;
 		}
+	}
+	
+	
+	/* INSERT HELPERS */
+	
+	/**
+	 * Helper method for inserting a {@link Customer} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Customer c, String password)
+	{
+		return insert("Customer", c.username, password, c.getFirstName(), 
+						c.getLastName(), c.getEmail(), c.getPhoneNumber(), 
+						"Customer");
+	}
+	
+	/**
+	 * Helper method for inserting a {@link BusinessOwner} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(BusinessOwner bo, String password)
+	{
+		return insert("BusinessOwner", bo.username, password, bo.getBusinessName(), 
+						bo.getName(), bo.getAddress(), bo.getPhoneNumber(), 
+						"BusinessOwner");
+	}
+	
+	/**
+	 * Helper method for inserting a {@link Employee} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Employee e)
+	{
+		return insert("Employee", Integer.toString(e.ID), e.getFirstName(), 
+						e.getLastName(), e.getEmail(), e.getPhoneNumber());
+	}
+	
+	/**
+	 * Helper method for inserting a {@link Shift} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Shift s)
+	{
+		return insert("Shift", Integer.toString(s.ID), 
+						Integer.toString(s.employeeID), s.getDay().toString(), 
+						Integer.toString(s.getTime().toSecondOfDay()));
+	}
+	
+	/**
+	 * Helper method for inserting a {@link Booking} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Booking b)
+	{
+		return insert("Booking", Integer.toString(b.ID), b.getCustomer(), 
+						Integer.toString(b.getEmployeeID()), b.getDate().toString(), 
+						Integer.toString(b.getTime().toSecondOfDay()));
 	}
 	
 	/**
@@ -949,33 +1000,33 @@ public class Database implements DBInterface {
 		return false;
 	}
 	
-	/**
-	 * TODO: better documentation
-	 * @author James
-	 */
-	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
-	{
-		String sql = "INSERT INTO Shift VALUES ('"
-				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
-						+ ", '" + employeeID + "')";
-		
-		try
-		{
-			Statement stmt = c.createStatement();
-			stmt.executeUpdate(sql);
-
-			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
-			return true;
-		} catch(SQLException e) {
-			//JM Handle errors for JDBC
-			logger.warning(e.toString());
-			return false;
-		} catch(Exception e) {
-			logger.warning(e.toString());
-		    e.printStackTrace();
-		}
-		return false;
-	}
+//	/**
+//	 * TODO: better documentation
+//	 * @author James
+//	 */
+//	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
+//	{
+//		String sql = "INSERT INTO Shift VALUES ('"
+//				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
+//						+ ", '" + employeeID + "')";
+//		
+//		try
+//		{
+//			Statement stmt = c.createStatement();
+//			stmt.executeUpdate(sql);
+//
+//			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
+//			return true;
+//		} catch(SQLException e) {
+//			//JM Handle errors for JDBC
+//			logger.warning(e.toString());
+//			return false;
+//		} catch(Exception e) {
+//			logger.warning(e.toString());
+//		    e.printStackTrace();
+//		}
+//		return false;
+//	}
 	
 //***VALIDATION METHODS***
 
@@ -1180,62 +1231,73 @@ public class Database implements DBInterface {
 	private void createTables()
 	{
 		logger.info("Creating database tables...");
-				
-		//Customer Table
-		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
-				"Password varchar(15)","Type varchar(13)", "Username");
 		
-		//BusinessOwner Table
-		CreateDatabaseTable("BusinessOwner", "Username varchar(15)", "BusinessName varchar(30)",
-				"Name varchar(255)", "Address varchar(255)", "Phone varchar(10)",
-				"Password varchar(15)", "Type varchar(13)", "Username");
+		Table customer = new Table("Customer");
+		customer.addColumn("Username", "varchar(30)");
+		customer.addColumn("Password", "varchar(255)");
+		customer.addColumn("Firstname", "varchar(255)");
+		customer.addColumn("Lastname", "varchar(255)");
+		customer.addColumn("Email", "varchar(255)");
+		customer.addColumn("Phone", "varchar(10)");
+		customer.addColumn("Type", "varchar(13)");
+		customer.setPrimary("Username");
 		
-		//Employee Table
-		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
-				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
-
-		//Shift Table
-		CreateDatabaseTable("Shift", "Day varchar(9)", "Time int", "Shift_ID int",
-				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
+		Table bo = new Table("BusinessOwner");
+		bo.addColumn("Username", "varchar(30)");
+		bo.addColumn("Password", "varchar(255)");
+		bo.addColumn("BusinessName", "varchar(255)");
+		bo.addColumn("Name", "varchar(255)");
+		bo.addColumn("Address", "varchar(255)");
+		bo.addColumn("Phone", "varchar(10)");
+		bo.addColumn("Type", "varchar(13)");
+		bo.setPrimary("Username");
 		
-		//Booking Table
-		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
-				"Date DATE", "Time int", "Booking_ID");
-	}
-	
-	/**
-	 * Seeds the database.
-	 * @author James
-	 */
-	private void createTestData()
-	{
-		logger.info("Creating DB test data...");
+		Table employee = new Table("Employee");
+		employee.addColumn("EmpID", "int");
+		employee.addColumn("FirstName", "varchar(255)");
+		employee.addColumn("Lastname", "varchar(255)");
+		employee.addColumn("Email", "varchar(255)");
+		employee.addColumn("Phone", "varchar(10)");
+		employee.setPrimary("EmpID");
 		
-		CreateDataEntry("Customer", "sept", "customer", "sept@customer.test", 
-				"0400000000", "septC", "septCust1", "Customer");
+		Table shift = new Table("Shift");
+		shift.addColumn("ShiftID", "int");
+		shift.addColumn("EmpID", "int");
+		shift.addColumn("Day", "varchar(9)");
+		shift.addColumn("Time", "int");
+		shift.setPrimary("ShiftID");
+		shift.addForeignKey("EmpID", "Employee(EmpID)");
 		
-		CreateDataEntry("BusinessOwner", "septB", "SomeBusiness", "John S.",
-						"10 Some St, Some Town", "(03) 5555 5555", "septBus1", "BusinessOwner");
+		Table booking = new Table("Booking");
+		booking.addColumn("BookingID", "int");
+		booking.addColumn("Customer", "varchar(30)");
+		booking.addColumn("EmpID", "int");
+		booking.addColumn("Date", "DATE");
+		booking.addColumn("Time", "int");
+		booking.setPrimary("BookingID");
+		booking.addForeignKey("Customer", "Customer(Username)");
+		booking.addForeignKey("EmpID", "Employee(EmpID)");
 		
-		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
-				"0400000000", "1");
-		
-		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
-				"0400000000", "2");
-		
-
-		CreateDataEntry("Shift", "MONDAY", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()), "1", "1");
-		CreateDataEntry("Shift", "TUESDAY", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()), "2", "1");
-		CreateDataEntry("Shift", "WEDNESDAY",Integer.toString(LocalTime.parse("12:00").toSecondOfDay()), "3", "1");
-		CreateDataEntry("Shift", "SUNDAY", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()), "4", "2");
-
-		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-05-03", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()));
-		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-05-02", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()));
-		CreateDataEntry("Booking", "3", "krismania", "2", "2017-05-10", Integer.toString(LocalTime.parse("12:00").toSecondOfDay()));
-		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()));
-		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", Integer.toString(LocalTime.parse("14:00").toSecondOfDay()));
-
-		logger.info("DB created.");
+		try
+		{
+			try (Statement stmt = c.createStatement())
+			{
+				// Customer Table
+				logger.fine("Creating table: " + customer);
+				stmt.execute(customer.toString());
+				logger.fine("Creating table: " + bo);
+				stmt.execute(bo.toString());
+				logger.fine("Creating table: " + employee);
+				stmt.execute(employee.toString());
+				logger.fine("Creating table: " + shift);
+				stmt.execute(shift.toString());
+				logger.fine("Creating table: " + booking);
+				stmt.execute(booking.toString());
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.severe("SQL Exception in table creation: " + e);
+		}
 	}
 }
