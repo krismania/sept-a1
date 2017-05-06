@@ -16,13 +16,13 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="Employee (ID)">
+                  <Label text="Employee:">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Label>
                   <Region prefWidth="30.0" HBox.hgrow="ALWAYS" />
-                  <ChoiceBox fx:id="empIDDropdown" prefWidth="150.0" />
+                  <ChoiceBox fx:id="employeeDropdown" prefWidth="150.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" />
@@ -42,7 +42,7 @@
                <children>
                   <Label text="Start Time:" />
                   <Region prefWidth="30.0" HBox.hgrow="ALWAYS" />
-                  <ChoiceBox fx:id="timeDropdown" prefWidth="150.0" />
+                  <ChoiceBox fx:id="startDropdown" prefWidth="150.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" />
@@ -50,28 +50,28 @@
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="Duration:" />
+                  <Label text="End Time:" />
                   <Region prefWidth="30.0" HBox.hgrow="ALWAYS" />
-                  <ChoiceBox fx:id="durationDropdown" prefWidth="150.0" />
+                  <ChoiceBox fx:id="endDropdown" prefWidth="150.0" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </HBox>
-            <Label fx:id="lblError" alignment="TOP_LEFT" prefWidth="250.0" text="Incorrect Date and Time selected. Please try again ensuring all values are selected." textAlignment="RIGHT" textFill="RED" wrapText="true" />
+            <Label fx:id="lblError" alignment="CENTER_RIGHT" prefWidth="250.0" text="Please double check your selections" textAlignment="RIGHT" textFill="RED" visible="false" wrapText="true" />
          </children>
       </VBox>
    </center>
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="navMenu" mnemonicParsing="false" onAction="#navMenuButtonAction" text="Back" />
+            <Button fx:id="navMenu" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Region>
-            <Button fx:id="btRecordAvail" defaultButton="true" mnemonicParsing="false" onAction="#handleButtonAction" text="Record Availability" />
+            <Button fx:id="btRecordAvail" defaultButton="true" mnemonicParsing="false" onAction="#handleRecord" text="Record Availability" />
          </children>
          <BorderPane.margin>
             <Insets top="15.0" />
