@@ -6,13 +6,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,11 +35,36 @@ public class DatabaseTest
 	private static String dbName;
 	private static Database db;
 	
+	private static void removeDB() throws Exception
+	{
+		if (db != null)
+		{
+			System.out.println("Closing DB");
+			db.close();
+		}
+		
+		Path dbPath = Paths.get("test.db");
+		
+		if (Files.exists(dbPath))
+		{
+			try
+			{
+				Files.delete(dbPath);
+				System.out.println("Deleted db file");
+			}
+			catch (IOException e)
+			{
+				System.out.println("db file couldn't be deleted: " + e);
+			}
+		}
+
+	}
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
 	{
 		// delete test db if it already exists
-		Files.deleteIfExists(Paths.get("test.db"));
+		removeDB();
 		
 		// set db name
 		dbName = "test";
@@ -60,6 +88,13 @@ public class DatabaseTest
 		
 		assertTrue(db.addBooking(new Booking(1, "krismania", 1, LocalDate.parse("2017-05-01"), LocalTime.parse("12:30"))));
 		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.parse("12:30"))));
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception
+	{
+		System.out.println("Teardown db test...");
+		db.close();
 	}
 	
 	
