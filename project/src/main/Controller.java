@@ -2,6 +2,7 @@ package main;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -192,6 +193,37 @@ public class Controller
 		}
 		
 		return shifts;
+	}
+	
+	/**
+	 * Returns a list of times that this employee is available, as strings
+	 * TODO: need a more robust solution for this.
+	 * @author krismania
+	 */
+	public ArrayList<String> getEmployeeAvailability(LocalDate date, int employeeID)
+	{
+		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
+		ArrayList<String> times = new ArrayList<String>();
+		
+		logger.info("Getting employee availability");
+		
+		// iterate over the day's shifts
+		for (Shift shift : shifts)
+		{
+			logger.info("Shift: " + shift.ID);
+			
+			LocalTime currentTime = shift.getStart(); // keep track of time we're up to
+						
+			while (currentTime.isBefore(shift.getEnd()))
+			{
+				logger.info("Current time is: " + currentTime);
+				
+				times.add(currentTime.format(DateTimeFormatter.ofPattern("h:mm a")).toLowerCase());
+				currentTime = currentTime.plusMinutes(30);
+			}
+		}
+		
+		return times;
 	}
 	
 	/**
