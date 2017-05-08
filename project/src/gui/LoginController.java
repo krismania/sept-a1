@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,11 +15,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.Controller;
 import model.Account;
 import model.BusinessOwner;
 import model.Customer;
-//Implements login scene and is the initial point of entry into the booking system app
+// Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {
 	Controller c = Controller.getInstance();
@@ -28,6 +31,10 @@ public class LoginController implements Initializable
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
     
+    @FXML
+    private ImageView imageView;
+
+
     //implements button action and decision logic for determining the users 
     //access level based on login information Forwards data to controller 
     //for validation then progresses to the appropriate menu based on return from controller
@@ -65,7 +72,7 @@ public class LoginController implements Initializable
 		}
 		else
 		{
-			// if account isn't an instance of either account type, login failed.
+			//if account isn't an instance of either account type, login failed.
 			lblError.setVisible(true);
 			tfPassword.clear();
 		}
@@ -87,6 +94,8 @@ public class LoginController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		// init
+        File file = new File("images/default.jpg");
+		Image image = new Image(file.toURI().toString());
+		imageView.setImage(image);
 	}
 }
