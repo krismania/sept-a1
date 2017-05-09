@@ -202,7 +202,7 @@ public class DatabaseTest
 	@Test
 	public void testGetShifts()
 	{
-		assertEquals(db.getShifts(DayOfWeek.MONDAY).size(), 4);
+		assertEquals(db.getShifts(DayOfWeek.MONDAY).size(), 3);
 	}
 	
 	@Test
