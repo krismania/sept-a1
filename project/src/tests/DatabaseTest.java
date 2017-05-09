@@ -272,6 +272,30 @@ public class DatabaseTest
 	}
 	
 	@Test
+	public void testBackToBackShift1()
+	{
+		// starts when another shift ends
+		Shift s = db.buildShift(1);
+		s.setDay(DayOfWeek.MONDAY);
+		s.setStart(LocalTime.of(18, 00));
+		s.setEnd(LocalTime.of(22, 30));
+		
+		assertTrue(db.addShift(s));
+	}
+	
+	@Test
+	public void testBackToBackShift2()
+	{
+		// ends when another shift starts
+		Shift s = db.buildShift(1);
+		s.setDay(DayOfWeek.MONDAY);
+		s.setStart(LocalTime.of(8, 00));
+		s.setEnd(LocalTime.of(10, 30));
+		
+		assertTrue(db.addShift(s));
+	}
+	
+	@Test
 	public void testDuplicateBooking()
 	{
 		Booking b = db.buildBooking();
