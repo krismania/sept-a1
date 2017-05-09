@@ -26,13 +26,32 @@ public class AdminMenuController implements Initializable
 	private Controller c = Controller.getInstance();
 	
 	@FXML
-    	private Button createBusiness;
+    private Button createBusiness;
+
+    @FXML
+    private Button manageBusiness;
 	
-	// Implements button redirecting to create business scene
+	// Implements button redirecting to create business scene or manage business scene
 	void handleCreateBusinessAction(ActionEvent event) throws IOException
 	{
-	
-	// to be continued...
+        Stage stage;
+        Parent rootAddBus, rootManBus;
+		if(event.getSource()==manageBusiness)
+        {
+            stage=(Stage) manageBusiness.getScene().getWindow();
+            rootManBus = FXMLLoader.load(getClass().getResource("ManageBusinesses.fxml"));
+            Scene scene = new Scene(rootManBus);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else 
+        {
+        	stage=(Stage) createBusiness.getScene().getWindow();
+        	rootAddBus = FXMLLoader.load(getClass().getResource("CreateBusiness.fxml"));
+            Scene scene = new Scene(rootAddBus);
+            stage.setScene(scene);
+            stage.show();
+        }
 	
 	}
 	
