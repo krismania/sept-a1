@@ -11,7 +11,7 @@ import java.time.LocalTime;
  * a shift and a date.
  * @author krismania
  */
-public class Booking //implements Comparable<Booking>
+public class Booking implements Comparable<Booking>
 {
 	public final int ID;
 	private String customer;
@@ -96,20 +96,19 @@ public class Booking //implements Comparable<Booking>
 	}
 
 	/**
-	 * Sort by date and then by time.
-	 * Commenting out comparable implementation -kg
+	 * Sort by date and then by start time.
 	 */
-//	@Override
-//	public int compareTo(Booking b)
-//	{
-//		int byDate = this.date.compareTo(b.date);
-//		
-//		//TODO added .toSecondOfDay() in order to fix error - not sure if correct though.
-//		if (byDate == 0)
-//		{
-//			return this.time.toSecondOfDay() - b.time.toSecondOfDay();
-//		}
-//		
-//		return byDate;
-//	}
+	@Override
+	public int compareTo(Booking b)
+	{
+		int byDate = this.date.compareTo(b.date);
+		
+		//TODO added .toSecondOfDay() in order to fix error - not sure if correct though.
+		if (byDate == 0)
+		{
+			return this.start.toSecondOfDay() - b.start.toSecondOfDay();
+		}
+		
+		return byDate;
+	}
 }

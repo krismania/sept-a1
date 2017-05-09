@@ -342,7 +342,7 @@ public class Controller
   /** Add a booking to the DB.
 	 * @author James
 	 */
-	public boolean addBooking(LocalDate localDate, LocalTime time, int empID, String customerUsername) 
+	public boolean addBooking(LocalDate localDate, LocalTime start, LocalTime end, int empID, String customerUsername) 
 	{
 		Booking booking = db.buildBooking();
 		if(customerUsername.isEmpty())
@@ -355,7 +355,8 @@ public class Controller
 		}
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
-		booking.setTime(time);
+		booking.setStart(start);
+		booking.setEnd(end);
 		
 		return db.addBooking(booking);
 	}
