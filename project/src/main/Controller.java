@@ -185,7 +185,7 @@ public class Controller
 		Iterator<Shift> shiftIterator = shifts.iterator();
 		while (shiftIterator.hasNext())
 		{
-			if (shiftIterator.next().ID != employeeID)
+			if (shiftIterator.next().employeeID != employeeID)
 			{
 				// if ID doesn't match our desired ID, remove this shift
 				shiftIterator.remove();
@@ -341,9 +341,14 @@ public class Controller
 	
   /** Add a booking to the DB.
 	 * @author James
+	 * TODO: fix the inputs for this method
 	 */
-	public boolean addBooking(LocalDate localDate, LocalTime start, LocalTime end, int empID, String customerUsername) 
+	public boolean addBooking(LocalDate localDate, String time, int empID, String customerUsername) 
 	{
+		// TODO: this assumes appointments last 30 mins
+		LocalTime start = convertTime(time);
+		LocalTime end = start.plusMinutes(30);
+		
 		Booking booking = db.buildBooking();
 		if(customerUsername.isEmpty())
 		{

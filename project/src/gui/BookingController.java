@@ -101,7 +101,7 @@ public class BookingController implements Initializable
     	}
     	else
     	{
-    		boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
+    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
     				employeePicker.getValue().ID, customerUser.getText());
     	
     		if(booked)

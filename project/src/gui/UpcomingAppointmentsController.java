@@ -61,7 +61,7 @@ public class UpcomingAppointmentsController implements Initializable
 							CellDataFeatures<Booking, String> param)
 			{
 				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+				prop.setValue(param.getValue().getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
 				return prop;
 			}
 		});
