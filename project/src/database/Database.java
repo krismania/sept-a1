@@ -90,10 +90,60 @@ public class Database implements DBInterface {
 		return insert(employee);
 	}
 
+	/**
+	 * Checks if there is already a shift for this employee with an overlapping
+	 * time before adding it to the db.
+	 * @author krismania
+	 */
 	@Override
-	public boolean addShift(Shift shift)
+	public boolean addShift(Shift newShift)
 	{
-		return insert(shift);
+		ArrayList<Shift> shifts = new ArrayList<Shift>();
+		// get all other shifts for this employee on this day
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = "SELECT * FROM Shift WHERE EmpID = %d AND Day = '%s'";
+			try (ResultSet rs = stmt.executeQuery(String.format(sql, newShift.employeeID, newShift.getDay().toString())))
+			{
+				while (rs.next())
+				{
+					int id = rs.getInt("ShiftID");
+					int empId = rs.getInt("EmpID");
+					DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day"));
+					LocalTime start = LocalTime.ofSecondOfDay(rs.getInt("Start"));
+					LocalTime end = LocalTime.ofSecondOfDay(rs.getInt("End"));
+					
+					shifts.add(new Shift(id, empId, day, start, end));
+				}
+				logger.info("Found " + shifts.size() + " shifts for emp " + newShift.employeeID + " on " + newShift.getDay().toString());
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// check that the shift being added does not overlap with any of these
+		for (Shift shift: shifts)
+		{
+			logger.info("old shift: " + shift.getStart() + " " + shift.getEnd() + 
+							"\nnew shift: " + newShift.getStart() + " " + newShift.getEnd());
+			
+			if (newShift.getEnd().compareTo(shift.getStart()) <= 0)
+			{
+				// new shift ends before old start
+			}
+			else if (newShift.getStart().compareTo(shift.getEnd()) >= 0)
+			{
+				// new shift starts after old end
+			}
+			else
+			{
+				// overlap
+				return false;
+			}
+		}
+		return insert(newShift);
 	}
 
 	/**
