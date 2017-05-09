@@ -91,6 +91,31 @@ public class Database implements DBInterface {
 	}
 
 	/**
+	 * Takes LocalTime objects representing the start and end of 2 time periods,
+	 * and returns true if those periods overlap. Arguments should be supplied in
+	 * the following order: {@code start1, end1, start2, end2}.
+	 * @author krismania
+	 */
+	private boolean overlap(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2)
+	{
+		if (end1.compareTo(start2) <= 0)
+		{
+			// period 1 ends before period 2 starts
+			return false;
+		}
+		else if (start1.compareTo(end2) >= 0)
+		{
+			// period 1 starts after period 2 ends
+			return false;
+		}
+		else
+		{
+			// overlap
+			return true;
+		}
+	}
+
+	/**
 	 * Checks if there is already a shift for this employee with an overlapping
 	 * time before adding it to the db.
 	 * @author krismania
@@ -129,17 +154,9 @@ public class Database implements DBInterface {
 			logger.info("old shift: " + shift.getStart() + " " + shift.getEnd() + 
 							"\nnew shift: " + newShift.getStart() + " " + newShift.getEnd());
 			
-			if (newShift.getEnd().compareTo(shift.getStart()) <= 0)
+			if (overlap(newShift.getStart(), newShift.getEnd(), shift.getStart(), shift.getEnd()))
 			{
-				// new shift ends before old start
-			}
-			else if (newShift.getStart().compareTo(shift.getEnd()) >= 0)
-			{
-				// new shift starts after old end
-			}
-			else
-			{
-				// overlap
+				// shifts overlap, this employee already has a shift at this time
 				return false;
 			}
 		}
