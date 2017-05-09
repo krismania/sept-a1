@@ -30,7 +30,8 @@ public class BookingTest
 		int bookingID, employeeID;
 		String customer;
 		LocalDate date;
-		LocalTime time;
+		LocalTime start;
+		LocalTime end;
 		
 		// create some test objects
 		
@@ -38,34 +39,38 @@ public class BookingTest
 		customer = "customer";
 		employeeID = 5;
 		date = LocalDate.of(2017, 3, 1);
-		time = LocalTime.of(10, 30);
+		start = LocalTime.of(10, 30);
+		end = LocalTime.of(11, 30);
 		
-		booking1 = new Booking(bookingID, customer, employeeID, date, time);
-		booking1Clone = new Booking(bookingID, customer, employeeID, date, time);
+		booking1 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking1Clone = new Booking(bookingID, customer, employeeID, date, start, end);
 		
 		bookingID = 2;
 		customer = "customer";
 		employeeID = 3;
 		date = LocalDate.of(2017, 6, 12);
-		time = LocalTime.of(17, 00);
+		start = LocalTime.of(17, 00);
+		end = LocalTime.of(17, 15);
 		
-		booking2 = new Booking(bookingID, customer, employeeID, date, time);
+		booking2 = new Booking(bookingID, customer, employeeID, date, start, end);
 		
 		bookingID = 3;
 		customer = "someoneelse";
 		employeeID = 7;
 		date = LocalDate.of(2017, 6, 12);
-		time = LocalTime.of(14, 45);
+		start = LocalTime.of(14, 45);
+		end = LocalTime.of(15, 15);
 		
-		booking3 = new Booking(bookingID, customer, employeeID, date, time);
+		booking3 = new Booking(bookingID, customer, employeeID, date, start, end);
 		
 		bookingID = 3;
 		customer = "someoneelse";
 		employeeID = 7;
 		date = LocalDate.of(2017, 2, 21);
-		time = LocalTime.of(14, 45);
+		start = LocalTime.of(14, 45);
+		end = LocalTime.of(14, 55);
 		
-		booking4 = new Booking(bookingID, customer, employeeID, date, time);
+		booking4 = new Booking(bookingID, customer, employeeID, date, start, end);
 	}
 	
 	@Test
