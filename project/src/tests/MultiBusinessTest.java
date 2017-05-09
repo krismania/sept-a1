@@ -28,7 +28,7 @@ public class MultiBusinessTest
 		//TN test business owner info getters.
 		
 		@Test
-		public void testGetFirstName()
+		public void testGetBusinessName()
 		{
 			assertEquals("Businesses", businessOwner.getBusinessName());
 		}
