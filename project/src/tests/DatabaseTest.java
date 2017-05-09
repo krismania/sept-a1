@@ -296,10 +296,25 @@ public class DatabaseTest
 	}
 	
 	@Test
-	public void testDuplicateBooking()
+	public void testDuplicateBooking1()
 	{
+		// exact same booking
 		Booking b = db.buildBooking();
 		b.setCustomer("krismania");
+		b.setEmployee(1);
+		b.setDate(LocalDate.of(2017, 5, 1));
+		b.setStart(LocalTime.of(12, 30));
+		b.setEnd(LocalTime.of(13, 00));
+		
+		assertFalse(db.addBooking(b));
+	}
+	
+	@Test
+	public void testDuplicateBooking2()
+	{
+		// different customer
+		Booking b = db.buildBooking();
+		b.setCustomer("jamesRulez");
 		b.setEmployee(1);
 		b.setDate(LocalDate.of(2017, 5, 1));
 		b.setStart(LocalTime.of(12, 30));
