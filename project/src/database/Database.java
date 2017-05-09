@@ -738,7 +738,7 @@ public class Database implements DBInterface {
 			{
 				while (bookingQuery.next())
 				{
-					int id = bookingQuery.getInt("Booking_ID");
+					int id = bookingQuery.getInt("BookingID");
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
 					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
