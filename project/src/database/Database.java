@@ -290,7 +290,7 @@ public class Database implements DBInterface {
 			logger.warning(e.toString());
 		}
 
-		return new Booking(maxID + 1, null, 0, null, null);
+		return new Booking(maxID + 1, null, 0, null, null, null);
 	}
 	
 	/**
@@ -759,10 +759,11 @@ public class Database implements DBInterface {
 					String customer = bookingQuery.getString("customerID");
 					int employeeID = bookingQuery.getInt("EmpID");
 					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
-					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
+					LocalTime start = LocalTime.ofSecondOfDay((bookingQuery.getInt("Start")));
+					LocalTime end = LocalTime.ofSecondOfDay((bookingQuery.getInt("End")));
 					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, timer));
+					bookings.add(new Booking(id, customer, employeeID, date, start, end));
 				}
 			}
 			
@@ -1018,7 +1019,8 @@ public class Database implements DBInterface {
 	{
 		return insert("Booking", Integer.toString(b.ID), b.getCustomer(), 
 						Integer.toString(b.getEmployeeID()), b.getDate().toString(), 
-						Integer.toString(b.getTime().toSecondOfDay()));
+						Integer.toString(b.getStart().toSecondOfDay()),
+						Integer.toString(b.getEnd().toSecondOfDay()));
 	}
 	
 	/**
@@ -1346,7 +1348,8 @@ public class Database implements DBInterface {
 		booking.addColumn("Customer", "varchar(30)");
 		booking.addColumn("EmpID", "int");
 		booking.addColumn("Date", "DATE");
-		booking.addColumn("Time", "int");
+		booking.addColumn("Start", "int");
+		booking.addColumn("End", "int");
 		booking.setPrimary("BookingID");
 		booking.addForeignKey("Customer", "Customer(Username)");
 		booking.addForeignKey("EmpID", "Employee(EmpID)");
