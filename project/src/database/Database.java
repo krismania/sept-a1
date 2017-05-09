@@ -162,57 +162,57 @@ public class Database implements DBInterface {
 		}
 		return insert(newShift);
 	}
-
+	
 	/**
-	 * @author James
-	 * TODO: Refactor SQL to check all details rather than doing if/else's
+	 * Add a booking to the DB. Checks if this customer already has a booking on
+	 * the same date at an overlapping time, or if the employee is already booked.
+	 * @author krismania
 	 */
 	@Override
-	public boolean addBooking(Booking booking)
+	public boolean addBooking(Booking b)
 	{
-		return insert(booking);
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		
-//		boolean noDuplicate = true;
-//		LocalTime timer;
-//		try {
-//			Statement stmt = c.createStatement();
-//			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
-//				while (rs.next()) {
-//					if(rs.getString("customerID").equals(booking.getCustomer()))
-//					{
-//						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
-//						if(timer.equals(booking.getTime()))
-//						{
-//							logger.info("Duplicate booking found.");
-//							noDuplicate = false;
-//							break;
-//						}
-//						else
-//						{
-//							noDuplicate = true;
-//						}
-//					}
-//					else
-//					{
-//						noDuplicate = true;
-//					}
-//				}
-//			}
-//	
-//		} catch (SQLException e) {
-//			logger.warning(e.toString());
-//		}
-//		
-//		if(noDuplicate)
-//		{
-//			if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
-//				Integer.toString(booking.getEmployeeID()),
-//				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
-//			{
-//				return true;
-//			}
-//		}
-//		return false;
+		// get all other bookings for this customer on this date
+		try (Statement stmt = c.createStatement())
+		{			
+			String sql = "SELECT * FROM Booking WHERE Date = '%s' AND (Customer = '%s' OR EmpID = %d)";
+			try (ResultSet rs = stmt.executeQuery(String.format(sql, b.getDate(), b.getCustomer(), b.getEmployeeID())))
+			{
+				while (rs.next())
+				{
+					int id = rs.getInt("BookingID");
+					String customer = rs.getString("Customer");
+					int employeeID = rs.getInt("EmpID");
+					LocalDate date = LocalDate.parse(rs.getString("Date"));
+					LocalTime start = LocalTime.ofSecondOfDay((rs.getInt("Start")));
+					LocalTime end = LocalTime.ofSecondOfDay((rs.getInt("End")));
+					
+					// construct the object & add to list. -kg
+					bookings.add(new Booking(id, customer, employeeID, date, start, end));
+				}
+				logger.info("Found " + bookings.size() + " bookings for " + b.getCustomer() + " on " + b.getDate());
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// check that the booking being added does not overlap with any of these
+		for (Booking booking: bookings)
+		{
+			logger.info("old shift: " + booking.getStart() + " " + booking.getEnd() + 
+							"\nnew shift: " + b.getStart() + " " + b.getEnd());
+			
+			if (overlap(b.getStart(), b.getEnd(), booking.getStart(), booking.getEnd()))
+			{
+				// bookings overlap, this customer or employee already has a booking at this time
+				return false;
+			}
+		}
+		
+		return insert(b);
 	}
 
 	/**
