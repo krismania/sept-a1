@@ -19,11 +19,10 @@
    <children>
       <AnchorPane minWidth="300.0">
          <children>
-            <ImageView fitWidth="400.0" opacity="0.19" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ImageView fx:id="imageView" fitWidth="400.0" opacity="0.19" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <image>
-                  <Image url="@resources/calendar.jpeg" />
-               </image>
-            </ImageView>
+                  <Image url="@default.jpg" />
+               </image></ImageView>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label text="Appointment" wrapText="true">
