@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import database.DBInterface;
 import database.Database;
+import database.masterDatabase;
 import model.Account;
 import model.Booking;
 import model.BusinessOwner;
@@ -64,7 +65,7 @@ public class Controller
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
 		//TODO: Add a checker for creating master DB on run.
-		db = new Database("master");
+		loadDatabase("master");
 		logger.info("Instantiated Controller");
 	}
 	
@@ -78,7 +79,10 @@ public class Controller
 	{
 		currentDB = dbName;
 		// instantiate DB
-		db = new Database(dbName);
+		if(dbName.equals("master"))
+		{
+			db = new masterDatabase(dbName);
+		}
 		logger.info("Instantiated Controller");
 	}
 	
