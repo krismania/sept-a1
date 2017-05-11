@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import main.Controller;
 import main.Validate;
 import model.Account;
 import model.BusinessOwner;
 import model.Customer;
+import model.Employee;
+import model.Shift;
 import javafx.scene.Parent;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -24,9 +27,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 //Implements form for creating bookings
-public class BookingController
+public class BookingController implements Initializable
 {
 	Controller c = Controller.getInstance();
 	private String customerUsername = null;
@@ -37,7 +41,7 @@ public class BookingController
 	@FXML private Button navMenu;
     @FXML private Button submitBooking;
     @FXML private DatePicker datePicker;
-    @FXML private ChoiceBox<String> employeePicker;
+    @FXML private ChoiceBox<Employee> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
     
     @FXML private Label TitleOfDetails;
@@ -48,12 +52,26 @@ public class BookingController
     @FXML private Label customerPhone;
     @FXML private Label customerName;
     
-    @FXML
-    public void initialize()
-    {
-    	// init
-    }
-    //Implements on select button action for returning to main menu - 
+    /**
+     * Add converters for dropdowns.
+     * @author krismania
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+	{
+		// set employee dropdown
+    	employeePicker.setConverter(new StringConverter<Employee>()
+		{
+			@Override
+			public String toString(Employee e)
+			{
+				return e.getFirstName() + " " + e.getLastName();
+			}
+			@Override public Employee fromString(String string) { return null; }	
+		});
+	}
+
+	//Implements on select button action for returning to main menu - 
     //selection of menu based on account type - Business Owner or Customer
     @FXML 
     public void handleBack(ActionEvent event) throws IOException
@@ -73,7 +91,8 @@ public class BookingController
 		// switch scenes
 		stage.setScene(accountMenu);
     }
-    //Implement Calander Selection for appointment date selection
+    
+    //Implement Calendar Selection for appointment date selection
     @FXML
     private void handleBook(ActionEvent event) throws IOException{
     	if(c.getLoggedUser() instanceof BusinessOwner && customerUser.getText().isEmpty())
@@ -82,8 +101,8 @@ public class BookingController
     	}
     	else
     	{
-    		boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
-    				Integer.parseInt(employeePicker.getValue()), customerUser.getText());
+    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
+    				employeePicker.getValue().ID, customerUser.getText());
     	
     		if(booked)
 	    	{
@@ -95,6 +114,7 @@ public class BookingController
 	    	}
     	}
     }
+    
     //Implement context sensitive staff selector
     @FXML
     public void handleDateChange(ActionEvent event)
@@ -112,6 +132,7 @@ public class BookingController
     	    Name.setVisible(true);
     	}
     }
+    
     //Implements context sensitive booking time selector
     @FXML
     public void handleEmployeeChange(ActionEvent event)
@@ -119,6 +140,7 @@ public class BookingController
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateTimesByEmp();
     }
+    
     //Changes time selection based on staff availability
     @FXML
     public void handleTimeChange(ActionEvent event)
@@ -135,6 +157,7 @@ public class BookingController
         	}
     	}
     }
+    
     //Shows context data and or error message responses
     @FXML
     private void generateCustomerList()
@@ -160,6 +183,7 @@ public class BookingController
     		customerPhone.setVisible(false);
     	}
     }
+    
     //Generates employee availability based on date selection and availability
     private void generateEmployeesByDate()
     {
@@ -167,33 +191,32 @@ public class BookingController
     	employeePicker.getItems().removeAll(employeePicker.getItems());
     	
     	if(day.isBefore(LocalDate.now())) {
-    		employeePicker.getItems().addAll("Please select today or a date in the future");
+    		// TODO: create an error
+    		// employeePicker.getItems().addAll("Please select today or a date in the future");
     	}
-    	
     	else 
     	{
-	    	ArrayList<String> empIDs = c.getEmpByDay(day);
-	    	if(empIDs.isEmpty())
+	    	ArrayList<Employee> employees = c.getEmployeesWorkingOn(day);
+	    	
+	    	System.out.println("There are " + employees.size() + " employees working");
+	    	
+	    	if(employees.isEmpty())
 	    	{
-	    		employeePicker.getItems().addAll("No employees working on selected date");
+	    		// TODO: create an error
+	    		// employeePicker.getItems().addAll("No employees working on selected date");
 	    	}
 	    	else {
-	    		employeePicker.getItems().addAll(empIDs);
+	    		employeePicker.getItems().addAll(employees);
 	    	}
     	}
     }
+    
     //Generates available times based on selected staff
     private void generateTimesByEmp()
     {
-    	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
-    	
     	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
+    	
+    	ArrayList<String> times = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
     	bookingOptionsDropdown.getItems().addAll(times);
     }
-
-    
-    public void initialize(URL url, ResourceBundle rb)
-	{
-    	//INIT
-	}
 }

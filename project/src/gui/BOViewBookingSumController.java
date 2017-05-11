@@ -144,7 +144,7 @@ public class BOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String tProp = tToStr.format(param.getValue().getTime());
+                String tProp = tToStr.format(param.getValue().getStart());
                 prop.setValue(tProp);
                 return prop;
             }	
@@ -210,7 +210,7 @@ public class BOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String tProp = tToStr.format(param.getValue().getTime());
+                String tProp = tToStr.format(param.getValue().getStart());
                 prop.setValue(tProp);
                 return prop;
             }	
