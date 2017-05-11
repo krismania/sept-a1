@@ -13,19 +13,19 @@ import model.Customer;
 import model.Employee;
 import model.Shift;
 
-public class Database implements DBInterface {
+public abstract class Database implements DBInterface {
 	
 	/**
 	 * DB Connection object
 	 */
-	private Connection c = null;
+	protected Connection c = null;
 
 	/**
 	 * The name of the DB file, excluding it's extension
 	 */
 	private String dbName;
 	
-	private Logger logger;
+	protected Logger logger;
 	
 	/**
 	 * Instantiates the database, which will read to and from the .db file with
@@ -433,46 +433,6 @@ public class Database implements DBInterface {
 		return customers;
 	}
 	
-	/**
-	 * Returns an arrayList of all businessNames
-	 * Used for master DB
-	 * @author James
-	 */
-	public ArrayList<String> getAllBusinesses()
-	{
-		ArrayList<String> businessNames = new ArrayList<String>();
-		try
-		{
-			openConnection();
-			Statement stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM Businesses";
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next())
-			{
-		        //Retrieve by column name         
-	         	String name = rs.getString("BusinessName");
-
-				// build obj and add to list. -kg
-	         	businessNames.add(name);
-			}
-			closeConnection();
-		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-		    logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
-		
-		return businessNames;
-	}
 	/**
 	 * @author James
 	 * @author krismania
@@ -973,7 +933,7 @@ public class Database implements DBInterface {
 	 * @param values Values to insert
 	 * @author krismania
 	 */
-	private boolean insert(String table, String...values)
+	protected boolean insert(String table, String...values)
 	{
 		// prepare values
 		for (int i = 0; i < values.length; i++)
@@ -1295,7 +1255,7 @@ public class Database implements DBInterface {
 	 * TODO: document this
 	 * @author James
 	 */
-	private boolean openConnection()
+	protected boolean openConnection()
 	{
 		// added try-catch to capture sqlException here. -kg
 		try
@@ -1317,7 +1277,7 @@ public class Database implements DBInterface {
 	 * TODO: document this
 	 * @author James
 	 */
-	private boolean closeConnection()
+	protected boolean closeConnection()
 	{
 		try
 		{
@@ -1344,7 +1304,7 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 * @author James
 	 */
-	private void createTables()
+	protected void createTables()
 	{
 		logger.info("Creating database tables...");
 
