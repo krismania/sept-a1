@@ -128,13 +128,13 @@ public interface DBInterface
 	 */
 	Account login(String username, String password);
 
-
-	ArrayList<String> getAllBusinesses();
-
 	
 	/**
 	 * Close the database connection in preparation for closing or switching
 	 */
 	public void close();
+
+
+	ArrayList<String> getAllBusinesses();
 
 }
