@@ -1,6 +1,7 @@
 package model;
 
 import java.time.Duration;
+import java.time.LocalTime;
 
 /**
  * Model of an offered service, such as a haircut or colour. Each service may
@@ -24,6 +25,17 @@ public class Service
 	public Service(int id)
 	{
 		this(id, null, null);
+	}
+	
+	public LocalTime getEnd(LocalTime start)
+	{
+		return start.plus(duration);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("%d: %s (%sm)", ID, name, duration.toMinutes());
 	}
 	
 	/* Simple getters/setters */
