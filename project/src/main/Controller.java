@@ -13,12 +13,12 @@ import java.util.logging.Logger;
 
 import database.DBInterface;
 import database.Database;
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
+import database.model.Account;
+import database.model.Booking;
+import database.model.BusinessOwner;
+import database.model.Customer;
+import database.model.Employee;
+import database.model.Shift;
 
 /**
  * Controller class, which drives interaction between the UI and the database.

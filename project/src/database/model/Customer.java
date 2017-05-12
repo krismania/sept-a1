@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 /**
  * A Customer in the system. Customer is an {@link Account} that also implements
