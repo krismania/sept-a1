@@ -3,9 +3,13 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
+import model.Account;
 import model.Booking;
+import model.Employee;
+import model.Shift;
 
 public class masterDatabase extends Database{
 
@@ -83,5 +87,4 @@ public class masterDatabase extends Database{
 	{
 		return insert("Businesses", businessName);
 	}
-
 }

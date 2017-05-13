@@ -308,7 +308,7 @@ public class Controller
 	 */
 	public ArrayList<String> getAllBusinessNames()
 	{
-		return db.getAllBusinesses();
+		return ((masterDatabase) db).getAllBusinesses();
 	}
 	/**
 	 * Add a customer to the database.
