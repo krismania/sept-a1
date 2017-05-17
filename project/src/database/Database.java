@@ -13,7 +13,7 @@ import model.Customer;
 import model.Employee;
 import model.Shift;
 
-public abstract class Database implements DBInterface {
+public abstract class Database {
 	
 	/**
 	 * DB Connection object
@@ -51,7 +51,7 @@ public abstract class Database implements DBInterface {
 	 * Close the DB Connection.
 	 * @author krismania
 	 */
-	@Override
+	
 	public void close()
 	{
 		closeConnection();
