@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import database.DBInterface;
 import database.Database;
+import database.businessDatabase;
 import database.masterDatabase;
 import model.Account;
 import model.Booking;
@@ -33,7 +34,7 @@ public class Controller
 	private static Controller instance = null;
 	
 	private Logger logger;
-	private DBInterface db;
+	private Database db;
   
 	/**
 	 * {@link Account} of the currently logged in user. If no user is logged in, this
@@ -83,6 +84,10 @@ public class Controller
 		{
 			db = new masterDatabase(dbName);
 		}
+		else
+		{
+			db = new businessDatabase(dbName);
+		}
 		logger.info("Instantiated Controller");
 	}
 	
@@ -100,7 +105,7 @@ public class Controller
 	 */
 	public Customer getCustomer(String username)
 	{
-		Account account = db.getAccount(username);
+		Account account = ((businessDatabase) db).getAccount(username);
 		if (account instanceof Customer)
 		{
 			return (Customer) account;
@@ -133,7 +138,7 @@ public class Controller
 	 */
 	public Employee getEmployee(int id)
 	{
-		return db.getEmployee(id);
+		return ((businessDatabase) db).getEmployee(id);
 	}
 	
 	/**
@@ -141,7 +146,7 @@ public class Controller
 	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return db.getAllEmployees();
+		return ((businessDatabase) db).getAllEmployees();
 	}
 	
 	/**
@@ -172,7 +177,7 @@ public class Controller
 		
 		for (Integer empId : empIds)
 		{
-			employees.add(db.getEmployee(empId));
+			employees.add(((businessDatabase) db).getEmployee(empId));
 		}
 		
 		return employees;
@@ -194,7 +199,7 @@ public class Controller
 	 */
 	public ArrayList<Shift> getShiftsByDate(LocalDate date)
 	{
-		return db.getShifts(date.getDayOfWeek());
+		return ((businessDatabase) db).getShifts(date.getDayOfWeek());
 	}
 	
 	/**
@@ -258,7 +263,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getPastBookings()
 	{
-		ArrayList<Booking> bookings = db.getPastBookings();
+		ArrayList<Booking> bookings = ((businessDatabase) db).getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
 		
@@ -273,7 +278,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
-		ArrayList<Booking> bookings = db.getFutureBookings();
+		ArrayList<Booking> bookings = ((businessDatabase) db).getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
 		return bookings;
@@ -322,7 +327,7 @@ public class Controller
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db
-		return db.addAccount(customer, password);
+		return ((businessDatabase) db).addAccount(customer, password);
 	}
 	
 	/**
@@ -334,13 +339,13 @@ public class Controller
 	{		
 		if(Validate.name(firstName) && Validate.name(lastName)
 				&& Validate.email(email) && Validate.phone(phoneNumber)){
-			Employee employee = db.buildEmployee();
+			Employee employee = ((businessDatabase) db).buildEmployee();
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
 			employee.setEmail(email);
 			employee.setPhoneNumber(phoneNumber);
 			
-			return db.addEmployee(employee);
+			return ((businessDatabase) db).addEmployee(employee);
 		}
 		else {
 			return false;
@@ -353,7 +358,7 @@ public class Controller
 	 */
 	public boolean employeeExists(int id)
 	{
-		return db.getEmployee(id) == null;
+		return ((businessDatabase) db).getEmployee(id) == null;
 	}
 	
 	/**
@@ -364,12 +369,12 @@ public class Controller
 	 */
 	public boolean addShift(int employeeID, String day, String start, String end)
 	{
-		Shift shift = db.buildShift(employeeID);
+		Shift shift = ((businessDatabase) db).buildShift(employeeID);
 		shift.setStart(convertTime(start));
 		shift.setEnd(convertTime(end));
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
-		return db.addShift(shift);
+		return ((businessDatabase) db).addShift(shift);
 	}
 	
   /** Add a booking to the DB.
@@ -382,7 +387,7 @@ public class Controller
 		LocalTime start = convertTime(time);
 		LocalTime end = start.plusMinutes(30);
 		
-		Booking booking = db.buildBooking();
+		Booking booking = ((businessDatabase) db).buildBooking();
 		if(customerUsername.isEmpty())
 		{
 			booking.setCustomer(loggedUser.username);
@@ -396,7 +401,7 @@ public class Controller
 		booking.setStart(start);
 		booking.setEnd(end);
 		
-		return db.addBooking(booking);
+		return ((businessDatabase) db).addBooking(booking);
 	}
 	
 	/**
@@ -406,7 +411,7 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		loggedUser = db.login(username, password);
+		loggedUser = ((businessDatabase) db).login(username, password);
 		
 		if (loggedUser != null)
 		{
