@@ -541,7 +541,7 @@ public class businessDatabase extends Database{
 	 * Helper method for inserting a {@link BusinessOwner} object into the db
 	 * @author krismania
 	 */
-	private boolean insert(BusinessOwner bo, String password)
+	boolean insert(BusinessOwner bo, String password)
 	{
 		return insert("BusinessOwner", bo.username, password, bo.getBusinessName(), 
 				bo.getName(), bo.getAddress(), bo.getPhoneNumber(), 
