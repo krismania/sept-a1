@@ -751,6 +751,10 @@ public class Database implements DBInterface {
 		{
 			valid = validatePassword(username, password, "BusinessOwner");
 		}
+		else if (account instanceof Admin)
+		{
+			valid = validatePassword(username, password, "Admin");
+		}
 		
 		if (valid) return account;
 		else return null;
