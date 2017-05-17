@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.TreeMap;
 
 import model.Account;
+import model.Admin;
 import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
@@ -73,6 +74,10 @@ public class DummyDatabase implements DBInterface
 		else if (username.equals("badUsername"))
 		{
 			return null;
+		}
+		else if (username.equals("admin"))
+		{
+			return new Admin("admin");
 		}
 		else
 		{
