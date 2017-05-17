@@ -987,6 +987,10 @@ public class Database implements DBInterface {
 				{
 					return Customer.class;
 				}
+				else if (type.equals("Admin"))
+				{
+					return Admin.class;
+				}
 			}
 			closeConnection();
 			
