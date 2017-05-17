@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import model.Account;
 import model.Booking;
+import model.BusinessOwner;
 import model.Employee;
 import model.Shift;
 
@@ -75,6 +76,7 @@ public class masterDatabase extends Database{
 				logger.fine("Creating table: " + businesses);
 				stmt.execute(businesses.toString());
 				insert("testDB");
+				insert("awesomeSauce");
 			}
 		}
 		catch (SQLException e)
@@ -85,6 +87,11 @@ public class masterDatabase extends Database{
 	
 	private boolean insert(String businessName)
 	{
+		//TODO: Allow admin to specify details.
+		businessDatabase bDb = new businessDatabase(businessName);
+		BusinessOwner bo = new BusinessOwner("septB", businessName, "septB", "123 ABC Street", "0400000000");
+		bDb.insert(bo, "septBus1");
+		logger.fine("Added business Owner: " + bo.username );
 		return insert("Businesses", businessName);
 	}
 }
