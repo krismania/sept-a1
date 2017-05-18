@@ -212,5 +212,8 @@ public class SignupController implements Initializable
 	{
 		businessPicker.getItems().removeAll(businessPicker.getItems());
 		businessPicker.getItems().addAll(c.getAllBusinessNames());
+		
+		// select first business by default
+		businessPicker.getSelectionModel().selectFirst();
 	}
 }

@@ -2,10 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -30,88 +30,97 @@
       <Insets />
    </opaqueInsets>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <VBox BorderPane.alignment="CENTER">
          <children>
-         <ChoiceBox fx:id="businessPicker" layoutX="349.0" layoutY="102.0" prefWidth="150.0" />
-            <VBox minWidth="-Infinity" prefWidth="170.0">
+            <Label text="Select a business" />
+         <ChoiceBox fx:id="businessPicker" prefWidth="170.0">
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </ChoiceBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Account">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Username" />
-                  <TextField fx:id="username">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Password" />
-                  <PasswordField fx:id="password">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label text="Confirm Password" />
-                  <PasswordField fx:id="passwordConf">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label fx:id="lblError1" text="Error" textFill="RED" visible="false">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </Label>
+                  <VBox minWidth="-Infinity" prefWidth="170.0">
+                     <children>
+                        <Label text="Account">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="Username" />
+                        <TextField fx:id="username">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Password" />
+                        <PasswordField fx:id="password">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </PasswordField>
+                        <Label text="Confirm Password" />
+                        <PasswordField fx:id="passwordConf">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </PasswordField>
+                        <Label fx:id="lblError1" text="Error" textFill="RED" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Region minWidth="-Infinity" prefWidth="30.0" />
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0">
+                     <children>
+                        <Label text="Details">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="First Name" />
+                        <TextField fx:id="firstName">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label layoutX="10.0" layoutY="10.0" text="Last Name" />
+                        <TextField fx:id="lastName">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label layoutX="10.0" layoutY="27.0" text="Email" />
+                        <TextField fx:id="email">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Phone Number" />
+                        <TextField fx:id="phone" layoutX="10.0" layoutY="69.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label fx:id="lblError2" text="Error" textFill="RED" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <Region minWidth="-Infinity" prefWidth="30.0" />
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0">
-               <children>
-                  <Label text="Details">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="First Name" />
-                  <TextField fx:id="firstName">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label layoutX="10.0" layoutY="10.0" text="Last Name" />
-                  <TextField fx:id="lastName">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label layoutX="10.0" layoutY="27.0" text="Email" />
-                  <TextField fx:id="email">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Phone Number" />
-                  <TextField fx:id="phone" layoutX="10.0" layoutY="69.0">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label fx:id="lblError2" text="Error" textFill="RED" visible="false">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </center>
    <top>
       <Label text="Sign Up" BorderPane.alignment="TOP_LEFT">
