@@ -45,6 +45,11 @@ public interface DBInterface
 	boolean updateService(Service service);
 
 	/**
+	 * Removes the given service from the database.
+	 */
+	boolean deleteService(Service s);
+
+	/**
 	 * Write a booking to the database.
 	 */
 	boolean addBooking(Booking booking);

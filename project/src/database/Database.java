@@ -247,6 +247,25 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 */
 	@Override
+	public boolean deleteService(Service s)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("DELETE FROM Service WHERE ServiceID = %d", s.ID);
+			stmt.execute(sql);
+			return true;
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return false;
+	}
+
+	/**
+	 * @author krismania
+	 */
+	@Override
 	public Employee buildEmployee()
 	{
 		// find the highest current ID

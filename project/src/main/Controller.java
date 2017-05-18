@@ -401,6 +401,11 @@ public class Controller
 		return db.updateService(s);
 	}
 
+	public boolean deleteService(Service s)
+	{
+		return db.deleteService(s);
+	}
+
 	/**
 	 * Validates a username & password, and if valid, returns the account
 	 * object & also sets the loggedUser property.

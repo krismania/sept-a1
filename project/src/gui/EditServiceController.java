@@ -92,7 +92,13 @@ public class EditServiceController implements Initializable
 	@FXML
 	public void handleDelete()
 	{
+		Service s = cbServices.getValue();
 		
+		if (s != null)
+		{
+			c.deleteService(s);
+			loadServices();
+		}
 	}
 	
 	@FXML
