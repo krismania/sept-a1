@@ -15,9 +15,9 @@ import model.Customer;
 import model.Employee;
 import model.Shift;
 
-public class businessDatabase extends Database{
+public class BusinessDatabase extends Database{
 
-	public businessDatabase(String dbName) {
+	public BusinessDatabase(String dbName) {
 		super(dbName);
 	}
 
@@ -541,7 +541,7 @@ public class businessDatabase extends Database{
 	 * Helper method for inserting a {@link BusinessOwner} object into the db
 	 * @author krismania
 	 */
-	boolean insert(BusinessOwner bo, String password)
+	private boolean insert(BusinessOwner bo, String password)
 	{
 		return insert("BusinessOwner", bo.username, password, bo.getBusinessName(), 
 				bo.getName(), bo.getAddress(), bo.getPhoneNumber(), 

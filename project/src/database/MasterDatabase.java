@@ -12,9 +12,9 @@ import model.BusinessOwner;
 import model.Employee;
 import model.Shift;
 
-public class masterDatabase extends Database{
+public class MasterDatabase extends Database{
 
-	public masterDatabase(String dbName) {
+	public MasterDatabase(String dbName) {
 		super(dbName);
 	}
 	
@@ -88,9 +88,9 @@ public class masterDatabase extends Database{
 	private boolean insert(String businessName)
 	{
 		//TODO: Allow admin to specify details.
-		businessDatabase bDb = new businessDatabase(businessName);
+		BusinessDatabase bDb = new BusinessDatabase(businessName);
 		BusinessOwner bo = new BusinessOwner("septB", businessName, "septB", "123 ABC Street", "0400000000");
-		bDb.insert(bo, "septBus1");
+		bDb.addAccount(bo, "septBus1");
 		logger.fine("Added business Owner: " + bo.username );
 		return insert("Businesses", businessName);
 	}
