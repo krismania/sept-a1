@@ -13,14 +13,23 @@
 
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditServiceController">
    <top>
-      <Label text="Services" BorderPane.alignment="CENTER_LEFT">
-         <font>
-            <Font size="24.0" />
-         </font>
+      <VBox prefWidth="170.0" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
             <Insets bottom="30.0" />
          </BorderPane.margin>
-      </Label>
+         <children>
+            <Label text="Services">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label text="Select an existing service to edit it, or select 'New' to create a new service." wrapText="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
    </top>
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
@@ -28,15 +37,10 @@
    <center>
       <VBox prefWidth="170.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Select an existing service to edit it, or select 'New' to create a new service." wrapText="true">
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </Label>
             <Label text="Existing Services" />
             <ChoiceBox fx:id="cbServices" maxWidth="1.7976931348623157E308" onAction="#handleServiceSelect">
                <VBox.margin>
-                  <Insets bottom="15.0" />
+                  <Insets bottom="30.0" />
                </VBox.margin>
             </ChoiceBox>
             <Label text="Name" />
@@ -46,7 +50,11 @@
                </VBox.margin>
             </TextField>
             <Label text="Duration (minutes)" />
-            <TextField fx:id="tfDuration" disable="true" />
+            <TextField fx:id="tfDuration" disable="true">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin></TextField>
+            <Label fx:id="lblError" contentDisplay="TEXT_ONLY" text="Error" textFill="RED" visible="false" wrapText="true" />
          </children>
       </VBox>
    </center>

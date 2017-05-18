@@ -12,8 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import main.Controller;
 import model.Service;
@@ -27,6 +27,7 @@ public class EditServiceController implements Initializable
 	private Controller c = Controller.getInstance();
 	
 	@FXML Node root;
+	@FXML Label lblError;
 	
 	@FXML ChoiceBox<Service> cbServices;
 	@FXML TextField tfName;
@@ -64,12 +65,23 @@ public class EditServiceController implements Initializable
 		// update the local object
 		Service s = cbServices.getValue();
 		
-		s.setName(tfName.getText());
-		s.setDuration(Duration.ofMinutes(Integer.parseInt(tfDuration.getText())));
+		try {
+			s.setName(tfName.getText());
+			s.setDuration(Duration.ofMinutes(Integer.parseInt(tfDuration.getText())));
+		}
+		catch (NumberFormatException e)
+		{
+			lblError.setText("Please enter a whole number duration.");
+			lblError.setVisible(true);
+			return;
+			
+		}
 		
 		// send the update to the controller
 		if (c.updateService(s))
 		{
+			lblError.setVisible(false);
+			
 			// refresh the list
 			loadServices();
 			
