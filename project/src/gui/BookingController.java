@@ -44,6 +44,7 @@ public class BookingController implements Initializable
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<Employee> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
+    @FXML private ChoiceBox<Service> serviceDropdown;
     
     @FXML private Label TitleOfDetails;
     @FXML private Label Email;
@@ -70,6 +71,10 @@ public class BookingController implements Initializable
 			}
 			@Override public Employee fromString(String string) { return null; }	
 		});
+    	
+    	// populate services dropdown
+    	serviceDropdown.getItems().addAll(c.getServices());
+    	serviceDropdown.getSelectionModel().selectFirst();
 	}
 
 	//Implements on select button action for returning to main menu - 
@@ -102,11 +107,8 @@ public class BookingController implements Initializable
     	}
     	else
     	{
-    		// TODO: temp hard-coded service -kg
-    		Service s = new Service(1, null, null);
-    		
-    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), s, 
-    				employeePicker.getValue().ID, customerUser.getText());
+    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
+    				serviceDropdown.getValue(),	employeePicker.getValue().ID, customerUser.getText());
     		
     		if(booked)
 	    	{
