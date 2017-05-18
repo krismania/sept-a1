@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -30,6 +31,7 @@ public class LoginController implements Initializable
 	@FXML private TextField tfUsername;
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
+    @FXML private ChoiceBox<String> businessPicker;
     
     @FXML
     private ImageView imageView;
@@ -41,6 +43,11 @@ public class LoginController implements Initializable
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException
 	{
+		//Disconnect from master DB
+		c.disconnectDB();
+		//Load selected DB. JM
+		c.loadDatabase(businessPicker.getValue());
+		
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());
 		
@@ -74,6 +81,10 @@ public class LoginController implements Initializable
 		{
 			//if account isn't an instance of either account type, login failed.
 			lblError.setVisible(true);
+			//Remove attempted DB connect from memory in Controller.JM
+			c.disconnectDB();
+			//reconnect to master DB
+			c.loadDatabase("master");
 			tfPassword.clear();
 		}
 	}
@@ -97,5 +108,8 @@ public class LoginController implements Initializable
         File file = new File("images/default.jpg");
 		Image image = new Image(file.toURI().toString());
 		imageView.setImage(image);
+		
+		businessPicker.getItems().removeAll(businessPicker.getItems());
+		businessPicker.getItems().addAll(c.getAllBusinessNames());
 	}
 }

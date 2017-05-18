@@ -112,6 +112,9 @@ public class BOMenuController implements Initializable {
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
     	c.logout();
+    	//reconnect to master DB
+    	c.loadDatabase("master");
+    			
     	Stage stage = (Stage) logout.getScene().getWindow();
     	
     	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
