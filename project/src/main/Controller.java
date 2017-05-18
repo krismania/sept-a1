@@ -395,6 +395,11 @@ public class Controller
 		
 		return 0; // if creation fails, ID 0 is returned
 	}
+	
+	public boolean updateService(Service s)
+	{
+		return db.updateService(s);
+	}
 
 	/**
 	 * Validates a username & password, and if valid, returns the account

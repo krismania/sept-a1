@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -49,7 +50,28 @@ public class EditServiceController implements Initializable
 	@FXML
 	public void handleSave()
 	{
+		// store index of current item for later
+		int selectedIndex = cbServices.getSelectionModel().getSelectedIndex();
 		
+		// update the local object
+		Service s = cbServices.getValue();
+				
+		s.setName(tfName.getText());
+		s.setDuration(Duration.ofMinutes(Integer.parseInt(tfDuration.getText())));
+		
+		// send the update to the controller
+		if (c.updateService(s))
+		{
+			// refresh the list
+			loadServices();
+			
+			// select the updated service
+			cbServices.getSelectionModel().select(selectedIndex);
+		}
+		else
+		{
+			// there was an error
+		}
 	}
 	
 	@FXML
@@ -62,6 +84,9 @@ public class EditServiceController implements Initializable
 		
 		// select the new service (should be last in the list)
 		cbServices.getSelectionModel().selectLast();
+		
+		// highlight the name field
+		tfName.requestFocus();
 	}
 	
 	@FXML
@@ -97,8 +122,20 @@ public class EditServiceController implements Initializable
 	{
 		Service s = cbServices.getValue();
 		
-		tfName.setText(s.getName());
-		tfDuration.setText(Long.toString(s.getDuration().toMinutes()));
+		if (s != null)
+		{
+			tfName.setText(s.getName());
+			tfDuration.setText(Long.toString(s.getDuration().toMinutes()));
+		}
+		else
+		{
+			// if nothing selected, empty fields & disable input.
+			tfName.setDisable(true);
+			tfName.clear();
+			
+			tfDuration.setDisable(true);
+			tfDuration.clear();
+		}
 	}
 	
 	// TODO: refactor this

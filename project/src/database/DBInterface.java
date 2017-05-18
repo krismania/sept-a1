@@ -38,6 +38,11 @@ public interface DBInterface
 	 * Adds the given service to the database.
 	 */
 	boolean addService(Service service);
+	
+	/**
+	 * Updates the given service in the database.
+	 */
+	boolean updateService(Service service);
 
 	/**
 	 * Write a booking to the database.

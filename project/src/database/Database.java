@@ -223,6 +223,25 @@ public class Database implements DBInterface {
 	{
 		return insert(service);
 	}
+	
+	@Override
+	public boolean updateService(Service service)
+	{
+		// update the given service in the db
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("UPDATE Service SET Name = '%s', Duration = %d WHERE ServiceID = %d", 
+							service.getName(), service.getDuration().toMinutes(), service.ID);
+			
+			stmt.execute(sql);
+			return true;
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return false;
+	}
 
 	/**
 	 * @author krismania
