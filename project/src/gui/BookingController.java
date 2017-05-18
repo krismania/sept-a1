@@ -15,6 +15,7 @@ import model.Account;
 import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
+import model.Service;
 import model.Shift;
 import javafx.scene.Parent;
 import javafx.application.Platform;
@@ -101,9 +102,12 @@ public class BookingController implements Initializable
     	}
     	else
     	{
-    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
+    		// TODO: temp hard-coded service -kg
+    		Service s = new Service(1, null, null);
+    		
+    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), s, 
     				employeePicker.getValue().ID, customerUser.getText());
-    	
+    		
     		if(booked)
 	    	{
     			GUIAlert.infoBox("Booking Successful", "Booking Confirmation");

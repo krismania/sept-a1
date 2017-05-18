@@ -18,9 +18,9 @@ public class Booking implements Comparable<Booking>
 	private int employeeID;
 	private LocalDate date;
 	private LocalTime start;
-	private LocalTime end;
+	private Service service;
 	
-	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime start, LocalTime end)
+	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime start, Service service)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
@@ -28,7 +28,7 @@ public class Booking implements Comparable<Booking>
 		this.employeeID = employeeID;
 		this.date = date;
 		this.start = start;
-		this.end = end;
+		this.service = service;
 	}
 	
 	public String getCustomer()
@@ -57,9 +57,14 @@ public class Booking implements Comparable<Booking>
 		return start;
 	}
 	
+	public Service getService()
+	{
+		return service;
+	}
+	
 	public LocalTime getEnd()
 	{
-		return end;
+		return start.plus(service.getDuration());
 	}
 	
 	public void setCustomer(String customer) 
@@ -82,17 +87,17 @@ public class Booking implements Comparable<Booking>
 		this.start = time;
 	}
 	
-	public void setEnd(LocalTime time)
+	public void setService(Service service)
 	{
-		this.end = time;
+		this.service = service;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Booking: %d, Day: %s, Time: %s to %s, Cust: %s",
-						ID, getDay().toString(), start.toString(), end.toString(),
-						customer);
+		return String.format("%s: %d, Day: %s, Time: %s to %s, Cust: %s",
+						service.getName(), ID, getDay().toString(), start.toString(), 
+						getEnd().toString(), customer);
 	}
 
 	/**

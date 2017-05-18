@@ -352,13 +352,12 @@ public class Controller
 	
   /** Add a booking to the DB.
 	 * @author James
+	 * @author krismania
 	 * TODO: fix the inputs for this method
 	 */
-	public boolean addBooking(LocalDate localDate, String time, int empID, String customerUsername) 
+	public boolean addBooking(LocalDate localDate, String time, Service service, int empID, String customerUsername) 
 	{
-		// TODO: this assumes appointments last 30 mins
 		LocalTime start = convertTime(time);
-		LocalTime end = start.plusMinutes(30);
 		
 		Booking booking = db.buildBooking();
 		if(customerUsername.isEmpty())
@@ -372,7 +371,7 @@ public class Controller
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
 		booking.setStart(start);
-		booking.setEnd(end);
+		booking.setService(service);
 		
 		return db.addBooking(booking);
 	}

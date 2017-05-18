@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Booking;
+import model.Service;
 import model.ShiftTime;
 
 public class BookingTest
@@ -42,8 +44,10 @@ public class BookingTest
 		start = LocalTime.of(10, 30);
 		end = LocalTime.of(11, 30);
 		
-		booking1 = new Booking(bookingID, customer, employeeID, date, start, end);
-		booking1Clone = new Booking(bookingID, customer, employeeID, date, start, end);
+		Service s = new Service(1, "Test Service", Duration.ofMinutes(30));
+		
+		booking1 = new Booking(bookingID, customer, employeeID, date, start, s);
+		booking1Clone = new Booking(bookingID, customer, employeeID, date, start, s);
 		
 		bookingID = 2;
 		customer = "customer";
@@ -52,7 +56,7 @@ public class BookingTest
 		start = LocalTime.of(17, 00);
 		end = LocalTime.of(17, 15);
 		
-		booking2 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking2 = new Booking(bookingID, customer, employeeID, date, start, s);
 		
 		bookingID = 3;
 		customer = "someoneelse";
@@ -61,7 +65,7 @@ public class BookingTest
 		start = LocalTime.of(14, 45);
 		end = LocalTime.of(15, 15);
 		
-		booking3 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking3 = new Booking(bookingID, customer, employeeID, date, start, s);
 		
 		bookingID = 3;
 		customer = "someoneelse";
@@ -70,7 +74,7 @@ public class BookingTest
 		start = LocalTime.of(14, 45);
 		end = LocalTime.of(14, 55);
 		
-		booking4 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking4 = new Booking(bookingID, customer, employeeID, date, start, s);
 	}
 	
 	@Test

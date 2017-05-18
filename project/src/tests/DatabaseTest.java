@@ -87,11 +87,11 @@ public class DatabaseTest
 		assertTrue(db.addShift(new Shift(4, 3, DayOfWeek.MONDAY, LocalTime.of(8, 45), LocalTime.of(11, 30))));
 		assertTrue(db.addShift(new Shift(5, 3, DayOfWeek.MONDAY, LocalTime.of(12, 00), LocalTime.of(16, 00))));
 		
-		assertTrue(db.addBooking(new Booking(1, "krismania", 1, LocalDate.parse("2017-05-01"), LocalTime.of(12, 30), LocalTime.of(13, 00))));
-		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.of(12, 30), LocalTime.of(13, 00))));
-		
 		assertTrue(db.addService(new Service(1, "Haircut", Duration.ofMinutes(15))));
-		assertTrue(db.addService(new Service(2, "Colour", Duration.ofMinutes(40))));
+		assertTrue(db.addService(new Service(2, "Colour", Duration.ofMinutes(30))));
+		
+		assertTrue(db.addBooking(new Booking(1, "krismania", 1, LocalDate.parse("2017-05-01"), LocalTime.of(12, 30), db.getService(2))));
+		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.of(12, 30), db.getService(2))));
 	}
 	
 	@After
@@ -309,7 +309,9 @@ public class DatabaseTest
 		b.setEmployee(1);
 		b.setDate(LocalDate.of(2017, 5, 1));
 		b.setStart(LocalTime.of(12, 30));
-		b.setEnd(LocalTime.of(13, 00));
+		b.setService(db.getService(2));
+		
+		System.out.println(db.getService(2));
 		
 		assertFalse(db.addBooking(b));
 	}
@@ -323,7 +325,7 @@ public class DatabaseTest
 		b.setEmployee(1);
 		b.setDate(LocalDate.of(2017, 5, 1));
 		b.setStart(LocalTime.of(12, 30));
-		b.setEnd(LocalTime.of(13, 00));
+		b.setService(db.getService(2));
 		
 		assertFalse(db.addBooking(b));
 	}

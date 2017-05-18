@@ -189,10 +189,10 @@ public class Database implements DBInterface {
 					int employeeID = rs.getInt("EmpID");
 					LocalDate date = LocalDate.parse(rs.getString("Date"));
 					LocalTime start = LocalTime.ofSecondOfDay((rs.getInt("Start")));
-					LocalTime end = LocalTime.ofSecondOfDay((rs.getInt("End")));
+					Service service = getService(rs.getInt("ServiceID"));
 					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, start, end));
+					bookings.add(new Booking(id, customer, employeeID, date, start, service));
 				}
 				logger.info("Found " + bookings.size() + " bookings for " + b.getCustomer() + " on " + b.getDate());
 			}
@@ -205,9 +205,6 @@ public class Database implements DBInterface {
 		// check that the booking being added does not overlap with any of these
 		for (Booking booking: bookings)
 		{
-			logger.info("old shift: " + booking.getStart() + " " + booking.getEnd() + 
-							"\nnew shift: " + b.getStart() + " " + b.getEnd());
-			
 			if (overlap(b.getStart(), b.getEnd(), booking.getStart(), booking.getEnd()))
 			{
 				// bookings overlap, this customer or employee already has a booking at this time
@@ -892,10 +889,10 @@ public class Database implements DBInterface {
 					int employeeID = bookingQuery.getInt("EmpID");
 					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime start = LocalTime.ofSecondOfDay((bookingQuery.getInt("Start")));
-					LocalTime end = LocalTime.ofSecondOfDay((bookingQuery.getInt("End")));
+					Service service = getService(bookingQuery.getInt("ServiceID"));
 					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, start, end));
+					bookings.add(new Booking(id, customer, employeeID, date, start, service));
 				}
 			}
 			
@@ -1152,7 +1149,7 @@ public class Database implements DBInterface {
 		return insert("Booking", Integer.toString(b.ID), b.getCustomer(), 
 						Integer.toString(b.getEmployeeID()), b.getDate().toString(), 
 						Integer.toString(b.getStart().toSecondOfDay()),
-						Integer.toString(b.getEnd().toSecondOfDay()));
+						Integer.toString(b.getService().ID));
 	}
 	
 	private boolean insert(Service s)
@@ -1487,10 +1484,11 @@ public class Database implements DBInterface {
 		booking.addColumn("EmpID", "int");
 		booking.addColumn("Date", "DATE");
 		booking.addColumn("Start", "int");
-		booking.addColumn("End", "int");
+		booking.addColumn("ServiceID", "int");
 		booking.setPrimary("BookingID");
 		booking.addForeignKey("Customer", "Customer(Username)");
 		booking.addForeignKey("EmpID", "Employee(EmpID)");
+		booking.addForeignKey("ServiceID", "Service(ServiceID)");
 		
 		Table service = new Table("Service");
 		service.addColumn("ServiceID", "int");
