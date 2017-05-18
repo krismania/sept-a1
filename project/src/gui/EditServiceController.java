@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -11,21 +12,38 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import main.Controller;
 import model.Service;
 
+/**
+ * Screen for viewing, editing and deleting services as a business owner.
+ * @author krismania
+ */
 public class EditServiceController implements Initializable
 {
+	private Controller c = Controller.getInstance();
+	
 	@FXML Node root;
+	
 	@FXML ChoiceBox<Service> cbServices;
 	@FXML TextField tfName;
-	@FXML ChoiceBox<String> cbDuration;
+	@FXML TextField tfDuration;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		// TODO Auto-generated method stub
-		
+		loadServices();
+	}
+	
+	@FXML
+	public void handleServiceSelect()
+	{
+		loadServiceDeatil();
+		// enable editing
+		tfName.setDisable(false);
+		tfDuration.setDisable(false);
 	}
 	
 	@FXML
@@ -36,8 +54,14 @@ public class EditServiceController implements Initializable
 	
 	@FXML
 	public void handleNew()
-	{
+	{	
+		c.addNewService();
 		
+		// refresh the service dropdown
+		loadServices();
+		
+		// select the new service (should be last in the list)
+		cbServices.getSelectionModel().selectLast();
 	}
 	
 	@FXML
@@ -50,6 +74,31 @@ public class EditServiceController implements Initializable
 	public void handleBack()
 	{
 		switchTo("BOMenu");
+	}
+	
+	/**
+	 * Gets list of services from the DB, and updates the combo box with them.
+	 * @author krismania
+	 */
+	private void loadServices()
+	{
+		// clear the list first
+		cbServices.getItems().clear();
+		
+		ArrayList<Service> services = c.getServices();
+		cbServices.getItems().addAll(services);
+	}
+	
+	/**
+	 * Loads the selected service's details into the other form fields.
+	 * @author krismania
+	 */
+	private void loadServiceDeatil()
+	{
+		Service s = cbServices.getValue();
+		
+		tfName.setText(s.getName());
+		tfDuration.setText(Long.toString(s.getDuration().toMinutes()));
 	}
 	
 	// TODO: refactor this

@@ -1,9 +1,11 @@
 package database;
 import java.sql.*;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.Account;
@@ -11,6 +13,7 @@ import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
+import model.Service;
 import model.Shift;
 
 public class Database implements DBInterface {
@@ -215,6 +218,12 @@ public class Database implements DBInterface {
 		return insert(b);
 	}
 
+	@Override
+	public boolean addService(Service service)
+	{
+		return insert(service);
+	}
+
 	/**
 	 * @author krismania
 	 */
@@ -271,6 +280,37 @@ public class Database implements DBInterface {
 		return new Shift(maxID+1, employeeID, null, null, null);
 	}
 	
+	/**
+	 * find the highest ID and create a new service with the next one.
+	 * @author krismania
+	 */
+	@Override
+	public Service buildService()
+	{
+		int maxID = 0;
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(ServiceID) AS id FROM Service"))
+			{
+				if (rs.next())
+				{
+					maxID = rs.getInt("id");
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// add 1 to the max ID for the new ID
+		int newID = maxID + 1;
+		
+		logger.info("Building service with ID " + newID);
+		return new Service(newID, null, null);
+	}
+
 	/**
 	 * @author James
 	 */
@@ -478,6 +518,36 @@ public class Database implements DBInterface {
 		return businessOwners;
 	}
 	
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public ArrayList<Service> getServices()
+	{
+		ArrayList<Service> services = new ArrayList<Service>();
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Service"))
+			{
+				while (rs.next())
+				{
+					int id = rs.getInt("ServiceID");
+					String name = rs.getString("Name");
+					Duration duration = Duration.ofMinutes(rs.getInt("Duration"));
+									
+					services.add(new Service(id, name, duration));
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return services;
+	}
+
 	/**
 	 * @author James
 	 * @author krismania
@@ -1023,6 +1093,12 @@ public class Database implements DBInterface {
 						Integer.toString(b.getEnd().toSecondOfDay()));
 	}
 	
+	private boolean insert(Service s)
+	{
+		return insert("Service", Integer.toString(s.ID), s.getName(),
+						Long.toString(s.getDuration().toMinutes()));
+	}
+	
 	/**
 	 * Insert data into the database
 	 * @author James
@@ -1354,6 +1430,12 @@ public class Database implements DBInterface {
 		booking.addForeignKey("Customer", "Customer(Username)");
 		booking.addForeignKey("EmpID", "Employee(EmpID)");
 		
+		Table service = new Table("Service");
+		service.addColumn("ServiceID", "int");
+		service.addColumn("Name", "varchar(30)");
+		service.addColumn("Duration", "int");
+		service.setPrimary("ServiceID");
+		
 		try
 		{
 			try (Statement stmt = c.createStatement())
@@ -1369,6 +1451,8 @@ public class Database implements DBInterface {
 				stmt.execute(shift.toString());
 				logger.fine("Creating table: " + booking);
 				stmt.execute(booking.toString());
+				logger.fine("Creating table: " + service);
+				stmt.execute(service.toString());
 			}
 		}
 		catch (SQLException e)

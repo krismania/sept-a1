@@ -7,6 +7,7 @@ import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
+import model.Service;
 import model.Shift;
 
 
@@ -33,6 +34,10 @@ public interface DBInterface
 	 */
 	boolean addShift(Shift shift);
 
+	/**
+	 * Adds the given service to the database.
+	 */
+	boolean addService(Service service);
 
 	/**
 	 * Write a booking to the database.
@@ -57,8 +62,7 @@ public interface DBInterface
 	 * Returns the shift specified by the given ID
 	 */
 	Shift getShift(int shiftID);
-
-
+	
 	/**
 	 * Generates a new empty employee object with the next valid ID.
 	 */
@@ -76,7 +80,11 @@ public interface DBInterface
 	 * Builds a booking object with the next available ID
 	 */
 	Booking buildBooking();
-
+	
+	/**
+	 * Builds a service object with the next available ID
+	 */
+	Service buildService();
 
 	/**
 	 * Get a list of all customers in the DB.
@@ -102,6 +110,12 @@ public interface DBInterface
 	ArrayList<Employee> getAllEmployees();
 	
 	
+	/**
+	 * Returns a list of services available in the business
+	 */
+	ArrayList<Service> getServices();
+
+
 	/**
 	 * Returns an ArrayList of shifts for a given day
 	 */

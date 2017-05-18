@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="gui.EditServiceController">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditServiceController">
    <top>
       <Label text="Services" BorderPane.alignment="CENTER_LEFT">
          <font>
@@ -35,19 +34,19 @@
                </VBox.margin>
             </Label>
             <Label text="Existing Services" />
-            <ChoiceBox fx:id="cbServices" maxWidth="1.7976931348623157E308">
+            <ChoiceBox fx:id="cbServices" maxWidth="1.7976931348623157E308" onAction="#handleServiceSelect">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </ChoiceBox>
             <Label text="Name" />
-            <TextField fx:id="tfName">
+            <TextField fx:id="tfName" disable="true">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </TextField>
-            <Label text="Duration" />
-            <ChoiceBox fx:id="cbDuration" maxWidth="1.7976931348623157E308" />
+            <Label text="Duration (minutes)" />
+            <TextField fx:id="tfDuration" disable="true" />
          </children>
       </VBox>
    </center>

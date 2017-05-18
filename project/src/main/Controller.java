@@ -1,5 +1,6 @@
 package main;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,7 @@ import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
+import model.Service;
 import model.Shift;
 
 /**
@@ -278,6 +280,15 @@ public class Controller
 	}
 	
 	/**
+	 * Returns a list of business services.
+	 * @see DBInterface#getServices()
+	 */
+	public ArrayList<Service> getServices()
+	{
+		return db.getServices();
+	}
+
+	/**
 	 * Add a customer to the database.
 	 * @see DBInterface#addAccount(Account, String)
 	 * @author krismania
@@ -366,6 +377,25 @@ public class Controller
 		return db.addBooking(booking);
 	}
 	
+	/**
+	 * Creates a new service with a placeholder name & 30m duration in the DB,
+	 * and returns the ID of the new service.
+	 * @author krismania
+	 */
+	public int addNewService()
+	{
+		Service s = db.buildService();
+		s.setName("New Service");
+		s.setDuration(Duration.ofMinutes(30));
+		
+		if (db.addService(s))
+		{
+			return s.ID;
+		}
+		
+		return 0; // if creation fails, ID 0 is returned
+	}
+
 	/**
 	 * Validates a username & password, and if valid, returns the account
 	 * object & also sets the loggedUser property.
