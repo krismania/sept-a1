@@ -17,12 +17,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import database.Database;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Service;
-import model.Shift;
+import database.model.Booking;
+import database.model.BusinessOwner;
+import database.model.Customer;
+import database.model.Employee;
+import database.model.Service;
+import database.model.Shift;
 
 /**
  * Tests on the Database class.

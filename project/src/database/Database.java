@@ -5,16 +5,15 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Service;
-import model.Shift;
+import database.model.Account;
+import database.model.Booking;
+import database.model.BusinessOwner;
+import database.model.Customer;
+import database.model.Employee;
+import database.model.Service;
+import database.model.Shift;
 
 public class Database implements DBInterface {
 	

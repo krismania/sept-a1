@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Service;
+import database.model.Service;
 
 /**
  * @author krismania
