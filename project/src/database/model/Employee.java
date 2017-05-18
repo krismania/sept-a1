@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 /**
  * An employee in the system. Each employee is identified by their ID and has

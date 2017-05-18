@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 /**
  * Administrator account, capable of creating businesses
