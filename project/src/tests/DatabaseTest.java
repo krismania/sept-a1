@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
 import model.Employee;
+import model.Service;
 import model.Shift;
 
 /**
@@ -87,6 +89,9 @@ public class DatabaseTest
 		
 		assertTrue(db.addBooking(new Booking(1, "krismania", 1, LocalDate.parse("2017-05-01"), LocalTime.of(12, 30), LocalTime.of(13, 00))));
 		assertTrue(db.addBooking(new Booking(2, "jamesRulez", 1, LocalDate.parse("2017-05-08"), LocalTime.of(12, 30), LocalTime.of(13, 00))));
+		
+		assertTrue(db.addService(new Service(1, "Haircut", Duration.ofMinutes(15))));
+		assertTrue(db.addService(new Service(2, "Colour", Duration.ofMinutes(40))));
 	}
 	
 	@After
@@ -321,5 +326,18 @@ public class DatabaseTest
 		b.setEnd(LocalTime.of(13, 00));
 		
 		assertFalse(db.addBooking(b));
+	}
+	
+	@Test
+	public void testUpdateServiceValid()
+	{
+		assertTrue(db.updateService(new Service(2, "Hair Colour", Duration.ofMinutes(40))));
+	}
+	
+	@Test
+	public void testUpdateServiceInvalid()
+	{
+		// attempt to update a service that doesn't exist
+		assertFalse(db.updateService(new Service(4, "Hair Colour", Duration.ofMinutes(40))));
 	}
 }

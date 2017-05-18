@@ -233,8 +233,7 @@ public class Database implements DBInterface {
 			String sql = String.format("UPDATE Service SET Name = '%s', Duration = %d WHERE ServiceID = %d", 
 							service.getName(), service.getDuration().toMinutes(), service.ID);
 			
-			stmt.execute(sql);
-			return true;
+			if (stmt.executeUpdate(sql) == 1) return true; // only 1 row should be affected.
 		}
 		catch (SQLException e)
 		{
@@ -252,8 +251,7 @@ public class Database implements DBInterface {
 		try (Statement stmt = c.createStatement())
 		{
 			String sql = String.format("DELETE FROM Service WHERE ServiceID = %d", s.ID);
-			stmt.execute(sql);
-			return true;
+			if (stmt.executeUpdate(sql) == 1) return true;
 		}
 		catch (SQLException e)
 		{
