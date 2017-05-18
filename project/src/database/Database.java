@@ -558,6 +558,32 @@ public class Database implements DBInterface {
 	 * @author krismania
 	 */
 	@Override
+	public Service getService(int id)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Service WHERE ServiceID = " + id))
+			{
+				while (rs.next())
+				{
+					String name = rs.getString("Name");
+					Duration duration = Duration.ofMinutes(rs.getInt("Duration"));
+									
+					return new Service(id, name, duration);
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return null;
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	@Override
 	public ArrayList<Service> getServices()
 	{
 		ArrayList<Service> services = new ArrayList<Service>();

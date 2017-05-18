@@ -73,6 +73,13 @@ public interface DBInterface
 	 */
 	Shift getShift(int shiftID);
 	
+	
+	/**
+	 * Returns a service object by it's ID
+	 */
+	Service getService(int id);
+
+
 	/**
 	 * Generates a new empty employee object with the next valid ID.
 	 */
