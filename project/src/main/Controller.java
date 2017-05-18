@@ -11,14 +11,14 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import database.DBInterface;
-import database.Database;
 import database.model.Account;
 import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
 import database.model.Shift;
+import database.BusinessDatabase;
+import database.MasterDatabase;
 
 /**
  * Controller class, which drives interaction between the UI and the database.
@@ -32,13 +32,15 @@ public class Controller
 	private static Controller instance = null;
 	
 	private Logger logger;
-	private DBInterface db;
+	private MasterDatabase masterDB;
+	private BusinessDatabase businessDB;
   
 	/**
 	 * {@link Account} of the currently logged in user. If no user is logged in, this
 	 * will be {@code null}.
 	 */
 	public Account loggedUser = null;
+	public String currentDB;
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -54,7 +56,7 @@ public class Controller
 	}
 	
 	/**
-	 * Creates an instance of the controller class & opens the database.
+	 * Creates an instance of the controller class
 	 * @author krismania
 	 */
 	private Controller()
@@ -62,9 +64,35 @@ public class Controller
 		// get the logger
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
-		
+		//TODO: Add a checker for creating master DB on run.
+		loadDatabase("master");
+		logger.info("Instantiated Controller");
+	}
+	
+	/**
+	 * Abstracted out of constructor. 
+	 * Required to be public for reconnection back to master @signup and @login fail.
+	 * @author James
+	 * @param dbName
+	 */
+	public void loadDatabase(String dbName) 
+	{
+		currentDB = dbName;
 		// instantiate DB
-		db = new Database("awesomeSauce");
+		if(dbName.equals("master"))
+		{
+			masterDB = new MasterDatabase(dbName);
+		}
+		else
+		{
+			businessDB = new BusinessDatabase(dbName);
+		}
+		logger.info("Instantiated Controller");
+	}
+	
+	public void disconnectDB()
+	{
+		businessDB = null;
 		
 		logger.info("Instantiated Controller");
 	}
@@ -76,7 +104,7 @@ public class Controller
 	 */
 	public Customer getCustomer(String username)
 	{
-		Account account = db.getAccount(username);
+		Account account = businessDB.getAccount(username);
 		if (account instanceof Customer)
 		{
 			return (Customer) account;
@@ -92,7 +120,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<Customer> getAllCustomers()
 	{
-		return db.getAllCustomers();
+		return businessDB.getAllCustomers();
 	}
 	
 	/**
@@ -101,7 +129,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
-		return db.getAllBusinessOwners();
+		return businessDB.getAllBusinessOwners();
 	}
 	
 	/**
@@ -109,7 +137,7 @@ public class Controller
 	 */
 	public Employee getEmployee(int id)
 	{
-		return db.getEmployee(id);
+		return businessDB.getEmployee(id);
 	}
 	
 	/**
@@ -117,7 +145,7 @@ public class Controller
 	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return db.getAllEmployees();
+		return businessDB.getAllEmployees();
 	}
 	
 	/**
@@ -127,7 +155,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<String> getEmpByDay(LocalDate day)
 	{
-		// return db.getEmployeeWorkingOnDay(day);
+		// return businessDB.getEmployeeWorkingOnDay(day);
 		return new ArrayList<String>();
 	}
 	
@@ -148,7 +176,7 @@ public class Controller
 		
 		for (Integer empId : empIds)
 		{
-			employees.add(db.getEmployee(empId));
+			employees.add(businessDB.getEmployee(empId));
 		}
 		
 		return employees;
@@ -160,7 +188,7 @@ public class Controller
 	@Deprecated
 	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		//return db.getShiftBookings();
+		//return businessDB.getShiftBookings();
 		return new TreeMap<Shift, Booking>();
 	}
 	
@@ -170,7 +198,7 @@ public class Controller
 	 */
 	public ArrayList<Shift> getShiftsByDate(LocalDate date)
 	{
-		return db.getShifts(date.getDayOfWeek());
+		return businessDB.getShifts(date.getDayOfWeek());
 	}
 	
 	/**
@@ -234,7 +262,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getPastBookings()
 	{
-		ArrayList<Booking> bookings = db.getPastBookings();
+		ArrayList<Booking> bookings = businessDB.getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
 		
@@ -249,7 +277,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
-		ArrayList<Booking> bookings = db.getFutureBookings();
+		ArrayList<Booking> bookings = businessDB.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
 		return bookings;
@@ -278,6 +306,15 @@ public class Controller
 	}
 	
 	/**
+	 * Query Master DB for All Business Names
+	 * @author James
+	 * @return ArrayList of Strings
+	 */
+	public ArrayList<String> getAllBusinessNames()
+	{
+		return masterDB.getAllBusinesses();
+	}
+	/**
 	 * Add a customer to the database.
 	 * @see DBInterface#addAccount(Account, String)
 	 * @author krismania
@@ -289,7 +326,7 @@ public class Controller
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db
-		return db.addAccount(customer, password);
+		return businessDB.addAccount(customer, password);
 	}
 	
 	/**
@@ -301,13 +338,13 @@ public class Controller
 	{		
 		if(Validate.name(firstName) && Validate.name(lastName)
 				&& Validate.email(email) && Validate.phone(phoneNumber)){
-			Employee employee = db.buildEmployee();
+			Employee employee = businessDB.buildEmployee();
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
 			employee.setEmail(email);
 			employee.setPhoneNumber(phoneNumber);
 			
-			return db.addEmployee(employee);
+			return businessDB.addEmployee(employee);
 		}
 		else {
 			return false;
@@ -320,7 +357,7 @@ public class Controller
 	 */
 	public boolean employeeExists(int id)
 	{
-		return db.getEmployee(id) == null;
+		return businessDB.getEmployee(id) == null;
 	}
 	
 	/**
@@ -331,12 +368,12 @@ public class Controller
 	 */
 	public boolean addShift(int employeeID, String day, String start, String end)
 	{
-		Shift shift = db.buildShift(employeeID);
+		Shift shift = businessDB.buildShift(employeeID);
 		shift.setStart(convertTime(start));
 		shift.setEnd(convertTime(end));
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
-		return db.addShift(shift);
+		return businessDB.addShift(shift);
 	}
 	
   /** Add a booking to the DB.
@@ -349,7 +386,7 @@ public class Controller
 		LocalTime start = convertTime(time);
 		LocalTime end = start.plusMinutes(30);
 		
-		Booking booking = db.buildBooking();
+		Booking booking = businessDB.buildBooking();
 		if(customerUsername.isEmpty())
 		{
 			booking.setCustomer(loggedUser.username);
@@ -363,7 +400,7 @@ public class Controller
 		booking.setStart(start);
 		booking.setEnd(end);
 		
-		return db.addBooking(booking);
+		return businessDB.addBooking(booking);
 	}
 	
 	/**
@@ -373,7 +410,7 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		loggedUser = db.login(username, password);
+		loggedUser = businessDB.login(username, password);
 		
 		if (loggedUser != null)
 		{
@@ -392,6 +429,7 @@ public class Controller
 	{
 		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
+		businessDB = null;
 	}
 	
 	/**
