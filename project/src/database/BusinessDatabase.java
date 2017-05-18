@@ -8,12 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Customer;
-import model.Employee;
-import model.Shift;
+import database.model.Account;
+import database.model.Booking;
+import database.model.BusinessOwner;
+import database.model.Customer;
+import database.model.Employee;
+import database.model.Shift;
 
 public class BusinessDatabase extends Database{
 

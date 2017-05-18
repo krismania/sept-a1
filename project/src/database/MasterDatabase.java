@@ -3,14 +3,9 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 
-import model.Account;
-import model.Booking;
-import model.BusinessOwner;
-import model.Employee;
-import model.Shift;
+import database.model.BusinessOwner;
 
 public class MasterDatabase extends Database{
 

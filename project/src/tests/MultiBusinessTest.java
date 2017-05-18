@@ -2,18 +2,10 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Booking;
-import model.BusinessOwner;
-import model.ShiftTime;
+import database.model.BusinessOwner;
 
 public class MultiBusinessTest
 {
