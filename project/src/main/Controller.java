@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 
 import database.DBInterface;
 import database.Database;
-import database.businessDatabase;
-import database.masterDatabase;
+import database.BusinessDatabase;
+import database.MasterDatabase;
 import model.Account;
 import model.Booking;
 import model.BusinessOwner;
@@ -34,7 +34,8 @@ public class Controller
 	private static Controller instance = null;
 	
 	private Logger logger;
-	private Database db;
+	private MasterDatabase masterDB;
+	private BusinessDatabase businessDB;
   
 	/**
 	 * {@link Account} of the currently logged in user. If no user is logged in, this
@@ -82,18 +83,18 @@ public class Controller
 		// instantiate DB
 		if(dbName.equals("master"))
 		{
-			db = new masterDatabase(dbName);
+			masterDB = new MasterDatabase(dbName);
 		}
 		else
 		{
-			db = new businessDatabase(dbName);
+			businessDB = new BusinessDatabase(dbName);
 		}
 		logger.info("Instantiated Controller");
 	}
 	
 	public void disconnectDB()
 	{
-		db = null;
+		businessDB = null;
 		
 		logger.info("Instantiated Controller");
 	}
@@ -105,7 +106,7 @@ public class Controller
 	 */
 	public Customer getCustomer(String username)
 	{
-		Account account = ((businessDatabase) db).getAccount(username);
+		Account account = businessDB.getAccount(username);
 		if (account instanceof Customer)
 		{
 			return (Customer) account;
@@ -121,7 +122,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<Customer> getAllCustomers()
 	{
-		return db.getAllCustomers();
+		return businessDB.getAllCustomers();
 	}
 	
 	/**
@@ -130,7 +131,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
-		return db.getAllBusinessOwners();
+		return businessDB.getAllBusinessOwners();
 	}
 	
 	/**
@@ -138,7 +139,7 @@ public class Controller
 	 */
 	public Employee getEmployee(int id)
 	{
-		return ((businessDatabase) db).getEmployee(id);
+		return businessDB.getEmployee(id);
 	}
 	
 	/**
@@ -146,7 +147,7 @@ public class Controller
 	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return ((businessDatabase) db).getAllEmployees();
+		return businessDB.getAllEmployees();
 	}
 	
 	/**
@@ -156,7 +157,7 @@ public class Controller
 	@Deprecated
 	public ArrayList<String> getEmpByDay(LocalDate day)
 	{
-		// return db.getEmployeeWorkingOnDay(day);
+		// return businessDB.getEmployeeWorkingOnDay(day);
 		return new ArrayList<String>();
 	}
 	
@@ -177,7 +178,7 @@ public class Controller
 		
 		for (Integer empId : empIds)
 		{
-			employees.add(((businessDatabase) db).getEmployee(empId));
+			employees.add(businessDB.getEmployee(empId));
 		}
 		
 		return employees;
@@ -189,7 +190,7 @@ public class Controller
 	@Deprecated
 	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		//return db.getShiftBookings();
+		//return businessDB.getShiftBookings();
 		return new TreeMap<Shift, Booking>();
 	}
 	
@@ -199,7 +200,7 @@ public class Controller
 	 */
 	public ArrayList<Shift> getShiftsByDate(LocalDate date)
 	{
-		return ((businessDatabase) db).getShifts(date.getDayOfWeek());
+		return businessDB.getShifts(date.getDayOfWeek());
 	}
 	
 	/**
@@ -263,7 +264,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getPastBookings()
 	{
-		ArrayList<Booking> bookings = ((businessDatabase) db).getPastBookings();
+		ArrayList<Booking> bookings = businessDB.getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
 		
@@ -278,7 +279,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
-		ArrayList<Booking> bookings = ((businessDatabase) db).getFutureBookings();
+		ArrayList<Booking> bookings = businessDB.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
 		return bookings;
@@ -313,7 +314,7 @@ public class Controller
 	 */
 	public ArrayList<String> getAllBusinessNames()
 	{
-		return ((masterDatabase) db).getAllBusinesses();
+		return masterDB.getAllBusinesses();
 	}
 	/**
 	 * Add a customer to the database.
@@ -327,7 +328,7 @@ public class Controller
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db
-		return ((businessDatabase) db).addAccount(customer, password);
+		return businessDB.addAccount(customer, password);
 	}
 	
 	/**
@@ -339,13 +340,13 @@ public class Controller
 	{		
 		if(Validate.name(firstName) && Validate.name(lastName)
 				&& Validate.email(email) && Validate.phone(phoneNumber)){
-			Employee employee = ((businessDatabase) db).buildEmployee();
+			Employee employee = businessDB.buildEmployee();
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
 			employee.setEmail(email);
 			employee.setPhoneNumber(phoneNumber);
 			
-			return ((businessDatabase) db).addEmployee(employee);
+			return businessDB.addEmployee(employee);
 		}
 		else {
 			return false;
@@ -358,7 +359,7 @@ public class Controller
 	 */
 	public boolean employeeExists(int id)
 	{
-		return ((businessDatabase) db).getEmployee(id) == null;
+		return businessDB.getEmployee(id) == null;
 	}
 	
 	/**
@@ -369,12 +370,12 @@ public class Controller
 	 */
 	public boolean addShift(int employeeID, String day, String start, String end)
 	{
-		Shift shift = ((businessDatabase) db).buildShift(employeeID);
+		Shift shift = businessDB.buildShift(employeeID);
 		shift.setStart(convertTime(start));
 		shift.setEnd(convertTime(end));
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
-		return ((businessDatabase) db).addShift(shift);
+		return businessDB.addShift(shift);
 	}
 	
   /** Add a booking to the DB.
@@ -387,7 +388,7 @@ public class Controller
 		LocalTime start = convertTime(time);
 		LocalTime end = start.plusMinutes(30);
 		
-		Booking booking = ((businessDatabase) db).buildBooking();
+		Booking booking = businessDB.buildBooking();
 		if(customerUsername.isEmpty())
 		{
 			booking.setCustomer(loggedUser.username);
@@ -401,7 +402,7 @@ public class Controller
 		booking.setStart(start);
 		booking.setEnd(end);
 		
-		return ((businessDatabase) db).addBooking(booking);
+		return businessDB.addBooking(booking);
 	}
 	
 	/**
@@ -411,7 +412,7 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		loggedUser = ((businessDatabase) db).login(username, password);
+		loggedUser = businessDB.login(username, password);
 		
 		if (loggedUser != null)
 		{
@@ -430,7 +431,7 @@ public class Controller
 	{
 		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
-		db = null;
+		businessDB = null;
 	}
 	
 	/**
