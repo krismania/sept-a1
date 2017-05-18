@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import database.Database;
+import database.BusinessDatabase;
 import model.Booking;
 import model.BusinessOwner;
 import model.Customer;
@@ -26,12 +27,12 @@ import model.Shift;
  * Tests on the Database class.
  * @author krismania
  */
-public class DatabaseTest
+public class BusinessDatabaseTest
 {
 	private static int COUNTER = 1;
 	
 	private String dbName;
-	private Database db;
+	private BusinessDatabase db;
 	
 	private void removeDB() throws Exception
 	{
@@ -68,7 +69,7 @@ public class DatabaseTest
 		removeDB();
 		
 		// Create a new test database, and populate it with data
-		db = new Database(dbName);
+		db = new BusinessDatabase(dbName);
 		
 		assertTrue(db.addAccount(new BusinessOwner("owner", "Some Business", "Ava Gordy", "123 Some St", "1300 123 456"), "Password1"));
 		assertTrue(db.addAccount(new Customer("bobby-tables", "Robert", "Table", "drop@table.star", "12345678"), "SomePassword5"));
