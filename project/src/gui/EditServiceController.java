@@ -35,6 +35,14 @@ public class EditServiceController implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
+		// restrict duration to only integers
+		tfDuration.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*"))
+			{
+				tfDuration.setText(oldValue);
+			}
+		});
+		
 		loadServices();
 	}
 	
@@ -55,7 +63,7 @@ public class EditServiceController implements Initializable
 		
 		// update the local object
 		Service s = cbServices.getValue();
-				
+		
 		s.setName(tfName.getText());
 		s.setDuration(Duration.ofMinutes(Integer.parseInt(tfDuration.getText())));
 		
