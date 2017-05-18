@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BOMenuController">
    <center>
       <VBox BorderPane.alignment="CENTER">
@@ -25,6 +24,11 @@
                </VBox.margin>
             </Button>
             <Button fx:id="addTime" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Add Shift Time">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="editService" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Edit Services">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>

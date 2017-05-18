@@ -5,16 +5,14 @@ import static org.junit.Assert.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import database.model.Booking;
-import database.model.ShiftTime;
+import database.model.Service;
 
 public class BookingTest
 {
@@ -31,46 +29,43 @@ public class BookingTest
 		String customer;
 		LocalDate date;
 		LocalTime start;
-		LocalTime end;
+		Service service;
 		
 		// create some test objects
+		service = new Service(1, "Test Service", Duration.ofMinutes(30));
 		
 		bookingID = 1;
 		customer = "customer";
 		employeeID = 5;
 		date = LocalDate.of(2017, 3, 1);
 		start = LocalTime.of(10, 30);
-		end = LocalTime.of(11, 30);
 		
-		booking1 = new Booking(bookingID, customer, employeeID, date, start, end);
-		booking1Clone = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking1 = new Booking(bookingID, customer, employeeID, date, start, service);
+		booking1Clone = new Booking(bookingID, customer, employeeID, date, start, service);
 		
 		bookingID = 2;
 		customer = "customer";
 		employeeID = 3;
 		date = LocalDate.of(2017, 6, 12);
 		start = LocalTime.of(17, 00);
-		end = LocalTime.of(17, 15);
 		
-		booking2 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking2 = new Booking(bookingID, customer, employeeID, date, start, service);
 		
 		bookingID = 3;
 		customer = "someoneelse";
 		employeeID = 7;
 		date = LocalDate.of(2017, 6, 12);
 		start = LocalTime.of(14, 45);
-		end = LocalTime.of(15, 15);
 		
-		booking3 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking3 = new Booking(bookingID, customer, employeeID, date, start, service);
 		
 		bookingID = 3;
 		customer = "someoneelse";
 		employeeID = 7;
 		date = LocalDate.of(2017, 2, 21);
 		start = LocalTime.of(14, 45);
-		end = LocalTime.of(14, 55);
 		
-		booking4 = new Booking(bookingID, customer, employeeID, date, start, end);
+		booking4 = new Booking(bookingID, customer, employeeID, date, start, service);
 	}
 	
 	@Test

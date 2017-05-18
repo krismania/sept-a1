@@ -1,5 +1,6 @@
 package main;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
+import database.model.Service;
 import database.model.Shift;
 import database.BusinessDatabase;
 import database.MasterDatabase;
@@ -314,6 +316,16 @@ public class Controller
 	{
 		return masterDB.getAllBusinesses();
 	}
+	
+	/**
+	 * Returns a list of business services.
+	 * @see DBInterface#getServices()
+	 */
+	public ArrayList<Service> getServices()
+	{
+		return businessDB.getServices();
+	}
+
 	/**
 	 * Add a customer to the database.
 	 * @see DBInterface#addAccount(Account, String)
@@ -378,13 +390,12 @@ public class Controller
 	
   /** Add a booking to the DB.
 	 * @author James
+	 * @author krismania
 	 * TODO: fix the inputs for this method
 	 */
-	public boolean addBooking(LocalDate localDate, String time, int empID, String customerUsername) 
+	public boolean addBooking(LocalDate localDate, String time, Service service, int empID, String customerUsername) 
 	{
-		// TODO: this assumes appointments last 30 mins
 		LocalTime start = convertTime(time);
-		LocalTime end = start.plusMinutes(30);
 		
 		Booking booking = businessDB.buildBooking();
 		if(customerUsername.isEmpty())
@@ -398,11 +409,40 @@ public class Controller
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
 		booking.setStart(start);
-		booking.setEnd(end);
+		booking.setService(service);
 		
 		return businessDB.addBooking(booking);
 	}
 	
+	/**
+	 * Creates a new service with a placeholder name & 30m duration in the DB,
+	 * and returns the ID of the new service.
+	 * @author krismania
+	 */
+	public int addNewService()
+	{
+		Service s = businessDB.buildService();
+		s.setName("New Service");
+		s.setDuration(Duration.ofMinutes(30));
+		
+		if (businessDB.addService(s))
+		{
+			return s.ID;
+		}
+		
+		return 0; // if creation fails, ID 0 is returned
+	}
+	
+	public boolean updateService(Service s)
+	{
+		return businessDB.updateService(s);
+	}
+
+	public boolean deleteService(Service s)
+	{
+		return businessDB.deleteService(s);
+	}
+
 	/**
 	 * Validates a username & password, and if valid, returns the account
 	 * object & also sets the loggedUser property.

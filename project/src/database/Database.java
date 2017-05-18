@@ -1,6 +1,7 @@
 package database;
 import java.sql.*;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
+import database.model.Service;
 import database.model.Shift;
 
 public abstract class Database {
@@ -58,7 +60,6 @@ public abstract class Database {
 	}
 
 	//***PUBLIC API***
-
 
 	/**
 	 * @author James
@@ -148,170 +149,6 @@ public abstract class Database {
 		
 		return businessOwners;
 	}
-
-//	TODO: remove this -kg
-//	@Override
-//	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
-//	{
-//		String day = date.getDayOfWeek().toString();
-//		ArrayList<String> Workers = new ArrayList<String>();
-//		
-//		try
-//		{
-//			Statement stmt = c.createStatement();
-//			
-//			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
-//			
-//			ResultSet rs = stmt.executeQuery(sql);
-//			
-//			while(rs.next())
-//			{
-//		         //JM Retrieve by column name
-//		         
-//				String empID = Integer.toString(rs.getInt("EmpID"));
-//		         
-//		         // add it to the list
-//		         Workers.add(empID);
-//		    }
-//		}
-//		catch(SQLException e)
-//		{
-//			//JM Handle errors for JDBC
-//			logger.warning(e.toString());
-//		}
-//		catch(Exception e)
-//		{
-//		    //JM Handle errors for Class.forName
-//			logger.warning(e.toString());
-//		}
-//		return Workers;
-//	}
-	
-//	/**
-//	 * @author James
-//	 * TODO: Remove this -kg
-//	 */
-//	@Override
-//	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
-//	{
-//		boolean shiftExists = false;
-//		try
-//		{
-//			Statement stmt = c.createStatement();
-//			try (ResultSet rs = stmt.executeQuery(
-//							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
-//									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
-//									time.toString().toUpperCase())))
-//			{
-//				while (rs.next())
-//				{
-//					shiftExists = true;
-//				}
-//			}
-//			
-//		}
-//		catch (SQLException e)
-//		{
-//			logger.warning(e.toString());
-//		}
-//		return shiftExists;
-//	}
-	
-	
-
-//	TODO: remove this -kg
-//	@Override
-//	public ArrayList<Shift> getShifts(int EmpID, String Day)
-//	{
-//		ArrayList<Shift> Shifts = new ArrayList<Shift>();
-//		try
-//		{
-//			Statement stmt = c.createStatement();
-//			
-//			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
-//			
-//			ResultSet rs = stmt.executeQuery(sql);
-//			
-//			while(rs.next())
-//			{
-//		         //JM Retrieve by column name
-//		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
-//		         int time = rs.getInt("Time");
-//		         int shiftID = rs.getInt("Shift_ID");
-//		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
-//		         // create shift object. -kg
-//		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
-//		         
-//		         // add it to the list
-//		         Shifts.add(shift);
-//		    }
-//		}
-//		catch(SQLException e)
-//		{
-//			//JM Handle errors for JDBC
-//			logger.warning(e.toString());
-//		}
-//		catch(Exception e)
-//		{
-//		    //JM Handle errors for Class.forName
-//			logger.warning(e.toString());
-//		}
-//		return Shifts;
-//	}
-
-//	/**
-//	 * @author krismania
-//	 * TODO: Check if method is used or depreciated. 
-//	 * TODO: Remove this -kg
-//	 */
-//	@Override
-//	public TreeMap<Shift, Booking> getShiftBookings()
-//	{
-//		// get the list of employees
-//		logger.info("getting employees");
-//		ArrayList<Employee> employees = getAllEmployees();
-//		
-//		// build the list of all shifts
-//		logger.info("getting shifts");
-//		ArrayList<Shift> shifts = new ArrayList<Shift>();
-//		for (Employee employee : employees)
-//		{
-//			//shifts.addAll(getShifts(employee.ID));
-//		}
-//		
-//		// get the list of bookings in the next 7 days
-//		logger.info("getting upcoming bookings");
-//		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
-//		
-//		// create hashmap to decide which shifts are booked within the next 7 days
-//		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
-//		
-//		// iterate over each shift and decide if it's been booked
-//		for (Shift shift : shifts)
-//		{
-//			logger.fine("looping shift " + shift.ID);
-//			// find a booking with matching details
-//			boolean found = false;
-//			for (Booking booking : bookings)
-//			{
-//				logger.fine(shift.toString() + " | " + booking.toString());
-//				// figure out weekday of booking
-//				if (booking.getDay() == shift.getDay() && booking.getTime() == shift.getTime() &&
-//								booking.getEmployeeID() == shift.employeeID)
-//				{
-//					// booking and shift match, to hash map
-//					shiftBookings.put(shift, booking);
-//					found = true;
-//					break;
-//				}
-//			}
-//			// otherwise, enter null as the booking
-//			if (!found) shiftBookings.put(shift, null);
-//			logger.fine("found match: " + found);
-//		}
-//		
-//		return shiftBookings;
-//	}
 
 	
 	//***CREATE METHODS***
@@ -465,13 +302,6 @@ public abstract class Database {
 			return false;
 		}
 	}
-	
-	
-	/* INSERT HELPERS */
-	
-	
-	
-	
 	
 	/**
 	 * Insert data into the database
@@ -728,10 +558,17 @@ public abstract class Database {
 		booking.addColumn("EmpID", "int");
 		booking.addColumn("Date", "DATE");
 		booking.addColumn("Start", "int");
-		booking.addColumn("End", "int");
+		booking.addColumn("ServiceID", "int");
 		booking.setPrimary("BookingID");
 		booking.addForeignKey("Customer", "Customer(Username)");
 		booking.addForeignKey("EmpID", "Employee(EmpID)");
+		booking.addForeignKey("ServiceID", "Service(ServiceID)");
+		
+		Table service = new Table("Service");
+		service.addColumn("ServiceID", "int");
+		service.addColumn("Name", "varchar(30)");
+		service.addColumn("Duration", "int");
+		service.setPrimary("ServiceID");
 		
 		try
 		{
@@ -748,6 +585,8 @@ public abstract class Database {
 				stmt.execute(shift.toString());
 				logger.fine("Creating table: " + booking);
 				stmt.execute(booking.toString());
+				logger.fine("Creating table: " + service);
+				stmt.execute(service.toString());
 			}
 		}
 		catch (SQLException e)

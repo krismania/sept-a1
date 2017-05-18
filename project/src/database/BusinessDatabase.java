@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
+import database.model.Service;
 import database.model.Shift;
 
-public class BusinessDatabase extends Database{
+public class BusinessDatabase extends Database implements DBInterface
+{
 
 	public BusinessDatabase(String dbName) {
 		super(dbName);
@@ -29,7 +32,7 @@ public class BusinessDatabase extends Database{
 	 * @author James
 	 * @author krismania
 	 */
-
+	@Override
 	public boolean addAccount(Account account, String password)
 	{
 		// first, check the username
@@ -49,7 +52,7 @@ public class BusinessDatabase extends Database{
 		return false;
 	}
 
-
+	@Override
 	public boolean addEmployee(Employee employee)
 	{
 		return insert(employee);
@@ -85,7 +88,7 @@ public class BusinessDatabase extends Database{
 	 * time before adding it to the db.
 	 * @author krismania
 	 */
-
+	@Override
 	public boolean addShift(Shift newShift)
 	{
 		ArrayList<Shift> shifts = new ArrayList<Shift>();
@@ -133,11 +136,11 @@ public class BusinessDatabase extends Database{
 	 * the same date at an overlapping time, or if the employee is already booked.
 	 * @author krismania
 	 */
-
+	@Override
 	public boolean addBooking(Booking b)
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-
+		
 		// get all other bookings for this customer on this date
 		try (Statement stmt = c.createStatement())
 		{			
@@ -151,10 +154,10 @@ public class BusinessDatabase extends Database{
 					int employeeID = rs.getInt("EmpID");
 					LocalDate date = LocalDate.parse(rs.getString("Date"));
 					LocalTime start = LocalTime.ofSecondOfDay((rs.getInt("Start")));
-					LocalTime end = LocalTime.ofSecondOfDay((rs.getInt("End")));
-
+					Service service = getService(rs.getInt("ServiceID"));
+					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, start, end));
+					bookings.add(new Booking(id, customer, employeeID, date, start, service));
 				}
 				logger.info("Found " + bookings.size() + " bookings for " + b.getCustomer() + " on " + b.getDate());
 			}
@@ -163,27 +166,69 @@ public class BusinessDatabase extends Database{
 		{
 			logger.warning(e.toString());
 		}
-
+		
 		// check that the booking being added does not overlap with any of these
 		for (Booking booking: bookings)
 		{
-			logger.info("old shift: " + booking.getStart() + " " + booking.getEnd() + 
-					"\nnew shift: " + b.getStart() + " " + b.getEnd());
-
 			if (overlap(b.getStart(), b.getEnd(), booking.getStart(), booking.getEnd()))
 			{
 				// bookings overlap, this customer or employee already has a booking at this time
 				return false;
 			}
 		}
-
+		
 		return insert(b);
+	}
+	
+	@Override
+	public boolean addService(Service service)
+	{
+		return insert(service);
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public boolean updateService(Service service)
+	{
+		// update the given service in the db
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("UPDATE Service SET Name = '%s', Duration = %d WHERE ServiceID = %d", 
+							service.getName(), service.getDuration().toMinutes(), service.ID);
+			
+			if (stmt.executeUpdate(sql) == 1) return true; // only 1 row should be affected.
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return false;
 	}
 
 	/**
 	 * @author krismania
 	 */
+	@Override
+	public boolean deleteService(Service s)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("DELETE FROM Service WHERE ServiceID = %d", s.ID);
+			if (stmt.executeUpdate(sql) == 1) return true;
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return false;
+	}
 
+	/**
+	 * @author krismania
+	 */
+	@Override
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
@@ -211,7 +256,7 @@ public class BusinessDatabase extends Database{
 	/**
 	 * @author krismania
 	 */
-
+	@Override
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
@@ -237,8 +282,40 @@ public class BusinessDatabase extends Database{
 	}
 
 	/**
+	 * find the highest ID and create a new service with the next one.
+	 * @author krismania
+	 */
+	@Override
+	public Service buildService()
+	{
+		int maxID = 0;
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(ServiceID) AS id FROM Service"))
+			{
+				if (rs.next())
+				{
+					maxID = rs.getInt("id");
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// add 1 to the max ID for the new ID
+		int newID = maxID + 1;
+		
+		logger.info("Building service with ID " + newID);
+		return new Service(newID, null, null);
+	}
+	
+	/**
 	 * @author James
 	 */
+	@Override
 	public Booking buildBooking() {
 		// find the highest ID
 		int maxID = 0;
@@ -261,7 +338,7 @@ public class BusinessDatabase extends Database{
 	/**
 	 * @author krismania
 	 */
-
+	@Override
 	public Account getAccount(String username)
 	{		
 		Class<? extends Account> type = validateUsername(username);
@@ -321,11 +398,67 @@ public class BusinessDatabase extends Database{
 
 		return null;
 	}
+	
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public Service getService(int id)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Service WHERE ServiceID = " + id))
+			{
+				while (rs.next())
+				{
+					String name = rs.getString("Name");
+					Duration duration = Duration.ofMinutes(rs.getInt("Duration"));
+									
+					return new Service(id, name, duration);
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return null;
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public ArrayList<Service> getServices()
+	{
+		ArrayList<Service> services = new ArrayList<Service>();
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Service"))
+			{
+				while (rs.next())
+				{
+					int id = rs.getInt("ServiceID");
+					String name = rs.getString("Name");
+					Duration duration = Duration.ofMinutes(rs.getInt("Duration"));
+									
+					services.add(new Service(id, name, duration));
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return services;
+	}
 
 	/**
 	 * @author krismania
 	 */
-
+	@Override
 	public Employee getEmployee(int id)
 	{
 		try
@@ -358,7 +491,7 @@ public class BusinessDatabase extends Database{
 	 * @author James
 	 * @author krismania
 	 */
-
+	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
 		ArrayList<Employee> roster = new ArrayList<Employee>();
@@ -388,7 +521,7 @@ public class BusinessDatabase extends Database{
 		}
 		return roster;
 	}
-
+	
 	/**
 	 * Returns an ArrayList of bookings in the database, restricted by the given
 	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
@@ -398,11 +531,11 @@ public class BusinessDatabase extends Database{
 	private ArrayList<Booking> getBookings(String constraint)
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-
+		
 		try (Statement stmt = c.createStatement())
 		{
 			try (ResultSet bookingQuery = stmt.executeQuery(
-					"SELECT * FROM Booking WHERE " + constraint))
+							"SELECT * FROM Booking WHERE " + constraint))
 			{
 				while (bookingQuery.next())
 				{
@@ -411,30 +544,30 @@ public class BusinessDatabase extends Database{
 					int employeeID = bookingQuery.getInt("EmpID");
 					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime start = LocalTime.ofSecondOfDay((bookingQuery.getInt("Start")));
-					LocalTime end = LocalTime.ofSecondOfDay((bookingQuery.getInt("End")));
-
+					Service service = getService(bookingQuery.getInt("ServiceID"));
+					
 					// construct the object & add to list. -kg
-					bookings.add(new Booking(id, customer, employeeID, date, start, end));
+					bookings.add(new Booking(id, customer, employeeID, date, start, service));
 				}
 			}
-
+			
 			stmt.close();
 		}
 		catch (SQLException e)
 		{
 			logger.warning(e.toString());
 		}
-
+		
 		return bookings;
 	}
 
-
+	@Override
 	public ArrayList<Booking> getPastBookings()
 	{
 		return getBookings("Date < DATE('now')");
 	}
 
-
+	@Override
 	public ArrayList<Booking> getFutureBookings()
 	{
 		return getBookings("Date >= DATE('now')");
@@ -444,7 +577,7 @@ public class BusinessDatabase extends Database{
 	 * Joint login function, may return either a Customer or BusinessOwner.
 	 * @author krismania
 	 */
-
+	@Override
 	public Account login(String username, String password)
 	{
 		boolean valid = false;
@@ -467,7 +600,7 @@ public class BusinessDatabase extends Database{
 	 * Returns a shift by it's ID
 	 * @author krismania
 	 */
-
+	@Override
 	public Shift getShift(int shiftID)
 	{
 		try (Statement stmt = c.createStatement())
@@ -495,19 +628,7 @@ public class BusinessDatabase extends Database{
 		return null;
 	}
 
-	/**
-	 * Helper method for inserting a {@link Booking} object into the db
-	 * @author krismania
-	 */
-	private boolean insert(Booking b)
-	{
-		return insert("Booking", Integer.toString(b.ID), b.getCustomer(), 
-				Integer.toString(b.getEmployeeID()), b.getDate().toString(), 
-				Integer.toString(b.getStart().toSecondOfDay()),
-				Integer.toString(b.getEnd().toSecondOfDay()));
-	}
-
-
+	@Override
 	public ArrayList<Shift> getShifts(DayOfWeek onDay)
 	{
 		ArrayList<Shift> shifts= new ArrayList<Shift>();
@@ -537,6 +658,28 @@ public class BusinessDatabase extends Database{
 		return shifts;
 	}
 
+	/**
+	 * Helper method for inserting a {@link Booking} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Booking b)
+	{
+		return insert("Booking", Integer.toString(b.ID), b.getCustomer(), 
+						Integer.toString(b.getEmployeeID()), b.getDate().toString(), 
+						Integer.toString(b.getStart().toSecondOfDay()),
+						Integer.toString(b.getService().ID));
+	}
+
+	/**
+	 * Helper method for inserting a {@link Service} object into the db
+	 * @author krismania
+	 */
+	private boolean insert(Service s)
+	{
+		return insert("Service", Integer.toString(s.ID), s.getName(),
+						Long.toString(s.getDuration().toMinutes()));
+	}
+	
 	/**
 	 * Helper method for inserting a {@link BusinessOwner} object into the db
 	 * @author krismania

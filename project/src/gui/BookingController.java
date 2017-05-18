@@ -3,22 +3,16 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import database.model.Account;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
-import database.model.Shift;
+import database.model.Service;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import main.Controller;
-import main.Validate;
-import javafx.scene.Parent;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,6 +37,7 @@ public class BookingController implements Initializable
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<Employee> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
+    @FXML private ChoiceBox<Service> serviceDropdown;
     
     @FXML private Label TitleOfDetails;
     @FXML private Label Email;
@@ -69,6 +64,10 @@ public class BookingController implements Initializable
 			}
 			@Override public Employee fromString(String string) { return null; }	
 		});
+    	
+    	// populate services dropdown
+    	serviceDropdown.getItems().addAll(c.getServices());
+    	serviceDropdown.getSelectionModel().selectFirst();
 	}
 
 	//Implements on select button action for returning to main menu - 
@@ -102,8 +101,8 @@ public class BookingController implements Initializable
     	else
     	{
     		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
-    				employeePicker.getValue().ID, customerUser.getText());
-    	
+    				serviceDropdown.getValue(),	employeePicker.getValue().ID, customerUser.getText());
+    		
     		if(booked)
 	    	{
     			GUIAlert.infoBox("Booking Successful", "Booking Confirmation");
