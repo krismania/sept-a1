@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import database.model.Account;
+import database.model.BusinessOwner;
+import database.model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +22,6 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.Controller;
-import model.Account;
-import model.BusinessOwner;
-import model.Customer;
 // Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {

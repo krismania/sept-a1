@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
