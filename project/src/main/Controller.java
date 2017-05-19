@@ -89,14 +89,11 @@ public class Controller
 		{
 			businessDB = new BusinessDatabase(dbName);
 		}
-		logger.info("Instantiated Controller");
 	}
 	
 	public void disconnectDB()
 	{
 		businessDB = null;
-		
-		logger.info("Instantiated Controller");
 	}
 	
 	/**
