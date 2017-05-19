@@ -347,8 +347,7 @@ public abstract class Database {
 		else
 		{
 			String query = "SELECT Username "
-					+ "FROM Admin"
-					+ "WHERE Username = 'Admin'";
+					+ "FROM Admin";
 
 				try 
 				{
@@ -358,7 +357,7 @@ public abstract class Database {
 					if(rs.next())
 					{
 						String user = rs.getString("Username");
-						if(user.equals(username))
+						if(user.equals("Admin"))
 						{
 							return Admin.class;
 						}
