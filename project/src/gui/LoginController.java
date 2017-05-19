@@ -48,7 +48,14 @@ public class LoginController implements Initializable
 		//Disconnect from master DB
 		c.disconnectDB();
 		//Load selected DB. JM
-		c.loadDatabase(businessPicker.getValue());
+		if(businessPicker.getValue() == null)
+		{
+			c.loadDatabase("master");
+		}
+		else
+		{
+			c.loadDatabase(businessPicker.getValue());
+		}
 		
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());

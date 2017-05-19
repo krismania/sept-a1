@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import database.model.Account;
 import database.model.BusinessOwner;
+import database.model.Customer;
 
 public class MasterDatabase extends Database{
 
@@ -62,6 +64,13 @@ public class MasterDatabase extends Database{
 		Table businesses = new Table("Businesses");
 		businesses.addColumn("businessName", "varchar(255)");
 		businesses.setPrimary("businessName");
+		System.out.println("Business Table Created!");
+		
+		Table admin = new Table("Admin");
+		admin.addColumn("Username", "varchar(255)");
+		admin.addColumn("Password", "varchar(255)");
+		admin.setPrimary("Username");
+		System.out.println("Admin Table Created!");
 		
 		try
 		{
@@ -70,8 +79,10 @@ public class MasterDatabase extends Database{
 				// Customer Table
 				logger.fine("Creating table: " + businesses);
 				stmt.execute(businesses.toString());
+				stmt.execute(admin.toString());
 				insert("testDB");
 				insert("awesomeSauce");
+				insert();
 			}
 		}
 		catch (SQLException e)
@@ -88,5 +99,11 @@ public class MasterDatabase extends Database{
 		bDb.addAccount(bo, "septBus1");
 		logger.fine("Added business Owner: " + bo.username );
 		return insert("Businesses", businessName);
+	}
+	
+	private boolean insert()
+	{
+		//Table, Username, Password
+		return insert("Admin", "Admin", "admin");
 	}
 }

@@ -450,7 +450,14 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		loggedUser = businessDB.login(username, password);
+		if(username.equals("Admin"))
+		{
+			loggedUser = masterDB.login(username, password);
+		}
+		else
+		{
+			loggedUser = businessDB.login(username, password);
+		}
 		
 		if (loggedUser != null)
 		{

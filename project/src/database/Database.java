@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import database.model.Account;
+import database.model.Admin;
 import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
@@ -26,6 +27,7 @@ public abstract class Database {
 	 * The name of the DB file, excluding it's extension
 	 */
 	private String dbName;
+	private boolean isAdmin = false;
 	
 	protected Logger logger;
 	
@@ -190,6 +192,216 @@ public abstract class Database {
 		}
 	}
 	
+	/**
+	 * Joint login function, may return either a Customer or BusinessOwner.
+	 * @author krismania
+	 */
+	public Account login(String username, String password)
+	{
+		boolean valid = false;
+		Account account = getAccount(username);
+
+		if (account instanceof Customer)
+		{
+			valid = validatePassword(username, password, "Customer");
+		}
+		else if (account instanceof BusinessOwner)
+		{
+			valid = validatePassword(username, password, "BusinessOwner");
+		}
+		else if(account instanceof Admin)
+		{
+			valid = validatePassword(username, password, "Admin");
+		}
+
+		if (valid) return account;
+		else return null;
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	public Account getAccount(String username)
+	{		
+		if(username.equals("Admin"))
+			isAdmin = true;
+		else
+			isAdmin = false;
+		
+		Class<? extends Account> type = validateUsername(username);
+
+		// check if type is null
+		if (type == null)
+		{
+			return null;
+		}
+
+		try
+		{
+			Statement stmt = c.createStatement();
+			if (type.equals(Customer.class))
+			{
+				try (ResultSet customerQuery = stmt.executeQuery(
+						String.format("SELECT * FROM Customer WHERE Username = '%s'", username)))
+				{
+					if (customerQuery.next())
+					{
+						// get info
+						String first = customerQuery.getString("Firstname");
+						String last = customerQuery.getString("Lastname");
+						String email = customerQuery.getString("Email");
+						String phone = customerQuery.getString("Phone");
+						String usr = customerQuery.getString("Username");
+
+						// create customer obj and return it
+						return new Customer(usr, first, last, email, phone);
+					}
+				}
+			}
+			else if (type.equals(BusinessOwner.class))
+			{
+				try (ResultSet boQuery = stmt.executeQuery(
+						String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username)))
+				{
+					if (boQuery.next())
+					{
+						// get info
+						String usr = boQuery.getString("Username");
+						String businessName = boQuery.getString("BusinessName");
+						String ownerName = boQuery.getString("Name");
+						String address = boQuery.getString("Address");
+						String phone = boQuery.getString("Phone");
+
+						// create obj and return
+						return new BusinessOwner(usr, businessName, ownerName, address, phone);
+					}
+				}
+			}
+			else if(type.equals(Admin.class))
+			{
+				try (ResultSet adminQuery = stmt.executeQuery(
+						String.format("SELECT * FROM Admin WHERE Username = '%s'", username)))
+				{
+					if (adminQuery.next())
+					{
+						// get info
+						String usr = adminQuery.getString("Username");
+						// create obj and return
+						return new Admin(usr);
+					}
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+
+		return null;
+	}
+	
+	/**
+	 * Returns a class object describing which type of user {@code username} is,
+	 * or null if the username is not found.
+	 * @author James
+	 * @author krismania
+	 */
+	private Class<? extends Account> validateUsername(String username) 
+	{		
+		if(!isAdmin)
+		{
+			String query = "SELECT Username, Type "
+				+ "FROM (SELECT Username, Type from Customer "
+				+ "UNION "
+				+ "SELECT Username, Type from BusinessOwner"
+				+ ") a "
+				+ "WHERE Username = '"+username+"'";
+
+			try 
+			{
+				Statement stmt = c.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+	
+				if(rs.next())
+				{
+					String type = rs.getString("Type");
+	
+					if(type.equals("BusinessOwner"))
+					{
+						return BusinessOwner.class;
+					}
+					else if (type.equals("Customer"))
+					{
+						return Customer.class;
+					}
+				}			
+	
+			} catch (SQLException e) {
+				//JM Catch if table already exists
+				logger.warning(e.toString());
+			} catch (Exception e) {
+				//JM Handles errors for Class.forName
+				logger.warning(e.toString());
+			}
+		}
+		else
+		{
+			String query = "SELECT Username "
+					+ "FROM Admin"
+					+ "WHERE Username = 'Admin'";
+
+				try 
+				{
+					Statement stmt = c.createStatement();
+					ResultSet rs = stmt.executeQuery(query);
+		
+					if(rs.next())
+					{
+						String user = rs.getString("Username");
+						if(user.equals(username))
+						{
+							return Admin.class;
+						}
+					}			
+		
+				} catch (SQLException e) {
+					//JM Catch if table already exists
+					System.out.println(dbName);
+					logger.warning(e.toString());
+				} catch (Exception e) {
+					//JM Handles errors for Class.forName
+					System.out.println(dbName);
+					logger.warning(e.toString());
+				}
+		}
+		return null;
+	}
+
+	/**
+	 * returns true if the username & password match in the given table.
+	 * @author krismania
+	 * @author James
+	 */
+	private boolean validatePassword(String username, String password, String tableName)
+	{
+		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
+
+		try
+		{
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			if (rs.getString(1).equals(password)) {
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+
+		return false;
+	}
 	
 	/**
 	 * Creates a table within the database
@@ -273,6 +485,7 @@ public abstract class Database {
 	 */
 	protected boolean insert(String table, String...values)
 	{
+		System.out.println(table + " in " + dbName);
 		// prepare values
 		for (int i = 0; i < values.length; i++)
 		{
