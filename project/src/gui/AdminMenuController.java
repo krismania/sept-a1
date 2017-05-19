@@ -32,7 +32,8 @@ public class AdminMenuController implements Initializable
     private Button manageBusiness;
 	
 	// Implements button redirecting to create business scene or manage business scene
-	void handleCreateBusinessAction(ActionEvent event) throws IOException
+    @FXML
+	public void handleCreateBusinessAction(ActionEvent event) throws IOException
 	{
         Stage stage;
         Parent rootAddBus, rootManBus;
