@@ -1,22 +1,27 @@
 package gui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.Controller;
 import main.Validate;
+
 //Implements Signup form for people without existing login details
-public class SignupController
+public class SignupController implements Initializable
 {
 	private Controller c = Controller.getInstance();
 	
@@ -32,6 +37,8 @@ public class SignupController
 	
 	@FXML private Label lblError1;
 	@FXML private Label lblError2;
+	
+	@FXML private ChoiceBox<String> businessPicker;
 	
 	//Helper method for triggering error output
 	private void setError(Label label, String text)
@@ -160,6 +167,11 @@ public class SignupController
 	@FXML
 	public void handleSignUp(ActionEvent event) throws IOException
 	{
+		//Disconnect from master DB
+		c.disconnectDB();
+		//Load selected DB. JM
+		c.loadDatabase(businessPicker.getValue());
+		
 		// TODO: verify details
 		if (validateAccount() & validateDetails())
 		{
@@ -168,7 +180,10 @@ public class SignupController
 							firstName.getText(), lastName.getText(),
 							email.getText(), phone.getText()))
 			{
-				
+				//Disconnect from DB in Controller.JM
+				c.disconnectDB();
+				//reconnect to master DB.JM
+				c.loadDatabase("master");
 				// alert the user
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Account Created!");
@@ -177,13 +192,28 @@ public class SignupController
 				alert.showAndWait();
 				
 				switchTo("Login");
+				
 			}
 			else
 			{
+				//Disconnect from DB in Controller.JM
+				c.disconnectDB();
+				//reconnect to master DB.JM
+				c.loadDatabase("master");
 				
 				// TODO: more specific errors here
 				setError(lblError2, "Account already exists.");
 			}
 		}
+	}
+	
+	@Override
+	public void initialize(URL url, ResourceBundle rb)
+	{
+		businessPicker.getItems().removeAll(businessPicker.getItems());
+		businessPicker.getItems().addAll(c.getAllBusinessNames());
+		
+		// select first business by default
+		businessPicker.getSelectionModel().selectFirst();
 	}
 }

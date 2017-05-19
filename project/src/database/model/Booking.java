@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,16 +17,18 @@ public class Booking implements Comparable<Booking>
 	private String customer;
 	private int employeeID;
 	private LocalDate date;
-	private LocalTime time;
+	private LocalTime start;
+	private Service service;
 	
-	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime time)
+	public Booking(int ID, String customer, int employeeID, LocalDate date, LocalTime start, Service service)
 	{
 		// TODO: does this class care about the name of the business? -kg
 		this.ID = ID;
 		this.customer = customer;
 		this.employeeID = employeeID;
 		this.date = date;
-		this.time = time;
+		this.start = start;
+		this.service = service;
 	}
 	
 	public String getCustomer()
@@ -50,10 +52,21 @@ public class Booking implements Comparable<Booking>
 		return DayOfWeek.valueOf(weekdayFormat.format(date).toUpperCase());
 	}
 	
-	public LocalTime getTime()
+	public LocalTime getStart()
 	{
-		return time;
+		return start;
 	}
+	
+	public Service getService()
+	{
+		return service;
+	}
+	
+	public LocalTime getEnd()
+	{
+		return start.plus(service.getDuration());
+	}
+	
 	public void setCustomer(String customer) 
 	{
 		this.customer = customer;
@@ -69,20 +82,26 @@ public class Booking implements Comparable<Booking>
 		this.date = localDate;
 	}
 	
-	public void setTime(LocalTime time) 
+	public void setStart(LocalTime time)
 	{
-		this.time = time;
+		this.start = time;
+	}
+	
+	public void setService(Service service)
+	{
+		this.service = service;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Booking: %d, Day: %s, Time: %s, Cust: %s",
-						ID, getDay().toString(), time.toString(), customer);
+		return String.format("%s: %d, Day: %s, Time: %s to %s, Cust: %s",
+						service.getName(), ID, getDay().toString(), start.toString(), 
+						getEnd().toString(), customer);
 	}
 
 	/**
-	 * Sort by date and then by time.
+	 * Sort by date and then by start time.
 	 */
 	@Override
 	public int compareTo(Booking b)
@@ -92,7 +111,7 @@ public class Booking implements Comparable<Booking>
 		//TODO added .toSecondOfDay() in order to fix error - not sure if correct though.
 		if (byDate == 0)
 		{
-			return this.time.toSecondOfDay() - b.time.toSecondOfDay();
+			return this.start.toSecondOfDay() - b.start.toSecondOfDay();
 		}
 		
 		return byDate;
