@@ -1,4 +1,4 @@
-package tests;
+package database.model;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import database.model.BusinessOwner;
 
-public class MultiBusinessTest
+public class BusinessOwnerTest
 {
 	public BusinessOwner businessOwner;
 	
