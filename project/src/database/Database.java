@@ -365,11 +365,9 @@ public abstract class Database {
 		
 				} catch (SQLException e) {
 					//JM Catch if table already exists
-					System.out.println(dbName);
 					logger.warning(e.toString());
 				} catch (Exception e) {
 					//JM Handles errors for Class.forName
-					System.out.println(dbName);
 					logger.warning(e.toString());
 				}
 		}
@@ -484,7 +482,6 @@ public abstract class Database {
 	 */
 	protected boolean insert(String table, String...values)
 	{
-		System.out.println(table + " in " + dbName);
 		// prepare values
 		for (int i = 0; i < values.length; i++)
 		{
@@ -499,7 +496,6 @@ public abstract class Database {
 		
 		// create the query
 		String query = "INSERT INTO " + table + " VALUES(" + valueString + ")";
-		
 		logger.fine("Executing query: " + query);
 		
 		try
