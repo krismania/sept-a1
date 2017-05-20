@@ -63,6 +63,7 @@ public class MasterDatabase extends Database{
 
 		Table businesses = new Table("Businesses");
 		businesses.addColumn("businessName", "varchar(255)");
+		businesses.addColumn("businessOwnerUsername", "varchar(255)");
 		businesses.setPrimary("businessName");
 		System.out.println("Business Table Created!");
 		
