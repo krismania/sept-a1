@@ -101,10 +101,11 @@ public class MasterDatabase extends Database{
 		return false;
 	}
 	
+	private boolean insert(String businessName, BusinessOwner owner, String password)
 	{
 		//TODO: Allow admin to specify details.
-		bDb.addAccount(bo, "septBus1");
-		logger.fine("Added business Owner: " + bo.username );
+		BusinessDatabase business = new BusinessDatabase(businessName);
+		return business.addAccount(owner, password);
 	}
 	
 	private boolean insert()
