@@ -28,7 +28,7 @@ public class CreateBusinessController
 	
 	@FXML private TextField firstName;
 	@FXML private TextField lastName;
-	@FXML private TextField email;
+	@FXML private TextField address;
 	@FXML private TextField phone;
 	
 	@FXML private Label lblError1;
@@ -105,11 +105,11 @@ public class CreateBusinessController
 	//Implements validation for new account data such as email address fields etc
 	private boolean validateDetails()
 	{
-		if (Validate.name(firstName.getText()))
+		if(!busName.getText().isEmpty())
 		{
-			if (Validate.name(lastName.getText()))
+			if (Validate.name(firstName.getText()))
 			{
-				if (Validate.email(email.getText()))
+				if (Validate.name(lastName.getText()))
 				{
 					if (Validate.phone(phone.getText()))
 					{
@@ -121,33 +121,33 @@ public class CreateBusinessController
 						// invalid last name
 						// TODO: more detailed error
 						setError(lblError2, "Invalid phone number.");
-						
+							
 						phone.requestFocus();
 					}
 				}
+			
 				else
 				{
-					// invalid email address
-					// TODO: more detailed error
-					setError(lblError2, "Invalid email address.");
-					
-					email.requestFocus();
+					// invalid last name
+					setError(lblError2, "Please enter a last name.");
+						
+					lastName.requestFocus();
 				}
 			}
 			else
 			{
-				// invalid last name
-				setError(lblError2, "Please enter a last name.");
+				// invalid first name
+				setError(lblError2, "Please enter a first name.");
 				
-				lastName.requestFocus();
+				firstName.requestFocus();
 			}
 		}
 		else
 		{
-			// invalid first name
-			setError(lblError2, "Please enter a first name.");
+			// invalid business name
+			setError(lblError2, "Please enter a business name.");
 			
-			firstName.requestFocus();
+			busName.requestFocus();
 		}
 		return false;
 	}
