@@ -90,8 +90,17 @@ public class MasterDatabase extends Database{
 		}
 	}
 	
-	private boolean insert(String businessName)
+	public boolean newBusiness(String businessName, BusinessOwner owner, String password)
+	{
+		if(!validateBusiness(businessName))
+		{
+			insert("Businesses", businessName, owner.username);
 			logger.fine("Added business to master: " + owner.username + " owner of " + businessName );
+			return insert(businessName, owner, password);
+		}
+		return false;
+	}
+	
 	{
 		//TODO: Allow admin to specify details.
 		bDb.addAccount(bo, "septBus1");
