@@ -165,10 +165,10 @@ public class CreateBusinessController
 		if (validateAccount() & validateDetails())
 		{
 			// try to sign up
-			if (c.addCustomer(username.getText(), password.getText(),
-							firstName.getText(), lastName.getText(),
-							email.getText(), phone.getText()))
-			{
+			boolean addBooking = c.addBusiness(username.getText(), password.getText(), firstName.getText(), 
+					lastName.getText(), address.getText(), phone.getText(), busName.getText());
+			
+			if(addBooking){
 				
 				// alert the user
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -186,5 +186,6 @@ public class CreateBusinessController
 				setError(lblError2, "Account already exists.");
 			}
 		}
+		
 	}
 }
