@@ -322,6 +322,18 @@ public class Controller
 	{
 		return businessDB.getServices();
 	}
+	
+	/**
+	 * Add a businessOwner and business to the database.
+	 * @author James
+	 */
+	
+	public boolean addBusiness(String username, String password, String firstName,
+			String lastName, String address, String phoneNumber, String businessName)
+	{
+		BusinessOwner owner = new BusinessOwner(username, firstName, lastName, address, phoneNumber);
+		return masterDB.newBusiness(businessName, owner, password);
+	}
 
 	/**
 	 * Add a customer to the database.
