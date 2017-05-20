@@ -57,12 +57,12 @@ public class ManageBusinessesController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         // get user's account objects
-        BusinessOwner businessOwner = (BusinessOwner) c.getLoggedUser();
+       /* BusinessOwner businessOwner = (BusinessOwner) c.getLoggedUser();
 			
         // populate the fields
         busID.setText(businessOwner.username);
         busName.setText(businessOwner.getName());
-        BOName.setText(businessOwner.getBusinessName());
+        BOName.setText(businessOwner.getBusinessName());*/
     }
     //Implements back button reverting to Customer Main menu scene
     @FXML
