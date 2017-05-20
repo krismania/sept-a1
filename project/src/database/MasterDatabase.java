@@ -81,8 +81,6 @@ public class MasterDatabase extends Database{
 				logger.fine("Creating table: " + businesses);
 				stmt.execute(businesses.toString());
 				stmt.execute(admin.toString());
-				insert("testDB");
-				insert("awesomeSauce");
 				insert();
 			}
 		}
@@ -96,11 +94,8 @@ public class MasterDatabase extends Database{
 			logger.fine("Added business to master: " + owner.username + " owner of " + businessName );
 	{
 		//TODO: Allow admin to specify details.
-		BusinessDatabase bDb = new BusinessDatabase(businessName);
-		BusinessOwner bo = new BusinessOwner("septB", businessName, "septB", "123 ABC Street", "0400000000");
 		bDb.addAccount(bo, "septBus1");
 		logger.fine("Added business Owner: " + bo.username );
-		return insert("Businesses", businessName);
 	}
 	
 	private boolean insert()
