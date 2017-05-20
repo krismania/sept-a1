@@ -96,8 +96,8 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </TextField>
-                  <Label layoutX="10.0" layoutY="27.0" text="Email" />
-                  <TextField fx:id="email">
+                  <Label layoutX="10.0" layoutY="27.0" text="Address" />
+                  <TextField fx:id="address">
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
