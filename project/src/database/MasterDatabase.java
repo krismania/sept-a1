@@ -113,4 +113,33 @@ public class MasterDatabase extends Database{
 		//Table, Username, Password
 		return insert("Admin", "Admin", "admin");
 	}
+	
+	private boolean validateBusiness(String businessName)
+	{
+		boolean businessExists = false;
+		try
+		{
+			Statement stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT businessName FROM Businesses WHERE businessName = '" + businessName + "'";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				businessExists = true;
+			}
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return businessExists;
+	}
 }
