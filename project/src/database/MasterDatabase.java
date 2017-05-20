@@ -92,6 +92,7 @@ public class MasterDatabase extends Database{
 	}
 	
 	private boolean insert(String businessName)
+			logger.fine("Added business to master: " + owner.username + " owner of " + businessName );
 	{
 		//TODO: Allow admin to specify details.
 		BusinessDatabase bDb = new BusinessDatabase(businessName);

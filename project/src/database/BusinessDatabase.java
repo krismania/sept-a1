@@ -45,6 +45,7 @@ public class BusinessDatabase extends Database implements DBInterface
 			}
 			else if(account instanceof BusinessOwner)
 			{
+				logger.fine("Added business owner to business: " + account.username );
 				return insert((BusinessOwner) account, password);
 			}
 		}
