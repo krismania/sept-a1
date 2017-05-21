@@ -7,6 +7,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXSlider;
@@ -15,6 +16,8 @@ import database.model.Employee;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import main.Controller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +39,8 @@ public class AddTimeController implements Initializable {
     @FXML private Label lblError;
     @FXML private Button navMenu;
     @FXML private Button btRecordAvail;
+    @FXML private Label startLabel;
+    @FXML private Label endLabel;
     @FXML private JFXSlider startDropdown;
     @FXML private JFXSlider endDropdown;
     @FXML private ChoiceBox<Employee> employeeDropdown;
@@ -59,6 +64,27 @@ public class AddTimeController implements Initializable {
 				return "" + e.ID + ": " + e.getFirstName() + " " + e.getLastName();
 			}
 			@Override public Employee fromString(String string) { return null; }	
+		});
+		
+		// add listener for sliders
+		startDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				startLabel.setText("Start Time: " + timeFromDouble((double) newValue).toString());
+			}
+		});
+		
+		endDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				endLabel.setText("End Time: " + timeFromDouble((double) newValue).toString());
+			}
 		});
 		
 		// populate employee list
@@ -141,6 +167,18 @@ public class AddTimeController implements Initializable {
 		
 		// switch scenes
 		stage.setScene(boMenu);
+	}
+	
+	/**
+	 * Converts a double (0-24) to a LocalTime
+	 * @author krismania
+	 */
+	private LocalTime timeFromDouble(double input)
+	{
+	    int hour = (int) input;
+	    int minute = (int) ((input % 1) * 60);
+	    
+	    return LocalTime.of(hour, minute);
 	}
     
 }   

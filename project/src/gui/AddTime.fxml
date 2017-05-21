@@ -42,7 +42,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="430.0">
                <children>
                   <Region prefWidth="30.0" HBox.hgrow="ALWAYS" />
-                  <Label prefHeight="16.0" prefWidth="350.0" text="Start Time:" />
+                  <Label fx:id="startLabel" prefHeight="16.0" prefWidth="350.0" text="Start Time:" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" />
@@ -57,7 +57,7 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </HBox>
-            <Label prefHeight="16.0" prefWidth="349.0" text="End Time:" />
+            <Label fx:id="endLabel" prefHeight="16.0" prefWidth="349.0" text="End Time:" />
             <JFXSlider fx:id="endDropdown" blockIncrement="59.0" majorTickUnit="1.0" max="24.0" min="1.0" minorTickCount="60" showTickLabels="true" showTickMarks="true" />
             <Label fx:id="lblError" alignment="CENTER_RIGHT" prefWidth="250.0" text="Please double check your selections" textAlignment="RIGHT" textFill="RED" visible="false" wrapText="true" />
          </children>
