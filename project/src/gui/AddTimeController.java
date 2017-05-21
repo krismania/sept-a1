@@ -7,12 +7,17 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXSlider;
 
 import database.model.Employee;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import main.Controller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,11 +39,12 @@ public class AddTimeController implements Initializable {
     @FXML private Label lblError;
     @FXML private Button navMenu;
     @FXML private Button btRecordAvail;
-
+    @FXML private Label startLabel;
+    @FXML private Label endLabel;
+    @FXML private JFXSlider startDropdown;
+    @FXML private JFXSlider endDropdown;
     @FXML private ChoiceBox<Employee> employeeDropdown;
     @FXML private ChoiceBox<String> dayDropdown;
-    @FXML private ChoiceBox<String> startDropdown;
-    @FXML private ChoiceBox<String> endDropdown;
     
     
     /**
@@ -60,32 +66,52 @@ public class AddTimeController implements Initializable {
 			@Override public Employee fromString(String string) { return null; }	
 		});
 		
+		// add listener for sliders
+		startDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				startLabel.setText("Start Time: " + timeFromDouble((double) newValue).toString());
+			}
+		});
+		
+		endDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				endLabel.setText("End Time: " + timeFromDouble((double) newValue).toString());
+			}
+		});
+		
 		// populate employee list
 		employeeDropdown.getItems().addAll(c.getAllEmployees());
 		
 		// populate day list
 		dayDropdown.getItems().addAll("Monday", "Tuesday", "Wednesday", 
 						"Thursday", "Friday", "Saturday", "Sunday");
-		
-		// populate times
-		String[] times = {"9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", 
-						"11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
-						"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", 
-						"4:30 pm", "5:00 pm"};
-		startDropdown.getItems().setAll(times);
-		endDropdown.getItems().setAll(times);
+
 	}
 	
 	private boolean validate()
 	{
 		// check employee selected
-		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) return false;
+		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) {
+			return false;
+		}
 		
 		// check day selected
-		if (dayDropdown.getSelectionModel().getSelectedItem() == null) return false;
+		if (dayDropdown.getSelectionModel().getSelectedItem() == null) { 
+			return false; 
+		}
 		
-		// check start/end selected
-		if (startDropdown.getSelectionModel().getSelectedItem() == null ||
+		// check start/end selected 
+		
+		//Tn null check on slider value not required
+		/* if (startDropdown.getSelectionModel().getSelectedItem() == null ||
 			endDropdown.getSelectionModel().getSelectedItem() == null)
 		{
 			return false;
@@ -95,11 +121,10 @@ public class AddTimeController implements Initializable {
 		if (startDropdown.getSelectionModel().getSelectedIndex() >= endDropdown.getSelectionModel().getSelectedIndex())
 		{
 			return false;
-		}
+		} */
 		
 		return true;
 	}
-	
 
 	/**
 	 * Attempt to add the shift
@@ -112,11 +137,13 @@ public class AddTimeController implements Initializable {
     	if (validate())
     	{
     		lblError.setVisible(false);
-    		    		
+    		//double startTime = startDropdown.getValue();
+    		//double endTime = endDropdown.getValue();
+    		LocalTime startTime = timeFromDouble(startDropdown.getValue());
+    		LocalTime endTime = timeFromDouble(endDropdown.getValue());
     		boolean added = c.addShift(employeeDropdown.getValue().ID, 
-    						dayDropdown.getValue(), startDropdown.getValue(), 
-    						endDropdown.getValue());
-    		
+    						dayDropdown.getValue(), startTime,//Double.toString(startTime), 
+    						endTime);//Double.toString(endTime));
 			if (added)
 			{
 				GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
@@ -145,5 +172,17 @@ public class AddTimeController implements Initializable {
 		// switch scenes
 		stage.setScene(boMenu);
 	}
+	
+	/**
+	 * Converts a double (0-24) to a LocalTime
+	 * @author krismania
+	 */
+	private LocalTime timeFromDouble(double input)
+	{
+	    int hour = (int) input;
+	    int minute = (int) ((input % 1) * 60);
+	    
+	    return LocalTime.of(hour, minute);
+	}
     
-}   
+}  

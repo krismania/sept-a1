@@ -391,11 +391,11 @@ public class Controller
 	 * @author TN
 	 * @author krismania
 	 */
-	public boolean addShift(int employeeID, String day, String start, String end)
+	public boolean addShift(int employeeID, String day, LocalTime start, LocalTime end)
 	{
 		Shift shift = businessDB.buildShift(employeeID);
-		shift.setStart(convertTime(start));
-		shift.setEnd(convertTime(end));
+		shift.setStart(start);
+		shift.setEnd(end);
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
 		return businessDB.addShift(shift);
