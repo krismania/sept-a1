@@ -130,6 +130,11 @@ public class Controller
 		return masterDB.getAllBusinesses();
 	}
 	
+	public BusinessOwner getBusinessOwner()
+	{
+		return businessDB.getBusinessOwner();
+	}
+	
 	/**
 	 * @see DBInterface#getEmployee(int)
 	 */
