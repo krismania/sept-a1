@@ -99,6 +99,31 @@ public class MasterDatabase extends Database{
 		return false;
 	}
 	
+	public boolean removeBusiness(String businessName)
+	{
+		boolean businessRemoved = false;
+		try
+		{
+			Statement stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "DELETE FROM Businesses WHERE businessName = '" + businessName + "'";
+			
+			stmt.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return businessRemoved;
+	}
+	
 	private boolean insert(String businessName, BusinessOwner owner, String password)
 	{
 		//TODO: Allow admin to specify details.

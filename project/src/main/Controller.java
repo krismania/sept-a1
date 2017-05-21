@@ -135,6 +135,11 @@ public class Controller
 		return businessDB.getBusinessOwner();
 	}
 	
+	public boolean removeBusiness()
+	{
+		return masterDB.removeBusiness(currentDB);
+	}
+	
 	/**
 	 * @see DBInterface#getEmployee(int)
 	 */
