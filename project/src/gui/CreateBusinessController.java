@@ -177,7 +177,7 @@ public class CreateBusinessController
 				alert.setContentText("Account was successfully created.");
 				alert.showAndWait();
 				
-				switchTo("Login");
+				switchTo("AdminMenu");
 			}
 			else
 			{
