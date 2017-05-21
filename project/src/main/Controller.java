@@ -125,7 +125,6 @@ public class Controller
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
 	 */
-	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		return businessDB.getAllBusinessOwners();

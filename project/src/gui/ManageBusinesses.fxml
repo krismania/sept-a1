@@ -31,7 +31,7 @@
               <columns>
                 <TableColumn prefWidth="82.0" text="Business ID" />
                 <TableColumn prefWidth="159.0" text="Business Name" />
-                  <TableColumn prefWidth="152.0" text="Business Owner" />
+                <TableColumn prefWidth="152.0" text="Business Owner" />
               </columns>
             </TableView>
          </children>

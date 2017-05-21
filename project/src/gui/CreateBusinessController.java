@@ -155,7 +155,7 @@ public class CreateBusinessController
 	@FXML
 	public void handleCancel(ActionEvent event) throws IOException
 	{
-		switchTo("Login");
+		switchTo("AdminMenu");
 	}
 	//Accepts data input from fields and inserts them into db via controller class
 	@FXML

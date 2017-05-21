@@ -110,9 +110,7 @@ public abstract class Database {
 	/**
 	 * @author James
 	 * @author krismania
-	 * @deprecated Controller has been deprecated
 	 */
-	 @Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
@@ -122,7 +120,7 @@ public abstract class Database {
 			Statement stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM BusinessOwner";
+			String sql = "SELECT * FROM Businesses";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next())
