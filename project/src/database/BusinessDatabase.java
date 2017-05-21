@@ -541,7 +541,7 @@ public class BusinessDatabase extends Database implements DBInterface
 				while (bookingQuery.next())
 				{
 					int id = bookingQuery.getInt("BookingID");
-					String customer = bookingQuery.getString("customerID");
+					String customer = bookingQuery.getString("Customer");
 					int employeeID = bookingQuery.getInt("EmpID");
 					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
 					LocalTime start = LocalTime.ofSecondOfDay((bookingQuery.getInt("Start")));
