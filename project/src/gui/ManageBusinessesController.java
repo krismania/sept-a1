@@ -32,7 +32,7 @@ public class ManageBusinessesController implements Initializable
 	private Controller c = Controller.getInstance();
 	@FXML private Node root;
 
-	@FXML private TableView<String> businessesTable;
+	@FXML private TableView<BusinessOwner> businessesTable;
 	@FXML private TableColumn<BusinessOwner, String> businessName;
 
 	//Initialise data to populate fields
@@ -54,7 +54,7 @@ public class ManageBusinessesController implements Initializable
 		});
 
 		// get the booking objects
-		businessesTable.getItems().setAll(c.getAllBusinessOwners().toString());
+		businessesTable.getItems().setAll(c.getAllBusinessOwners());
 	}
 
 	/**
