@@ -95,6 +95,7 @@ public class ManageBusinessesController implements Initializable
 	public void handleSelect(ActionEvent event)
 	{
 		String selected = businessesTable.getSelectionModel().getSelectedItem();
+		c.disconnectDB();
 		c.loadDatabase(selected);
 		switchTo("EditBusiness");
 	}
