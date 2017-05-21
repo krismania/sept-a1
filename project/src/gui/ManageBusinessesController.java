@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -32,6 +33,7 @@ public class ManageBusinessesController implements Initializable
 {
 	private Controller c = Controller.getInstance();
 	@FXML private BorderPane root;
+	@FXML private Button select;
 
 	@FXML private TableView<String> businessesTable;
 	@FXML private TableColumn<String, String> businessName;
@@ -87,6 +89,14 @@ public class ManageBusinessesController implements Initializable
 	public void handleBack(ActionEvent event)
 	{
 		switchTo("AdminMenu");
+	}
+	
+	@FXML
+	public void handleSelect(ActionEvent event)
+	{
+		String selected = businessesTable.getSelectionModel().getSelectedItem();
+		c.loadDatabase(selected);
+		switchTo("EditBusiness");
 	}
 
 }
