@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -20,10 +18,11 @@
    <children>
       <AnchorPane minWidth="300.0">
          <children>
-            <ImageView fx:id="imageView" fitWidth="400.0" opacity="0.19" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ImageView fitWidth="400.0" opacity="0.19" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <image>
-                  <Image url="@default.jpg" />
-               </image></ImageView>
+                  <Image url="@resources/calendar.jpeg" />
+               </image>
+            </ImageView>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label text="Appointment" wrapText="true">
@@ -61,10 +60,6 @@
          <center>
             <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="170.0" BorderPane.alignment="CENTER">
                <children>
-               <ChoiceBox fx:id="businessPicker" layoutX="349.0" layoutY="102.0" maxWidth="1.7976931348623157E308">
-                     <VBox.margin>
-                        <Insets bottom="30.0" />
-                     </VBox.margin></ChoiceBox>
                   <Label text="Username" />
                   <TextField fx:id="tfUsername">
                      <opaqueInsets>
@@ -92,13 +87,14 @@
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
          </padding>
          <bottom>
-            <HBox BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="signup" mnemonicParsing="false" onAction="#handleSignup" text="Sign up" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="login" defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="Log in" />
-               </children>
-            </HBox>
+            <BorderPane prefWidth="200.0" BorderPane.alignment="CENTER">
+               <left>
+                  <Button fx:id="login" defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="Log in" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button fx:id="signup" mnemonicParsing="false" onAction="#handleSignup" text="Sign up" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
          </bottom>
       </BorderPane>
    </children>

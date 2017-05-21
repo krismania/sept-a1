@@ -1,4 +1,4 @@
-package database.model;
+package model;
 
 /**
  * Business owner is a basic type of {@link Account}, that additionally stores

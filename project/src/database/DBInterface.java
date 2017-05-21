@@ -1,18 +1,23 @@
 package database;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import database.model.Account;
-import database.model.Booking;
-import database.model.BusinessOwner;
-import database.model.Customer;
-import database.model.Employee;
-import database.model.Service;
-import database.model.Shift;
+import java.util.TreeMap;
+
+import model.Account;
+import model.Booking;
+import model.BusinessOwner;
+import model.Customer;
+import model.Employee;
+import model.Shift;
+import model.ShiftTime;
 
 
 public interface DBInterface
 {
+	
+	//***PUBLIC API***
 	/**
 	 * Writes the given account to the database, with the given password
 	 * @param account Account to be written
@@ -23,67 +28,15 @@ public interface DBInterface
 	
 	
 	/**
-	 * addEmployee will add an employee to the database.
-	 */
-	boolean addEmployee(Employee employee);
-
-
-	/**
-	 * addShift will add a shift to the database, which
-	 * is connected to an employee.
-	 */
-	boolean addShift(Shift shift);
-
-	/**
-	 * Adds the given service to the database.
-	 */
-	boolean addService(Service service);
-	
-	/**
-	 * Updates the given service in the database.
-	 */
-	boolean updateService(Service service);
-
-	/**
-	 * Removes the given service from the database.
-	 */
-	boolean deleteService(Service s);
-
-	/**
-	 * Write a booking to the database.
-	 */
-	boolean addBooking(Booking booking);
-
-
-	/**
-	 * Returns the account specified by the given username, or null if none
-	 * is found.
-	 */
-	Account getAccount(String username);
-
-
-	/**
-	 * Returns the employee specified by the given ID, or null if none is found.
-	 */
-	Employee getEmployee(int id);
-
-
-	/**
-	 * Returns the shift specified by the given ID
-	 */
-	Shift getShift(int shiftID);
-	
-	
-	/**
-	 * Returns a service object by it's ID
-	 */
-	Service getService(int id);
-
-
-	/**
 	 * Generates a new empty employee object with the next valid ID.
 	 */
 	Employee buildEmployee();
+	
+	
+	/**
+	 * addEmployee will instantiate an employee into the database.
+	 */
+	boolean addEmployee(Employee employee);
 	
 	
 	/**
@@ -94,56 +47,84 @@ public interface DBInterface
 	
 	
 	/**
-	 * Builds a booking object with the next available ID
+	 * addShift will instantiate a shift into the database, which
+	 * is connected to an employee.
 	 */
-	Booking buildBooking();
+	boolean addShift(Shift shift);
+	
 	
 	/**
-	 * Builds a service object with the next available ID
+	 * Returns true if a user with the specified username exists in the database
 	 */
-	Service buildService();
-
+	boolean accountExists(String username);
+	
+	/**
+	 * Check if shift exists, returns true if it does.
+	 */
+	boolean shiftExists(DayOfWeek day, ShiftTime time, int empID);
+	
+	/**
+	 * Returns the account specified by the given username, or null if none
+	 * is found.
+	 */
+	Account getAccount(String username);
+	
 	/**
 	 * Get a list of all customers in the DB.
-	 * @deprecated -kg
 	 */
-	@Deprecated
 	ArrayList<Customer> getAllCustomers();
-	
 	
 	/**
 	 * Get a list of all Business owners in the database;
-	 * @deprecated -kg
 	 */
-	@Deprecated
 	ArrayList<BusinessOwner> getAllBusinessOwners();
+	
+	/**
+	 * Returns the employee specified by the given ID, or null if none is found.
+	 */
+	Employee getEmployee(int id);
 	
 	
 	/**
 	 * Returns all employees that have been registered, otherwise returns null.
-	 * @deprecated -kg
 	 */
-	@Deprecated
 	ArrayList<Employee> getAllEmployees();
 	
+	/**
+	 * Returns an ArrayList of employee IDs working on a given day
+	 */
+	ArrayList<String> getEmployeeWorkingOnDay(LocalDate day);
 	
 	/**
-	 * Returns a list of services available in the business
+	 * Returns the shift specified by the given ID
 	 */
-	ArrayList<Service> getServices();
-
+	Shift getShift(int shiftID);
+	
+	
+	/**
+	 * Returns an ArrayList of shifts for a given employee on a given day
+	 */
+	ArrayList<Shift> getShifts(int EmpID, String Day);
+	
+	/**
+	 * Returns a hash map of shifts and bookings
+	 */
+	public TreeMap<Shift, Booking> getShiftBookings();
+	
+	/**
+	 * Builds a booking object with the next available ID
+	 */
+	Booking buildBooking();
 
 	/**
-	 * Returns an ArrayList of shifts for a given day
+	 * Write a booking to the database
 	 */
-	ArrayList<Shift> getShifts(DayOfWeek day);
-	
+	boolean addBooking(Booking booking);
 	
 	/**
 	 * Returns a list of all bookings that occurred before the current date.
 	 */
 	ArrayList<Booking> getPastBookings();
-	
 	
 	/**
 	 * Returns a list of all bookings that have not yet occurred (including
@@ -151,18 +132,11 @@ public interface DBInterface
 	 */
 	ArrayList<Booking> getFutureBookings();
 	
-	
 	/**
 	 * Attempt to log into an account with the provided credentials. If the login
 	 * is successful, a Customer or BusinessOwner object will be returned, otherwise
 	 * the return value is null.
 	 */
 	Account login(String username, String password);
-
-	
-	/**
-	 * Close the database connection in preparation for closing or switching
-	 */
-	public void close();
 
 }
