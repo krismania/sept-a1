@@ -121,7 +121,6 @@ public class AddTimeController implements Initializable {
 		
 		return true;
 	}
-	
 
 	/**
 	 * Attempt to add the shift
@@ -134,11 +133,11 @@ public class AddTimeController implements Initializable {
     	if (validate())
     	{
     		lblError.setVisible(false);
-    		double startTimeDouble = startDropdown.getValue();
-    		double endTimeDouble = endDropdown.getValue();
+    		double startTime = startDropdown.getValue();
+    		double endTime = endDropdown.getValue();
     		boolean added = c.addShift(employeeDropdown.getValue().ID, 
-    						dayDropdown.getValue(), Double.toString(startTimeDouble), 
-    						Double.toString(endTimeDouble));
+    						dayDropdown.getValue(), Double.toString(startTime), 
+    						Double.toString(endTime));
     		
 			if (added)
 			{
@@ -181,4 +180,4 @@ public class AddTimeController implements Initializable {
 	    return LocalTime.of(hour, minute);
 	}
     
-}   
+}  
