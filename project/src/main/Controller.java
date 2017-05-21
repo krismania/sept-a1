@@ -89,14 +89,11 @@ public class Controller
 		{
 			businessDB = new BusinessDatabase(dbName);
 		}
-		logger.info("Instantiated Controller");
 	}
 	
 	public void disconnectDB()
 	{
 		businessDB = null;
-		
-		logger.info("Instantiated Controller");
 	}
 	
 	/**
@@ -128,7 +125,6 @@ public class Controller
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
 	 */
-	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		return businessDB.getAllBusinessOwners();
@@ -325,6 +321,18 @@ public class Controller
 	{
 		return businessDB.getServices();
 	}
+	
+	/**
+	 * Add a businessOwner and business to the database.
+	 * @author James
+	 */
+	
+	public boolean addBusiness(String username, String password, String firstName,
+			String lastName, String address, String phoneNumber, String businessName)
+	{
+		BusinessOwner owner = new BusinessOwner(username, firstName, lastName, address, phoneNumber);
+		return masterDB.newBusiness(businessName, owner, password);
+	}
 
 	/**
 	 * Add a customer to the database.
@@ -450,7 +458,14 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		loggedUser = businessDB.login(username, password);
+		if(username.equals("Admin"))
+		{
+			loggedUser = masterDB.login(username, password);
+		}
+		else
+		{
+			loggedUser = businessDB.login(username, password);
+		}
 		
 		if (loggedUser != null)
 		{

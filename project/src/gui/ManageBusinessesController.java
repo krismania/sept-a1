@@ -1,0 +1,91 @@
+package gui;
+
+import java.io.IOException;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
+
+import database.model.Booking;
+import database.model.BusinessOwner;
+import database.model.Employee;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import main.Controller;
+
+/**
+ * Displays registered Businesses details for selection.
+ * @author tim
+ */
+public class ManageBusinessesController implements Initializable
+{
+	private Controller c = Controller.getInstance();
+	@FXML private Node root;
+
+	@FXML private TableView<String> businessesTable;
+	@FXML private TableColumn<BusinessOwner, String> businessName;
+
+	//Initialise data to populate fields
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
+	{
+
+		// set cell value factories
+		businessName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<BusinessOwner, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(
+					CellDataFeatures<BusinessOwner, String> param)
+			{
+				SimpleStringProperty prop = new SimpleStringProperty();
+				prop.setValue(param.getValue().getBusinessName());
+				return prop;
+			}
+		});
+
+		// get the booking objects
+		businessesTable.getItems().setAll(c.getAllBusinessOwners().toString());
+	}
+
+	/**
+	 * Switches to a specified scene
+	 * Implements Generic helper method for switching between scenes
+	 * @author krismania
+	 */
+	private void switchTo(String fxmlName)
+	{
+		try
+		{
+			// load the scene
+			Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
+
+			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
+
+			// switch scenes
+			stage.setScene(newScene);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	//Implements back button reverting to Customer Main menu scene
+	@FXML
+	public void handleBack(ActionEvent event)
+	{
+		switchTo("AdminMenu");
+	}
+
+}
