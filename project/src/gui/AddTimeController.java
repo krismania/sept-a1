@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXSlider;
-
 import database.model.Employee;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
