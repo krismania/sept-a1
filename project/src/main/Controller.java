@@ -1,26 +1,24 @@
 package main;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import database.model.Account;
-import database.model.Booking;
-import database.model.BusinessOwner;
-import database.model.Customer;
-import database.model.Employee;
-import database.model.Service;
-import database.model.Shift;
-import database.BusinessDatabase;
-import database.MasterDatabase;
+import database.DBInterface;
+import database.Database;
+import database.DummyDatabase;
+import model.Account;
+import model.Booking;
+import model.BusinessOwner;
+import model.Customer;
+import model.Employee;
+import model.Shift;
+import model.ShiftTime;
 
 /**
  * Controller class, which drives interaction between the UI and the database.
@@ -29,20 +27,25 @@ import database.MasterDatabase;
 public class Controller
 {
 	/**
+	 * Decides whether or not the debug database is used. Defaults to {@code False}.
+	 * If the debug DB should be used, this value must be set before any calls to
+	 * {@code Controller.getInstance()}.
+	 */
+	public static boolean debugDB = false;
+	
+	/**
 	 * Singleton instance of the Controller
 	 */
 	private static Controller instance = null;
 	
 	private Logger logger;
-	private MasterDatabase masterDB;
-	private BusinessDatabase businessDB;
+	private DBInterface db;
   
 	/**
-	 * {@link Account} of the currently logged in user. If no user is logged in, this
+	 * Username of the currently logged in user. If no user is logged in, this
 	 * will be {@code null}.
 	 */
 	public Account loggedUser = null;
-	public String currentDB;
 	
 	/**
 	 * Returns the singleton instance of of the Controller class.
@@ -58,7 +61,7 @@ public class Controller
 	}
 	
 	/**
-	 * Creates an instance of the controller class
+	 * Creates an instance of the controller class & opens the database.
 	 * @author krismania
 	 */
 	private Controller()
@@ -66,34 +69,12 @@ public class Controller
 		// get the logger
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
-		//TODO: Add a checker for creating master DB on run.
-		loadDatabase("master");
-		logger.info("Instantiated Controller");
-	}
-	
-	/**
-	 * Abstracted out of constructor. 
-	 * Required to be public for reconnection back to master @signup and @login fail.
-	 * @author James
-	 * @param dbName
-	 */
-	public void loadDatabase(String dbName) 
-	{
-		currentDB = dbName;
+		
 		// instantiate DB
-		if(dbName.equals("master"))
-		{
-			masterDB = new MasterDatabase(dbName);
-		}
-		else
-		{
-			businessDB = new BusinessDatabase(dbName);
-		}
-	}
-	
-	public void disconnectDB()
-	{
-		businessDB = null;
+		if (debugDB) db = new DummyDatabase();
+		else db = new Database("awesomeSauce");
+		
+		logger.info("Instantiated Controller");
 	}
 	
 	/**
@@ -103,7 +84,7 @@ public class Controller
 	 */
 	public Customer getCustomer(String username)
 	{
-		Account account = businessDB.getAccount(username);
+		Account account = db.getAccount(username);
 		if (account instanceof Customer)
 		{
 			return (Customer) account;
@@ -113,21 +94,21 @@ public class Controller
 			return null;
 		}
 	}
+
 	/**
 	 * @see DBInterface#getAllCustomers()
 	 */
-	@Deprecated
 	public ArrayList<Customer> getAllCustomers()
 	{
-		return businessDB.getAllCustomers();
+		return db.getAllCustomers();
 	}
 	
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
 	 */
-	public ArrayList<String> getAllBusinessOwners()
+	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
-		return masterDB.getAllBusinesses();
+		return db.getAllBusinessOwners();
 	}
 	
 	/**
@@ -135,7 +116,7 @@ public class Controller
 	 */
 	public Employee getEmployee(int id)
 	{
-		return businessDB.getEmployee(id);
+		return db.getEmployee(id);
 	}
 	
 	/**
@@ -143,113 +124,39 @@ public class Controller
 	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
-		return businessDB.getAllEmployees();
+		return db.getAllEmployees();
 	}
 	
 	/**
 	 * @see DBInterface#getEmployeeWorkingOnDay(LocalDate)
-	 * @deprecated
 	 */
-	@Deprecated
 	public ArrayList<String> getEmpByDay(LocalDate day)
 	{
-		// return businessDB.getEmployeeWorkingOnDay(day);
-		return new ArrayList<String>();
-	}
-	
-	/**
-	 * Returns a list of employees that are working on a given date.
-	 * @author krismania
-	 */
-	public ArrayList<Employee> getEmployeesWorkingOn(LocalDate date)
-	{
-		ArrayList<Shift> shifts = getShiftsByDate(date);
-		ArrayList<Employee> employees = new ArrayList<Employee>();
-		HashSet<Integer> empIds = new HashSet<Integer>();
-		
-		for (Shift shift : shifts)
-		{
-			empIds.add(shift.employeeID);
-		}
-		
-		for (Integer empId : empIds)
-		{
-			employees.add(businessDB.getEmployee(empId));
-		}
-		
-		return employees;
+		return db.getEmployeeWorkingOnDay(day);
 	}
 	
 	/**
 	 * @see DBInterface#getShiftBookings()
 	 */
-	@Deprecated
 	public TreeMap<Shift, Booking> getShiftBookings()
 	{
-		//return businessDB.getShiftBookings();
-		return new TreeMap<Shift, Booking>();
+		return db.getShiftBookings();
 	}
 	
 	/**
-	 * Gets a list of all shifts occurring on a given date
-	 * @author krismania
+	 * TODO: document this
 	 */
-	public ArrayList<Shift> getShiftsByDate(LocalDate date)
-	{
-		return businessDB.getShifts(date.getDayOfWeek());
-	}
-	
-	/**
-	 * Gets a list of all shifts, filtered by the desired employee ID.
-	 * @author krismania
-	 */
-	public ArrayList<Shift> getShiftsByDate(LocalDate date, int employeeID)
-	{
-		ArrayList<Shift> shifts = getShiftsByDate(date);
+	public ArrayList<String> getShiftsByEmp(String emp, LocalDate date) {
+		int empID = Integer.parseInt(emp);
+		DayOfWeek day = date.getDayOfWeek();
+		ArrayList<Shift> shifts = db.getShifts(empID, day.toString());
+		ArrayList<String> availableTimes = new ArrayList<String>();
 		
-		// filter based on employee id
-		Iterator<Shift> shiftIterator = shifts.iterator();
-		while (shiftIterator.hasNext())
-		{
-			if (shiftIterator.next().employeeID != employeeID)
-			{
-				// if ID doesn't match our desired ID, remove this shift
-				shiftIterator.remove();
-			}
+		for (Shift shift : shifts) {
+			String time = shift.getTime().toString();
+			availableTimes.add(time);
 		}
-		
-		return shifts;
-	}
-	
-	/**
-	 * Returns a list of times that this employee is available, as strings
-	 * TODO: need a more robust solution for this.
-	 * @author krismania
-	 */
-	public ArrayList<String> getEmployeeAvailability(LocalDate date, int employeeID)
-	{
-		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
-		ArrayList<String> times = new ArrayList<String>();
-		
-		logger.info("Getting employee availability");
-		
-		// iterate over the day's shifts
-		for (Shift shift : shifts)
-		{
-			logger.info("Shift: " + shift.ID);
-			
-			LocalTime currentTime = shift.getStart(); // keep track of time we're up to
-						
-			while (currentTime.isBefore(shift.getEnd()))
-			{
-				logger.info("Current time is: " + currentTime);
-				
-				times.add(currentTime.format(DateTimeFormatter.ofPattern("h:mm a")).toLowerCase());
-				currentTime = currentTime.plusMinutes(30);
-			}
-		}
-		
-		return times;
+		return availableTimes;
 	}
 	
 	/**
@@ -260,7 +167,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getPastBookings()
 	{
-		ArrayList<Booking> bookings = businessDB.getPastBookings();
+		ArrayList<Booking> bookings = db.getPastBookings();
 		
 		bookings.sort(Comparator.reverseOrder());
 		
@@ -275,7 +182,7 @@ public class Controller
 	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
-		ArrayList<Booking> bookings = businessDB.getFutureBookings();
+		ArrayList<Booking> bookings = db.getFutureBookings();
 		
 		bookings.sort(Comparator.naturalOrder());
 		return bookings;
@@ -304,37 +211,6 @@ public class Controller
 	}
 	
 	/**
-	 * Query Master DB for All Business Names
-	 * @author James
-	 * @return ArrayList of Strings
-	 */
-	public ArrayList<String> getAllBusinessNames()
-	{
-		return masterDB.getAllBusinesses();
-	}
-	
-	/**
-	 * Returns a list of business services.
-	 * @see DBInterface#getServices()
-	 */
-	public ArrayList<Service> getServices()
-	{
-		return businessDB.getServices();
-	}
-	
-	/**
-	 * Add a businessOwner and business to the database.
-	 * @author James
-	 */
-	
-	public boolean addBusiness(String username, String password, String firstName,
-			String lastName, String address, String phoneNumber, String businessName)
-	{
-		BusinessOwner owner = new BusinessOwner(username, firstName, lastName, address, phoneNumber);
-		return masterDB.newBusiness(businessName, owner, password);
-	}
-
-	/**
 	 * Add a customer to the database.
 	 * @see DBInterface#addAccount(Account, String)
 	 * @author krismania
@@ -346,7 +222,7 @@ public class Controller
 		Customer customer = new Customer(username, firstName, lastName, email, phoneNumber);
 		
 		// store customer in db
-		return businessDB.addAccount(customer, password);
+		return db.addAccount(customer, password);
 	}
 	
 	/**
@@ -358,13 +234,13 @@ public class Controller
 	{		
 		if(Validate.name(firstName) && Validate.name(lastName)
 				&& Validate.email(email) && Validate.phone(phoneNumber)){
-			Employee employee = businessDB.buildEmployee();
+			Employee employee = db.buildEmployee();
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
 			employee.setEmail(email);
 			employee.setPhoneNumber(phoneNumber);
 			
-			return businessDB.addEmployee(employee);
+			return db.addEmployee(employee);
 		}
 		else {
 			return false;
@@ -377,7 +253,7 @@ public class Controller
 	 */
 	public boolean employeeExists(int id)
 	{
-		return businessDB.getEmployee(id) == null;
+		return db.getEmployee(id) == null;
 	}
 	
 	/**
@@ -386,26 +262,21 @@ public class Controller
 	 * @author TN
 	 * @author krismania
 	 */
-	public boolean addShift(int employeeID, String day, String start, String end)
+	public boolean addShift(int employeeID, String day, String time, String duration)
 	{
-		Shift shift = businessDB.buildShift(employeeID);
-		shift.setStart(convertTime(start));
-		shift.setEnd(convertTime(end));
+		Shift shift = db.buildShift(employeeID);
+		shift.setTime(convertTime(time));
 		shift.setDay(DayOfWeek.valueOf(day.toUpperCase()));
 		
-		return businessDB.addShift(shift);
+		return db.addShift(shift);
 	}
 	
   /** Add a booking to the DB.
 	 * @author James
-	 * @author krismania
-	 * TODO: fix the inputs for this method
 	 */
-	public boolean addBooking(LocalDate localDate, String time, Service service, int empID, String customerUsername) 
+	public boolean addBooking(LocalDate localDate, LocalTime time, int empID, String customerUsername) 
 	{
-		LocalTime start = convertTime(time);
-		
-		Booking booking = businessDB.buildBooking();
+		Booking booking = db.buildBooking();
 		if(customerUsername.isEmpty())
 		{
 			booking.setCustomer(loggedUser.username);
@@ -416,41 +287,11 @@ public class Controller
 		}
 		booking.setDate(localDate);
 		booking.setEmployee(empID);
-		booking.setStart(start);
-		booking.setService(service);
+		booking.setTime(time);
 		
-		return businessDB.addBooking(booking);
+		return db.addBooking(booking);
 	}
 	
-	/**
-	 * Creates a new service with a placeholder name & 30m duration in the DB,
-	 * and returns the ID of the new service.
-	 * @author krismania
-	 */
-	public int addNewService()
-	{
-		Service s = businessDB.buildService();
-		s.setName("New Service");
-		s.setDuration(Duration.ofMinutes(30));
-		
-		if (businessDB.addService(s))
-		{
-			return s.ID;
-		}
-		
-		return 0; // if creation fails, ID 0 is returned
-	}
-	
-	public boolean updateService(Service s)
-	{
-		return businessDB.updateService(s);
-	}
-
-	public boolean deleteService(Service s)
-	{
-		return businessDB.deleteService(s);
-	}
-
 	/**
 	 * Validates a username & password, and if valid, returns the account
 	 * object & also sets the loggedUser property.
@@ -458,14 +299,7 @@ public class Controller
 	 */
 	public Account login(String username, String password)
 	{
-		if(username.equals("Admin"))
-		{
-			loggedUser = masterDB.login(username, password);
-		}
-		else
-		{
-			loggedUser = businessDB.login(username, password);
-		}
+		loggedUser = db.login(username, password);
 		
 		if (loggedUser != null)
 		{
@@ -484,7 +318,6 @@ public class Controller
 	{
 		logger.info("Logged out user: " + loggedUser.username);
 		loggedUser = null;
-		businessDB = null;
 	}
 	
 	/**
@@ -496,16 +329,12 @@ public class Controller
 		return loggedUser;
 	}
 	
-	/**
-	 * TODO: update this controller method
-	 * It should get all shifts on a day, then iterate over them and check for
-	 * a duplicate manually
-	 */
 	public boolean shiftExists(String dayString, String timeString, int empID)
 	{
-//		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
-//		ShiftTime time = ShiftTime.valueOf(timeString.toUpperCase());
-		return true;
+		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
+		ShiftTime time = ShiftTime.valueOf(timeString.toUpperCase());
+		
+		return db.shiftExists(day, time, empID);
 	}
 	
 	/**

@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-
-import database.model.Booking;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
+import model.Booking;
 
 /**
  * Implements Business owner form to view Past and Future Bookings
@@ -145,7 +144,7 @@ public class BOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String tProp = tToStr.format(param.getValue().getStart());
+                String tProp = tToStr.format(param.getValue().getTime());
                 prop.setValue(tProp);
                 return prop;
             }	
@@ -211,7 +210,7 @@ public class BOViewBookingSumController implements Initializable {
              {
                 StringProperty prop = new SimpleStringProperty();
                 DateTimeFormatter tToStr = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String tProp = tToStr.format(param.getValue().getStart());
+                String tProp = tToStr.format(param.getValue().getTime());
                 prop.setValue(tProp);
                 return prop;
             }	

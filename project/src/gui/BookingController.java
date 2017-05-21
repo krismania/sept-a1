@@ -3,16 +3,19 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import database.model.BusinessOwner;
-import database.model.Customer;
-import database.model.Employee;
-import database.model.Service;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import main.Controller;
+import main.Validate;
+import model.Account;
+import model.BusinessOwner;
+import model.Customer;
+import javafx.scene.Parent;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,10 +24,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 //Implements form for creating bookings
-public class BookingController implements Initializable
+public class BookingController
 {
 	Controller c = Controller.getInstance();
 	private String customerUsername = null;
@@ -35,9 +37,8 @@ public class BookingController implements Initializable
 	@FXML private Button navMenu;
     @FXML private Button submitBooking;
     @FXML private DatePicker datePicker;
-    @FXML private ChoiceBox<Employee> employeePicker;
+    @FXML private ChoiceBox<String> employeePicker;
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
-    @FXML private ChoiceBox<Service> serviceDropdown;
     
     @FXML private Label TitleOfDetails;
     @FXML private Label Email;
@@ -47,30 +48,12 @@ public class BookingController implements Initializable
     @FXML private Label customerPhone;
     @FXML private Label customerName;
     
-    /**
-     * Add converters for dropdowns.
-     * @author krismania
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-	{
-		// set employee dropdown
-    	employeePicker.setConverter(new StringConverter<Employee>()
-		{
-			@Override
-			public String toString(Employee e)
-			{
-				return e.getFirstName() + " " + e.getLastName();
-			}
-			@Override public Employee fromString(String string) { return null; }	
-		});
-    	
-    	// populate services dropdown
-    	serviceDropdown.getItems().addAll(c.getServices());
-    	serviceDropdown.getSelectionModel().selectFirst();
-	}
-
-	//Implements on select button action for returning to main menu - 
+    @FXML
+    public void initialize()
+    {
+    	// init
+    }
+    //Implements on select button action for returning to main menu - 
     //selection of menu based on account type - Business Owner or Customer
     @FXML 
     public void handleBack(ActionEvent event) throws IOException
@@ -90,8 +73,7 @@ public class BookingController implements Initializable
 		// switch scenes
 		stage.setScene(accountMenu);
     }
-    
-    //Implement Calendar Selection for appointment date selection
+    //Implement Calander Selection for appointment date selection
     @FXML
     private void handleBook(ActionEvent event) throws IOException{
     	if(c.getLoggedUser() instanceof BusinessOwner && customerUser.getText().isEmpty())
@@ -100,9 +82,9 @@ public class BookingController implements Initializable
     	}
     	else
     	{
-    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
-    				serviceDropdown.getValue(),	employeePicker.getValue().ID, customerUser.getText());
-    		
+    		boolean booked = c.addBooking(datePicker.getValue(), LocalTime.parse(bookingOptionsDropdown.getValue()), 
+    				Integer.parseInt(employeePicker.getValue()), customerUser.getText());
+    	
     		if(booked)
 	    	{
     			GUIAlert.infoBox("Booking Successful", "Booking Confirmation");
@@ -113,7 +95,6 @@ public class BookingController implements Initializable
 	    	}
     	}
     }
-    
     //Implement context sensitive staff selector
     @FXML
     public void handleDateChange(ActionEvent event)
@@ -131,7 +112,6 @@ public class BookingController implements Initializable
     	    Name.setVisible(true);
     	}
     }
-    
     //Implements context sensitive booking time selector
     @FXML
     public void handleEmployeeChange(ActionEvent event)
@@ -139,7 +119,6 @@ public class BookingController implements Initializable
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateTimesByEmp();
     }
-    
     //Changes time selection based on staff availability
     @FXML
     public void handleTimeChange(ActionEvent event)
@@ -156,7 +135,6 @@ public class BookingController implements Initializable
         	}
     	}
     }
-    
     //Shows context data and or error message responses
     @FXML
     private void generateCustomerList()
@@ -182,7 +160,6 @@ public class BookingController implements Initializable
     		customerPhone.setVisible(false);
     	}
     }
-    
     //Generates employee availability based on date selection and availability
     private void generateEmployeesByDate()
     {
@@ -190,32 +167,33 @@ public class BookingController implements Initializable
     	employeePicker.getItems().removeAll(employeePicker.getItems());
     	
     	if(day.isBefore(LocalDate.now())) {
-    		// TODO: create an error
-    		// employeePicker.getItems().addAll("Please select today or a date in the future");
+    		employeePicker.getItems().addAll("Please select today or a date in the future");
     	}
+    	
     	else 
     	{
-	    	ArrayList<Employee> employees = c.getEmployeesWorkingOn(day);
-	    	
-	    	System.out.println("There are " + employees.size() + " employees working");
-	    	
-	    	if(employees.isEmpty())
+	    	ArrayList<String> empIDs = c.getEmpByDay(day);
+	    	if(empIDs.isEmpty())
 	    	{
-	    		// TODO: create an error
-	    		// employeePicker.getItems().addAll("No employees working on selected date");
+	    		employeePicker.getItems().addAll("No employees working on selected date");
 	    	}
 	    	else {
-	    		employeePicker.getItems().addAll(employees);
+	    		employeePicker.getItems().addAll(empIDs);
 	    	}
     	}
     }
-    
     //Generates available times based on selected staff
     private void generateTimesByEmp()
     {
-    	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
+    	ArrayList<String> times = c.getShiftsByEmp(employeePicker.getValue(), datePicker.getValue());
     	
-    	ArrayList<String> times = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
+    	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
     	bookingOptionsDropdown.getItems().addAll(times);
     }
+
+    
+    public void initialize(URL url, ResourceBundle rb)
+	{
+    	//INIT
+	}
 }

@@ -1,35 +1,30 @@
 package database;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import database.model.Account;
-import database.model.Admin;
-import database.model.Booking;
-import database.model.BusinessOwner;
-import database.model.Customer;
-import database.model.Employee;
-import database.model.Service;
-import database.model.Shift;
+import model.Account;
+import model.Booking;
+import model.BusinessOwner;
+import model.Customer;
+import model.Employee;
+import model.Shift;
+import model.ShiftTime;
 
-public abstract class Database {
+public class Database implements DBInterface {
+	Connection c = null;
+	Statement stmt = null;
+	ResultSet rs = null;
+	String dbName;
 	
-	/**
-	 * DB Connection object
-	 */
-	protected Connection c = null;
-
-	/**
-	 * The name of the DB file, excluding it's extension
-	 */
-	private String dbName;
-	private boolean isAdmin = false;
-	
-	protected Logger logger;
+	private Logger logger;
 	
 	/**
 	 * Instantiates the database, which will read to and from the .db file with
@@ -37,50 +32,312 @@ public abstract class Database {
 	 * @author James
 	 * @author krismania
 	 */
-	public Database(String dbName)
+	public Database(String nameOfDatabase)
 	{
 		// get the logger & set level
 		logger = Logger.getLogger(getClass().getName());
+		logger.setLevel(Level.ALL);
+		
+		logger.info("Instantiated DB");
 		
 		// set up db
-		this.dbName = dbName;
-		openConnection();
-		
+		dbName = nameOfDatabase;
 		CreateDatabase();
-
-		logger.info("Instantiated DB");
-	}
-	
-	/**
-	 * Close the DB Connection.
-	 * @author krismania
-	 */
-	
-	public void close()
-	{
-		closeConnection();
 	}
 
-	//***PUBLIC API***
+//***PUBLIC API***
 
 	/**
 	 * @author James
-	 * @author krismania
-	 * @deprecated Controller method has been deprecated.
 	 */
-	 @Deprecated
+	@Override
+	public boolean addAccount(Account account, String password)
+	{
+		if(account instanceof Customer)
+		{
+			Customer c = (Customer) account;
+			
+			return CreateDataEntry("Customer", c.getFirstName(),
+							c.getLastName(), c.getEmail(), c.getPhoneNumber(),
+							c.username, password, "Customer");
+		}
+		else if(account instanceof BusinessOwner)
+		{
+			BusinessOwner bo = (BusinessOwner) account;
+			
+			return CreateDataEntry("BusinessOwner", bo.username, password, "BusinessOwner");
+		}
+
+		return false;
+	}
+
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public Employee buildEmployee()
+	{
+		// find the highest current ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(EmpID) AS id FROM Employee"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Employee(id,"", "", "", "");
+	}
+  
+	/**
+	 * @author James
+	 */
+	@Override
+	public boolean addEmployee(Employee employee)
+	{
+		if(CreateDataEntry("Employee", employee.getFirstName(), employee.getLastName(), employee.getEmail(), 
+				employee.getPhoneNumber(), Integer.toString(employee.ID)))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public Shift buildShift(int employeeID)
+	{
+		// find the highest ID
+		int currentHighestID = 0;
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Shift_ID) AS id FROM Shift"))
+			{
+				if (rs.next())
+				{
+					currentHighestID =  rs.getInt("id");
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		// create the object and return it
+		int id = currentHighestID + 1;
+		
+		return new Shift(id, employeeID, null, null);
+	}
+	
+	/**
+	 * @author James
+	 */
+	public Booking buildBooking() {
+		// find the highest ID
+		int currentHighestID = 0;
+
+		try {
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT MAX(Booking_ID) AS id FROM Booking")) {
+				if (rs.next()) {
+					currentHighestID = rs.getInt("id");
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+
+		// create the object and return it
+		int id = currentHighestID + 1;
+
+		return new Booking(id, null, 0, null, null);
+	}
+	
+	/**
+	 * @author James
+	 */
+	@Override
+	public boolean addShift(Shift shift)
+	{
+		if(CreateShift(shift.getDay(), shift.getTime(), shift.ID, shift.employeeID))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @author James
+	 */
+	@Override
+	public boolean addBooking(Booking booking)
+	{
+		boolean noDuplicate = true;
+		LocalTime timer;
+		try {
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Booking WHERE Date ='" +booking.getDate().toString()+"'")) {
+				while (rs.next()) {
+					if(rs.getString("customerID").equals(booking.getCustomer()))
+					{
+						timer =  LocalTime.ofSecondOfDay((rs.getInt("Time")));
+						if(timer.equals(booking.getTime()))
+						{
+							logger.info("Duplicate booking found.");
+							noDuplicate = false;
+							break;
+						}
+						else
+						{
+							noDuplicate = true;
+						}
+					}
+					else
+					{
+						noDuplicate = true;
+					}
+				}
+			}
+
+			closeConnection();
+		} catch (SQLException e) {
+			logger.warning(e.toString());
+		}
+		
+		if(noDuplicate)
+		{
+			if(CreateDataEntry("Booking", Integer.toString(booking.ID), booking.getCustomer(),
+				Integer.toString(booking.getEmployeeID()),
+				booking.getDate().toString(), Integer.toString(booking.getTime().toSecondOfDay())))
+			{
+				return true;
+			}
+		}
+		return false;
+		
+	}
+
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public boolean accountExists(String username)
+	{
+		return validateUsername(username) != null;
+	}
+
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public Account getAccount(String username)
+	{		
+		Class<? extends Account> type = validateUsername(username);
+		
+		// check if type is null
+		if (type == null)
+		{
+			return null;
+		}
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			if (type.equals(Customer.class))
+			{
+				try (ResultSet customerQuery = stmt.executeQuery(
+								String.format("SELECT * FROM Customer WHERE Username = '%s'", username)))
+				{
+					if (customerQuery.next())
+					{
+						// get info
+						String first = customerQuery.getString("Firstname");
+				        String last = customerQuery.getString("Lastname");
+				        String email = customerQuery.getString("Email");
+				        String phone = customerQuery.getString("Phone");
+				        String usr = customerQuery.getString("Username");
+				        closeConnection();
+				        // create customer obj and return it
+				        return new Customer(usr, first, last, email, phone);
+					}
+				}
+			}
+			else if (type.equals(BusinessOwner.class))
+			{
+				try (ResultSet boQuery = stmt.executeQuery(
+								String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username)))
+				{
+					if (boQuery.next())
+					{
+						// get info
+						String usr = boQuery.getString("Username");
+						String businessName = boQuery.getString("BusinessName");
+						String ownerName = boQuery.getString("Name");
+						String address = boQuery.getString("Address");
+						String phone = boQuery.getString("Phone");
+						closeConnection();
+						// create obj and return
+						return new BusinessOwner(usr, businessName, ownerName, address, phone);
+					}
+				}
+			}
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+			
+		return null;
+	}
+	
+	/**
+	 * @author James
+	 * @author krismania
+	 */
+	@Override
 	public ArrayList<Customer> getAllCustomers()
 	{
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		
 		try
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
 			String sql = "SELECT * FROM Customer";
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			while(rs.next()){
 		         //Retrieve by column name
 		         String first = rs.getString("Firstname");
@@ -92,6 +349,7 @@ public abstract class Database {
 		         // create Customer object & add to list. -kg
 		         customers.add(new Customer(Username, first, last, email, phone));
 		      }
+			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -111,18 +369,20 @@ public abstract class Database {
 	 * @author James
 	 * @author krismania
 	 */
+	@Override
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
 		
 		try
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM Businesses";
+			String sql = "SELECT * FROM BusinessOwner";
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			while(rs.next())
 			{
 		        //Retrieve by column name         
@@ -135,6 +395,7 @@ public abstract class Database {
 				// build obj and add to list. -kg
 				businessOwners.add(new BusinessOwner(usr, businessName, ownerName, address, phone));
 			}
+			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -149,56 +410,339 @@ public abstract class Database {
 		
 		return businessOwners;
 	}
-
-	
-	//***CREATE METHODS***
 	
 	/**
-	 * Create the database
-	 * TODO: better documentation
+	 * @author krismania
+	 */
+	@Override
+	public Employee getEmployee(int id)
+	{
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			// TODO: use int IDs instead of strings
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Employee WHERE EmpID = '%s'", id)))
+			{
+				if (rs.next())
+				{
+					String first = rs.getString("Firstname");
+			        String last = rs.getString("Lastname");
+			        String email = rs.getString("Email");
+			        String phone = rs.getString("Phone");
+			        closeConnection();
+			        return new Employee(id, first, last, email, phone);
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return null;
+  }
+  
+	/**
 	 * @author James
 	 * @author krismania
 	 */
-	private void CreateDatabase()
+	@Override
+	public ArrayList<Employee> getAllEmployees()
 	{
-		//JM Initialize a connection
+		ArrayList<Employee> roster = new ArrayList<Employee>();
+		
 		try
 		{
-
-			// test if the db is empty. -kg
-			boolean empty;
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
-			rs.next();
-			empty = (rs.getInt(1) == 0);
-			rs.close();
-			
-			if (empty)
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery("SELECT * FROM Employee"))
 			{
-				// temporarily commenting out test data creation. -kg
-				// if DB is empty, create the required tables.
-				createTables();
-
-				// createTestData();
+				while(rs.next())
+				{
+					String first = rs.getString("Firstname");
+			        String last = rs.getString("Lastname");
+			        String email = rs.getString("Email");
+			        String phone = rs.getString("Phone");
+			        int EmpID = rs.getInt("EmpID");
+			        
+			        Employee current = new Employee(EmpID, first, last, email, phone);
+			        
+			        roster.add(current);
+				}
 			}
 			
+			closeConnection();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			logger.severe(e.toString());
-			System.exit(0);
+			logger.warning(e.toString());
 		}
+		return roster;
 	}
 	
+	@Override
+	public ArrayList<String> getEmployeeWorkingOnDay(LocalDate date)
+	{
+		String day = date.getDayOfWeek().toString();
+		ArrayList<String> Workers = new ArrayList<String>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = String.format("SELECT * FROM Shift WHERE Day = '%s'", day);
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+		         //JM Retrieve by column name
+		         
+				String empID = Integer.toString(rs.getInt("EmpID"));
+		         
+		         // add it to the list
+		         Workers.add(empID);
+		    }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+			logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return Workers;
+	}
+	
+	/**
+	 * @author James
+	 */
+	@Override
+	public boolean shiftExists(DayOfWeek day, ShiftTime time, int empID)
+	{
+		boolean shiftExists = false;
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND"
+									+ " Day = '%s' AND Time = '%s'", empID, day.toString(),
+									time.toString().toUpperCase())))
+			{
+				while (rs.next())
+				{
+					shiftExists = true;
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return shiftExists;
+	}
+	
+	@Override
+	public Shift getShift(int shiftID)
+	{
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			try (ResultSet rs = stmt.executeQuery(
+							String.format("SELECT * FROM Shift NATURAL JOIN Schedule WHERE Shift_ID = '%s'", shiftID)))
+			{
+				if (rs.next())
+				{
+					String day = rs.getString("Day");
+			        int time = rs.getInt("Time");
+			        int empID = rs.getInt("EmpID");
+			        closeConnection();
+			        LocalTime convertTime = LocalTime.ofSecondOfDay(time);
+			        return new Shift(shiftID, empID, DayOfWeek.valueOf(day), convertTime);
+				}
+			}
+			
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public ArrayList<Shift> getShifts(int EmpID, String Day)
+	{
+		ArrayList<Shift> Shifts = new ArrayList<Shift>();
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			String sql = String.format("SELECT * FROM Shift WHERE EmpID = '%s' AND Day = '%s'", EmpID, Day);
+			
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+		         //JM Retrieve by column name
+		         DayOfWeek day = DayOfWeek.valueOf(rs.getString("Day").toUpperCase());
+		         int time = rs.getInt("Time");
+		         int shiftID = rs.getInt("Shift_ID");
+		         LocalTime convertTime = LocalTime.ofSecondOfDay(time);
+		         // create shift object. -kg
+		         Shift shift = new Shift(shiftID, EmpID, day, convertTime);
+		         
+		         // add it to the list
+		         Shifts.add(shift);
+		    }
+			closeConnection();
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+			logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return Shifts;
+	}
+
+	/**
+	 * @author krismania
+	 */
+	@Override
+	public TreeMap<Shift, Booking> getShiftBookings()
+	{
+		// get the list of employees
+		logger.info("getting employees");
+		ArrayList<Employee> employees = getAllEmployees();
+		
+		// build the list of all shifts
+		logger.info("getting shifts");
+		ArrayList<Shift> shifts = new ArrayList<Shift>();
+		for (Employee employee : employees)
+		{
+			//shifts.addAll(getShifts(employee.ID));
+		}
+		
+		// get the list of bookings in the next 7 days
+		logger.info("getting upcoming bookings");
+		ArrayList<Booking> bookings = getBookings("Date >= DATE('now') AND Date < DATE('now', '7 days')");
+		
+		// create hashmap to decide which shifts are booked within the next 7 days
+		TreeMap<Shift, Booking> shiftBookings = new TreeMap<Shift, Booking>();
+		
+		// iterate over each shift and decide if it's been booked
+		for (Shift shift : shifts)
+		{
+			logger.fine("looping shift " + shift.ID);
+			// find a booking with matching details
+			boolean found = false;
+			for (Booking booking : bookings)
+			{
+				logger.fine(shift.toString() + " | " + booking.toString());
+				// figure out weekday of booking
+				if (booking.getDay() == shift.getDay() && booking.getTime() == shift.getTime() &&
+								booking.getEmployeeID() == shift.employeeID)
+				{
+					// booking and shift match, to hash map
+					shiftBookings.put(shift, booking);
+					found = true;
+					break;
+				}
+			}
+			// otherwise, enter null as the booking
+			if (!found) shiftBookings.put(shift, null);
+			logger.fine("found match: " + found);
+		}
+		
+		return shiftBookings;
+	}
+	
+	
+	@Override
+	public ArrayList<Booking> getPastBookings()
+	{
+		return getBookings("Date < DATE('now')");
+	}
+	
+	@Override
+	public ArrayList<Booking> getFutureBookings()
+	{
+		return getBookings("Date >= DATE('now')");
+	}
+	
+	/**
+	 * Returns an ArrayList of bookings in the database, restricted by the given
+	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
+	 * clause in the SQL query.
+	 * @author krismania
+	 */
+	private ArrayList<Booking> getBookings(String constraint)
+	{
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			
+			try (ResultSet bookingQuery = stmt.executeQuery(
+							"SELECT * FROM Booking WHERE " + constraint))
+			{
+				while (bookingQuery.next())
+				{
+					int id = bookingQuery.getInt("Booking_ID");
+					String customer = bookingQuery.getString("customerID");
+					int employeeID = bookingQuery.getInt("EmpID");
+					LocalDate date = LocalDate.parse(bookingQuery.getString("Date"));
+					LocalTime timer = LocalTime.ofSecondOfDay((bookingQuery.getInt("Time")));
+					
+					// construct the object & add to list. -kg
+					bookings.add(new Booking(id, customer, employeeID, date, timer));
+				}
+			}
+			
+			stmt.close();
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return bookings;
+	}
+
 	/**
 	 * Joint login function, may return either a Customer or BusinessOwner.
 	 * @author krismania
 	 */
+	@Override
 	public Account login(String username, String password)
 	{
 		boolean valid = false;
 		Account account = getAccount(username);
-
+		
 		if (account instanceof Customer)
 		{
 			valid = validatePassword(username, password, "Customer");
@@ -207,205 +751,59 @@ public abstract class Database {
 		{
 			valid = validatePassword(username, password, "BusinessOwner");
 		}
-		else if(account instanceof Admin)
-		{
-			valid = validatePassword(username, password, "Admin");
-		}
-
+		
 		if (valid) return account;
 		else return null;
 	}
+
+	
+	//***CREATE METHODS***
 	
 	/**
-	 * @author krismania
-	 */
-	public Account getAccount(String username)
-	{		
-		if(username.equals("Admin"))
-			isAdmin = true;
-		else
-			isAdmin = false;
-		
-		Class<? extends Account> type = validateUsername(username);
-
-		// check if type is null
-		if (type == null)
-		{
-			return null;
-		}
-
-		try
-		{
-			Statement stmt = c.createStatement();
-			if (type.equals(Customer.class))
-			{
-				try (ResultSet customerQuery = stmt.executeQuery(
-						String.format("SELECT * FROM Customer WHERE Username = '%s'", username)))
-				{
-					if (customerQuery.next())
-					{
-						// get info
-						String first = customerQuery.getString("Firstname");
-						String last = customerQuery.getString("Lastname");
-						String email = customerQuery.getString("Email");
-						String phone = customerQuery.getString("Phone");
-						String usr = customerQuery.getString("Username");
-
-						// create customer obj and return it
-						return new Customer(usr, first, last, email, phone);
-					}
-				}
-			}
-			else if (type.equals(BusinessOwner.class))
-			{
-				try (ResultSet boQuery = stmt.executeQuery(
-						String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username)))
-				{
-					if (boQuery.next())
-					{
-						// get info
-						String usr = boQuery.getString("Username");
-						String businessName = boQuery.getString("BusinessName");
-						String ownerName = boQuery.getString("Name");
-						String address = boQuery.getString("Address");
-						String phone = boQuery.getString("Phone");
-
-						// create obj and return
-						return new BusinessOwner(usr, businessName, ownerName, address, phone);
-					}
-				}
-			}
-			else if(type.equals(Admin.class))
-			{
-				try (ResultSet adminQuery = stmt.executeQuery(
-						String.format("SELECT * FROM Admin WHERE Username = '%s'", username)))
-				{
-					if (adminQuery.next())
-					{
-						// get info
-						String usr = adminQuery.getString("Username");
-						// create obj and return
-						return new Admin(usr);
-					}
-				}
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-
-		return null;
-	}
-	
-	/**
-	 * Returns a class object describing which type of user {@code username} is,
-	 * or null if the username is not found.
-	 * @author James
-	 * @author krismania
-	 */
-	private Class<? extends Account> validateUsername(String username) 
-	{		
-		if(!isAdmin)
-		{
-			String query = "SELECT Username, Type "
-				+ "FROM (SELECT Username, Type from Customer "
-				+ "UNION "
-				+ "SELECT Username, Type from BusinessOwner"
-				+ ") a "
-				+ "WHERE Username = '"+username+"'";
-
-			try 
-			{
-				Statement stmt = c.createStatement();
-				ResultSet rs = stmt.executeQuery(query);
-	
-				if(rs.next())
-				{
-					String type = rs.getString("Type");
-	
-					if(type.equals("BusinessOwner"))
-					{
-						return BusinessOwner.class;
-					}
-					else if (type.equals("Customer"))
-					{
-						return Customer.class;
-					}
-				}			
-	
-			} catch (SQLException e) {
-				//JM Catch if table already exists
-				logger.warning(e.toString());
-			} catch (Exception e) {
-				//JM Handles errors for Class.forName
-				logger.warning(e.toString());
-			}
-		}
-		else
-		{
-			String query = "SELECT Username "
-					+ "FROM Admin";
-
-				try 
-				{
-					Statement stmt = c.createStatement();
-					ResultSet rs = stmt.executeQuery(query);
-		
-					if(rs.next())
-					{
-						String user = rs.getString("Username");
-						if(user.equals("Admin"))
-						{
-							return Admin.class;
-						}
-					}			
-		
-				} catch (SQLException e) {
-					//JM Catch if table already exists
-					logger.warning(e.toString());
-				} catch (Exception e) {
-					//JM Handles errors for Class.forName
-					logger.warning(e.toString());
-				}
-		}
-		return null;
-	}
-
-	/**
-	 * returns true if the username & password match in the given table.
-	 * @author krismania
+	 * Create the database
+	 * TODO: better documentation
 	 * @author James
 	 */
-	private boolean validatePassword(String username, String password, String tableName)
+	private void CreateDatabase()
 	{
-		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
-
+		//JM Initialize a connection
 		try
 		{
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			Class.forName("org.sqlite.JDBC");
+			//JM Attempts to get the connection to DB file after 'sqlite:<name here>'
+			openConnection();
+			
+			// test if the db is empty. -kg
+			boolean empty;
+			stmt = c.createStatement();
+			rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'");
 			rs.next();
-			if (rs.getString(1).equals(password)) {
-				return true;
+			empty = (rs.getInt(1) == 0);
+			rs.close();
+			
+			if (empty)
+			{
+				// if DB is empty, create the required tables and test data
+				createTables();
+				createTestData();
 			}
+			
+			closeConnection();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			logger.warning(e.toString());
+			logger.severe(e.toString());
+			System.exit(0);
 		}
-
-		return false;
 	}
+	
 	
 	/**
 	 * Creates a table within the database
 	 * TODO: better documentation
 	 * @param strings a variable number of strings
 	 * @author James
-	 * @deprecated Method too complicated, use native SQL table creation instead. -kg
 	 */
-	@Deprecated
 	private void CreateDatabaseTable(String... strings)
 	{
 		int primaryKeyId = 1;
@@ -458,8 +856,10 @@ public abstract class Database {
 		
 		try 
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
+			closeConnection();
 		
 		} catch (SQLException e) {
 			//JM Catch if table already exists
@@ -473,48 +873,9 @@ public abstract class Database {
 	}
 	
 	/**
-	 * Insert the given values into the specified table.
-	 * @param table The database table to insert into
-	 * @param values Values to insert
-	 * @author krismania
-	 */
-	protected boolean insert(String table, String...values)
-	{
-		// prepare values
-		for (int i = 0; i < values.length; i++)
-		{
-			// double up existing single quotes to escape them
-			values[i] = values[i].replaceAll("'", "''");
-			// add single quotes around each value
-			values[i] = "'" + values[i] + "'";
-		}
-		
-		// create value string
-		String valueString = String.join(",", values);
-		
-		// create the query
-		String query = "INSERT INTO " + table + " VALUES(" + valueString + ")";
-		logger.fine("Executing query: " + query);
-		
-		try
-		{
-			Statement stmt = c.createStatement();
-			stmt.execute(query);
-			return true;
-		}
-		catch (SQLException e)
-		{
-			logger.warning("SQL Exception: " + e.toString());
-			return false;
-		}
-	}
-	
-	/**
 	 * Insert data into the database
 	 * @author James
-	 * @deprecated Use {@link #insert(String, String...)} instead.
 	 */
-	@Deprecated
 	private boolean CreateDataEntry(String...strings) 
 	{
 
@@ -546,8 +907,10 @@ public abstract class Database {
 		String sql = strBuilder.toString();
 		try
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			stmt.executeUpdate(sql);
+			closeConnection();
 			return true;
 		} catch(SQLException e) {
 			//JM Handle errors for JDBC
@@ -560,33 +923,112 @@ public abstract class Database {
 		return false;
 	}
 	
-//	/**
-//	 * TODO: better documentation
-//	 * @author James
-//	 */
-//	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
-//	{
-//		String sql = "INSERT INTO Shift VALUES ('"
-//				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
-//						+ ", '" + employeeID + "')";
-//		
-//		try
-//		{
-//			Statement stmt = c.createStatement();
-//			stmt.executeUpdate(sql);
-//
-//			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
-//			return true;
-//		} catch(SQLException e) {
-//			//JM Handle errors for JDBC
-//			logger.warning(e.toString());
-//			return false;
-//		} catch(Exception e) {
-//			logger.warning(e.toString());
-//		    e.printStackTrace();
-//		}
-//		return false;
-//	}
+	/**
+	 * TODO: better documentation
+	 * @author James
+	 */
+	private boolean CreateShift(DayOfWeek day, LocalTime time, int iD, int employeeID) 
+	{
+		String sql = "INSERT INTO Shift VALUES ('"
+				+ day.name() + "', '" + time.toSecondOfDay() + "', '" + iD + "'"
+						+ ", '" + employeeID + "')";
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+			closeConnection();
+			logger.info("Shift Created - Day: " +day +", Time: " +time.toSecondOfDay() + ", ID: " + iD+", EmpID: " +employeeID);
+			return true;
+		} catch(SQLException e) {
+			//JM Handle errors for JDBC
+			logger.warning(e.toString());
+			return false;
+		} catch(Exception e) {
+			logger.warning(e.toString());
+		    e.printStackTrace();
+		}
+		return false;
+	}
+	
+//***VALIDATION METHODS***
+
+	/**
+	 * Returns a class object describing which type of user {@code username} is,
+	 * or null if the username is not found.
+	 * @author James
+	 * @author krismania
+	 */
+	private Class<? extends Account> validateUsername(String username) 
+	{		
+		String query = "SELECT Username, Type "
+				+ "FROM (SELECT Username, Type from Customer "
+				+ "UNION "
+				+ "SELECT Username, Type from BusinessOwner"
+				+ ") a "
+				+ "WHERE Username = '"+username+"'";
+		
+		try 
+		{
+			openConnection();
+			stmt = c.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			if(rs.next())
+			{
+				String type = rs.getString("Type");
+				
+				if(type.equals("BusinessOwner"))
+				{
+					return BusinessOwner.class;
+				}
+				else if (type.equals("Customer"))
+				{
+					return Customer.class;
+				}
+			}
+			closeConnection();
+			
+			
+		} catch (SQLException e) {
+			//JM Catch if table already exists
+			logger.warning(e.toString());
+		} catch (Exception e) {
+			//JM Handles errors for Class.forName
+			logger.warning(e.toString());
+		}
+		return null;
+	}
+	
+	/**
+	 * returns true if the username & password match in the given table.
+	 * @author krismania
+	 * @author James
+	 */
+	private boolean validatePassword(String username, String password, String tableName)
+	{
+		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
+		
+		try
+		{
+			openConnection();
+			stmt = c.createStatement();
+			rs = stmt.executeQuery(sql);
+			rs.next();
+			if (rs.getString(1).equals(password)) {
+				closeConnection();
+				return true;
+			}
+			closeConnection();
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return false;
+	}
 	
 //***RETRIEVE METHODS***
 	
@@ -602,15 +1044,17 @@ public abstract class Database {
 		String id = "E000"; // if no employee is found, E000 will be returned
 		try
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			
 			String sql = "SELECT EmpID FROM Employee ORDER BY EmpID DESC";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
 			rs.next();
 			id = rs.getString("EmpID");
 			
+			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -638,15 +1082,17 @@ public abstract class Database {
 		String id = "S000"; // if no employee is found, E000 will be returned
 		try
 		{
-			Statement stmt = c.createStatement();
+			openConnection();
+			stmt = c.createStatement();
 			
 			String sql = "SELECT Shift_ID FROM Schedule ORDER BY Shift_ID DESC";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			
 			// we only care about the first result. -kg
 			rs.next();
 			id = rs.getString("Shift_ID");
 			
+			closeConnection();
 		}
 		catch(SQLException e)
 		{
@@ -663,25 +1109,16 @@ public abstract class Database {
 	}
 	
 	//***CONNECTION METHODS***
-
+	
 	/**
 	 * TODO: document this
 	 * @author James
 	 */
-	protected boolean openConnection()
-	{
-		// added try-catch to capture sqlException here. -kg
-		try
+	private boolean openConnection() throws SQLException {
+		c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
+		if(c != null) 
 		{
-			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
-			if(c != null) 
-			{
-				return true;
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.severe("DB Could not open: SQLException");
+			return true;
 		}
 		return false;
 	}
@@ -690,114 +1127,96 @@ public abstract class Database {
 	 * TODO: document this
 	 * @author James
 	 */
-	protected boolean closeConnection()
-	{
-		try
+	private boolean closeConnection() throws SQLException {
+		
+		if(stmt != null)
 		{
-			if(c != null)
-			{
-				c.close();
-				c = null;
-				logger.info("Closed connection");
-			}
+			stmt.close();
+			stmt = null;
 		}
-		catch (SQLException e)
+		if(rs != null)
+		{
+			rs.close();
+			rs = null;
+		}
+		if(c != null) {
+			c.close();
+			c = null;
+			return true;
+		}
+		else
 		{
 			logger.warning("DB Connection failed to close");
 			return false;
 		}
-		return true;
 	}
 
 //***SCRIPT METHODS***
 	
 	/**
 	 * Attempt to create the required DB tables
-	 * Checks if master DB
 	 * @author krismania
 	 * @author James
 	 */
-	protected void createTables()
+	private void createTables()
 	{
 		logger.info("Creating database tables...");
+				
+		//Customer Table
+		CreateDatabaseTable("Customer", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "Username varchar(15)",
+				"Password varchar(15)","Type varchar(13)", "Username");
+		
+		//BusinessOwner Table
+		CreateDatabaseTable("BusinessOwner", "Username varchar(15)", "BusinessName varchar(30)",
+				"Name varchar(255)", "Address varchar(255)", "Phone varchar(10)",
+				"Password varchar(15)", "Type varchar(13)", "Username");
+		
+		//Employee Table
+		CreateDatabaseTable("Employee", "Firstname varchar(255)", "Lastname varchar(255)",
+				"Email varchar(255)", "Phone varchar(10)", "EmpID int", "EmpID");
 
-		Table customer = new Table("Customer");
-		customer.addColumn("Username", "varchar(30)");
-		customer.addColumn("Password", "varchar(255)");
-		customer.addColumn("Firstname", "varchar(255)");
-		customer.addColumn("Lastname", "varchar(255)");
-		customer.addColumn("Email", "varchar(255)");
-		customer.addColumn("Phone", "varchar(10)");
-		customer.addColumn("Type", "varchar(13)");
-		customer.setPrimary("Username");
+		//Shift Table
+		CreateDatabaseTable("Shift", "Day varchar(9)", "Time int", "Shift_ID int",
+				"EmpID int", "Shift_ID"); //Schedule also has a foreign key for EmpID.
 		
-		Table bo = new Table("BusinessOwner");
-		bo.addColumn("Username", "varchar(30)");
-		bo.addColumn("Password", "varchar(255)");
-		bo.addColumn("BusinessName", "varchar(255)");
-		bo.addColumn("Name", "varchar(255)");
-		bo.addColumn("Address", "varchar(255)");
-		bo.addColumn("Phone", "varchar(10)");
-		bo.addColumn("Type", "varchar(13)");
-		bo.setPrimary("Username");
+		//Booking Table
+		CreateDatabaseTable("Booking", "Booking_ID int", "customerID varchar(15)", "EmpID int", 
+				"Date DATE", "Time int", "Booking_ID");
+	}
+	
+	/**
+	 * Seeds the database.
+	 * @author James
+	 */
+	private void createTestData()
+	{
+		logger.info("Creating DB test data...");
 		
-		Table employee = new Table("Employee");
-		employee.addColumn("EmpID", "int");
-		employee.addColumn("FirstName", "varchar(255)");
-		employee.addColumn("Lastname", "varchar(255)");
-		employee.addColumn("Email", "varchar(255)");
-		employee.addColumn("Phone", "varchar(10)");
-		employee.setPrimary("EmpID");
+		CreateDataEntry("Customer", "sept", "customer", "sept@customer.test", 
+				"0400000000", "septC", "septCust1", "Customer");
 		
-		Table shift = new Table("Shift");
-		shift.addColumn("ShiftID", "int");
-		shift.addColumn("EmpID", "int");
-		shift.addColumn("Day", "varchar(9)");
-		shift.addColumn("Start", "int");
-		shift.addColumn("End", "int");
-		shift.setPrimary("ShiftID");
-		shift.addForeignKey("EmpID", "Employee(EmpID)");
+		CreateDataEntry("BusinessOwner", "septB", "SomeBusiness", "John S.",
+						"10 Some St, Some Town", "(03) 5555 5555", "septBus1", "BusinessOwner");
 		
-		Table booking = new Table("Booking");
-		booking.addColumn("BookingID", "int");
-		booking.addColumn("Customer", "varchar(30)");
-		booking.addColumn("EmpID", "int");
-		booking.addColumn("Date", "DATE");
-		booking.addColumn("Start", "int");
-		booking.addColumn("ServiceID", "int");
-		booking.setPrimary("BookingID");
-		booking.addForeignKey("Customer", "Customer(Username)");
-		booking.addForeignKey("EmpID", "Employee(EmpID)");
-		booking.addForeignKey("ServiceID", "Service(ServiceID)");
+		CreateDataEntry("Employee", "Fred", "Cutshair", "fred.cutshair@thebesthairshop.com", 
+				"0400000000", "1");
 		
-		Table service = new Table("Service");
-		service.addColumn("ServiceID", "int");
-		service.addColumn("Name", "varchar(30)");
-		service.addColumn("Duration", "int");
-		service.setPrimary("ServiceID");
+		CreateDataEntry("Employee", "Bob", "Shaveshair", "bob.shaveshair@thebesthairshop.com", 
+				"0400000000", "2");
 		
-		try
-		{
-			try (Statement stmt = c.createStatement())
-			{
-				// Customer Table
-				logger.fine("Creating table: " + customer);
-				stmt.execute(customer.toString());
-				logger.fine("Creating table: " + bo);
-				stmt.execute(bo.toString());
-				logger.fine("Creating table: " + employee);
-				stmt.execute(employee.toString());
-				logger.fine("Creating table: " + shift);
-				stmt.execute(shift.toString());
-				logger.fine("Creating table: " + booking);
-				stmt.execute(booking.toString());
-				logger.fine("Creating table: " + service);
-				stmt.execute(service.toString());
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.severe("SQL Exception in table creation: " + e);
-		}
+
+		CreateDataEntry("Shift", "MONDAY", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()), "1", "1");
+		CreateDataEntry("Shift", "TUESDAY", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()), "2", "1");
+		CreateDataEntry("Shift", "WEDNESDAY",Integer.toString(LocalTime.parse("12:00").toSecondOfDay()), "3", "1");
+		CreateDataEntry("Shift", "SUNDAY", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()), "4", "2");
+
+		CreateDataEntry("Booking", "1", "JamesRulez", "1", "2017-05-03", Integer.toString(LocalTime.parse("10:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "2", "JamesRulez", "2", "2017-05-02", Integer.toString(LocalTime.parse("11:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "3", "krismania", "2", "2017-05-10", Integer.toString(LocalTime.parse("12:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "4", "JamesRulez", "1", "2017-03-29", Integer.toString(LocalTime.parse("13:00").toSecondOfDay()));
+		CreateDataEntry("Booking", "5", "krismania", "2", "2017-04-17", Integer.toString(LocalTime.parse("14:00").toSecondOfDay()));
+
+		logger.info("DB created.");
 	}
 }

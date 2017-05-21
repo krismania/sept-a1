@@ -1,4 +1,4 @@
-package database.model;
+package model;
 
 /**
  * Enumeration that describes the possible shift times
