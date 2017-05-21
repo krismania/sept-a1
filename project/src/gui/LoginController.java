@@ -134,5 +134,8 @@ public class LoginController implements Initializable
 		businessPicker.getItems().removeAll(businessPicker.getItems());
 		businessPicker.getItems().addAll(c.getAllBusinessNames());
 		businessPicker.getItems().add("Administration");
+		
+		// default to the first business
+		businessPicker.getSelectionModel().selectFirst();
 	}
 }
