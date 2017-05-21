@@ -23,7 +23,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label text="Select an existing service to edit it, or select 'New' to create a new service." wrapText="true">
+            <Label text="Business credentials can be seen below. If you wish to delete a business, then it will be permanently removed, including all data." wrapText="true">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
