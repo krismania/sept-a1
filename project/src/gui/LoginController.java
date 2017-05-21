@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import database.model.Account;
+import database.model.Admin;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.Controller;
+
 // Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {
@@ -46,7 +48,14 @@ public class LoginController implements Initializable
 		//Disconnect from master DB
 		c.disconnectDB();
 		//Load selected DB. JM
-		c.loadDatabase(businessPicker.getValue());
+		if(businessPicker.getValue() == null)
+		{
+			c.loadDatabase("master");
+		}
+		else
+		{
+			c.loadDatabase(businessPicker.getValue());
+		}
 		
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());
@@ -76,6 +85,19 @@ public class LoginController implements Initializable
 			
 			// switch scenes
 			stage.setScene(boLogin);
+		}
+		else if (account instanceof Admin)
+		{
+			lblError.setVisible(false);
+			
+			// load the scene
+			Scene adminLogin = new Scene(FXMLLoader.load(getClass().getResource("AdminMenu.fxml")));
+			
+			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
+			
+			// switch scenes
+			stage.setScene(adminLogin);
 		}
 		else
 		{
