@@ -25,7 +25,6 @@ public class MasterDatabase extends Database{
 		ArrayList<String> businessNames = new ArrayList<String>();
 		try
 		{
-			openConnection();
 			Statement stmt = c.createStatement();
 			
 			//JM Selected all constraints for a customer
@@ -40,7 +39,6 @@ public class MasterDatabase extends Database{
 				// build obj and add to list. -kg
 	         	businessNames.add(name);
 			}
-			closeConnection();
 		}
 		catch(SQLException e)
 		{
