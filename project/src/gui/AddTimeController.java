@@ -137,12 +137,13 @@ public class AddTimeController implements Initializable {
     	if (validate())
     	{
     		lblError.setVisible(false);
-    		double startTime = startDropdown.getValue();
-    		double endTime = endDropdown.getValue();
+    		//double startTime = startDropdown.getValue();
+    		//double endTime = endDropdown.getValue();
+    		LocalTime startTime = timeFromDouble(startDropdown.getValue());
+    		LocalTime endTime = timeFromDouble(endDropdown.getValue());
     		boolean added = c.addShift(employeeDropdown.getValue().ID, 
-    						dayDropdown.getValue(), Double.toString(startTime), 
-    						Double.toString(endTime));
-    		
+    						dayDropdown.getValue(), startTime,//Double.toString(startTime), 
+    						endTime);//Double.toString(endTime));
 			if (added)
 			{
 				GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
