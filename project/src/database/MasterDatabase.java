@@ -4,10 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import database.model.Account;
 import database.model.BusinessOwner;
-import database.model.Customer;
 
 public class MasterDatabase extends Database{
 

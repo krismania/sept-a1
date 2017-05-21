@@ -1,20 +1,11 @@
 package database;
 import java.sql.*;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
 import database.model.Account;
 import database.model.Admin;
-import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
-import database.model.Employee;
-import database.model.Service;
-import database.model.Shift;
 
 public abstract class Database {
 	
