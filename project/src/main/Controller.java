@@ -460,9 +460,9 @@ public class Controller
 	 * object & also sets the loggedUser property.
 	 * @author krismania
 	 */
-	public Account login(String username, String password)
+	public Account login(String username, String password, String businessName)
 	{
-		if(username.equals("Admin"))
+		if(username.equals("Admin") && businessName.equals("Administration"))
 		{
 			loggedUser = masterDB.login(username, password);
 		}

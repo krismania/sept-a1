@@ -58,7 +58,7 @@ public class LoginController implements Initializable
 		}
 		
 		// attempt login
-		Account account = c.login(tfUsername.getText(), tfPassword.getText());
+		Account account = c.login(tfUsername.getText(), tfPassword.getText(), businessPicker.getValue());
 		
 		if (account instanceof Customer)
 		{
