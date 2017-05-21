@@ -62,15 +62,9 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button cancelButton="true" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+            <Button defaultButton="true" cancelButton="true" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region minWidth="60.0" HBox.hgrow="ALWAYS" />
-            <Button layoutX="111.0" layoutY="10.0" mnemonicParsing="false"  text="Delete" />
-            
-            <Button defaultButton="true" mnemonicParsing="false"  text="Save">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </Button>
+            <Button layoutX="111.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
          </children>
          <BorderPane.margin>
             <Insets top="30.0" />
