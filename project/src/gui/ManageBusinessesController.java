@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
@@ -30,9 +31,9 @@ import main.Controller;
 public class ManageBusinessesController implements Initializable
 {
 	private Controller c = Controller.getInstance();
-	@FXML private Node root;
+	@FXML private BorderPane root;
 
-	@FXML private TableView<BusinessOwner> businessesTable;
+	@FXML private TableView<String> businessesTable;
 	@FXML private TableColumn<BusinessOwner, String> businessID;
 	@FXML private TableColumn<BusinessOwner, String> businessName;
 	@FXML private TableColumn<BusinessOwner, String> businessOwner;

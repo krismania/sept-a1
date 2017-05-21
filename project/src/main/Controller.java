@@ -125,9 +125,9 @@ public class Controller
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
 	 */
-	public ArrayList<BusinessOwner> getAllBusinessOwners()
+	public ArrayList<String> getAllBusinessOwners()
 	{
-		return businessDB.getAllBusinessOwners();
+		return masterDB.getAllBusinesses();
 	}
 	
 	/**
