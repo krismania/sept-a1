@@ -33,6 +33,9 @@ public class BOMenuController implements Initializable {
     
     @FXML
     private Button addTime;
+    
+    @FXML
+    private Button editService;
 
     @FXML
     private Button viewBooking;
@@ -46,11 +49,13 @@ public class BOMenuController implements Initializable {
     @FXML
     private Button logout;
     
-    //Implements on button action and directs to appropriate form based on selection
+    // Implements on button action and directs to appropriate form based on selection.
+    // TODO: this should be broken into individual methods, and should also use the helper
+    // method to switch scenes. -kg
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException {
         Stage stage;
-        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootViewBooking, rootMakeBooking;
+        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootEditService, rootViewBooking, rootMakeBooking;
         if(event.getSource()==addEmp) {
         	//TN - get reference button stage
         	stage=(Stage) addEmp.getScene().getWindow();
@@ -76,6 +81,14 @@ public class BOMenuController implements Initializable {
             stage.setScene(scene);
             stage.show(); 
         }
+        else if(event.getSource()==editService)
+        {
+        	stage=(Stage)editService.getScene().getWindow();
+        	rootEditService = FXMLLoader.load(getClass().getResource("EditService.fxml"));
+        	Scene scene = new Scene(rootEditService);
+        	stage.setScene(scene);
+        	stage.show();
+        }
         else if(event.getSource()==viewBooking)
         {
         	stage=(Stage) viewBooking.getScene().getWindow();
@@ -99,6 +112,9 @@ public class BOMenuController implements Initializable {
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
     	c.logout();
+    	//reconnect to master DB
+    	c.loadDatabase("master");
+    			
     	Stage stage = (Stage) logout.getScene().getWindow();
     	
     	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));

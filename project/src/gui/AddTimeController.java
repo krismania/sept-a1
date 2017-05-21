@@ -7,12 +7,17 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXSlider;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
+import database.model.Employee;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import main.Controller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,83 +31,158 @@ import javafx.scene.control.ChoiceBox;
  * FXML Controller class
  * Implements form to add employee availability times
  * @author tn
+ * @author krismania
  */
 public class AddTimeController implements Initializable {
     Controller c = Controller.getInstance();   
     
-    @FXML 
-    private Label lblError;
-
-    @FXML
-    private Button navMenu;
-
-    @FXML
-    private Button btRecordAvail;
+    @FXML private Label lblError;
+    @FXML private Button navMenu;
+    @FXML private Button btRecordAvail;
+    @FXML private Label startLabel;
+    @FXML private Label endLabel;
+    @FXML private JFXSlider startDropdown;
+    @FXML private JFXSlider endDropdown;
+    @FXML private ChoiceBox<Employee> employeeDropdown;
+    @FXML private ChoiceBox<String> dayDropdown;
     
-    @FXML
-	private ChoiceBox<String> dayDropdown;
     
-    @FXML
-    private ChoiceBox<String> timeDropdown;
-    
-    @FXML
-    private ChoiceBox<String> durationDropdown;
+    /**
+     * Populate dropdowns on load
+     * @author krismania
+     * @author TN
+     */
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
+	{
+		// set employee converter
+		employeeDropdown.setConverter(new StringConverter<Employee>()
+		{
+			@Override
+			public String toString(Employee e)
+			{
+				return "" + e.ID + ": " + e.getFirstName() + " " + e.getLastName();
+			}
+			@Override public Employee fromString(String string) { return null; }	
+		});
+		
+		// add listener for sliders
+		startDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				startLabel.setText("Start Time: " + timeFromDouble((double) newValue).toString());
+			}
+		});
+		
+		endDropdown.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+							Number oldValue, Number newValue)
+			{
+				endLabel.setText("End Time: " + timeFromDouble((double) newValue).toString());
+			}
+		});
+		
+		// populate employee list
+		employeeDropdown.getItems().addAll(c.getAllEmployees());
+		
+		// populate day list
+		dayDropdown.getItems().addAll("Monday", "Tuesday", "Wednesday", 
+						"Thursday", "Friday", "Saturday", "Sunday");
 
-    @FXML
-    private ChoiceBox<Number> empIDDropdown;
-    //Implements back button navigation - redirects to Business Owner Main menu
-    @FXML
-    private void navMenuButtonAction(ActionEvent event) throws IOException {
-    	Stage stage = (Stage) navMenu.getScene().getWindow();
+	}
+	
+	private boolean validate()
+	{
+		// check employee selected
+		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) {
+			return false;
+		}
+		
+		// check day selected
+		if (dayDropdown.getSelectionModel().getSelectedItem() == null) { 
+			return false; 
+		}
+		
+		// check start/end selected 
+		
+		//Tn null check on slider value not required
+		/* if (startDropdown.getSelectionModel().getSelectedItem() == null ||
+			endDropdown.getSelectionModel().getSelectedItem() == null)
+		{
+			return false;
+		}
+		
+		// check that start is before end
+		if (startDropdown.getSelectionModel().getSelectedIndex() >= endDropdown.getSelectionModel().getSelectedIndex())
+		{
+			return false;
+		} */
+		
+		return true;
+	}
+
+	/**
+	 * Attempt to add the shift
+	 * @author TN
+	 * @author krismania
+	 */
+    @FXML	
+    public void handleRecord(ActionEvent event) throws IOException
+    {
+    	if (validate())
+    	{
+    		lblError.setVisible(false);
+    		//double startTime = startDropdown.getValue();
+    		//double endTime = endDropdown.getValue();
+    		LocalTime startTime = timeFromDouble(startDropdown.getValue());
+    		LocalTime endTime = timeFromDouble(endDropdown.getValue());
+    		boolean added = c.addShift(employeeDropdown.getValue().ID, 
+    						dayDropdown.getValue(), startTime,//Double.toString(startTime), 
+    						endTime);//Double.toString(endTime));
+			if (added)
+			{
+				GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
+				System.out.println("Shift Added!");
+			}
+			else
+			{
+				System.out.println("Unable to add shift!");
+			}
+    	}
+    	else
+    	{
+    		lblError.setVisible(true);
+    	}
+    }
+
+
+	//Implements back button navigation - redirects to Business Owner Main menu
+	@FXML
+	public void handleBack(ActionEvent event) throws IOException
+	{
+		Stage stage = (Stage) navMenu.getScene().getWindow();
 		// load the scene
 		Scene boMenu = new Scene(FXMLLoader.load(getClass().getResource("BOMenu.fxml")));
 		
 		// switch scenes
 		stage.setScene(boMenu);
-    }
+	}
+	
+	/**
+	 * Converts a double (0-24) to a LocalTime
+	 * @author krismania
+	 */
+	private LocalTime timeFromDouble(double input)
+	{
+	    int hour = (int) input;
+	    int minute = (int) ((input % 1) * 60);
+	    
+	    return LocalTime.of(hour, minute);
+	}
     
-    //TN - Collects data from DatePicker and Dropdowns and stores into variables
-    @FXML	
-    private void handleButtonAction(ActionEvent event) throws IOException{    	
-        
-        boolean added = c.addShift((int) empIDDropdown.getValue(), 
-    		  dayDropdown.getValue(), timeDropdown.getValue(), durationDropdown.getValue());
-        if(added)
-        {
-            GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
-            System.out.println("Shift Added!");
-        }
-        else
-        {
-            System.out.println("Unable to add shift!");
-        }
-    }
-    //Constructs dropdown menus for booking availability time/day/duration selection  
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
-    	empIDDropdown.getItems().removeAll(empIDDropdown.getItems());
-    	empIDDropdown.getItems().addAll(1, 2, 3, 4);
-    	empIDDropdown.getSelectionModel().select(0);
-    	
-    	//TN - initialise shift time slot dropdown menus
-    	timeDropdown.getItems().removeAll(timeDropdown.getItems());
-    	timeDropdown.getItems().addAll("9:00 am", "9:30 am", "10:00 am", "10:30 am", 
-        		"11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", 
-        		"2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm");
-    	timeDropdown.getSelectionModel().select("9:00 am");
-        
-        //TN - initialise shift duration dropdown menus
-        durationDropdown.getItems().removeAll(durationDropdown.getItems());
-        durationDropdown.getItems().addAll("30 minutes", "1 hour", 
-        		"1 hour 30 minutes", "2 hours");
-        durationDropdown.getSelectionModel().select("30 minutes");
-        
-        //TN - initialise shift duration dropdown menus
-        dayDropdown.getItems().removeAll(dayDropdown.getItems());
-        dayDropdown.getItems().addAll("Monday", "Tuesday", 
-        		"Wednesday", "Thursday", "Friday", "Saturday");
-        dayDropdown.getSelectionModel().select("Monday"); 
-    }
-    
-}   
+}  

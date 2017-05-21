@@ -1,4 +1,4 @@
-package model;
+package database.model;
 
 /**
  * Defines getters and setters for several personal details, such as name and
