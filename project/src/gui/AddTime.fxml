@@ -48,7 +48,7 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </HBox>
-            <JFXSlider fx:id="startDropdown" blockIncrement="59.0" majorTickUnit="1.0" max="24.0" min="1.0" minorTickCount="60" showTickLabels="true" showTickMarks="true" />
+            <JFXSlider fx:id="startDropdown" blockIncrement="59.0" majorTickUnit="1.0" max="23.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
             <HBox alignment="CENTER_LEFT">
                <children>
                   <Region prefWidth="30.0" HBox.hgrow="ALWAYS" />
@@ -58,7 +58,7 @@
                </VBox.margin>
             </HBox>
             <Label fx:id="endLabel" prefHeight="16.0" prefWidth="349.0" text="End Time:" />
-            <JFXSlider fx:id="endDropdown" blockIncrement="59.0" majorTickUnit="1.0" max="24.0" min="1.0" minorTickCount="60" showTickLabels="true" showTickMarks="true" />
+            <JFXSlider fx:id="endDropdown" blockIncrement="59.0" majorTickUnit="1.0" max="23.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="22.0" />
             <Label fx:id="lblError" alignment="CENTER_RIGHT" prefWidth="250.0" text="Please double check your selections" textAlignment="RIGHT" textFill="RED" visible="false" wrapText="true" />
          </children>
       </VBox>
