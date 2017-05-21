@@ -99,10 +99,14 @@ public class AddTimeController implements Initializable {
 	private boolean validate()
 	{
 		// check employee selected
-		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) return false;
+		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) {
+			return false;
+		}
 		
 		// check day selected
-		if (dayDropdown.getSelectionModel().getSelectedItem() == null) return false;
+		if (dayDropdown.getSelectionModel().getSelectedItem() == null) { 
+			return false; 
+		}
 		
 		// check start/end selected 
 		
