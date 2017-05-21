@@ -95,6 +95,10 @@ public class Controller
 	{
 		businessDB = null;
 	}
+	public void disconnectMaster()
+	{
+		masterDB = null;
+	}
 	
 	/**
 	 * Returns customer object based on supplied username, or null if none
