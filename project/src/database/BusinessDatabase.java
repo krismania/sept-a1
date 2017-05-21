@@ -45,6 +45,7 @@ public class BusinessDatabase extends Database implements DBInterface
 			}
 			else if(account instanceof BusinessOwner)
 			{
+				logger.fine("Added business owner to business: " + account.username );
 				return insert((BusinessOwner) account, password);
 			}
 		}
@@ -337,7 +338,7 @@ public class BusinessDatabase extends Database implements DBInterface
 
 	/**
 	 * @author krismania
-	 */
+	 *//*
 	@Override
 	public Account getAccount(String username)
 	{		
@@ -397,7 +398,7 @@ public class BusinessDatabase extends Database implements DBInterface
 		}
 
 		return null;
-	}
+	}*/
 	
 	/**
 	 * @author krismania
@@ -576,7 +577,7 @@ public class BusinessDatabase extends Database implements DBInterface
 	/**
 	 * Joint login function, may return either a Customer or BusinessOwner.
 	 * @author krismania
-	 */
+	 *//*
 	@Override
 	public Account login(String username, String password)
 	{
@@ -594,7 +595,7 @@ public class BusinessDatabase extends Database implements DBInterface
 
 		if (valid) return account;
 		else return null;
-	}
+	}*/
 
 	/**
 	 * Returns a shift by it's ID
@@ -731,7 +732,7 @@ public class BusinessDatabase extends Database implements DBInterface
 	 * or null if the username is not found.
 	 * @author James
 	 * @author krismania
-	 */
+	 *//*
 	private Class<? extends Account> validateUsername(String username) 
 	{		
 		String query = "SELECT Username, Type "
@@ -770,11 +771,11 @@ public class BusinessDatabase extends Database implements DBInterface
 		return null;
 	}
 
-	/**
+	*//**
 	 * returns true if the username & password match in the given table.
 	 * @author krismania
 	 * @author James
-	 */
+	 *//*
 	private boolean validatePassword(String username, String password, String tableName)
 	{
 		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
@@ -794,5 +795,5 @@ public class BusinessDatabase extends Database implements DBInterface
 		}
 
 		return false;
-	}
+	}*/
 }
