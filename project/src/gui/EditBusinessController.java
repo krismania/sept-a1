@@ -1,10 +1,13 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 import database.model.BusinessOwner;
 import database.model.Service;
@@ -16,6 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 import main.Controller;
 
@@ -69,5 +76,26 @@ public class EditBusinessController implements Initializable
 		c.disconnectDB();
 		c.loadDatabase("master");
 		switchTo("ManageBusinesses");
+	}
+	
+	@FXML
+	public void handleDelete()
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("WARNING");
+		alert.setHeaderText("Delete Business");
+		alert.setContentText("Warning! You are about to delete a business. This action cannot be undone. All business data will"
+				+ "be destroyed.");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			c.removeBusiness();
+			File db = new File(c.currentDB+".db");
+			if(db.exists())
+			{
+				db.delete();
+				switchTo("ManageBusinesses");
+			}
+		}
 	}
 }
