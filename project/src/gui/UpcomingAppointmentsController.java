@@ -5,6 +5,8 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+import database.model.Booking;
+import database.model.Employee;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -19,8 +21,6 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.Controller;
-import model.Booking;
-import model.Employee;
 
 /**
  * Customer screen to view their upcoming bookings
@@ -61,7 +61,7 @@ public class UpcomingAppointmentsController implements Initializable
 							CellDataFeatures<Booking, String> param)
 			{
 				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
+				prop.setValue(param.getValue().getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
 				return prop;
 			}
 		});

@@ -55,6 +55,8 @@ public class CustMenuController implements Initializable {
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
     	c.logout();
+    	//reconnect to master DB
+		c.loadDatabase("master");
     	
     	Stage stage = (Stage) logout.getScene().getWindow();
     	
