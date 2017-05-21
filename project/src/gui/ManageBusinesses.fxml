@@ -25,9 +25,7 @@
             </Label>
             <TableView fx:id="businessesTable" prefHeight="200.0" prefWidth="394.0">
               <columns>
-                <TableColumn fx:id="businessID" prefWidth="82.0" text="Business ID" />
                 <TableColumn fx:id="businessName" prefWidth="159.0" text="Business Name" />
-                <TableColumn fx:id="businessOwner" prefWidth="152.0" text="Business Owner" />
               </columns>
             </TableView>
          </children>

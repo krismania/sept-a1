@@ -34,9 +34,7 @@ public class ManageBusinessesController implements Initializable
 	@FXML private BorderPane root;
 
 	@FXML private TableView<String> businessesTable;
-	@FXML private TableColumn<BusinessOwner, String> businessID;
-	@FXML private TableColumn<BusinessOwner, String> businessName;
-	@FXML private TableColumn<BusinessOwner, String> businessOwner;
+	@FXML private TableColumn<String, String> businessName;
 
 	//Initialise data to populate fields
 	@Override
@@ -44,14 +42,14 @@ public class ManageBusinessesController implements Initializable
 	{
 
 		// set cell value factories
-		businessName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<BusinessOwner, String>, ObservableValue<String>>() {
+		businessName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
 
 			@Override
 			public ObservableValue<String> call(
-					CellDataFeatures<BusinessOwner, String> param)
+					CellDataFeatures<String, String> param)
 			{
 				SimpleStringProperty prop = new SimpleStringProperty();
-				prop.setValue(param.getValue().getBusinessName());
+				prop.setValue(param.getValue());
 				return prop;
 			}
 		});
