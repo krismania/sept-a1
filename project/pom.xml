@@ -13,7 +13,7 @@
         </excludes>
       </resource>
     </resources>
-    <plugins>
+      <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
@@ -22,13 +22,69 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+      	<groupId>com.sun.maven</groupId>
+      	<artifactId>maven-junit-plugin</artifactId>
+      	<version>1.5</version>
+      </plugin>
+      <!-- build jar with dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>main.Main</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
-  </build>
+   </build>
   <dependencies>
   	<dependency>
   		<groupId>org.xerial</groupId>
   		<artifactId>sqlite-jdbc</artifactId>
-  		<version>3.16.1</version>
-  	</dependency>
+  		</dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+    </dependency>
   </dependencies>
+  <name>Appointment Booking System</name>
+  <url>https://github.com/krismania/se-pt-a1</url>
+  <description>Manages the booking of services for a number of businesses. 
+
+Can be customised to suit your business needs. 
+
+Has integrated customer access and calander system.</description>
+  <organization>
+  	<name>extendedClass</name>
+  </organization>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.xerial</groupId>
+  			<artifactId>sqlite-jdbc</artifactId>
+  			<version>3.16.1</version>
+  		</dependency>
+  	    <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

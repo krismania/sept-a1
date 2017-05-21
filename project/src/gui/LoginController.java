@@ -1,9 +1,14 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import database.model.Account;
+import database.model.Admin;
+import database.model.BusinessOwner;
+import database.model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,13 +17,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.Controller;
-import model.Account;
-import model.BusinessOwner;
-import model.Customer;
-//Implements login scene and is the initial point of entry into the booking system app
+
+// Implements login scene and is the initial point of entry into the booking system app
 public class LoginController implements Initializable
 {
 	Controller c = Controller.getInstance();
@@ -27,13 +33,30 @@ public class LoginController implements Initializable
 	@FXML private TextField tfUsername;
     @FXML private PasswordField tfPassword;
     @FXML private Label lblError;
+    @FXML private ChoiceBox<String> businessPicker;
     
+    @FXML
+    private ImageView imageView;
+
+
     //implements button action and decision logic for determining the users 
     //access level based on login information Forwards data to controller 
     //for validation then progresses to the appropriate menu based on return from controller
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException
 	{
+		//Disconnect from master DB
+		c.disconnectDB();
+		//Load selected DB. JM
+		if(businessPicker.getValue() == null)
+		{
+			c.loadDatabase("master");
+		}
+		else
+		{
+			c.loadDatabase(businessPicker.getValue());
+		}
+		
 		// attempt login
 		Account account = c.login(tfUsername.getText(), tfPassword.getText());
 		
@@ -63,10 +86,27 @@ public class LoginController implements Initializable
 			// switch scenes
 			stage.setScene(boLogin);
 		}
+		else if (account instanceof Admin)
+		{
+			lblError.setVisible(false);
+			
+			// load the scene
+			Scene adminLogin = new Scene(FXMLLoader.load(getClass().getResource("AdminMenu.fxml")));
+			
+			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
+			
+			// switch scenes
+			stage.setScene(adminLogin);
+		}
 		else
 		{
-			// if account isn't an instance of either account type, login failed.
+			//if account isn't an instance of either account type, login failed.
 			lblError.setVisible(true);
+			//Remove attempted DB connect from memory in Controller.JM
+			c.disconnectDB();
+			//reconnect to master DB
+			c.loadDatabase("master");
 			tfPassword.clear();
 		}
 	}
@@ -87,6 +127,11 @@ public class LoginController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		// init
+        File file = new File("images/default.jpg");
+		Image image = new Image(file.toURI().toString());
+		imageView.setImage(image);
+		
+		businessPicker.getItems().removeAll(businessPicker.getItems());
+		businessPicker.getItems().addAll(c.getAllBusinessNames());
 	}
 }
