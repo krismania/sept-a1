@@ -1,4 +1,6 @@
 package main;
+import java.io.File;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -555,5 +557,31 @@ public class Controller
 		}
 		LocalTime newTime = LocalTime.parse(time);
 		return newTime;
-  }
+	}
+	
+	/**
+	 * Returns a string containing the path to the given businesses header image.
+	 * If the given business has no header image, {@code null} is returned.
+	 * @author krismania
+	 */
+	public String getImageForBusiness(String businessName)
+	{
+		String imagePath;
+		
+		File imageFile = new File(Paths.get("images/" + businessName + ".jpg").toString());
+		
+		// if the file exists, return it's path
+		// otherwise, return null
+		if (imageFile.exists())
+		{
+			imagePath = imageFile.toURI().toString();
+			logger.info("Business header exists: " + imagePath);
+			return imagePath;
+		}
+		else
+		{
+			logger.info("No business header exists.");
+			return null;
+		}
+	}
 }

@@ -135,20 +135,13 @@ public class LoginController implements Initializable
 	@FXML
 	public void handleBusinessChange()
 	{
-		String imagePath;
+		String imagePath = c.getImageForBusiness(businessPicker.getValue());
 		
-		File imageFile = new File(Paths.get("images/" + businessPicker.getValue() + ".jpg").toString());
-		
-		if (imageFile.exists())
+		if (imagePath == null)
 		{
-			imagePath = imageFile.toURI().toString();
-		}
-		else
-		{
+			// if no header image, use the default one
 			imagePath = getClass().getResource("resources/images/default.jpg").toString();
 		}
-		
-		System.out.println("Loading image: " + imagePath);
 		
 		imageView.setImage(new Image(imagePath));
 	}
