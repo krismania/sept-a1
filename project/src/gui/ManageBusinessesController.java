@@ -33,7 +33,9 @@ public class ManageBusinessesController implements Initializable
 	@FXML private Node root;
 
 	@FXML private TableView<BusinessOwner> businessesTable;
+	@FXML private TableColumn<BusinessOwner, String> businessID;
 	@FXML private TableColumn<BusinessOwner, String> businessName;
+	@FXML private TableColumn<BusinessOwner, String> businessOwner;
 
 	//Initialise data to populate fields
 	@Override
