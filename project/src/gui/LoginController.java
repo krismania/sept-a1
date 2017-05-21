@@ -3,7 +3,11 @@ package gui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import database.model.Account;
 import database.model.Admin;
@@ -123,14 +127,35 @@ public class LoginController implements Initializable
 		// switch scenes
 		stage.setScene(signup);
 	}
+	
+	/**
+	 * switches the splash image when the business changes
+	 * @author krismania
+	 */
+	@FXML
+	public void handleBusinessChange()
+	{
+		String imagePath;
+		
+		File imageFile = new File(Paths.get("images/" + businessPicker.getValue() + ".jpg").toString());
+		
+		if (imageFile.exists())
+		{
+			imagePath = imageFile.toURI().toString();
+		}
+		else
+		{
+			imagePath = getClass().getResource("resources/images/default.jpg").toString();
+		}
+		
+		System.out.println("Loading image: " + imagePath);
+		
+		imageView.setImage(new Image(imagePath));
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-        File file = new File("images/default.jpg");
-		Image image = new Image(file.toURI().toString());
-		imageView.setImage(image);
-		
 		businessPicker.getItems().removeAll(businessPicker.getItems());
 		businessPicker.getItems().addAll(c.getAllBusinessNames());
 		businessPicker.getItems().add("Administration");
