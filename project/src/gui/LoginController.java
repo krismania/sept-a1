@@ -46,9 +46,9 @@ public class LoginController implements Initializable
 	public void handleLogin(ActionEvent event) throws IOException
 	{
 		//Disconnect from master DB
-		c.disconnectDB();
+		c.disconnectMaster();
 		//Load selected DB. JM
-		if(businessPicker.getValue() == null)
+		if(businessPicker.getValue() == "Administration")
 		{
 			c.loadDatabase("master");
 		}
@@ -58,7 +58,7 @@ public class LoginController implements Initializable
 		}
 		
 		// attempt login
-		Account account = c.login(tfUsername.getText(), tfPassword.getText());
+		Account account = c.login(tfUsername.getText(), tfPassword.getText(), businessPicker.getValue());
 		
 		if (account instanceof Customer)
 		{
@@ -133,5 +133,6 @@ public class LoginController implements Initializable
 		
 		businessPicker.getItems().removeAll(businessPicker.getItems());
 		businessPicker.getItems().addAll(c.getAllBusinessNames());
+		businessPicker.getItems().add("Administration");
 	}
 }
