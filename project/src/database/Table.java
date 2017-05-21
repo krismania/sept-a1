@@ -71,7 +71,9 @@ class Table
 		String fkString = String.join(", ", foreignKey);
 		
 		// join it all together
-		String tableString = colString + ", " + primaryKey;
+		String tableString;
+		if (primaryKey != null) tableString = colString + ", " + primaryKey;
+		else tableString = colString;
 		
 		// only join fk if there are any
 		if (!fkString.equals("")) {tableString += ", " + fkString;}
