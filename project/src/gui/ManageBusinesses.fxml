@@ -15,7 +15,7 @@
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Label text="Bussiness Details List">
+            <Label text="Business Details List">
                <font>
                   <Font size="24.0" />
                </font>
