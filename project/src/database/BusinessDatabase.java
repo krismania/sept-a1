@@ -658,6 +658,45 @@ public class BusinessDatabase extends Database implements DBInterface
 
 		return shifts;
 	}
+	
+	public BusinessOwner getBusinessOwner()
+	{
+		BusinessOwner businessOwner = null;
+		
+		try
+		{
+			Statement stmt = c.createStatement();
+			
+			//JM Selected all constraints for a customer
+			String sql = "SELECT * FROM BusinessOwner";
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+		        //Retrieve by column name         
+	         	String usr = rs.getString("Username");
+				String businessName = rs.getString("BusinessName");
+				String ownerName = rs.getString("Name");
+				String address = rs.getString("Address");
+				String phone = rs.getString("Phone");
+
+				// build obj and add to list. -kg
+				businessOwner = new BusinessOwner(usr, businessName, ownerName, address, phone);
+			}
+		}
+		catch(SQLException e)
+		{
+			//JM Handle errors for JDBC
+		    logger.warning(e.toString());
+		}
+		catch(Exception e)
+		{
+		    //JM Handle errors for Class.forName
+			logger.warning(e.toString());
+		}
+		
+		return businessOwner;
+	}
 
 	/**
 	 * Helper method for inserting a {@link Booking} object into the db

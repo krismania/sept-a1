@@ -25,7 +25,7 @@
             </Label>
             <TableView fx:id="businessesTable" prefHeight="200.0" prefWidth="394.0">
               <columns>
-                <TableColumn fx:id="businessName" prefWidth="159.0" text="Business Name" />
+                <TableColumn fx:id="businessName" prefWidth="390.0" text="Business Name" />
               </columns>
             </TableView>
          </children>
@@ -39,6 +39,9 @@
          <children>
             <Button mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region HBox.hgrow="ALWAYS" />
+         </children>
+         <children>
+            <Button fx:id="select" mnemonicParsing="false" onAction="#handleSelect" text="Select" />
          </children>
       </HBox>
    </bottom>

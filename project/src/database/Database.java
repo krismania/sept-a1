@@ -111,6 +111,7 @@ public abstract class Database {
 	 * @author James
 	 * @author krismania
 	 */
+	@Deprecated
 	public ArrayList<BusinessOwner> getAllBusinessOwners()
 	{
 		ArrayList<BusinessOwner> businessOwners = new ArrayList<BusinessOwner>();
