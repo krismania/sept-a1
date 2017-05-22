@@ -241,24 +241,26 @@ public class Controller
 	 * Returns a list of times that this employee is available, as strings
 	 * TODO: need a more robust solution for this.
 	 * @author krismania
+	 * @deprecated TODO: replace with below -kg
 	 */
 	public ArrayList<String> getEmployeeAvailability(LocalDate date, int employeeID)
 	{
 		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
+		
 		ArrayList<String> times = new ArrayList<String>();
 		
-		logger.info("Getting employee availability");
+		logger.fine("Getting employee availability");
 		
 		// iterate over the day's shifts
 		for (Shift shift : shifts)
 		{
-			logger.info("Shift: " + shift.ID);
+			logger.fine("Shift: " + shift.ID);
 			
 			LocalTime currentTime = shift.getStart(); // keep track of time we're up to
 						
 			while (currentTime.isBefore(shift.getEnd()))
 			{
-				logger.info("Current time is: " + currentTime);
+				logger.fine("Current time is: " + currentTime);
 				
 				times.add(currentTime.format(DateTimeFormatter.ofPattern("h:mm a")).toLowerCase());
 				currentTime = currentTime.plusMinutes(30);
@@ -266,6 +268,24 @@ public class Controller
 		}
 		
 		return times;
+	}
+	
+	/**
+	 * TODO: rename & document
+	 * @author krismania
+	 */
+	public Availability getEmployeeAvailability2(LocalDate date, int employeeID)
+	{
+		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
+		ArrayList<Booking> bookings = businessDB.getBookingsByDate(date, employeeID);
+		
+		Availability avail = new Availability();
+		
+		avail.addAllShifts(shifts);
+		avail.addAllBookings(bookings);
+		
+		System.out.println(avail);
+		return(avail);
 	}
 	
 	/**

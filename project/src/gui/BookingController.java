@@ -12,7 +12,9 @@ import database.model.Employee;
 import database.model.Service;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import main.Availability;
 import main.Controller;
+import main.TimeSpan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +22,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -46,6 +51,8 @@ public class BookingController implements Initializable
     @FXML private Label customerEmail;
     @FXML private Label customerPhone;
     @FXML private Label customerName;
+    
+    @FXML private Pane availabilityPane;
     
     /**
      * Add converters for dropdowns.
@@ -138,6 +145,7 @@ public class BookingController implements Initializable
     {
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateTimesByEmp();
+    	populateAvailabilityPane();
     }
     
     //Changes time selection based on staff availability
@@ -217,5 +225,33 @@ public class BookingController implements Initializable
     	
     	ArrayList<String> times = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
     	bookingOptionsDropdown.getItems().addAll(times);
+    }
+    
+    /**
+     * TODO: document
+     * @author krismania
+     */
+    private void populateAvailabilityPane()
+    {
+    	// first, clear the old values
+    	availabilityPane.getChildren().clear();
+    	
+    	Availability avail = c.getEmployeeAvailability2(datePicker.getValue(), employeePicker.getValue().ID);
+    	
+    	for (TimeSpan t : avail.getAvailability())
+    	{
+    		System.out.println(t);
+    		System.out.println(t.start.toSecondOfDay() / (24.0 * 60.0 * 60.0));
+    		System.out.println(t.getDuration().getSeconds() / (24.0 * 60.0 * 60.0));
+    		
+    		Rectangle rect = new Rectangle();
+    		rect.setFill(Color.DODGERBLUE);
+    		rect.heightProperty().bind(availabilityPane.heightProperty());
+    		
+    		rect.layoutXProperty().bind(availabilityPane.widthProperty().multiply(t.start.toSecondOfDay()/(24.0 * 60.0 * 60.0)));
+        	rect.widthProperty().bind(availabilityPane.widthProperty().multiply(t.getDuration().getSeconds()/(24.0 * 60.0 * 60.0)));
+        	
+        	availabilityPane.getChildren().add(rect);
+    	}
     }
 }

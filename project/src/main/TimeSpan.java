@@ -7,17 +7,17 @@ import java.time.LocalTime;
  * Comparable TimeSpan objects which hold 2 LocalTimes.
  * @author krismania
  */
-class TimeSpan implements Comparable<TimeSpan>
+public class TimeSpan implements Comparable<TimeSpan>
 {
-	final LocalTime start;
-	final LocalTime end;
+	public final LocalTime start;
+	public final LocalTime end;
 	
 	/**
 	 * Create a new TimeSpan with the given {@code start} and {@code end} times.
 	 * End time must come after start time.
 	 * @throws IllegalArgumentException if end time is not after start time.
 	 */
-	TimeSpan(LocalTime start, LocalTime end)
+	public TimeSpan(LocalTime start, LocalTime end)
 	{
 		if (end.isAfter(start))
 		{

@@ -524,6 +524,43 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 	
 	/**
+	 * Returns an array list of bookings that occur on the specified date for a 
+	 * given employee.
+	 * @author krismania
+	 */
+	public ArrayList<Booking> getBookingsByDate(LocalDate date, int EmployeeID)
+	{
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("SELECT * FROM Booking WHERE EmpID = %d AND Date = '%s'", 
+							EmployeeID, date.toString());
+			
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				while (rs.next())
+				{
+					int id = rs.getInt("BookingID");
+					String customer = rs.getString("Customer");
+					int employeeID = rs.getInt("EmpID");
+					LocalTime start = LocalTime.ofSecondOfDay(rs.getInt("Start"));
+					Service service = getService(rs.getInt("ServiceID"));
+					
+					bookings.add(new Booking(id, customer, employeeID, date, start, service));
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return bookings;
+	}
+
+
+	/**
 	 * Returns an ArrayList of bookings in the database, restricted by the given
 	 * {@code constraint}. The constraint arg is added after the {@code WHERE}
 	 * clause in the SQL query.

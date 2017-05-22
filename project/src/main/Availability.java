@@ -2,6 +2,7 @@ package main;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -13,7 +14,7 @@ import database.model.Shift;
  * takes into account the employee's shift times, as well as their current bookings.
  * @author krismania
  */
-class Availability
+public class Availability
 {
 	private TreeSet<TimeSpan> shifts;
 	private TreeSet<TimeSpan> bookedTimes;
@@ -29,9 +30,25 @@ class Availability
 		shifts.add(new TimeSpan(shift.getStart(), shift.getEnd()));
 	}
 	
+	public void addAllShifts(List<Shift> shifts)
+	{
+		for (Shift shift : shifts)
+		{
+			addShift(shift);
+		}
+	}
+	
 	public void addBooking(Booking booking)
 	{
 		bookedTimes.add(new TimeSpan(booking.getStart(), booking.getEnd()));
+	}
+	
+	public void addAllBookings(List<Booking> bookings)
+	{
+		for (Booking booking : bookings)
+		{
+			addBooking(booking);
+		}
 	}
 	
 	public TreeSet<TimeSpan> getAvailability()
@@ -76,5 +93,11 @@ class Availability
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getAvailability().toString();
 	}
 }
