@@ -9,7 +9,7 @@ import java.time.LocalTime;
  * a day of the week, and also has start/end times.
  * @author krismania
  */
-public class Shift // implements Comparable<Shift>
+public class Shift implements Comparable<Shift>
 {
 	public final int ID;
 	public final int employeeID;
@@ -76,19 +76,34 @@ public class Shift // implements Comparable<Shift>
 						getDuration().toString());
 	}
 
-	/**
-	 * Commenting out comparable implementation -kg
-	 */
-//	@Override
-//	public int compareTo(Shift s)
-//	{
-//		int byDay = day.compareTo(s.day);
-//		
-//		if (byDay == 0)
-//		{
-//			return time.compareTo(s.time);
-//		}
-//		
-//		return byDay;
-//	}
+	@Override
+	public int compareTo(Shift s)
+	{
+		int byDay = day.compareTo(s.day);
+		
+		if (byDay == 0)
+		{
+			if (start.isBefore(s.start))
+			{
+				return -1;
+			}
+			else if (start.equals(s.start))
+			{
+				if (end.isBefore(s.end))
+				{
+					return -1;
+				}
+				else if (end.equals(s.end))
+				{
+					return 0;
+				}
+				else if (end.isAfter(s.end))
+				{
+					return 1;
+				}
+			}
+		}
+		
+		return byDay;
+	}
 }
