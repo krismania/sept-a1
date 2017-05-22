@@ -2,6 +2,11 @@ package main;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import database.model.Booking;
+import database.model.Shift;
 
 /**
  * Holds information about an employee's availability on a given day. This availability
@@ -10,40 +15,66 @@ import java.util.ArrayList;
  */
 class Availability
 {
-	private ArrayList<TimeSpan> slots;
+	private TreeSet<TimeSpan> shifts;
+	private TreeSet<TimeSpan> bookedTimes;
 	
 	public Availability()
 	{
-		slots = new ArrayList<TimeSpan>();
+		shifts = new TreeSet<TimeSpan>();
+		bookedTimes = new TreeSet<TimeSpan>();
 	}
 	
-	public void addTimeSpan(LocalTime start, LocalTime end)
+	public void addShift(Shift shift)
 	{
-		TimeSpan t = new TimeSpan(start, end);
-		slots.add(t);
+		shifts.add(new TimeSpan(shift.getStart(), shift.getEnd()));
 	}
 	
-	public ArrayList<TimeSpan> getSlots()
+	public void addBooking(Booking booking)
 	{
-		return slots;
+		bookedTimes.add(new TimeSpan(booking.getStart(), booking.getEnd()));
 	}
-}
-
-class TimeSpan
-{
-	final LocalTime start;
-	final LocalTime end;
 	
-	TimeSpan(LocalTime start, LocalTime end)
+	public TreeSet<TimeSpan> getAvailability()
 	{
-		if (end.isAfter(start))
+		TreeSet<TimeSpan> availability = new TreeSet<TimeSpan>();
+		
+		// iterate over shifts
+		for (TimeSpan shift : shifts)
 		{
-			this.start = start;
-			this.end = end;
+			//availability.add(new TimeSpan(shift.getStart(), shift.getEnd()));
+			
+			LocalTime currentTime = shift.start;
+			
+			// iterate over booked times
+			for (TimeSpan booking : bookedTimes)
+			{
+				// if the booking takes place during this shift, block out this time
+				if (overlap(shift, booking))
+				{
+					availability.add(new TimeSpan(currentTime, booking.start));
+					currentTime = booking.end;
+				}
+			}
+			
+			// include any time between last booking & shift end
+			if (currentTime.isBefore(shift.end))
+			{
+				availability.add(new TimeSpan(currentTime, shift.end));
+			}
 		}
-		else
+		
+		return availability;
+	}
+	
+	private boolean overlap(TimeSpan t1, TimeSpan t2)
+	{
+		if (t2.start.isAfter(t1.start) || t2.start.equals(t1.start))
 		{
-			throw new IllegalArgumentException("TimeSpan end must be after start");
+			if (t2.end.isBefore(t1.end) || t2.end.equals(t1.end))
+			{
+				return true;
+			}
 		}
+		return false;
 	}
 }
