@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -240,10 +241,6 @@ public class BookingController implements Initializable
     	
     	for (TimeSpan t : avail.getAvailability())
     	{
-    		System.out.println(t);
-    		System.out.println(t.start.toSecondOfDay() / (24.0 * 60.0 * 60.0));
-    		System.out.println(t.getDuration().getSeconds() / (24.0 * 60.0 * 60.0));
-    		
     		Rectangle rect = new Rectangle();
     		rect.setFill(Color.DODGERBLUE);
     		rect.heightProperty().bind(availabilityPane.heightProperty());
@@ -252,6 +249,17 @@ public class BookingController implements Initializable
         	rect.widthProperty().bind(availabilityPane.widthProperty().multiply(t.getDuration().getSeconds()/(24.0 * 60.0 * 60.0)));
         	
         	availabilityPane.getChildren().add(rect);
+    	}
+    	
+    	// draw hour lines
+    	for (int hour = 1; hour < 24; hour++)
+    	{
+    		Line line = new Line();
+    		line.setStroke(Color.GRAY);
+    		line.endYProperty().bind(availabilityPane.heightProperty());
+    		line.layoutXProperty().bind(availabilityPane.widthProperty().multiply(hour/24.0));
+    		
+    		availabilityPane.getChildren().add(line);
     	}
     }
 }
