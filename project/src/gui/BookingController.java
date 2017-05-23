@@ -76,6 +76,10 @@ public class BookingController implements Initializable
     	// populate services dropdown
     	serviceDropdown.getItems().addAll(c.getServices());
     	serviceDropdown.getSelectionModel().selectFirst();
+    	
+    	// set date to today
+    	datePicker.setValue(LocalDate.now());
+    	handleDateChange();
 	}
 
 	//Implements on select button action for returning to main menu - 
@@ -124,7 +128,7 @@ public class BookingController implements Initializable
     
     //Implement context sensitive staff selector
     @FXML
-    public void handleDateChange(ActionEvent event)
+    public void handleDateChange()
     {
     	employeePicker.getSelectionModel().clearSelection();
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
