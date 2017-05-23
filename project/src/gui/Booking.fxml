@@ -31,7 +31,7 @@
          <children>
             <VBox>
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label text="Select Service:" />
                         <Region HBox.hgrow="ALWAYS" />
@@ -41,7 +41,7 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="10.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
                      <children>
                         <Label text="Enter Booking Date: " />
                         <Region HBox.hgrow="ALWAYS" />
@@ -51,7 +51,7 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="10.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
                      <children>
                         <Label text="Select Staff Member: " />
                         <Region HBox.hgrow="ALWAYS" />
@@ -61,17 +61,28 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="10.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
                      <children>
-                        <Label text="Select Time: " />
+                        <Label text="Enter Time: " />
                         <Region HBox.hgrow="ALWAYS" />
-                        <ChoiceBox fx:id="bookingOptionsDropdown" onAction="#handleTimeChange" prefWidth="150.0" />
+                        <TextField fx:id="timeH" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="45.0" />
+                        <Label alignment="CENTER" prefWidth="10.0" text=":" />
+                        <TextField fx:id="timeM" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="45.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </TextField>
+                        <ChoiceBox fx:id="timeMeridiem" prefWidth="40.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
                      </children>
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </HBox>
-                  <Pane fx:id="availabilityPane" minHeight="30.0" style="-fx-background-color: #dddddd;" />
+                  <Pane fx:id="availabilityPane" prefHeight="30.0" style="-fx-background-color: #dddddd;" />
                </children>
                <VBox.margin>
                   <Insets bottom="30.0" />

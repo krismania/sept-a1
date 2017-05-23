@@ -437,10 +437,8 @@ public class Controller
 	 * @author krismania
 	 * TODO: fix the inputs for this method
 	 */
-	public boolean addBooking(LocalDate localDate, String time, Service service, int empID, String customerUsername) 
-	{
-		LocalTime start = convertTime(time);
-		
+	public boolean addBooking(LocalDate localDate, LocalTime start, Service service, int empID, String customerUsername) 
+	{		
 		Booking booking = businessDB.buildBooking();
 		if(customerUsername.isEmpty())
 		{

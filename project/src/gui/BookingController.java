@@ -2,7 +2,9 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -22,37 +24,37 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 //Implements form for creating bookings
 public class BookingController implements Initializable
 {
 	Controller c = Controller.getInstance();
-	private String customerUsername = null;
 	
 	@FXML private Label lblError;
     @FXML private Label customerLabel;
     @FXML private TextField customerUser;
 	@FXML private Button navMenu;
     @FXML private Button submitBooking;
+
+    @FXML private ChoiceBox<Service> serviceDropdown;
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<Employee> employeePicker;
-    @FXML private ChoiceBox<String> bookingOptionsDropdown;
-    @FXML private ChoiceBox<Service> serviceDropdown;
+    @FXML private TextField timeH;
+    @FXML private TextField timeM;
+    @FXML private ChoiceBox<String> timeMeridiem;
     
     @FXML private VBox customerDetailsContainer;
-    @FXML private Label TitleOfDetails;
-    @FXML private Label Email;
-    @FXML private Label Phone;
-    @FXML private Label Name;
     @FXML private TextField customerEmail;
     @FXML private TextField customerPhone;
     @FXML private TextField customerName;
@@ -66,6 +68,31 @@ public class BookingController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
 	{
+    	// restrict time to only integers
+    	timeH.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*") || Integer.parseInt(newValue) > 12)
+			{
+				timeH.setText(oldValue);
+			}
+			else
+			{
+				handleTimeChange();
+			}
+		});
+    	timeM.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*") || Integer.parseInt(newValue) > 60)
+			{
+				timeM.setText(oldValue);
+			}
+			else
+			{
+				handleTimeChange();
+			}
+		});
+    	timeMeridiem.valueProperty().addListener((observable, oldValue, newValue)-> {
+    		handleTimeChange();
+    	});
+		
 		// set employee dropdown
     	employeePicker.setConverter(new StringConverter<Employee>()
 		{
@@ -91,6 +118,11 @@ public class BookingController implements Initializable
     		customerDetailsContainer.setMinHeight(Region.USE_COMPUTED_SIZE);
     		customerDetailsContainer.setVisible(true);
     	}
+    	
+    	// populate meridiem choicebox
+    	timeMeridiem.getItems().add("AM");
+    	timeMeridiem.getItems().add("PM");
+    	timeMeridiem.getSelectionModel().selectFirst();
 	}
 
 	//Implements on select button action for returning to main menu - 
@@ -123,7 +155,7 @@ public class BookingController implements Initializable
     	}
     	else
     	{
-    		boolean booked = c.addBooking(datePicker.getValue(), bookingOptionsDropdown.getValue(), 
+    		boolean booked = c.addBooking(datePicker.getValue(), getTime(), 
     				serviceDropdown.getValue(),	employeePicker.getValue().ID, customerUser.getText());
     		
     		if(booked)
@@ -142,7 +174,8 @@ public class BookingController implements Initializable
     public void handleDateChange()
     {
     	employeePicker.getSelectionModel().clearSelection();
-    	bookingOptionsDropdown.getSelectionModel().clearSelection();
+    	timeH.clear();
+    	timeM.clear();
     	generateEmployeesByDate();
     }
     
@@ -150,18 +183,18 @@ public class BookingController implements Initializable
     @FXML
     public void handleEmployeeChange(ActionEvent event)
     {
-    	bookingOptionsDropdown.getSelectionModel().clearSelection();
-    	generateTimesByEmp();
+//    	bookingOptionsDropdown.getSelectionModel().clearSelection();
+//    	generateTimesByEmp();
     	populateAvailabilityPane();
     }
     
     //Changes time selection based on staff availability
     @FXML
-    public void handleTimeChange(ActionEvent event)
+    public void handleTimeChange()
     {
     	if(c.loggedUser instanceof Customer)
     	{
-    		if (bookingOptionsDropdown.getSelectionModel().getSelectedItem() != null)
+    		if (getTime() != null)
         	{
         		submitBooking.setDisable(false);
         	}
@@ -170,6 +203,17 @@ public class BookingController implements Initializable
         		submitBooking.setDisable(true);
         	}
     	}
+    }
+    
+    /**
+     * Selects the entire text field on click.
+     * @author krismania
+     */
+    @FXML
+    public void handleTimeClick(MouseEvent event)
+    {
+    	TextField source = (TextField) event.getSource();
+    	source.selectAll();
     }
     
     //Shows context data and or error message responses
@@ -237,13 +281,13 @@ public class BookingController implements Initializable
     }
     
     //Generates available times based on selected staff
-    private void generateTimesByEmp()
-    {
-    	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
-    	
-    	ArrayList<String> times = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
-    	bookingOptionsDropdown.getItems().addAll(times);
-    }
+//    private void generateTimesByEmp()
+//    {
+//    	bookingOptionsDropdown.getItems().removeAll(bookingOptionsDropdown.getItems());
+//    	
+//    	ArrayList<String> times = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
+//    	bookingOptionsDropdown.getItems().addAll(times);
+//    }
     
     /**
      * TODO: document
@@ -272,11 +316,44 @@ public class BookingController implements Initializable
     	for (int hour = 1; hour < 24; hour++)
     	{
     		Line line = new Line();
-    		line.setStroke(Color.GRAY);
     		line.endYProperty().bind(availabilityPane.heightProperty());
     		line.layoutXProperty().bind(availabilityPane.widthProperty().multiply(hour/24.0));
     		
+    		// display 12 hr times
+    		String labelText;
+    		if (hour <= 12) labelText = Integer.toString(hour);
+    		else labelText = Integer.toString(hour - 12);
+    		
+    		Label label = new Label(labelText);
+    		label.setFont(Font.font(9));
+    		label.layoutXProperty().bind(availabilityPane.widthProperty().multiply(hour/24.0).add(2));
+    		
     		availabilityPane.getChildren().add(line);
+    		availabilityPane.getChildren().add(label);
+    	}
+    }
+    
+    /**
+     * Reads a local time from the 2 time input textFields
+     * @author krismania
+     */
+    private LocalTime getTime()
+    {
+    	try
+    	{
+    		int hour, minute;
+    		    		
+    		if (timeMeridiem.getValue().equals("AM")) hour = Integer.parseInt(timeH.getText());
+    		else hour = Integer.parseInt(timeH.getText()) + 12;
+    		
+    		minute = Integer.parseInt(timeM.getText());
+    		
+    		System.out.println(LocalTime.of(hour, minute));
+	    	return LocalTime.of(hour, minute);
+    	}
+    	catch (NumberFormatException | DateTimeException e)
+    	{
+    		return null;
     	}
     }
 }
