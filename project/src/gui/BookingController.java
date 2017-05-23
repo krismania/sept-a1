@@ -23,11 +23,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 //Implements form for creating bookings
 public class BookingController implements Initializable
@@ -45,13 +48,14 @@ public class BookingController implements Initializable
     @FXML private ChoiceBox<String> bookingOptionsDropdown;
     @FXML private ChoiceBox<Service> serviceDropdown;
     
+    @FXML private VBox customerDetailsContainer;
     @FXML private Label TitleOfDetails;
     @FXML private Label Email;
     @FXML private Label Phone;
     @FXML private Label Name;
-    @FXML private Label customerEmail;
-    @FXML private Label customerPhone;
-    @FXML private Label customerName;
+    @FXML private TextField customerEmail;
+    @FXML private TextField customerPhone;
+    @FXML private TextField customerName;
     
     @FXML private Pane availabilityPane;
     
@@ -80,6 +84,13 @@ public class BookingController implements Initializable
     	// set date to today
     	datePicker.setValue(LocalDate.now());
     	handleDateChange();
+    	
+    	// show customer picker if business owner
+    	if(c.getLoggedUser() instanceof BusinessOwner)
+    	{
+    		customerDetailsContainer.setMinHeight(Region.USE_COMPUTED_SIZE);
+    		customerDetailsContainer.setVisible(true);
+    	}
 	}
 
 	//Implements on select button action for returning to main menu - 
@@ -133,15 +144,6 @@ public class BookingController implements Initializable
     	employeePicker.getSelectionModel().clearSelection();
     	bookingOptionsDropdown.getSelectionModel().clearSelection();
     	generateEmployeesByDate();
-    	if(c.getLoggedUser() instanceof BusinessOwner)
-    	{
-    		customerLabel.setVisible(true);
-    		customerUser.setVisible(true);
-    		TitleOfDetails.setVisible(true);
-    	    Email.setVisible(true);
-    	    Phone.setVisible(true);
-    	    Name.setVisible(true);
-    	}
     }
     
     //Implements context sensitive booking time selector
@@ -181,18 +183,29 @@ public class BookingController implements Initializable
     		lblError.setVisible(false);
     		customerName.setVisible(true);
     		customerName.setText(customer.getFirstName() + " " + customer.getLastName());
+    		customerName.setDisable(false);
+    		
     		customerEmail.setVisible(true);
     		customerEmail.setText(customer.getEmail());
+    		customerEmail.setDisable(false);
+    		
     		customerPhone.setVisible(true);
     		customerPhone.setText(customer.getPhoneNumber());
+    		customerPhone.setDisable(false);
     	}
     	else
     	{
     		submitBooking.setDisable(true);
     		lblError.setVisible(true);
-    		customerName.setVisible(false);
-    		customerEmail.setVisible(false);
-    		customerPhone.setVisible(false);
+    		
+    		customerName.setDisable(true);
+    		customerName.clear();
+    		
+    		customerEmail.setDisable(true);
+    		customerEmail.clear();
+    		
+    		customerPhone.setDisable(true);
+    		customerPhone.clear();
     	}
     }
     
