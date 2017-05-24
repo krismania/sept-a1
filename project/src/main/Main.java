@@ -9,8 +9,11 @@ public class Main extends Application
 {  
     @Override 
     public void start(Stage stage) throws Exception
-    { 
-        Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml")); 
+    {
+    	Controller.getInstance().loadDatabase("Awesome Sauce");
+    	Controller.getInstance().login("septB", "septBus1", "Awesome Sauce");
+    	Parent root = FXMLLoader.load(getClass().getResource("/gui/EditHours.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
          
         Scene scene = new Scene(root); 
          
