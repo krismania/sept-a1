@@ -27,7 +27,7 @@
       </HBox>
    </bottom>
    <center>
-      <VBox prefWidth="450.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <VBox>
                <children>
@@ -65,14 +65,14 @@
                      <children>
                         <Label text="Enter Time: " />
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="timeH" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="45.0" />
+                        <TextField fx:id="timeH" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="35.0" />
                         <Label alignment="CENTER" prefWidth="10.0" text=":" />
-                        <TextField fx:id="timeM" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="45.0">
+                        <TextField fx:id="timeM" alignment="CENTER" onMouseClicked="#handleTimeClick" prefWidth="35.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <ChoiceBox fx:id="timeMeridiem" prefWidth="40.0">
+                        <ChoiceBox fx:id="timeMeridiem" prefWidth="60.0">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
