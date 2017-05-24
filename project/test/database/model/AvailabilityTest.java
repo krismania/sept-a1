@@ -1,4 +1,4 @@
-package main;
+package database.model;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 
+import database.model.Availability;
 import database.model.Booking;
 import database.model.Service;
 import database.model.Shift;

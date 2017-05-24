@@ -1,12 +1,9 @@
-package main;
+package database.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import database.model.Booking;
-import database.model.Shift;
 
 /**
  * Holds information about an employee's availability on a given day. This availability
