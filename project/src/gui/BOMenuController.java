@@ -1,144 +1,93 @@
-/*
- * 
- */
 package gui;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import main.Controller;
-import javafx.scene.Parent;
-import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
  * Implements Business Owner Main Menu options selections
- *
  * @author tn
+ * @author krismania
  */
-public class BOMenuController implements Initializable {
-
+public class BOMenuController
+{
 	private Controller c = Controller.getInstance();
 	
-    @FXML
-    private Button addEmp;
-
-    @FXML
-    private Button viewEmployee;
+    @FXML Node root;
+    
+    @FXML 
+    public void handleAddEmployee()
+    {
+    	switchTo("AddEmployee");
+    }
     
     @FXML
-    private Button addTime;
+    public void handleViewEmployees()
+    {
+    	switchTo("ViewEmployee");
+    }
     
     @FXML
-    private Button editHours;
+    public void handleAddShift()
+    {
+    	switchTo("AddTime");
+    }
     
     @FXML
-    private Button editService;
-
-    @FXML
-    private Button viewBooking;
+    public void handleEditBusinessHours()
+    {
+    	switchTo("EditHours");
+    }
     
     @FXML
-    private Button makeBooking;
+    public void handleEditServices()
+    {
+    	switchTo("EditService");
+    }
     
     @FXML
-    private Button exit;
+    public void handleViewBooking()
+    {
+    	switchTo("BOViewBookingSum");
+    }
     
     @FXML
-    private Button logout;
+    public void handleMakeBooking()
+    {
+    	switchTo("Booking");
+    }
     
-    // Implements on button action and directs to appropriate form based on selection.
-    // TODO: this should be broken into individual methods, and should also use the helper
-    // method to switch scenes. -kg
     @FXML
-    void handleButtonAction(ActionEvent event) throws IOException {
-        Stage stage;
-        Parent rootAddEmp, rootViewEmployee, rootAddTime, rootEditService, rootViewBooking, rootMakeBooking;
-        if(event.getSource()==addEmp) {
-        	//TN - get reference button stage
-        	stage=(Stage) addEmp.getScene().getWindow();
-        	//TN - load other scene
-        	rootAddEmp = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
-            Scene scene = new Scene(rootAddEmp);
-            stage.setScene(scene);
-            stage.show();
-        }
-        else if (event.getSource()==viewEmployee)
-        {
-        	// Temp button to get to employees view. -kg
-        	stage = (Stage) viewEmployee.getScene().getWindow();
-        	rootViewEmployee = FXMLLoader.load(getClass().getResource("ViewEmployee.fxml"));
-        	Scene scene = new Scene(rootViewEmployee);
-        	stage.setScene(scene);
-        	stage.show();
-        }
-        else if(event.getSource()==addTime) {
-        	stage=(Stage) addTime.getScene().getWindow();
-        	rootAddTime = FXMLLoader.load(getClass().getResource("AddTime.fxml"));
-            Scene scene = new Scene(rootAddTime);
-            stage.setScene(scene);
-            stage.show(); 
-        }
-        else if(event.getSource()==editHours)
-        {
-        	stage=(Stage)editService.getScene().getWindow();
-        	rootEditService = FXMLLoader.load(getClass().getResource("EditHours.fxml"));
-        	Scene scene = new Scene(rootEditService);
-        	stage.setScene(scene);
-        	stage.show();
-        }
-        else if(event.getSource()==editService)
-        {
-        	stage=(Stage)editService.getScene().getWindow();
-        	rootEditService = FXMLLoader.load(getClass().getResource("EditService.fxml"));
-        	Scene scene = new Scene(rootEditService);
-        	stage.setScene(scene);
-        	stage.show();
-        }
-        else if(event.getSource()==viewBooking)
-        {
-        	stage=(Stage) viewBooking.getScene().getWindow();
-        	rootViewBooking = FXMLLoader.load(getClass().getResource("BOViewBookingSum.fxml"));
-            Scene scene = new Scene(rootViewBooking);
-            stage.setScene(scene);
-            stage.show();
-        }
-        else //if(event.getSource()==makeBookingForCustomer)
-        {
-        	stage=(Stage) makeBooking.getScene().getWindow();
-        	rootMakeBooking = FXMLLoader.load(getClass().getResource("Booking.fxml"));
-            Scene scene = new Scene(rootMakeBooking);
-            stage.setScene(scene);
-            stage.show();
-        }
-        
-
-    }    
-    //Implements logout button redirecting to login scene
-    @FXML
-    private void logoutButtonAction(ActionEvent event) throws IOException {
+    public void handleLogout()
+    {
     	c.logout();
     	//reconnect to master DB
     	c.loadDatabase("master");
-    			
-    	Stage stage = (Stage) logout.getScene().getWindow();
     	
-    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-    	   
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    	switchTo("Login");
     }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // INIT
-    }    
-    
+	
+	// TODO: refactor this
+	private void switchTo(String fxmlName)
+	{
+		try
+		{
+			// load the scene
+			Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlName + ".fxml")));
+			
+			// get current stage
+			Stage stage = (Stage) root.getScene().getWindow();
+			
+			// switch scenes
+			stage.setScene(newScene);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

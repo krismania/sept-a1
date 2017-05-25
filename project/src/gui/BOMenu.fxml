@@ -9,41 +9,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BOMenuController">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BOMenuController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addEmp" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Add Employee">
+            <Button mnemonicParsing="false" onAction="#handleAddEmployee" prefHeight="30.0" prefWidth="250.0" text="Add Employee">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="viewEmployee" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="View Employees">
+            <Button mnemonicParsing="false" onAction="#handleViewEmployees" prefHeight="30.0" prefWidth="250.0" text="View Employees">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="addTime" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Add Shift Time">
+            <Button mnemonicParsing="false" onAction="#handleAddShift" prefHeight="30.0" prefWidth="250.0" text="Add Shift Time">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="editHours" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Edit Business Hours">
+            <Button mnemonicParsing="false" onAction="#handleEditBusinessHours" prefHeight="30.0" prefWidth="250.0" text="Edit Business Hours">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="editService" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Edit Services">
+            <Button mnemonicParsing="false" onAction="#handleEditServices" prefHeight="30.0" prefWidth="250.0" text="Edit Services">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="viewBooking" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="View Booking">
+            <Button mnemonicParsing="false" onAction="#handleViewBooking" prefHeight="30.0" prefWidth="250.0" text="View Booking">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="makeBooking" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Make a Booking">
+            <Button mnemonicParsing="false" onAction="#handleMakeBooking" prefHeight="30.0" prefWidth="250.0" text="Make a Booking">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -54,9 +54,8 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="logout" mnemonicParsing="false" onAction="#logoutButtonAction" text="Logout" />
+            <Button fx:id="logout" mnemonicParsing="false" onAction="#handleLogout" text="Logout" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="settings" disable="true" mnemonicParsing="false" onAction="#logoutButtonAction" text="Settings" />
          </children>
          <BorderPane.margin>
             <Insets top="15.0" />
