@@ -75,7 +75,7 @@ public class AddEmployeeController {
      */
     @FXML
     public void handleBack(ActionEvent event) {
-        GUIUtil.switchTo("BOMenu", exit);
+        GUIUtil.switchTo("BOMenu", root);
     }
 
     /**
