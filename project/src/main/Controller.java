@@ -573,43 +573,6 @@ public class Controller
 	}
 	
 	/**
-	 * TODO: document this
-	 * @author James
-	 * @deprecated
-	 */
-	@Deprecated
-	private LocalTime convertTime(String time) {
-		if(time.matches("\\d:\\d\\d am"))
-		{
-			time = "0".concat(time);
-			time = time.replaceAll("\\sam", "");
-		} 
-		else if(time.matches("\\d\\d:\\d\\d am"))
-		{
-			time = time.replaceAll("\\sam", "");
-		}
-		else if(time.matches("\\d:\\d\\d pm"))
-		{
-			int hour = Character.getNumericValue(time.charAt(0));
-			hour = hour + 12;
-			
-			time = time.replaceAll("\\d:", hour + ":");
-			time = time.replaceAll("\\spm", "");
-		}
-		else if(time.matches("\\d\\d:\\d\\d pm"))
-		{
-			int hour = Integer.parseInt(time.substring(0, 2));
-			if(hour != 12){
-				hour = hour + 12;
-			}
-			time = time.replaceAll("\\d\\d:", hour + ":");
-			time = time.replaceAll("\\spm", "");
-		}
-		LocalTime newTime = LocalTime.parse(time);
-		return newTime;
-	}
-	
-	/**
 	 * Returns a string containing the path to the given businesses header image.
 	 * If the given business has no header image, {@code null} is returned.
 	 * @author krismania
