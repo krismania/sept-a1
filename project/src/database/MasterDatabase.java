@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import database.model.Account;
+import database.model.Admin;
 import database.model.BusinessOwner;
 
 public class MasterDatabase extends Database{
@@ -51,38 +54,28 @@ public class MasterDatabase extends Database{
 		return businessNames;
 	}
 	
+	/**
+	 * Generates the tables required for the business database
+	 * @author James
+	 */
 	@Override
-	protected void createTables()
+	protected ArrayList<Table> createTables()
 	{
-		logger.info("Creating master database tables...");
-
+		ArrayList<Table> tables = new ArrayList<Table>();
+		
 		Table businesses = new Table("Businesses");
 		businesses.addColumn("businessName", "varchar(255)");
 		businesses.addColumn("businessOwnerUsername", "varchar(255)");
 		businesses.setPrimary("businessName");
-		System.out.println("Business Table Created!");
+		tables.add(businesses);
 		
 		Table admin = new Table("Admin");
 		admin.addColumn("Username", "varchar(255)");
 		admin.addColumn("Password", "varchar(255)");
 		admin.setPrimary("Username");
-		System.out.println("Admin Table Created!");
+		tables.add(admin);
 		
-		try
-		{
-			try (Statement stmt = c.createStatement())
-			{
-				// Customer Table
-				logger.fine("Creating table: " + businesses);
-				stmt.execute(businesses.toString());
-				stmt.execute(admin.toString());
-				insert();
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.severe("SQL Exception in table creation: " + e);
-		}
+		return tables;
 	}
 	
 	public boolean newBusiness(String businessName, BusinessOwner owner, String password)
@@ -128,12 +121,6 @@ public class MasterDatabase extends Database{
 		return business.addAccount(owner, password);
 	}
 	
-	private boolean insert()
-	{
-		//Table, Username, Password
-		return insert("Admin", "Admin", "admin");
-	}
-	
 	private boolean validateBusiness(String businessName)
 	{
 		boolean businessExists = false;
@@ -161,5 +148,51 @@ public class MasterDatabase extends Database{
 			logger.warning(e.toString());
 		}
 		return businessExists;
+	}
+
+	@Override
+	public Account getAccount(String username)
+	{
+		String sql = String.format("SELECT * FROM Admin WHERE Username = '%s'", username);
+		return (Account) querySingle(sql, new ModelBuilder<Admin>()
+		{
+			@Override
+			public Admin build(ResultSet rs) throws SQLException
+			{
+				return new Admin(rs.getString("Username"));
+			}
+		});
+	}
+
+	@Override
+	protected boolean validatePassword(Account account, String password)
+	{
+		String sql = String.format("SELECT * FROM Admin WHERE Username = '%s'", account.username);
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				if (rs.next())
+				{
+					if (rs.getString("Password").equals(password))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return false;
+	}
+
+	@Override
+	protected boolean seed()
+	{
+		return insert("Admin", "Admin", "admin");
 	}
 }

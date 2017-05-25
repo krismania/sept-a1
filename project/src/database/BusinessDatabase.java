@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
 import database.model.Account;
 import database.model.Booking;
 import database.model.BusinessOwner;
@@ -20,22 +18,22 @@ import database.model.Service;
 import database.model.Shift;
 import database.model.TimeSpan;
 
-public class BusinessDatabase extends Database implements DBInterface
+public class BusinessDatabase extends Database
 {
-
 	public BusinessDatabase(String dbName) {
 		super(dbName);
 	}
 
-
-	/**PUBLIC API**/
-
 	/**
-	 * Write an account to the DB - appropriately decides which table to write to.
+	 * Writes the given account to the database, with the given password. Selects the
+	 * database to write to appropriately.
+	 * @param account Account to be written
+	 * @param password Account does not store the user's password, so it must
+	 * be passed separately.
+	 * @throws IllegalArgumentException if account is not a Customer or Business Owner.
 	 * @author James
 	 * @author krismania
 	 */
-	@Override
 	public boolean addAccount(Account account, String password)
 	{
 		// first, check the username
@@ -51,12 +49,165 @@ public class BusinessDatabase extends Database implements DBInterface
 				logger.fine("Added business owner to business: " + account.username );
 				return insert((BusinessOwner) account, password);
 			}
+			else
+			{
+				throw new IllegalArgumentException("Account must be of type Customer or BusinessOwner");
+			}
 		}
 
 		return false;
 	}
 
+	/**
+	 * @author krismania
+	 */
+	private Customer getCustomer(String username)
+	{
+		String sql = String.format("SELECT * FROM Customer WHERE Username = '%s'", username);
+		
+		Customer c = querySingle(sql, new ModelBuilder<Customer>()
+		{
+			@Override
+			public Customer build(ResultSet rs) throws SQLException
+			{
+				String first = rs.getString("Firstname");
+				String last = rs.getString("Lastname");
+				String email = rs.getString("Email");
+				String phone = rs.getString("Phone");
+				String usr = rs.getString("Username");
+				
+				return new Customer(usr, first, last, email, phone);
+			}
+		});
+		
+		return c;
+	}
+	
+	/**
+	 * @author krismania
+	 */
+	private BusinessOwner getBusinessOwner(String username)
+	{
+		String sql = String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username);
+		
+		BusinessOwner bo = querySingle(sql, new ModelBuilder<BusinessOwner>()
+		{
+			@Override
+			public BusinessOwner build(ResultSet rs) throws SQLException
+			{
+				String usr = rs.getString("Username");
+				String businessName = rs.getString("BusinessName");
+				String ownerName = rs.getString("Name");
+				String address = rs.getString("Address");
+				String phone = rs.getString("Phone");
+
+				return new BusinessOwner(usr, businessName, ownerName, address, phone);
+			}
+		});
+		
+		return bo;
+	}
+	
+	/**
+	 * Returns a class object describing which type of user {@code username} is,
+	 * or null if the username is not found.
+	 * @author James
+	 * @author krismania
+	 */
+	private Class<? extends Account> validateUsername(String username) 
+	{		
+		String sql = String.format("SELECT * FROM (SELECT Username, Type FROM Customer UNION " + 
+						"SELECT Username, Type FROM BusinessOwner) WHERE Username = '%s'",
+						username);
+
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				if(rs.next())
+				{
+					String type = rs.getString("Type");
+					
+					logger.info("Found " + username + " (" + type + ")");
+
+					if(type.equals("BusinessOwner"))
+					{
+						return BusinessOwner.class;
+					}
+					else if (type.equals("Customer"))
+					{
+						return Customer.class;
+					}
+				}
+			}		
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return null;
+	}
+	
+	public boolean validatePassword(Account account, String password)
+	{
+		String table;
+		if (account instanceof Customer) table = "Customer";
+		else if (account instanceof BusinessOwner) table = "BusinessOwner";
+		else return false; // if account isn't one of these, exit.
+		
+		String sql = String.format("SELECT password FROM %s WHERE username='%s'", 
+						table, account.username);
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				if (rs.next() && rs.getString("Password").equals(password))
+				{
+					return true;
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Returns the account specified by the given username, or null if none
+	 * is found.
+	 * @author krismania
+	 */
 	@Override
+	public Account getAccount(String username)
+	{
+		Class<? extends Account> type = validateUsername(username);
+		
+		if (type != null)
+		{
+			if (type.equals(Customer.class))
+			{
+				return getCustomer(username);
+			}
+			else if (type.equals(BusinessOwner.class))
+			{
+				return getBusinessOwner(username);
+			}
+			
+			logger.info("Couldn't find account " + username);
+		}
+		
+		return null;
+	}
+
+
+	/**
+	 * Adds an employee to the database.
+	 */
 	public boolean addEmployee(Employee employee)
 	{
 		return insert(employee);
@@ -92,7 +243,6 @@ public class BusinessDatabase extends Database implements DBInterface
 	 * time before adding it to the db.
 	 * @author krismania
 	 */
-	@Override
 	public boolean addShift(Shift newShift)
 	{
 		ArrayList<Shift> shifts = new ArrayList<Shift>();
@@ -140,7 +290,6 @@ public class BusinessDatabase extends Database implements DBInterface
 	 * the same date at an overlapping time, or if the employee is already booked.
 	 * @author krismania
 	 */
-	@Override
 	public boolean addBooking(Booking b)
 	{
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -184,16 +333,18 @@ public class BusinessDatabase extends Database implements DBInterface
 		return insert(b);
 	}
 	
-	@Override
+	/**
+	 * Adds the given service to the database.
+	 */
 	public boolean addService(Service service)
 	{
 		return insert(service);
 	}
 	
 	/**
+	 * Updates the given service in the database.
 	 * @author krismania
 	 */
-	@Override
 	public boolean updateService(Service service)
 	{
 		// update the given service in the db
@@ -212,9 +363,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
+	 * Removes the given service from the database.
 	 * @author krismania
 	 */
-	@Override
 	public boolean deleteService(Service s)
 	{
 		try (Statement stmt = c.createStatement())
@@ -230,9 +381,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
+	 * Generates a new empty employee object with the next valid ID.
 	 * @author krismania
 	 */
-	@Override
 	public Employee buildEmployee()
 	{
 		// find the highest current ID
@@ -258,9 +409,10 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
+	 * Generates a new Shift object with the next valid ID and the supplied
+	 * Employee ID.
 	 * @author krismania
 	 */
-	@Override
 	public Shift buildShift(int employeeID)
 	{
 		// find the highest ID
@@ -286,10 +438,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
-	 * find the highest ID and create a new service with the next one.
+	 * Builds a service object with the next available ID.
 	 * @author krismania
 	 */
-	@Override
 	public Service buildService()
 	{
 		int maxID = 0;
@@ -317,9 +468,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 	
 	/**
+	 * Builds a booking object with the next available ID
 	 * @author James
 	 */
-	@Override
 	public Booking buildBooking() {
 		// find the highest ID
 		int maxID = 0;
@@ -340,73 +491,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
-	 * @author krismania
-	 *//*
-	@Override
-	public Account getAccount(String username)
-	{		
-		Class<? extends Account> type = validateUsername(username);
-
-		// check if type is null
-		if (type == null)
-		{
-			return null;
-		}
-
-		try
-		{
-			Statement stmt = c.createStatement();
-			if (type.equals(Customer.class))
-			{
-				try (ResultSet customerQuery = stmt.executeQuery(
-						String.format("SELECT * FROM Customer WHERE Username = '%s'", username)))
-				{
-					if (customerQuery.next())
-					{
-						// get info
-						String first = customerQuery.getString("Firstname");
-						String last = customerQuery.getString("Lastname");
-						String email = customerQuery.getString("Email");
-						String phone = customerQuery.getString("Phone");
-						String usr = customerQuery.getString("Username");
-
-						// create customer obj and return it
-						return new Customer(usr, first, last, email, phone);
-					}
-				}
-			}
-			else if (type.equals(BusinessOwner.class))
-			{
-				try (ResultSet boQuery = stmt.executeQuery(
-						String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username)))
-				{
-					if (boQuery.next())
-					{
-						// get info
-						String usr = boQuery.getString("Username");
-						String businessName = boQuery.getString("BusinessName");
-						String ownerName = boQuery.getString("Name");
-						String address = boQuery.getString("Address");
-						String phone = boQuery.getString("Phone");
-
-						// create obj and return
-						return new BusinessOwner(usr, businessName, ownerName, address, phone);
-					}
-				}
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-
-		return null;
-	}*/
-	
-	/**
+	 * Returns a service object by it's ID
 	 * @author krismania
 	 */
-	@Override
 	public Service getService(int id)
 	{
 		try (Statement stmt = c.createStatement())
@@ -430,9 +517,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 	
 	/**
+	 * Returns a list of services available in the business.
 	 * @author krismania
 	 */
-	@Override
 	public ArrayList<Service> getServices()
 	{
 		ArrayList<Service> services = new ArrayList<Service>();
@@ -460,9 +547,9 @@ public class BusinessDatabase extends Database implements DBInterface
 	}
 
 	/**
+	 * Returns the employee specified by the given ID, or null if none is found.
 	 * @author krismania
 	 */
-	@Override
 	public Employee getEmployee(int id)
 	{
 		try
@@ -490,12 +577,11 @@ public class BusinessDatabase extends Database implements DBInterface
 
 		return null;
 	}
-
+	
 	/**
 	 * @author James
 	 * @author krismania
 	 */
-	@Override
 	public ArrayList<Employee> getAllEmployees()
 	{
 		ArrayList<Employee> roster = new ArrayList<Employee>();
@@ -602,46 +688,27 @@ public class BusinessDatabase extends Database implements DBInterface
 		return bookings;
 	}
 
-	@Override
+	/**
+	 * Returns a list of all bookings that occurred before the current date.
+	 */
 	public ArrayList<Booking> getPastBookings()
 	{
 		return getBookings("Date < DATE('now')");
 	}
 
-	@Override
+	/**
+	 * Returns a list of all bookings that have not yet occurred (including
+	 * today's bookings).
+	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
 		return getBookings("Date >= DATE('now')");
 	}
 
 	/**
-	 * Joint login function, may return either a Customer or BusinessOwner.
-	 * @author krismania
-	 *//*
-	@Override
-	public Account login(String username, String password)
-	{
-		boolean valid = false;
-		Account account = getAccount(username);
-
-		if (account instanceof Customer)
-		{
-			valid = validatePassword(username, password, "Customer");
-		}
-		else if (account instanceof BusinessOwner)
-		{
-			valid = validatePassword(username, password, "BusinessOwner");
-		}
-
-		if (valid) return account;
-		else return null;
-	}*/
-
-	/**
-	 * Returns a shift by it's ID
+	 * Returns the shift specified by the given ID
 	 * @author krismania
 	 */
-	@Override
 	public Shift getShift(int shiftID)
 	{
 		try (Statement stmt = c.createStatement())
@@ -669,7 +736,10 @@ public class BusinessDatabase extends Database implements DBInterface
 		return null;
 	}
 
-	@Override
+	/**
+	 * Returns an ArrayList of shifts for a given day
+	 * @author krismania
+	 */
 	public ArrayList<Shift> getShifts(DayOfWeek onDay)
 	{
 		ArrayList<Shift> shifts= new ArrayList<Shift>();
@@ -699,41 +769,32 @@ public class BusinessDatabase extends Database implements DBInterface
 		return shifts;
 	}
 	
+	/**
+	 * Get the businesses owner. There's only 1 owner per business, so this method
+	 * takes no arguments.
+	 * @author James
+	 * @author krismania
+	 */
 	public BusinessOwner getBusinessOwner()
 	{
 		BusinessOwner businessOwner = null;
 		
-		try
+		String sql = "SELECT * FROM BusinessOwner";
+		
+		businessOwner = querySingle(sql, new ModelBuilder<BusinessOwner>()
 		{
-			Statement stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM BusinessOwner";
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next())
+			@Override
+			public BusinessOwner build(ResultSet rs) throws SQLException
 			{
-		        //Retrieve by column name         
-	         	String usr = rs.getString("Username");
+				String usr = rs.getString("Username");
 				String businessName = rs.getString("BusinessName");
 				String ownerName = rs.getString("Name");
 				String address = rs.getString("Address");
 				String phone = rs.getString("Phone");
 
-				// build obj and add to list. -kg
-				businessOwner = new BusinessOwner(usr, businessName, ownerName, address, phone);
+				return new BusinessOwner(usr, businessName, ownerName, address, phone);
 			}
-		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-		    logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
+		});
 		
 		return businessOwner;
 	}
@@ -798,7 +859,7 @@ public class BusinessDatabase extends Database implements DBInterface
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Helper method for inserting a {@link Booking} object into the db
 	 * @author krismania
@@ -864,76 +925,91 @@ public class BusinessDatabase extends Database implements DBInterface
 				c.getLastName(), c.getEmail(), c.getPhoneNumber(), 
 				"Customer");
 	}
-
-	//***VALIDATION METHODS***
-
+	
 	/**
-	 * Returns a class object describing which type of user {@code username} is,
-	 * or null if the username is not found.
-	 * @author James
+	 * Generates the tables required for the business database
 	 * @author krismania
-	 *//*
-	private Class<? extends Account> validateUsername(String username) 
-	{		
-		String query = "SELECT Username, Type "
-				+ "FROM (SELECT Username, Type from Customer "
-				+ "UNION "
-				+ "SELECT Username, Type from BusinessOwner"
-				+ ") a "
-				+ "WHERE Username = '"+username+"'";
+	 * @author James
+	 */
+	@Override
+	protected ArrayList<Table> createTables()
+	{
+		ArrayList<Table> tables = new ArrayList<Table>();
+		
+		Table hours = new Table("Hours");
+		hours.addColumn("Day", "varchar(9)");
+		hours.addColumn("Open", "int");
+		hours.addColumn("Close", "int");
+		tables.add(hours);
 
-		try 
-		{
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			if(rs.next())
-			{
-				String type = rs.getString("Type");
-
-				if(type.equals("BusinessOwner"))
-				{
-					return BusinessOwner.class;
-				}
-				else if (type.equals("Customer"))
-				{
-					return Customer.class;
-				}
-			}			
-
-		} catch (SQLException e) {
-			//JM Catch if table already exists
-			logger.warning(e.toString());
-		} catch (Exception e) {
-			//JM Handles errors for Class.forName
-			logger.warning(e.toString());
-		}
-		return null;
+		Table customer = new Table("Customer");
+		customer.addColumn("Username", "varchar(30)");
+		customer.addColumn("Password", "varchar(255)");
+		customer.addColumn("Firstname", "varchar(255)");
+		customer.addColumn("Lastname", "varchar(255)");
+		customer.addColumn("Email", "varchar(255)");
+		customer.addColumn("Phone", "varchar(10)");
+		customer.addColumn("Type", "varchar(13)");
+		customer.setPrimary("Username");
+		tables.add(customer);
+		
+		Table bo = new Table("BusinessOwner");
+		bo.addColumn("Username", "varchar(30)");
+		bo.addColumn("Password", "varchar(255)");
+		bo.addColumn("BusinessName", "varchar(255)");
+		bo.addColumn("Name", "varchar(255)");
+		bo.addColumn("Address", "varchar(255)");
+		bo.addColumn("Phone", "varchar(10)");
+		bo.addColumn("Type", "varchar(13)");
+		bo.setPrimary("Username");
+		tables.add(bo);
+		
+		Table employee = new Table("Employee");
+		employee.addColumn("EmpID", "int");
+		employee.addColumn("FirstName", "varchar(255)");
+		employee.addColumn("Lastname", "varchar(255)");
+		employee.addColumn("Email", "varchar(255)");
+		employee.addColumn("Phone", "varchar(10)");
+		employee.setPrimary("EmpID");
+		tables.add(employee);
+		
+		Table shift = new Table("Shift");
+		shift.addColumn("ShiftID", "int");
+		shift.addColumn("EmpID", "int");
+		shift.addColumn("Day", "varchar(9)");
+		shift.addColumn("Start", "int");
+		shift.addColumn("End", "int");
+		shift.setPrimary("ShiftID");
+		shift.addForeignKey("EmpID", "Employee(EmpID)");
+		tables.add(shift);
+		
+		Table booking = new Table("Booking");
+		booking.addColumn("BookingID", "int");
+		booking.addColumn("Customer", "varchar(30)");
+		booking.addColumn("EmpID", "int");
+		booking.addColumn("Date", "DATE");
+		booking.addColumn("Start", "int");
+		booking.addColumn("ServiceID", "int");
+		booking.setPrimary("BookingID");
+		booking.addForeignKey("Customer", "Customer(Username)");
+		booking.addForeignKey("EmpID", "Employee(EmpID)");
+		booking.addForeignKey("ServiceID", "Service(ServiceID)");
+		tables.add(booking);
+		
+		Table service = new Table("Service");
+		service.addColumn("ServiceID", "int");
+		service.addColumn("Name", "varchar(30)");
+		service.addColumn("Duration", "int");
+		service.setPrimary("ServiceID");
+		tables.add(service);
+		
+		return tables;
 	}
 
-	*//**
-	 * returns true if the username & password match in the given table.
-	 * @author krismania
-	 * @author James
-	 *//*
-	private boolean validatePassword(String username, String password, String tableName)
+	@Override
+	protected boolean seed()
 	{
-		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
+		return true; // no seed data for this db
+	}
 
-		try
-		{
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			if (rs.getString(1).equals(password)) {
-				return true;
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning(e.toString());
-		}
-
-		return false;
-	}*/
 }
