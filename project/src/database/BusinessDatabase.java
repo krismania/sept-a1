@@ -20,72 +20,74 @@ import database.model.TimeSpan;
 
 public class BusinessDatabase extends Database
 {
-	public BusinessDatabase(String dbName) {
-		super(dbName);
-	}
+    public BusinessDatabase(String dbName) {
+        super(dbName);
+    }
 
-	/**
-	 * Writes the given account to the database, with the given password. Selects the
-	 * database to write to appropriately.
-	 * @param account Account to be written
-	 * @param password Account does not store the user's password, so it must
-	 * be passed separately.
-	 * @throws IllegalArgumentException if account is not a Customer or Business Owner.
-	 * @author James
-	 * @author krismania
-	 */
-	public boolean addAccount(Account account, String password)
-	{
-		// first, check the username
-		if (getAccount(account.username) == null)
-		{
-			// if it doesn't exist, add it.
-			if(account instanceof Customer)
-			{			
-				return insert((Customer) account, password);
-			}
-			else if(account instanceof BusinessOwner)
-			{
-				logger.fine("Added business owner to business: " + account.username );
-				return insert((BusinessOwner) account, password);
-			}
-			else
-			{
-				throw new IllegalArgumentException("Account must be of type Customer or BusinessOwner");
-			}
-		}
+    /**
+     * Writes the given account to the database, with the given password. Selects the
+     * database to write to appropriately.
+     * @param account Account to be written
+     * @param password Account does not store the user's password, so it must
+     * be passed separately.
+     * @throws IllegalArgumentException if account is not a Customer or Business Owner.
+     * @author James
+     * @author krismania
+     */
+    public boolean addAccount(Account account, String password)
+    {
+        // first, check the username
+        if (getAccount(account.username) == null)
+        {
+            // if it doesn't exist, add it.
+            if(account instanceof Customer)
+            {			
+                return insert((Customer) account, password);
+            }
+            else if(account instanceof BusinessOwner)
+            {
+                logger.fine("Added business owner to business: " + account.username );
+                return insert((BusinessOwner) account, password);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Account must be of type Customer or BusinessOwner");
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @author krismania
-	 */
-	private Customer getCustomer(String username)
-	{
-		String sql = String.format("SELECT * FROM Customer WHERE Username = '%s'", username);
+    /**
+     * @author krismania
+     * Getter for retrieving customer details from DB. 
+     */
+    private Customer getCustomer(String username)
+    {
+        String sql = String.format("SELECT * FROM Customer WHERE Username = '%s'", username);
 		
-		Customer c = querySingle(sql, new ModelBuilder<Customer>()
-		{
-			@Override
-			public Customer build(ResultSet rs) throws SQLException
-			{
-				String first = rs.getString("Firstname");
-				String last = rs.getString("Lastname");
-				String email = rs.getString("Email");
-				String phone = rs.getString("Phone");
-				String usr = rs.getString("Username");
-				
-				return new Customer(usr, first, last, email, phone);
+        Customer c = querySingle(sql, new ModelBuilder<Customer>()
+        {
+            @Override
+            public Customer build(ResultSet rs) throws SQLException
+            {
+                String first = rs.getString("Firstname");
+                String last = rs.getString("Lastname");
+                String email = rs.getString("Email");
+                String phone = rs.getString("Phone");
+                String usr = rs.getString("Username");
+
+                return new Customer(usr, first, last, email, phone);
 			}
 		});
 		
 		return c;
 	}
 	
-	/**
-	 * @author krismania
-	 */
+    /**
+     * @author krismania
+     * Getter for retrieving business owner details from DB. 
+     */
 	private BusinessOwner getBusinessOwner(String username)
 	{
 		String sql = String.format("SELECT * FROM BusinessOwner WHERE Username = '%s'", username);
@@ -148,7 +150,12 @@ public class BusinessDatabase extends Database
 		
 		return null;
 	}
-	
+    /**
+     * @author Krismania
+     * @author James
+     * Checks password agains database entry. 
+     *  
+     */
 	public boolean validatePassword(Account account, String password)
 	{
 		String table;
@@ -207,6 +214,7 @@ public class BusinessDatabase extends Database
 
 	/**
 	 * Adds an employee to the database.
+	 * @author Krismania
 	 */
 	public boolean addEmployee(Employee employee)
 	{
@@ -335,6 +343,7 @@ public class BusinessDatabase extends Database
 	
 	/**
 	 * Adds the given service to the database.
+	 * @author krismania
 	 */
 	public boolean addService(Service service)
 	{
@@ -581,6 +590,8 @@ public class BusinessDatabase extends Database
 	/**
 	 * @author James
 	 * @author krismania
+	 * Returns the employee includes all employee data - used for populating 
+	 * Employer view summaries.
 	 */
 	public ArrayList<Employee> getAllEmployees()
 	{
@@ -690,6 +701,8 @@ public class BusinessDatabase extends Database
 
 	/**
 	 * Returns a list of all bookings that occurred before the current date.
+	 * @author James
+	 * @author Krismania
 	 */
 	public ArrayList<Booking> getPastBookings()
 	{
@@ -699,6 +712,8 @@ public class BusinessDatabase extends Database
 	/**
 	 * Returns a list of all bookings that have not yet occurred (including
 	 * today's bookings).
+	 * @author James
+	 * @author Krismania
 	 */
 	public ArrayList<Booking> getFutureBookings()
 	{
@@ -998,18 +1013,20 @@ public class BusinessDatabase extends Database
 		
 		Table service = new Table("Service");
 		service.addColumn("ServiceID", "int");
-		service.addColumn("Name", "varchar(30)");
-		service.addColumn("Duration", "int");
-		service.setPrimary("ServiceID");
-		tables.add(service);
+        service.addColumn("Name", "varchar(30)");
+        service.addColumn("Duration", "int");
+        service.setPrimary("ServiceID");
+        tables.add(service);
 		
-		return tables;
-	}
-
-	@Override
-	protected boolean seed()
-	{
-		return true; // no seed data for this db
-	}
+        return tables;
+    }
+    /** @author James
+     * @author Krismania
+     */
+    @Override
+    protected boolean seed()
+    {
+        return true; // no seed data for this db
+    }
 
 }
