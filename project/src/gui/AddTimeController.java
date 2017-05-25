@@ -104,7 +104,7 @@ public class AddTimeController implements Initializable {
     }
 
     /**
-     * Checks input to determin if null
+     * Checks input to determine if null
      *
      * @author TN
      */
