@@ -21,6 +21,7 @@ import database.model.Customer;
 import database.model.Employee;
 import database.model.Service;
 import database.model.Shift;
+import database.model.TimeSpan;
 import database.BusinessDatabase;
 import database.MasterDatabase;
 
@@ -483,6 +484,42 @@ public class Controller
 	public boolean deleteService(Service s)
 	{
 		return businessDB.deleteService(s);
+	}
+	
+	/**
+	 * Get hours that the business is opened on current day.
+	 * @author krismania
+	 */
+	public TimeSpan getHours(DayOfWeek day)
+	{
+		return businessDB.getHours(day);
+	}
+	
+	/**
+	 * Set opening hours for the given day.
+	 * @author krismania
+	 */
+	public boolean setHours(DayOfWeek day, TimeSpan hours)
+	{
+		return businessDB.setHours(day, hours);
+	}
+	
+	/**
+	 * Set opening hours for all days.
+	 * @author krismania
+	 */
+	public boolean setAllHours(TimeSpan hours)
+	{
+		// iterate over all days
+		for (DayOfWeek day : DayOfWeek.values())
+		{
+			// if setHours returns false, something went wrong so return false
+			if (!businessDB.setHours(day, hours))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
