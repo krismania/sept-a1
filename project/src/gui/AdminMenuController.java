@@ -8,10 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.Controller;
 
@@ -25,7 +25,7 @@ public class AdminMenuController implements Initializable {
 
     private Controller c = Controller.getInstance();
     @FXML
-    private BorderPane root;
+    private Node root;
 
     @FXML
     private Button createBusiness;
@@ -72,7 +72,7 @@ public class AdminMenuController implements Initializable {
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
         c.logout();
-        GUIUtil.switchTo("Login.fxml", root);
+        GUIUtil.switchTo("Login", root);
 
     }
 
