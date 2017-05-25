@@ -20,13 +20,9 @@ import database.model.TimeSpan;
 
 public class BusinessDatabase extends Database
 {
-
 	public BusinessDatabase(String dbName) {
 		super(dbName);
 	}
-
-
-	/**PUBLIC API**/
 
 	/**
 	 * Writes the given account to the database, with the given password. Selects the
@@ -62,33 +58,6 @@ public class BusinessDatabase extends Database
 		return false;
 	}
 
-	/**
-	 * Returns the account specified by the given username, or null if none
-	 * is found.
-	 * @author krismania
-	 */
-	@Override
-	public Account getAccount(String username)
-	{
-		Class<? extends Account> type = validateUsername(username);
-		
-		if (type != null)
-		{
-			if (type.equals(Customer.class))
-			{
-				return getCustomer(username);
-			}
-			else if (type.equals(BusinessOwner.class))
-			{
-				return getBusinessOwner(username);
-			}
-			
-			logger.info("Couldn't find account " + username);
-		}
-		
-		return null;
-	}
-	
 	/**
 	 * @author krismania
 	 */
@@ -207,6 +176,34 @@ public class BusinessDatabase extends Database
 		
 		return false;
 	}
+
+	/**
+	 * Returns the account specified by the given username, or null if none
+	 * is found.
+	 * @author krismania
+	 */
+	@Override
+	public Account getAccount(String username)
+	{
+		Class<? extends Account> type = validateUsername(username);
+		
+		if (type != null)
+		{
+			if (type.equals(Customer.class))
+			{
+				return getCustomer(username);
+			}
+			else if (type.equals(BusinessOwner.class))
+			{
+				return getBusinessOwner(username);
+			}
+			
+			logger.info("Couldn't find account " + username);
+		}
+		
+		return null;
+	}
+
 
 	/**
 	 * Adds an employee to the database.
@@ -773,43 +770,31 @@ public class BusinessDatabase extends Database
 	}
 	
 	/**
-	 * TODO: Document this
+	 * Get the businesses owner. There's only 1 owner per business, so this method
+	 * takes no arguments.
+	 * @author James
+	 * @author krismania
 	 */
 	public BusinessOwner getBusinessOwner()
 	{
 		BusinessOwner businessOwner = null;
 		
-		try
+		String sql = "SELECT * FROM BusinessOwner";
+		
+		businessOwner = querySingle(sql, new ModelBuilder<BusinessOwner>()
 		{
-			Statement stmt = c.createStatement();
-			
-			//JM Selected all constraints for a customer
-			String sql = "SELECT * FROM BusinessOwner";
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next())
+			@Override
+			public BusinessOwner build(ResultSet rs) throws SQLException
 			{
-		        //Retrieve by column name         
-	         	String usr = rs.getString("Username");
+				String usr = rs.getString("Username");
 				String businessName = rs.getString("BusinessName");
 				String ownerName = rs.getString("Name");
 				String address = rs.getString("Address");
 				String phone = rs.getString("Phone");
 
-				// build obj and add to list. -kg
-				businessOwner = new BusinessOwner(usr, businessName, ownerName, address, phone);
+				return new BusinessOwner(usr, businessName, ownerName, address, phone);
 			}
-		}
-		catch(SQLException e)
-		{
-			//JM Handle errors for JDBC
-		    logger.warning(e.toString());
-		}
-		catch(Exception e)
-		{
-		    //JM Handle errors for Class.forName
-			logger.warning(e.toString());
-		}
+		});
 		
 		return businessOwner;
 	}
@@ -1019,6 +1004,12 @@ public class BusinessDatabase extends Database
 		tables.add(service);
 		
 		return tables;
+	}
+
+	@Override
+	protected boolean seed()
+	{
+		return true; // no seed data for this db
 	}
 
 }

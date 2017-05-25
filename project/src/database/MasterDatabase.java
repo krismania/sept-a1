@@ -121,12 +121,6 @@ public class MasterDatabase extends Database{
 		return business.addAccount(owner, password);
 	}
 	
-	private boolean insert()
-	{
-		//Table, Username, Password
-		return insert("Admin", "Admin", "admin");
-	}
-	
 	private boolean validateBusiness(String businessName)
 	{
 		boolean businessExists = false;
@@ -173,7 +167,32 @@ public class MasterDatabase extends Database{
 	@Override
 	protected boolean validatePassword(Account account, String password)
 	{
-		// TODO Auto-generated method stub
+		String sql = String.format("SELECT * FROM Admin WHERE Username = '%s'", account.username);
+		
+		try (Statement stmt = c.createStatement())
+		{
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				if (rs.next())
+				{
+					if (rs.getString("Password").equals(password))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
 		return false;
+	}
+
+	@Override
+	protected boolean seed()
+	{
+		return insert("Admin", "Admin", "admin");
 	}
 }

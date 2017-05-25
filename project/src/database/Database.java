@@ -1,11 +1,13 @@
 package database;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
 import database.model.Account;
-import database.model.Admin;
-import database.model.BusinessOwner;
-import database.model.Customer;
 
 public abstract class Database {
 	
@@ -42,79 +44,6 @@ public abstract class Database {
 	}
 	
 	/**
-	 * TODO: Attempts to open a database connection, storing the connection
-	 * object as a class variable.
-	 * @author James
-	 */
-	protected boolean open()
-	{
-		// added try-catch to capture sqlException here. -kg
-		try
-		{
-			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
-			if(c != null) 
-			{
-				return true;
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.severe("DB Could not open: SQLException");
-		}
-		return false;
-	}
-	
-	/**
-	 * Calls the close function on the database connection and sets it to null.
-	 * @author James
-	 */
-	protected boolean close()
-	{
-		try
-		{
-			if(c != null)
-			{
-				c.close();
-				c = null;
-				logger.info("Closed connection");
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning("DB Connection failed to close");
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Create the database
-	 * TODO: better documentation
-	 * @author James
-	 * @author krismania
-	 */
-	private void CreateDatabase()
-	{
-		//JM Initialize a connection
-		try (Statement stmt = c.createStatement())
-		{
-			// test if the db is empty. -kg
-			try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'"))
-			{
-				if (rs.next() && rs.getInt(1) == 0)
-				{
-					insertTables(createTables());
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			logger.severe(e.toString());
-			System.exit(0);
-		}
-	}
-
-	/**
 	 * Attempt to log into an account with the provided credentials. If the login
 	 * is successful, am {@link Account} object will be returned, otherwise
 	 * the return value is null.
@@ -131,109 +60,6 @@ public abstract class Database {
 		
 		return null;
 	}
-	
-	public abstract Account getAccount(String username);
-	protected abstract boolean validatePassword(Account account, String password);
-	
-//	/**
-//	 * Returns a class object describing which type of user {@code username} is,
-//	 * or null if the username is not found.
-//	 * @author James
-//	 * @author krismania
-//	 */
-//	private Class<? extends Account> validateUsername(String username) 
-//	{		
-//		if(!isAdmin)
-//		{
-//			String query = "SELECT Username, Type "
-//				+ "FROM (SELECT Username, Type from Customer "
-//				+ "UNION "
-//				+ "SELECT Username, Type from BusinessOwner"
-//				+ ") a "
-//				+ "WHERE Username = '"+username+"'";
-//
-//			try 
-//			{
-//				Statement stmt = c.createStatement();
-//				ResultSet rs = stmt.executeQuery(query);
-//	
-//				if(rs.next())
-//				{
-//					String type = rs.getString("Type");
-//	
-//					if(type.equals("BusinessOwner"))
-//					{
-//						return BusinessOwner.class;
-//					}
-//					else if (type.equals("Customer"))
-//					{
-//						return Customer.class;
-//					}
-//				}			
-//	
-//			} catch (SQLException e) {
-//				//JM Catch if table already exists
-//				logger.warning(e.toString());
-//			} catch (Exception e) {
-//				//JM Handles errors for Class.forName
-//				logger.warning(e.toString());
-//			}
-//		}
-//		else
-//		{
-//			String query = "SELECT Username "
-//					+ "FROM Admin";
-//
-//				try 
-//				{
-//					Statement stmt = c.createStatement();
-//					ResultSet rs = stmt.executeQuery(query);
-//		
-//					if(rs.next())
-//					{
-//						String user = rs.getString("Username");
-//						if(user.equals("Admin"))
-//						{
-//							return Admin.class;
-//						}
-//					}			
-//		
-//				} catch (SQLException e) {
-//					//JM Catch if table already exists
-//					logger.warning(e.toString());
-//				} catch (Exception e) {
-//					//JM Handles errors for Class.forName
-//					logger.warning(e.toString());
-//				}
-//		}
-//		return null;
-//	}
-//
-//	/**
-//	 * returns true if the username & password match in the given table.
-//	 * @author krismania
-//	 * @author James
-//	 */
-//	private boolean validatePassword(String username, String password, String tableName)
-//	{
-//		String sql = String.format("SELECT password FROM %s WHERE username='%s'", tableName, username);
-//
-//		try
-//		{
-//			Statement stmt = c.createStatement();
-//			ResultSet rs = stmt.executeQuery(sql);
-//			rs.next();
-//			if (rs.getString(1).equals(password)) {
-//				return true;
-//			}
-//		}
-//		catch (SQLException e)
-//		{
-//			logger.warning(e.toString());
-//		}
-//
-//		return false;
-//	}
 	
 	/**
 	 * Perform a query on the database and return the objects found.
@@ -315,10 +141,100 @@ public abstract class Database {
 	}
 
 	/**
+	 * Attempts to open a database connection, storing the connection
+	 * object as a class variable.
+	 * @author James
+	 */
+	protected boolean open()
+	{
+		// added try-catch to capture sqlException here. -kg
+		try
+		{
+			c = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
+			if(c != null) 
+			{
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.severe("DB Could not open: SQLException");
+		}
+		return false;
+	}
+
+	/**
+	 * Calls the close function on the database connection and sets it to null.
+	 * @author James
+	 */
+	protected boolean close()
+	{
+		try
+		{
+			if(c != null)
+			{
+				c.close();
+				c = null;
+				logger.info("Closed connection");
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning("DB Connection failed to close");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get the account with the given username from this database.
+	 */
+	public abstract Account getAccount(String username);
+
+	/**
+	 * Returns true if the given password matches the account.
+	 */
+	protected abstract boolean validatePassword(Account account, String password);
+
+	/**
 	 * Database-specific list of table objects.
 	 */
 	protected abstract ArrayList<Table> createTables();
 	
+	/**
+	 * Add required initial data
+	 */
+	protected abstract boolean seed();
+
+	/**
+	 * Initialises the database's tables if the database is empty.
+	 * @author James
+	 * @author krismania
+	 */
+	private void CreateDatabase()
+	{
+		//JM Initialize a connection
+		try (Statement stmt = c.createStatement())
+		{
+			// test if the db is empty. -kg
+			try (ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table'"))
+			{
+				if (rs.next() && rs.getInt(1) == 0)
+				{
+					logger.info("Database empty, initialising tables");
+					insertTables(createTables());
+					logger.info("Seeding database");
+					seed();
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			logger.severe(e.toString());
+			System.exit(0);
+		}
+	}
+
 	/**
 	 * Uses the abstract {@link #createTables()} method to generate this database's
 	 * tables, then inserts them.
