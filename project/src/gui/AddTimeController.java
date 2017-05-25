@@ -111,7 +111,7 @@ public class AddTimeController implements Initializable {
 		}
 		
 		// check that start is before end
-		if (startDropdown.getValue() < endDropdown.getValue())
+		if (startDropdown.getValue() >= endDropdown.getValue())
 		{
 			return false;
 		}
@@ -161,11 +161,10 @@ public class AddTimeController implements Initializable {
 			if (added)
 			{
 				GUIAlert.infoBox("Shift has been successfully added!", "Confirmation");
-				System.out.println("Shift Added!");
 			}
 			else
 			{
-				System.out.println("Unable to add shift!");
+				GUIAlert.infoBox("Unable to add shift!", "Confirmation");
 			}
     	}
     	else

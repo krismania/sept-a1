@@ -297,7 +297,7 @@ public class BookingController implements Initializable
     	// clear the old values
     	availabilityPane.getChildren().clear();
     	
-    	Availability avail = c.getEmployeeAvailability2(datePicker.getValue(), employeePicker.getValue().ID);
+    	Availability avail = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
     	
     	for (TimeSpan t : avail.getAvailability())
     	{
