@@ -8,17 +8,17 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import database.model.Availability;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
 import database.model.Service;
-import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import main.Availability;
-import main.Controller;
-import main.TimeSpan;
+import database.model.TimeSpan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -32,10 +32,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import main.Controller;
 //Implements form for creating bookings
 public class BookingController implements Initializable
 {
@@ -295,7 +294,7 @@ public class BookingController implements Initializable
      */
     private void populateAvailabilityPane()
     {
-    	// first, clear the old values
+    	// clear the old values
     	availabilityPane.getChildren().clear();
     	
     	Availability avail = c.getEmployeeAvailability2(datePicker.getValue(), employeePicker.getValue().ID);

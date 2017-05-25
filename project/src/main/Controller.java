@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import database.model.Account;
+import database.model.Availability;
 import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
