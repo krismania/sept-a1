@@ -30,6 +30,9 @@ public class CustMenuController implements Initializable {
     private Controller c = Controller.getInstance();
 
     @FXML
+    private Node root;
+
+    @FXML
     private Button viewAvailCust;
 
     @FXML
@@ -72,7 +75,7 @@ public class CustMenuController implements Initializable {
         c.logout();
         // reconnect to master DB
         c.loadDatabase("master");
-        GUIUtil.switchTo("Login.fxml", logout);
+        GUIUtil.switchTo("Login.fxml", root);
 
     }
 
