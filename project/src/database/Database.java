@@ -712,6 +712,14 @@ public abstract class Database {
 	protected void createTables()
 	{
 		logger.info("Creating database tables...");
+		
+		ArrayList<Table> tables = new ArrayList<Table>();
+		
+		Table hours = new Table("Hours");
+		hours.addColumn("Day", "varchar(9)");
+		hours.addColumn("Open", "int");
+		hours.addColumn("Close", "int");
+		tables.add(hours);
 
 		Table customer = new Table("Customer");
 		customer.addColumn("Username", "varchar(30)");
@@ -722,6 +730,7 @@ public abstract class Database {
 		customer.addColumn("Phone", "varchar(10)");
 		customer.addColumn("Type", "varchar(13)");
 		customer.setPrimary("Username");
+		tables.add(customer);
 		
 		Table bo = new Table("BusinessOwner");
 		bo.addColumn("Username", "varchar(30)");
@@ -732,6 +741,7 @@ public abstract class Database {
 		bo.addColumn("Phone", "varchar(10)");
 		bo.addColumn("Type", "varchar(13)");
 		bo.setPrimary("Username");
+		tables.add(bo);
 		
 		Table employee = new Table("Employee");
 		employee.addColumn("EmpID", "int");
@@ -740,6 +750,7 @@ public abstract class Database {
 		employee.addColumn("Email", "varchar(255)");
 		employee.addColumn("Phone", "varchar(10)");
 		employee.setPrimary("EmpID");
+		tables.add(employee);
 		
 		Table shift = new Table("Shift");
 		shift.addColumn("ShiftID", "int");
@@ -749,6 +760,7 @@ public abstract class Database {
 		shift.addColumn("End", "int");
 		shift.setPrimary("ShiftID");
 		shift.addForeignKey("EmpID", "Employee(EmpID)");
+		tables.add(shift);
 		
 		Table booking = new Table("Booking");
 		booking.addColumn("BookingID", "int");
@@ -761,30 +773,25 @@ public abstract class Database {
 		booking.addForeignKey("Customer", "Customer(Username)");
 		booking.addForeignKey("EmpID", "Employee(EmpID)");
 		booking.addForeignKey("ServiceID", "Service(ServiceID)");
+		tables.add(booking);
 		
 		Table service = new Table("Service");
 		service.addColumn("ServiceID", "int");
 		service.addColumn("Name", "varchar(30)");
 		service.addColumn("Duration", "int");
 		service.setPrimary("ServiceID");
+		tables.add(service);
 		
 		try
 		{
 			try (Statement stmt = c.createStatement())
 			{
-				// Customer Table
-				logger.fine("Creating table: " + customer);
-				stmt.execute(customer.toString());
-				logger.fine("Creating table: " + bo);
-				stmt.execute(bo.toString());
-				logger.fine("Creating table: " + employee);
-				stmt.execute(employee.toString());
-				logger.fine("Creating table: " + shift);
-				stmt.execute(shift.toString());
-				logger.fine("Creating table: " + booking);
-				stmt.execute(booking.toString());
-				logger.fine("Creating table: " + service);
-				stmt.execute(service.toString());
+				// add all tables to the db
+				for (Table table : tables)
+				{
+					logger.fine("Creating table: " + table);
+					stmt.execute(table.toString());
+				}
 			}
 		}
 		catch (SQLException e)

@@ -35,6 +35,9 @@ public class BOMenuController implements Initializable {
     private Button addTime;
     
     @FXML
+    private Button editHours;
+    
+    @FXML
     private Button editService;
 
     @FXML
@@ -80,6 +83,14 @@ public class BOMenuController implements Initializable {
             Scene scene = new Scene(rootAddTime);
             stage.setScene(scene);
             stage.show(); 
+        }
+        else if(event.getSource()==editHours)
+        {
+        	stage=(Stage)editService.getScene().getWindow();
+        	rootEditService = FXMLLoader.load(getClass().getResource("EditHours.fxml"));
+        	Scene scene = new Scene(rootEditService);
+        	stage.setScene(scene);
+        	stage.show();
         }
         else if(event.getSource()==editService)
         {

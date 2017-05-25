@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import database.model.Account;
 import database.model.Booking;
 import database.model.BusinessOwner;
@@ -16,6 +18,7 @@ import database.model.Customer;
 import database.model.Employee;
 import database.model.Service;
 import database.model.Shift;
+import database.model.TimeSpan;
 
 public class BusinessDatabase extends Database implements DBInterface
 {
@@ -696,6 +699,67 @@ public class BusinessDatabase extends Database implements DBInterface
 		}
 		
 		return businessOwner;
+	}
+	
+	/**
+	 * Returns a {@link TimeSpan} containing the opening and closing hours on a given day.
+	 * @author krismania
+	 */
+	public TimeSpan getHours(DayOfWeek day)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			String sql = String.format("SELECT * FROM Hours WHERE Day = '%s'", day.toString());
+			try (ResultSet rs = stmt.executeQuery(sql))
+			{
+				if (rs.next())
+				{
+					LocalTime open = LocalTime.ofSecondOfDay(rs.getInt("Open"));
+					LocalTime close = LocalTime.ofSecondOfDay(rs.getInt("Close"));
+					
+					TimeSpan hours = new TimeSpan(open, close);
+					
+					logger.info("Open hours: " + hours);
+					return hours;
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Sets the opening and closing hours for a given day using a {@link TimeSpan}.
+	 * The {@code hours} argument may be null to set the business as being closed
+	 * @author krismania
+	 */
+	public boolean setHours(DayOfWeek day, TimeSpan hours)
+	{
+		try (Statement stmt = c.createStatement())
+		{
+			// Remove the old record
+			String sql = String.format("DELETE FROM Hours WHERE Day = '%s'", day.toString());
+			stmt.execute(sql);
+			
+			// add a new one if hours is not null
+			if (hours != null)
+			{
+				sql = String.format("INSERT INTO Hours (Day, Open, Close) VALUES ('%s', %d, %d)",
+								day.toString(), hours.start.toSecondOfDay(), hours.end.toSecondOfDay());
+				stmt.execute(sql);
+				
+				return true; // on success
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(e.toString());
+		}
+		return false;
 	}
 
 	/**

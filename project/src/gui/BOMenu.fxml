@@ -28,6 +28,11 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="editHours" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Edit Business Hours">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="editService" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="250.0" text="Edit Services">
                <VBox.margin>
                   <Insets bottom="15.0" />
