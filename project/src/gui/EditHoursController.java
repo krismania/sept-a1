@@ -37,6 +37,11 @@ public class EditHoursController implements Initializable {
     @FXML
     private ChoiceBox<String> opened;
 
+    /**
+     * Initializes scene
+     *
+     * @author krismania
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // fill days
@@ -92,6 +97,11 @@ public class EditHoursController implements Initializable {
         day.getSelectionModel().selectFirst();
     }
 
+    /**
+     * Switches scene
+     *
+     * @author krismania
+     */
     @FXML
     public void handleBack() {
         GUIUtil.switchTo("BOMenu", root);
@@ -107,6 +117,11 @@ public class EditHoursController implements Initializable {
         }
     }
 
+    /**
+     * Manages save button
+     *
+     * @author krismania
+     */
     @FXML
     public void handleSaveAll() {
         TimeSpan hours = getHours();
@@ -117,6 +132,11 @@ public class EditHoursController implements Initializable {
         }
     }
 
+    /**
+     * Loads chosen hours
+     *
+     * @author krismania
+     */
     private void loadHours(String day) {
         TimeSpan hours = c.getHours(DayOfWeek.valueOf(day.toUpperCase()));
 

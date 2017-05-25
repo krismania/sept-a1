@@ -7,17 +7,12 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXSlider;
 
 import database.model.Employee;
-import database.model.TimeSpan;
-import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import main.Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
