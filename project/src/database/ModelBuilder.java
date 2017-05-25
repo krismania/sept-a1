@@ -3,7 +3,15 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface ModelBuilder<T>
+/**
+ * Functional interface to help build model objects from the database.
+ * @author krismania
+ */
+interface ModelBuilder<T>
 {
-	public T build(ResultSet rs) throws SQLException;
+	/**
+	 * Takes a ResultSet argument, and produces an object of type T.
+	 * @author krismania
+	 */
+	T build(ResultSet rs) throws SQLException;
 }
