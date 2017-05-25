@@ -314,7 +314,11 @@ public class BookingController implements Initializable {
             availabilityPane.getChildren().add(rect);
         }
 
-        // draw hour lines
+        /**
+         * draw hour lines
+         *
+         * @author tn
+         */
         for (int hour = 1; hour < 24; hour++) {
             Line line = new Line();
             line.endYProperty().bind(availabilityPane.heightProperty());
