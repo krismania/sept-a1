@@ -75,7 +75,7 @@ public class CustMenuController implements Initializable {
         c.logout();
         // reconnect to master DB
         c.loadDatabase("master");
-        GUIUtil.switchTo("Login.fxml", root);
+        GUIUtil.switchTo("Login", root);
 
     }
 
