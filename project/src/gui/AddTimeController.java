@@ -7,10 +7,12 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXSlider;
 import database.model.Employee;
+import database.model.TimeSpan;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import main.Controller;
@@ -97,31 +99,45 @@ public class AddTimeController implements Initializable {
 	private boolean validate()
 	{
 		// check employee selected
-		if (employeeDropdown.getSelectionModel().getSelectedItem() == null) {
+		if (employeeDropdown.getSelectionModel().getSelectedItem() == null)
+		{
 			return false;
 		}
 		
 		// check day selected
-		if (dayDropdown.getSelectionModel().getSelectedItem() == null) { 
+		if (dayDropdown.getSelectionModel().getSelectedItem() == null)
+		{ 
 			return false; 
 		}
 		
-		// check start/end selected 
-		
-		//Tn null check on slider value not required
-		/* if (startDropdown.getSelectionModel().getSelectedItem() == null ||
-			endDropdown.getSelectionModel().getSelectedItem() == null)
+		// check that start is before end
+		if (startDropdown.getValue() < endDropdown.getValue())
 		{
 			return false;
 		}
-		
-		// check that start is before end
-		if (startDropdown.getSelectionModel().getSelectedIndex() >= endDropdown.getSelectionModel().getSelectedIndex())
+				
+		// check that hours are within business hours
+		TimeSpan hours = c.getHours(DayOfWeek.valueOf(dayDropdown.getValue().toUpperCase()));
+		if (hours != null)
 		{
-			return false;
-		} */
-		
-		return true;
+			if (hours.start.isBefore(timeFromDouble(startDropdown.getValue())) || 
+							hours.end.isAfter(timeFromDouble(endDropdown.getValue())))
+			{
+				// selected hours are within opening hours
+				return true;
+			}
+			else
+			{
+				GUIAlert.infoBox("Please select a start and end time within the opening hours", 
+								"Invalid shift times");
+			}
+		}
+		else
+		{
+			GUIAlert.infoBox("The store is not open on this day. Update the opening hours to add a shift today.", 
+							"Invalid shift times");
+		}
+		return false;
 	}
 
 	/**
