@@ -8,10 +8,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import database.model.Availability;
 import database.model.BusinessOwner;
 import database.model.Customer;
 import database.model.Employee;
 import database.model.Service;
+import database.model.TimeSpan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,9 +34,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import main.Availability;
 import main.Controller;
-import main.TimeSpan;
 
 //Implements form for creating bookings
 public class BookingController implements Initializable {
@@ -299,7 +299,7 @@ public class BookingController implements Initializable {
         // first, clear the old values
         availabilityPane.getChildren().clear();
 
-        Availability avail = c.getEmployeeAvailability2(datePicker.getValue(), employeePicker.getValue().ID);
+        Availability avail = c.getEmployeeAvailability(datePicker.getValue(), employeePicker.getValue().ID);
 
         for (TimeSpan t : avail.getAvailability()) {
             Rectangle rect = new Rectangle();

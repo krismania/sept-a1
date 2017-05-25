@@ -1,6 +1,7 @@
 package database.model;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -10,7 +11,7 @@ import java.util.TreeSet;
  *
  * @author krismania
  */
-class Availability {
+public class Availability {
     private TreeSet<TimeSpan> shifts;
     private TreeSet<TimeSpan> bookedTimes;
 
@@ -23,8 +24,20 @@ class Availability {
         shifts.add(new TimeSpan(shift.getStart(), shift.getEnd()));
     }
 
+    public void addAllShifts(List<Shift> shifts) {
+        for (Shift shift : shifts) {
+            addShift(shift);
+        }
+    }
+
     public void addBooking(Booking booking) {
         bookedTimes.add(new TimeSpan(booking.getStart(), booking.getEnd()));
+    }
+
+    public void addAllBookings(List<Booking> bookings) {
+        for (Booking booking : bookings) {
+            addBooking(booking);
+        }
     }
 
     public TreeSet<TimeSpan> getAvailability() {

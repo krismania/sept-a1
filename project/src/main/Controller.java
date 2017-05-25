@@ -5,7 +5,6 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -15,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import database.model.Account;
+import database.model.Availability;
 import database.model.Booking;
 import database.model.BusinessOwner;
 import database.model.Customer;
@@ -69,7 +69,7 @@ public class Controller
 		// get the logger
 		logger = Logger.getLogger(getClass().getName());
 		logger.setLevel(Level.ALL);
-		//TODO: Add a checker for creating master DB on run.
+
 		loadDatabase("master");
 		logger.info("Instantiated Controller");
 	}
@@ -231,43 +231,11 @@ public class Controller
 	}
 	
 	/**
-	 * Returns a list of times that this employee is available, as strings
-	 * TODO: need a more robust solution for this.
-	 * @author krismania
-	 * @deprecated TODO: replace with below -kg
-	 */
-	public ArrayList<String> getEmployeeAvailability(LocalDate date, int employeeID)
-	{
-		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
-		
-		ArrayList<String> times = new ArrayList<String>();
-		
-		logger.fine("Getting employee availability");
-		
-		// iterate over the day's shifts
-		for (Shift shift : shifts)
-		{
-			logger.fine("Shift: " + shift.ID);
-			
-			LocalTime currentTime = shift.getStart(); // keep track of time we're up to
-						
-			while (currentTime.isBefore(shift.getEnd()))
-			{
-				logger.fine("Current time is: " + currentTime);
-				
-				times.add(currentTime.format(DateTimeFormatter.ofPattern("h:mm a")).toLowerCase());
-				currentTime = currentTime.plusMinutes(30);
-			}
-		}
-		
-		return times;
-	}
-	
-	/**
-	 * TODO: rename & document
+	 * Returns an {@code Availability} object describing the given employee's availability
+	 * for the given date.
 	 * @author krismania
 	 */
-	public Availability getEmployeeAvailability2(LocalDate date, int employeeID)
+	public Availability getEmployeeAvailability(LocalDate date, int employeeID)
 	{
 		ArrayList<Shift> shifts = getShiftsByDate(date, employeeID);
 		ArrayList<Booking> bookings = businessDB.getBookingsByDate(date, employeeID);
@@ -425,10 +393,9 @@ public class Controller
 		return businessDB.addShift(shift);
 	}
 	
-  /** Add a booking to the DB.
+	/** Add a booking to the DB.
 	 * @author James
 	 * @author krismania
-	 * TODO: fix the inputs for this method
 	 */
 	public boolean addBooking(LocalDate localDate, LocalTime start, Service service, int empID, String customerUsername) 
 	{		
@@ -557,55 +524,6 @@ public class Controller
 	public Account getLoggedUser()
 	{
 		return loggedUser;
-	}
-	
-	/**
-	 * TODO: update this controller method
-	 * It should get all shifts on a day, then iterate over them and check for
-	 * a duplicate manually
-	 */
-	public boolean shiftExists(String dayString, String timeString, int empID)
-	{
-//		DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
-//		ShiftTime time = ShiftTime.valueOf(timeString.toUpperCase());
-		return true;
-	}
-	
-	/**
-	 * TODO: document this
-	 * @author James
-	 * @deprecated
-	 */
-	@Deprecated
-	private LocalTime convertTime(String time) {
-		if(time.matches("\\d:\\d\\d am"))
-		{
-			time = "0".concat(time);
-			time = time.replaceAll("\\sam", "");
-		} 
-		else if(time.matches("\\d\\d:\\d\\d am"))
-		{
-			time = time.replaceAll("\\sam", "");
-		}
-		else if(time.matches("\\d:\\d\\d pm"))
-		{
-			int hour = Character.getNumericValue(time.charAt(0));
-			hour = hour + 12;
-			
-			time = time.replaceAll("\\d:", hour + ":");
-			time = time.replaceAll("\\spm", "");
-		}
-		else if(time.matches("\\d\\d:\\d\\d pm"))
-		{
-			int hour = Integer.parseInt(time.substring(0, 2));
-			if(hour != 12){
-				hour = hour + 12;
-			}
-			time = time.replaceAll("\\d\\d:", hour + ":");
-			time = time.replaceAll("\\spm", "");
-		}
-		LocalTime newTime = LocalTime.parse(time);
-		return newTime;
 	}
 	
 	/**
