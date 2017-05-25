@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +24,8 @@ import main.Controller;
 public class AdminMenuController implements Initializable {
 
     private Controller c = Controller.getInstance();
+    @FXML
+    private Node root;
 
     @FXML
     private Button createBusiness;
@@ -32,7 +35,7 @@ public class AdminMenuController implements Initializable {
 
     /**
      * Implements button redirecting to create business scene or manage business
-     * 
+     *
      * @param event
      * @throws IOException
      * @author tn
@@ -69,13 +72,8 @@ public class AdminMenuController implements Initializable {
     @FXML
     private void logoutButtonAction(ActionEvent event) throws IOException {
         c.logout();
-        Stage stage = (Stage) logout.getScene().getWindow();
+        GUIUtil.switchTo("Login", root);
 
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     @Override

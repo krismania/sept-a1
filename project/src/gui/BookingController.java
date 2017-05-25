@@ -274,16 +274,18 @@ public class BookingController implements Initializable {
         employeePicker.getItems().removeAll(employeePicker.getItems());
 
         if (day.isBefore(LocalDate.now())) {
-            // create an error
-            GUIUtil.infoBox("Please select today or a date in the future", "Error");
+            // TODO create an error
+            // GUIUtil.infoBox("Please select today or a date in the future",
+            // "Error");
         } else {
             ArrayList<Employee> employees = c.getEmployeesWorkingOn(day);
 
             System.out.println("There are " + employees.size() + " employees working");
 
             if (employees.isEmpty()) {
-                // create an error
-                GUIUtil.infoBox("No employees working on selected date", "Error");
+                // TODO create an error
+                // GUIUtil.infoBox("No employees working on selected date",
+                // "Error");
             } else {
                 employeePicker.getItems().addAll(employees);
             }
