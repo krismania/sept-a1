@@ -120,14 +120,6 @@ public class Controller
 			return null;
 		}
 	}
-	/**
-	 * @see DBInterface#getAllCustomers()
-	 */
-	@Deprecated
-	public ArrayList<Customer> getAllCustomers()
-	{
-		return businessDB.getAllCustomers();
-	}
 	
 	/**
 	 * @see DBInterface#getAllBusinessOwners()
@@ -582,7 +574,9 @@ public class Controller
 	/**
 	 * TODO: document this
 	 * @author James
+	 * @deprecated
 	 */
+	@Deprecated
 	private LocalTime convertTime(String time) {
 		if(time.matches("\\d:\\d\\d am"))
 		{
