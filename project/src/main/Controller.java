@@ -413,7 +413,15 @@ public class Controller
 		booking.setStart(start);
 		booking.setService(service);
 		
-		return businessDB.addBooking(booking);
+		// check if the booking fits in the available times
+        Availability avail = getEmployeeAvailability(localDate, empID);
+        
+        if (avail.contains(booking))
+        {
+            // if it does, try to add it
+            return businessDB.addBooking(booking);
+        }
+        return false;
 	}
 	
 	/**
