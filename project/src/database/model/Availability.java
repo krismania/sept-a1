@@ -69,6 +69,22 @@ public class Availability {
     }
 
     /**
+     * Checks if a given LocalTime is within this availability
+     *
+     * @author krismania
+     */
+    public boolean contains(Booking b) {
+        for (TimeSpan t : getAvailability()) {
+            // iterates over the timespans in this availability
+            if (t.start.isBefore(b.getStart()) && t.end.isAfter(b.getEnd())) {
+                // if the booking fits in at least one of them, return true
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Checks for overlapping availability
      *
      * @author krismania
