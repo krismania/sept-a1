@@ -17,6 +17,11 @@ public final class GUIUtil {
      * Implements Generic helper method for switching between scenes
      *
      * @author krismania
+     * @param fxmlName
+     *            filename of the FXML document, without the extension (e.g.
+     *            {@code "Login"} to use {@code Login.fxml}
+     * @param root
+     *            The current root element
      */
     public static void switchTo(String fxmlName, Node root) {
         try {
