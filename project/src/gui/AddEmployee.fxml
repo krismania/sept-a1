@@ -52,9 +52,9 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="navMenu" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region minWidth="15.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="submitNewEmpData" defaultButton="true" mnemonicParsing="false" onAction="#handleAddEmployee" text="Add" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleAddEmployee" text="Add" />
          </children>
       </HBox>
    </bottom>

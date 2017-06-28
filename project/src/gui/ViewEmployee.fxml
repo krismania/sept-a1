@@ -85,12 +85,13 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="back" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+            <Button fx:id="back" cancelButton="true" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             <Region HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Region>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleAdd" text="New Employee" />
          </children>
          <BorderPane.margin>
             <Insets top="30.0" />

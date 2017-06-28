@@ -2,10 +2,9 @@ package gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import main.Controller;
 import main.Validate;
 
@@ -14,27 +13,17 @@ import main.Validate;
  *
  * @author tn, krismania
  */
-public class AddEmployeeController {
+public class AddEmployeeController
+{
     Controller c = Controller.getInstance();
 
-    @FXML
-    private BorderPane root;
+    @FXML private Node root;
     @FXML
     private Label lblError;
-    @FXML
-    private TextField tfEmpFName;
-    @FXML
-    private TextField tfEmpLName;
-    @FXML
-    private TextField tfEmpEmailAdd;
-    @FXML
-    private TextField tfEmpPhNum;
-    @FXML
-    private Button submitNewEmpData;
-    @FXML
-    private Button navMenu;
-    @FXML
-    private Button exit;
+    @FXML private TextField tfEmpFName;
+    @FXML private TextField tfEmpLName;
+    @FXML private TextField tfEmpEmailAdd;
+    @FXML private TextField tfEmpPhNum;
 
     /**
      * Implements button to gather input data from fields and forward to
@@ -43,11 +32,14 @@ public class AddEmployeeController {
      * @author tn
      */
     @FXML
-    public void handleAddEmployee(ActionEvent event) {
-        if (validateEmployee()) {
+    public void handleAddEmployee(ActionEvent event)
+    {
+        if (validateEmployee())
+        {
             // try to add the employee
             if (c.addEmployee(tfEmpFName.getText(), tfEmpLName.getText(), tfEmpEmailAdd.getText(),
-                    tfEmpPhNum.getText())) {
+                    tfEmpPhNum.getText()))
+            {
                 // employee added successfully
                 // TN - If validation is successful a confirmation popup is
                 // presented.
@@ -62,26 +54,25 @@ public class AddEmployeeController {
 
                 // set focus to the first field. -kg
                 tfEmpFName.requestFocus();
-            } else {
+            }
+            else
+            {
                 setError("Couldn't add an employee.");
             }
         }
     }
 
-    /**
-     * Implements Back button reverting to Business Owner Menu
-     *
-     * @author tn
-     */
     @FXML
-    public void handleBack(ActionEvent event) {
-        GUIUtil.switchTo("BOMenu", root);
+    public void handleBack()
+    {
+        GUIUtil.switchTo("ViewEmployee", root);
     }
 
     /**
      * @author krismania
      */
-    private void setError(String message) {
+    private void setError(String message)
+    {
         lblError.setText(message);
         lblError.setVisible(true);
     }
@@ -92,24 +83,37 @@ public class AddEmployeeController {
      *
      * @author krismania
      */
-    private boolean validateEmployee() {
-        if (Validate.name(tfEmpFName.getText())) {
-            if (Validate.name(tfEmpLName.getText())) {
-                if (Validate.email(tfEmpEmailAdd.getText())) {
-                    if (Validate.phone(tfEmpPhNum.getText())) {
+    private boolean validateEmployee()
+    {
+        if (Validate.name(tfEmpFName.getText()))
+        {
+            if (Validate.name(tfEmpLName.getText()))
+            {
+                if (Validate.email(tfEmpEmailAdd.getText()))
+                {
+                    if (Validate.phone(tfEmpPhNum.getText()))
+                    {
                         lblError.setVisible(false);
                         return true;
-                    } else {
+                    }
+                    else
+                    {
                         setError("Please enter a valid phone number");
                         // TODO: this message is too long
                     }
-                } else {
+                }
+                else
+                {
                     setError("Please enter a valid email");
                 }
-            } else {
+            }
+            else
+            {
                 setError("Please enter a last name");
             }
-        } else {
+        }
+        else
+        {
             setError("Please enter a first name");
         }
         return false;

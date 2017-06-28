@@ -58,9 +58,8 @@ public class ViewEmployeeController implements Initializable {
      * @author tn
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // observe changes to selection
-
+    public void initialize(URL location, ResourceBundle resources)
+    {
         // populate employee list
         employeeID.setCellValueFactory(
                 new Callback<TableColumn.CellDataFeatures<Employee, Number>, ObservableValue<Number>>() {
@@ -93,12 +92,13 @@ public class ViewEmployeeController implements Initializable {
 
     /**
      * Implements context sensitive details on mouse select action
-     * 
+     *
      * @param event
      * @author tn
      */
     @FXML
-    public void handleChangeEmployee(MouseEvent event) {
+    public void handleChangeEmployee(MouseEvent event)
+    {
         Employee selEmp = employeeTable.getSelectionModel().getSelectedItem();
 
         // show employee details in details pane
@@ -111,14 +111,21 @@ public class ViewEmployeeController implements Initializable {
         }
     }
 
+    @FXML
+    public void handleAdd(ActionEvent event)
+    {
+        GUIUtil.switchTo("AddEmployee", root);
+    }
+
     /**
      * Implements back button reverting to Business Owner Main menu scene
-     * 
+     *
      * @param event
      * @author tn
      */
     @FXML
-    public void handleBack(ActionEvent event) {
+    public void handleBack(ActionEvent event)
+    {
         GUIUtil.switchTo("BOMenu", root);
     }
 }
