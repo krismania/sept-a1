@@ -51,8 +51,6 @@ public class LoginController implements Initializable
         // reset the error label before processing input
         lblError.setVisible(false);
 
-        // Disconnect from master DB
-        c.disconnectMaster();
         // Load selected DB. JM
         if (businessPicker.getValue() == "Administration")
         {

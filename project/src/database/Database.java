@@ -14,7 +14,7 @@ public abstract class Database {
 
     /**
      * DB Connection object
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -22,7 +22,7 @@ public abstract class Database {
 
     /**
      * The name of the DB file, excluding it's extension
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -34,7 +34,7 @@ public abstract class Database {
     /**
      * Instantiates the database, which will read to and from the .db file with
      * the given name. If the database doesn't exist, it is created and seeded.
-     * 
+     *
      * @author James
      * @author krismania
      */
@@ -54,7 +54,7 @@ public abstract class Database {
      * Attempt to log into an account with the provided credentials. If the
      * login is successful, am {@link Account} object will be returned,
      * otherwise the return value is null.
-     * 
+     *
      * @author krismania
      */
     public Account login(String username, String password) {
@@ -69,7 +69,7 @@ public abstract class Database {
 
     /**
      * Perform a query on the database and return the objects found.
-     * 
+     *
      * @author krismania
      */
     protected <T> ArrayList<T> query(String sql, ModelBuilder<T> builder) {
@@ -90,7 +90,7 @@ public abstract class Database {
 
     /**
      * Queries the database and returns the first object found.
-     * 
+     *
      * @author krismania
      */
     protected <T> T querySingle(String sql, ModelBuilder<T> builder) {
@@ -105,7 +105,7 @@ public abstract class Database {
 
     /**
      * Insert the given values into the specified table.
-     * 
+     *
      * @param table
      *            The database table to insert into
      * @param values
@@ -141,7 +141,7 @@ public abstract class Database {
     /**
      * Attempts to open a database connection, storing the connection object as
      * a class variable.
-     * 
+     *
      * @author James
      */
     protected boolean open() {
@@ -159,7 +159,7 @@ public abstract class Database {
 
     /**
      * Calls the close function on the database connection and sets it to null.
-     * 
+     *
      * @author James
      */
     protected boolean close() {
@@ -178,7 +178,7 @@ public abstract class Database {
 
     /**
      * Get the account with the given username from this database.
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -186,7 +186,7 @@ public abstract class Database {
 
     /**
      * Returns true if the given password matches the account.
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -194,7 +194,7 @@ public abstract class Database {
 
     /**
      * Database-specific list of table objects.
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -202,7 +202,7 @@ public abstract class Database {
 
     /**
      * Add required initial dat
-     * 
+     *
      * @author James
      * @author Krismania
      */
@@ -210,7 +210,7 @@ public abstract class Database {
 
     /**
      * Initialises the database's tables if the database is empty.
-     * 
+     *
      * @author James
      * @author krismania
      */
@@ -235,7 +235,7 @@ public abstract class Database {
     /**
      * Uses the abstract {@link #createTables()} method to generate this
      * database's tables, then inserts them.
-     * 
+     *
      * @author krismania
      */
     private void insertTables(ArrayList<Table> tables) {
@@ -248,6 +248,11 @@ public abstract class Database {
         } catch (SQLException e) {
             logger.severe("SQL Exception in table creation: " + e);
         }
+    }
+
+    public String getName()
+    {
+        return dbName;
     }
 
 }
